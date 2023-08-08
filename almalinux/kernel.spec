@@ -161,13 +161,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 284.18.1
+%define pkgrelease 284.25.1
 %define kversion 5
 %define tarfile_release 5.14.0-284.18.1.el9_2
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 284.18.1%{?buildid}%{?dist}
+%define specrelease 284.25.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-284.18.1.el9_2
 
@@ -900,6 +900,13 @@ Source4002: gating.yaml
 Patch1: patch-%{patchversion}-redhat.patch
 %endif
 
+# Patches from Oracle Linux kernel package
+Patch1200: 1200-KVM-x86-mmu-Fix-race-condition-in-direct_page_fault.patch
+Patch1201: 1201-prlimit-do_prlimit-needs-to-have-a-speculation-check.patch
+Patch1202: 1202-x86-speculation-Allow-enabling-STIBP-with-legacy-IBR.patch
+Patch1203: 1203-ipvlan-Fix-out-of-bounds-caused-by-unclear-skb-cb.patch
+Patch1204: 1204-net-sched-flower-fix-possible-OOB-write-in-fl_set_ge.patch
+  
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
 
@@ -1553,6 +1560,11 @@ cp -a %{SOURCE1} .
 ApplyOptionalPatch patch-%{patchversion}-redhat.patch
 %endif
 
+ApplyPatch 1200-KVM-x86-mmu-Fix-race-condition-in-direct_page_fault.patch
+ApplyPatch 1201-prlimit-do_prlimit-needs-to-have-a-speculation-check.patch
+ApplyPatch 1202-x86-speculation-Allow-enabling-STIBP-with-legacy-IBR.patch
+ApplyPatch 1203-ipvlan-Fix-out-of-bounds-caused-by-unclear-skb-cb.patch
+ApplyPatch 1204-net-sched-flower-fix-possible-OOB-write-in-fl_set_ge.patch
 ApplyOptionalPatch linux-kernel-test.patch
 
 # END OF PATCH APPLICATIONS
@@ -3418,6 +3430,13 @@ fi
 #
 #
 %changelog
+* Tue Aug 01 2023 Nagappan Ramasamy Palaniappan <nagappan.ramasamy.palaniappan@oracle.com> - [5.14.0-284.25.1.el9_2]	
+- KVM x86 mmuFix race condition in direct_page_fault
+- prlimit do_prlimit needs to have a speculation check
+- x86 speculation Allow enabling STIBP with legacy IBR
+- ipvlan Fix out of bounds caused by unclear skb cb
+- net sched flower fix possible OOB write in fl_set_geneve_opt
+
 * Wed May 31 2023 Herton R. Krzesinski <herton@redhat.com> [5.14.0-284.18.1.el9_2]
 - x86/i8259: Mark legacy PIC interrupts with IRQ_LEVEL (Baoquan He) [2210614 2116317]
 - bluetooth: Perform careful capability checks in hci_sock_ioctl() (Ricardo Robaina) [2196340 2196341] {CVE-2023-2002}
