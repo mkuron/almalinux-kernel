@@ -13,7 +13,7 @@
 
 # This is the source branch that you are building out of typically this is
 # the current branch.
-DIST_BRANCH ?= "almalinux93"
+DIST_BRANCH ?= "main"
 
 # This is the dist release suffix used in the package release, eg. .fc34,
 # .el8 etc. In a different branch this may be set to a fixed value.
