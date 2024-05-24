@@ -36,6 +36,7 @@ enum cpuhp_state {
 	CPUHP_X86_APB_DEAD,
 	CPUHP_X86_MCE_DEAD,
 	CPUHP_VIRT_NET_DEAD,
+	/* kABI: CPUHP_IBMVNIC_DEAD, */
 	CPUHP_SLUB_DEAD,
 	CPUHP_MM_WRITEBACK_DEAD,
 	CPUHP_MM_VMSTAT_DEAD,
@@ -150,6 +151,7 @@ enum cpuhp_state {
 	 * the other CPUHP states are not changed or broken.
 	 */
 	RH_KABI_BROKEN_INSERT_ENUM(CPUHP_AP_SCHED_WAIT_EMPTY)
+	RH_KABI_BROKEN_INSERT_ENUM(CPUHP_AP_HYPERV_ONLINE)
 	CPUHP_AP_SMPBOOT_THREADS,
 	RH_KABI_BROKEN_REMOVE_ENUM(CPUHP_AP_X86_VDSO_VMA_ONLINE)
 	CPUHP_AP_IRQ_AFFINITY_ONLINE,
@@ -224,6 +226,8 @@ enum cpuhp_state {
 
 /* CPUHP_AP_ONLINE_DYN is not an unused entry like the above entries */
 #define CPUHP_AP_X86_INTEL_EPB_ONLINE CPUHP_AP_ONLINE_DYN
+
+#define CPUHP_IBMVNIC_DEAD CPUHP_X86_MCE_DEAD
 
 int __cpuhp_setup_state(enum cpuhp_state state,	const char *name, bool invoke,
 			int (*startup)(unsigned int cpu),
