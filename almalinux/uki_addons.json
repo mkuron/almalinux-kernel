@@ -1,11 +1,11 @@
 {
     "virt": {
         "common": {
-            "fips-enable.addon": [
-                "fips=1\n"
-            ],
             "fips-disable.addon": [
                 "fips=0\n"
+            ],
+            "fips-enable.addon": [
+                "fips=1\n"
             ]
         }
     }
