@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 503.22.1
+%define pkgrelease 503.23.1
 %define kversion 5
-%define tarfile_release 5.14.0-503.22.1.el9_5
+%define tarfile_release 5.14.0-503.23.1.el9_5
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 503.22.1%{?buildid}%{?dist}
+%define specrelease 503.23.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-503.22.1.el9_5
+%define kabiversion 5.14.0-503.23.1.el9_5
 
 #
 # End of genspec.sh variables
@@ -645,6 +645,7 @@ Requires: kernel-modules-core-uname-r = %{KVERREL}
 Provides: installonlypkg(kernel)
 %endif
 
+
 #
 # List the packages used during the kernel build
 #
@@ -900,11 +901,6 @@ Source84: mod-internal.list
 Source85: mod-partner.list
 Source86: mod-kvm.list
 
-Source100: almalinuxdup1.x509
-Source101: almalinuxkpatch1.x509
-Source102: almalinuximaca1.x509
-Source103: almalinuxima.x509
-Source104: almalinuxima.x509
 Source105: nvidiagpuoot001.x509
 
 %if 0%{?centos}
@@ -953,6 +949,13 @@ Source4000: README.rst
 Source4001: rpminspect.yaml
 Source4002: gating.yaml
 
+# AlmaLinux Source
+Source100: almalinuxdup1.x509
+Source103: almalinuxima.x509
+Source104: almalinuxima.x509
+Source102: almalinuximaca1.x509
+Source101: almalinuxkpatch1.x509
+
 ## Patches needed for building this package
 
 %if !%{nopatches}
@@ -960,7 +963,10 @@ Source4002: gating.yaml
 Patch1: patch-%{patchversion}-redhat.patch
 %endif
 
-# Bring back deprecated PCI ids #CFHack #CFHack2024
+# empty final patch to facilitate testing of kernel patches
+Patch999999: linux-kernel-test.patch
+
+# AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
 Patch2003: 0003-Bring-back-deprecated-pci-ids-to-hpsa-driver.patch
@@ -968,9 +974,6 @@ Patch2004: 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2005: 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-
-# empty final patch to facilitate testing of kernel patches
-Patch999999: linux-kernel-test.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1483,8 +1486,8 @@ Requires: kernel-%{?1:%{1}-}-modules-core-uname-r = %{KVERREL}%{uname_variant %{
 %endif\
 %if "%{1}" == "rt" || "%{?1}" == ""\
 Provides: almalinux(kernel-sig-key) = 202303\
-Conflicts: shim-ia32 <= 15.6-1.el9.alma\
-Conflicts: shim-x64 <= 15.6-1.el9.alma\
+Conflicts: shim-ia32 < 15.8-4.el9_3.alma.2\
+Conflicts: shim-x64 < 15.8-4.el9_3.alma.2\
 %endif\
 %{expand:%%kernel_reqprovconf %{?1:%{1}} %{-o:%{-o}}}\
 %if %{?1:1} %{!?1:0} \
@@ -1713,6 +1716,12 @@ cp -a %{SOURCE1} .
 
 %if !%{nopatches}
 
+ApplyOptionalPatch patch-%{patchversion}-redhat.patch
+%endif
+
+ApplyOptionalPatch linux-kernel-test.patch
+
+# Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
 ApplyPatch 0003-Bring-back-deprecated-pci-ids-to-hpsa-driver.patch
@@ -1720,11 +1729,6 @@ ApplyPatch 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-
-ApplyOptionalPatch patch-%{patchversion}-redhat.patch
-%endif
-
-ApplyOptionalPatch linux-kernel-test.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -1836,6 +1840,7 @@ RHJOBS=$RPM_BUILD_NCPUS PACKAGE_NAME=kernel ./process_configs.sh $OPTS ${specver
 
 cp %{SOURCE82} .
 RPM_SOURCE_DIR=$RPM_SOURCE_DIR ./update_scripts.sh %{primary_target}
+
 
 # end of kernel config
 %endif
@@ -3790,6 +3795,24 @@ fi
 #
 #
 %changelog
+* Thu Feb 06 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-503.23.1
+- hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
+- mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
+- megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
+- qla2xxx: bring back deprecated PCI ids #CFHack #CFHack2024
+- qla4xxx: bring back deprecated PCI ids
+- lpfc: bring back deprecated PCI ids
+- be2iscsi: bring back deprecated PCI ids
+- kernel/rh_messages.h: enable all disabled pci devices by moving to
+  unmaintained
+
+* Thu Feb 06 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-503.23.1
+- Use AlmaLinux OS secure boot cert
+- Debrand for AlmaLinux OS
+
+* Mon Jan 20 2025 Chao YE <cye@redhat.com> [5.14.0-503.23.1.el9_5]
+- printk: nbcon: Fix illegal RCU usage on thread wakeup (Derek Barbosa) [RHEL-73036]
+
 * Wed Jan 15 2025 Chao YE <cye@redhat.com> [5.14.0-503.22.1.el9_5]
 - [s390] zcore: WRITE is "data source", not destination... (CKI Backport Bot) [RHEL-63078]
 - arm64/sve: Discard stale CPU state when handling SVE traps (Mark Salter) [RHEL-72218] {CVE-2024-50275}
