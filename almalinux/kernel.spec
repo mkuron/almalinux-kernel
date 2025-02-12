@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 503.23.1
+%define pkgrelease 503.23.2
 %define kversion 5
-%define tarfile_release 5.14.0-503.23.1.el9_5
+%define tarfile_release 5.14.0-503.23.2.el9_5
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 503.23.1%{?buildid}%{?dist}
+%define specrelease 503.23.2%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-503.23.1.el9_5
+%define kabiversion 5.14.0-503.23.2.el9_5
 
 #
 # End of genspec.sh variables
@@ -951,10 +951,10 @@ Source4002: gating.yaml
 
 # AlmaLinux Source
 Source100: almalinuxdup1.x509
+Source101: almalinuxkpatch1.x509
+Source102: almalinuximaca1.x509
 Source103: almalinuxima.x509
 Source104: almalinuxima.x509
-Source102: almalinuximaca1.x509
-Source101: almalinuxkpatch1.x509
 
 ## Patches needed for building this package
 
@@ -3795,7 +3795,7 @@ fi
 #
 #
 %changelog
-* Thu Feb 06 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-503.23.1
+* Wed Feb 12 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-503.23.2
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3806,9 +3806,12 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Feb 06 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-503.23.1
+* Wed Feb 12 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-503.23.2
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Fri Feb 07 2025 Scott Weaver <scweaver@redhat.com> [5.14.0-503.23.2.el9_5]
+- media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format (CKI Backport Bot) [RHEL-78075 RHEL-69574] {CVE-2024-53104}
 
 * Mon Jan 20 2025 Chao YE <cye@redhat.com> [5.14.0-503.23.1.el9_5]
 - printk: nbcon: Fix illegal RCU usage on thread wakeup (Derek Barbosa) [RHEL-73036]
