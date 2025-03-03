@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 503.23.2
+%define pkgrelease 503.26.1
 %define kversion 5
-%define tarfile_release 5.14.0-503.23.2.el9_5
+%define tarfile_release 5.14.0-503.26.1.el9_5
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 503.23.2%{?buildid}%{?dist}
+%define specrelease 503.26.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-503.23.2.el9_5
+%define kabiversion 5.14.0-503.26.1.el9_5
 
 #
 # End of genspec.sh variables
@@ -3795,7 +3795,7 @@ fi
 #
 #
 %changelog
-* Wed Feb 12 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-503.23.2
+* Mon Mar 03 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-503.26.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3806,12 +3806,29 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Feb 12 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-503.23.2
+* Mon Mar 03 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-503.26.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 
-* Fri Feb 07 2025 Scott Weaver <scweaver@redhat.com> [5.14.0-503.23.2.el9_5]
-- media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format (CKI Backport Bot) [RHEL-78075 RHEL-69574] {CVE-2024-53104}
+* Mon Feb 10 2025 Chao YE <cye@redhat.com> [5.14.0-503.26.1.el9_5]
+- redhat: drop Y issues from changelog (Jan Stancek)
+- media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format (CKI Backport Bot) [RHEL-78075] {CVE-2024-53104}
+
+* Thu Feb 06 2025 Chao YE <cye@redhat.com> [5.14.0-503.25.1.el9_5]
+- md/md-bitmap: fix writing non bitmap pages (CKI Backport Bot) [RHEL-76800]
+
+* Mon Jan 27 2025 Chao YE <cye@redhat.com> [5.14.0-503.24.1.el9_5]
+- smb: client: fix potential race in cifs_put_tcon() (Jay Shin) [RHEL-73594 RHEL-70959]
+- smb: client: don't try following DFS links in cifs_tree_connect() (Jay Shin) [RHEL-73594 RHEL-70959]
+- smb: client: allow reconnect when sending ioctl (Jay Shin) [RHEL-73594 RHEL-70959]
+- smb: client: get rid of @nlsc param in cifs_tree_connect() (Jay Shin) [RHEL-73594 RHEL-70959]
+- smb: client: allow more DFS referrals to be cached (Jay Shin) [RHEL-73594 RHEL-70959]
+- smb3: fix broken reconnect when password changing on the server by allowing password rotation (Jay Shin) [RHEL-73594 RHEL-57983]
+- i40e: Fix handling changed priv flags (Kamal Heib) [RHEL-69857 RHEL-30524]
+- mm: migrate: fix getting incorrect page mapping during page migration (Rafael Aquini) [RHEL-70898 RHEL-27742 RHEL-28873] {CVE-2023-52490}
+- mm: migrate: record the mlocked page status to remove unnecessary lru drain (Rafael Aquini) [RHEL-70898 RHEL-27742]
+- mm: convert migrate_pages() to work on folios (Rafael Aquini) [RHEL-70898 RHEL-27742]
+- migrate_pages_batch: simplify retrying and failure counting of large folios (Rafael Aquini) [RHEL-70898 RHEL-27742]
 
 * Mon Jan 20 2025 Chao YE <cye@redhat.com> [5.14.0-503.23.1.el9_5]
 - printk: nbcon: Fix illegal RCU usage on thread wakeup (Derek Barbosa) [RHEL-73036]
