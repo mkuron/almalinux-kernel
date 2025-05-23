@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.12.1
+%define pkgrelease 570.16.1
 %define kversion 5
-%define tarfile_release 5.14.0-570.12.1.el9_6
+%define tarfile_release 5.14.0-570.16.1.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.12.1%{?buildid}%{?dist}
+%define specrelease 570.16.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.12.1.el9_6
+%define kabiversion 5.14.0-570.16.1.el9_6
 
 #
 # End of genspec.sh variables
@@ -862,6 +862,7 @@ Source47: kernel-aarch64-rt-debug-rhel.config
 
 # PPC64le KVM support config
 Source10001: kernel-ppc64le-kvm-rhel.config
+Source10002: kernel-ppc64le-kvm-debug-rhel.config
 Source48: kernel-aarch64-rt-64k-rhel.config
 Source49: kernel-aarch64-rt-64k-debug-rhel.config
 %endif
@@ -1559,6 +1560,21 @@ a 64K page size.
 %description kvm-core
 The kernel package contains a variant of the PPC64le Linux kernel with
 KVM support.
+%endif
+
+%if %{with_ppc_kvm} && %{with_debug}
+%define variant_summary The Linux kernel compiled with extra debugging enabled
+%if !%{debugbuildsenabled}
+%kernel_variant_package -m kvm-debug
+%else
+%kernel_variant_package kvm-debug
+%endif
+%description kvm-debug-core
+The debug kernel package contains a variant of the PPC64le Linux kernel with
+KVM support.
+This variant of the kernel has numerous debugging options enabled.
+It should only be installed when trying to gather additional information
+on kernel bugs, as some of these options impact performance noticably.
 %endif
 
 %if %{with_arm64_64k} && %{with_debug}
@@ -2701,6 +2717,9 @@ BuildKernel %make_target %kernel_image %{_use_vdso}
 
 %if %{with_ppc_kvm}
 git apply $RPM_SOURCE_DIR/ppc64le-kvm-support.patch
+%if %{with_debug}
+BuildKernel %make_target %kernel_image %{_use_vdso} kvm-debug
+%endif
 BuildKernel %make_target %kernel_image %{_use_vdso} kvm
 %endif
 
@@ -2877,6 +2896,9 @@ find Documentation -type d | xargs chmod u+w
     fi \
     if [ "%{with_ppc_kvm}" -ne "0" ]; then \
        %{modsign_cmd} certs/signing_key.pem.sign+kvm certs/signing_key.x509.sign+kvm $RPM_BUILD_ROOT/lib/modules/%{KVERREL}+kvm/ \
+    fi \
+    if [ "%{with_ppc_kvm}" -ne "0" ] && [ "%{with_debug}" -ne "0" ]; then \
+         %{modsign_cmd} certs/signing_key.pem.sign+kvm-debug certs/signing_key.x509.sign+kvm-debug $RPM_BUILD_ROOT/lib/modules/%{KVERREL}+kvm-debug/ \
     fi \
     if [ "%{with_realtime}" -ne "0" ] && [ "%{with_debug}" -ne "0" ]; then \
          %{modsign_cmd} certs/signing_key.pem.sign+rt-debug certs/signing_key.x509.sign+rt-debug $RPM_BUILD_ROOT/lib/modules/%{KVERREL}+rt-debug/ \
@@ -3450,6 +3472,11 @@ fi\
 %kernel_variant_post -v kvm
 %endif
 
+%if %{with_ppc_kvm} && %{with_debug}
+%kernel_variant_preun -v kvm-debug
+%kernel_variant_post -v kvm-debug
+%endif
+
 %if %{with_debug} && %{with_arm64_64k}
 %kernel_variant_preun -v 64k-debug
 %kernel_variant_post -v 64k-debug
@@ -3798,11 +3825,22 @@ fi
 %files 64k-debug-modules
 %files 64k-debug-modules-extra
 %endif
+%if %{with_ppc_kvm}
+%files kvm-debug
+%files kvm-debug-core
+%files kvm-debug-devel
+%files kvm-debug-devel-matched
+%files kvm-debug-modules
+%files kvm-debug-modules-extra
+%endif
 %endif
 %kernel_variant_files %{use_vdso} %{with_pae} lpae
 %kernel_variant_files %{_use_vdso} %{with_zfcpdump} zfcpdump
 %kernel_variant_files %{_use_vdso} %{with_arm64_64k} 64k
+%if %{with_ppc_kvm}
 %kernel_variant_files %{_use_vdso} %{with_ppc_kvm} kvm
+%kernel_variant_files %{_use_vdso} %{with_debug} kvm-debug
+%endif
 %kernel_variant_files %{_use_vdso} %{with_realtime_arm64_64k} rt-64k
 
 %define kernel_variant_ipaclones(k:) \
@@ -3823,7 +3861,7 @@ fi
 #
 #
 %changelog
-* Tue May 13 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.12.1
+* Fri May 23 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.16.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3834,18 +3872,79 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue May 13 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.12.1
+* Fri May 23 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.16.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 
-* Tue May 13 2025 Andrew Lukoshko <alukoshko@almalinux.org> [5.14.0-570.12.1.el9_6]
-- Merge up tag 'kernel-5.14.0-570.12.1.el9_6' (Scott Weaver)
-- Merge: Add symbols to stablelist and enable check-kabi (CKI KWF Bot) [RHEL-79882]
-- Merge tag 'kernel-5.14.0-570.10.1.el9_6' into main (Patrick Talbert)
-- Merge tag 'kernel-5.14.0-570.5.1.el9_6' into main (Jan Stancek)
-- Merge tag 'kernel-5.14.0-570.4.1.el9_6' into main (Jan Stancek)
-- Merge tag 'kernel-5.14.0-570.3.1.el9_6' into 'main' (Patrick Talbert)
+* Tue Apr 29 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.16.1.el9_6]
+- soc: qcom: socinfo: Avoid out of bounds read of serial number (Jared Kangas) [RHEL-88252] {CVE-2024-58007}
+- soc: qcom: socinfo: fix revision check in qcom_socinfo_probe() (Jared Kangas) [RHEL-88252]
+- soc: qcom: Add check devm_kasprintf() returned value (Jared Kangas) [RHEL-88252]
+
+* Fri Apr 25 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.15.1.el9_6]
+- ice: ensure periodic output start time is in the future (Petr Oros) [RHEL-86021]
+- ice: fix PHY Clock Recovery availability check (Petr Oros) [RHEL-86021]
+- ice: Drop auxbus use for PTP to finalize ice_adapter move (Petr Oros) [RHEL-86021]
+- ice: Use ice_adapter for PTP shared data instead of auxdev (Petr Oros) [RHEL-86021]
+- ice: Initial support for E825C hardware in ice_adapter (Petr Oros) [RHEL-86021]
+- ice: Add ice_get_ctrl_ptp() wrapper to simplify the code (Petr Oros) [RHEL-86021]
+- ice: Introduce ice_get_phy_model() wrapper (Petr Oros) [RHEL-86021]
+- ice: Enable 1PPS out from CGU for E825C products (Petr Oros) [RHEL-86021]
+- ice: Read SDP section from NVM for pin definitions (Petr Oros) [RHEL-86021]
+- ice: Disable shared pin on E810 on setfunc (Petr Oros) [RHEL-86021]
+- ice: Cache perout/extts requests and check flags (Petr Oros) [RHEL-86021]
+- ice: Align E810T GPIO to other products (Petr Oros) [RHEL-86021]
+- ice: Add SDPs support for E825C (Petr Oros) [RHEL-86021]
+- ice: Implement ice_ptp_pin_desc (Petr Oros) [RHEL-86021]
+
+* Fri Apr 18 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.14.1.el9_6]
+- smb: client: fix regression with guest option (Paulo Alcantara) [RHEL-83859]
+- io_uring/sqpoll: zero sqd->thread on tctx errors (CKI Backport Bot) [RHEL-87264] {CVE-2025-21633}
+- nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu() (Chris Leech) [RHEL-86915] {CVE-2025-21927}
+- iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic() (CKI Backport Bot) [RHEL-86840] {CVE-2025-21993}
+- certs: Add ECDSA signature verification self-test (Herbert Xu) [RHEL-82247]
+- certs: Move RSA self-test data to separate file (Herbert Xu) [RHEL-82247]
+- certs: Break circular dependency when selftest is modular (Herbert Xu) [RHEL-82247]
+- KEYS: Include linux/errno.h in linux/verification.h (Herbert Xu) [RHEL-82247]
+- crypto: certs: fix FIPS selftest dependency (Herbert Xu) [RHEL-82247]
+- New configs in certs/Kconfig (Fedora Kernel Team) [RHEL-82247]
+- certs: Add support for using elliptic curve keys for signing modules (Herbert Xu) [RHEL-82247]
+- certs: Trigger creation of RSA module signing key if it's not an RSA key (Herbert Xu) [RHEL-82247]
+- tpm: Change to kvalloc() in eventlog/acpi.c (Štěpán Horáček) [RHEL-82147] {CVE-2024-58005}
+
+* Tue Apr 15 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.13.1.el9_6]
+- scsi: storvsc: Set correct data length for sending SCSI command without payload (Cathy Avery) [RHEL-83049]
+- hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event (Maxim Levitsky) [RHEL-85942]
+- net: netvsc: Update default VMBus channels (Maxim Levitsky) [RHEL-85942]
+- net: mana: cleanup mana struct after debugfs_remove() (Maxim Levitsky) [RHEL-85942]
+- net: mana: Cleanup "mana" debugfs dir after cleanup of all children (Maxim Levitsky) [RHEL-85942]
+- net: mana: Fix irq_contexts memory leak in mana_gd_setup_irqs (Maxim Levitsky) [RHEL-85942]
+- net: mana: Fix memory leak in mana_gd_setup_irqs (Maxim Levitsky) [RHEL-85942]
+- net :mana :Request a V2 response version for MANA_QUERY_GF_STAT (Maxim Levitsky) [RHEL-85942]
+- net: mana: use ethtool string helpers (Maxim Levitsky) [RHEL-85942]
+- net: mana: Enable debugfs files for MANA device (Maxim Levitsky) [RHEL-85942]
+- net: mana: Add get_link and get_link_ksettings in ethtool (Maxim Levitsky) [RHEL-85942]
+- net: mana: Increase the DEF_RX_BUFFERS_PER_QUEUE to 1024 (Maxim Levitsky) [RHEL-85942]
+- net: mana: Improve mana_set_channels() in low mem conditions (Maxim Levitsky) [RHEL-85942]
+- net: mana: Implement get_ringparam/set_ringparam for mana (Maxim Levitsky) [RHEL-85942]
+- net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup (Maxim Levitsky) [RHEL-85942]
+- ice: Fix signedness bug in ice_init_interrupt_scheme() (Petr Oros) [RHEL-80557]
+- ice: init flow director before RDMA (Petr Oros) [RHEL-80557]
+- ice: simplify VF MSI-X managing (Petr Oros) [RHEL-80557]
+- ice: enable_rdma devlink param (Petr Oros) [RHEL-80557]
+- ice: treat dyn_allowed only as suggestion (Petr Oros) [RHEL-80557]
+- ice, irdma: move interrupts code to irdma (Petr Oros) [RHEL-80557]
+- ice: get rid of num_lan_msix field (Petr Oros) [RHEL-80557]
+- ice: remove splitting MSI-X between features (Petr Oros) [RHEL-80557]
+- ice: devlink PF MSI-X max and min parameter (Petr Oros) [RHEL-80557]
+- ice: ice_probe: init ice_adapter after HW init (Petr Oros) [RHEL-80557]
+- ice: minor: rename goto labels from err to unroll (Petr Oros) [RHEL-80557]
+- ice: split ice_init_hw() out from ice_init_dev() (Petr Oros) [RHEL-80557]
+- ice: c827: move wait for FW to ice_init_hw() (Petr Oros) [RHEL-80557]
+- smb: client: don't retry IO on failed negprotos with soft mounts (Jay Shin) [RHEL-85524]
+- cgroup: Remove steal time from usage_usec (Waiman Long) [RHEL-85398]
+- rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read (CKI Backport Bot) [RHEL-85395] {CVE-2024-58069}
 
 * Fri Apr 04 2025 Patrick Talbert <ptalbert@redhat.com> [5.14.0-570.12.1.el9_6]
 - redhat: rebuild for prep-kerberos brew fix [RHEL-86037]

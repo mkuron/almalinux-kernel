@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3
 #
 # This script recursively inspects the 'redhat/uki_addons' directory,
 # and creates a json file containing name and description of each addon found.
