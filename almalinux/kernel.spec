@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.16.1
+%define pkgrelease 570.17.1
 %define kversion 5
-%define tarfile_release 5.14.0-570.16.1.el9_6
+%define tarfile_release 5.14.0-570.17.1.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.16.1%{?buildid}%{?dist}
+%define specrelease 570.17.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.16.1.el9_6
+%define kabiversion 5.14.0-570.17.1.el9_6
 
 #
 # End of genspec.sh variables
@@ -956,6 +956,7 @@ Source101: almalinuxkpatch1.x509
 Source102: almalinuximaca1.x509
 Source103: almalinuxima.x509
 Source104: almalinuxima.x509
+Source106: almalinuxnvidia1.x509
 
 ## Patches needed for building this package
 
@@ -1829,7 +1830,8 @@ openssl x509 -inform der -in %{SOURCE100} -out rheldup3.pem
 openssl x509 -inform der -in %{SOURCE101} -out rhelkpatch1.pem
 openssl x509 -inform der -in %{SOURCE102} -out rhelimaca1.pem
 openssl x509 -inform der -in %{SOURCE105} -out nvidiagpuoot001.pem
-cat rheldup3.pem rhelkpatch1.pem rhelimaca1.pem nvidiagpuoot001.pem > ../certs/rhel.pem
+openssl x509 -inform der -in %{SOURCE106} -out almalinuxnvidia.pem
+cat rheldup3.pem rhelkpatch1.pem rhelimaca1.pem nvidiagpuoot001.pem almalinuxnvidia.pem > ../certs/rhel.pem
 %if %{signkernel}
 %ifarch s390x ppc64le
 openssl x509 -inform der -in %{secureboot_ca_0} -out secureboot.pem
@@ -3861,7 +3863,7 @@ fi
 #
 #
 %changelog
-* Fri May 23 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.16.1
+* Sat May 24 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.17.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3872,10 +3874,50 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Fri May 23 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.16.1
+* Sat May 24 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.17.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Mon May 12 2025 Patrick Talbert <ptalbert@redhat.com> [5.14.0-570.17.1.el9_6]
+- vsock: Orphan socket after transport release (Jay Shin) [RHEL-89113] {CVE-2025-21756}
+- vsock: Keep the binding until socket destruction (Jay Shin) [RHEL-89113] {CVE-2025-21756}
+- bpf, vsock: Invoke proto::close on close() (Jay Shin) [RHEL-89113] {CVE-2025-21756}
+- net: ppp: Add bound checking for skb data on ppp_sync_txmung (Guillaume Nault) [RHEL-89646] {CVE-2025-37749}
+- cgroup/cpuset: Add warnings to catch inconsistency in exclusive CPUs (Waiman Long) [RHEL-88640]
+- selftest/cgroup: Add a remote partition transition test to test_cpuset_prs.sh (Waiman Long) [RHEL-88640]
+- selftest/cgroup: Clean up and restructure test_cpuset_prs.sh (Waiman Long) [RHEL-88640]
+- selftest/cgroup: Update test_cpuset_prs.sh to use | as effective CPUs and state separator (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Code cleanup and comment update (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Remove remote_partition_check() & make update_cpumasks_hier() handle remote partition (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Fix error handling in remote_partition_disable() (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Fix incorrect isolated_cpus update in update_parent_effective_cpumask() (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Fix race between newly created partition and dying one (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Prevent leakage of isolated CPUs into sched domains (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Enforce at most one rebuild_sched_domains_locked() call per operation (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Revert "Allow suppression of sched domain rebuild in update_cpumasks_hier()" (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Fix spelling errors in file kernel/cgroup/cpuset.c (Waiman Long) [RHEL-88640]
+- selftest/cgroup: Make test_cpuset_prs.sh deal with pre-isolated CPUs (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: Account for boot time isolated CPUs (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: remove use_parent_ecpus of cpuset (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: remove fetch_xcpus (Waiman Long) [RHEL-88640]
+- selftest/cgroup: Add new test cases to test_cpuset_prs.sh (Waiman Long) [RHEL-88640]
+- cgroup/cpuset: remove child_ecpus_count (Waiman Long) [RHEL-88640]
+- cpuset: use Union-Find to optimize the merging of cpumasks (Waiman Long) [RHEL-88640]
+- Union-Find: add a new module in kernel library (Waiman Long) [RHEL-88640]
+- dm-flakey: Fix memory corruption in optional corrupt_bio_byte feature (CKI Backport Bot) [RHEL-86899] {CVE-2025-21966}
+- ixgbe: fix media type detection for E610 device (Corinna Vinschen) [RHEL-85809]
+- ixgbevf: Add support for Intel(R) E610 device (Corinna Vinschen) [RHEL-85809]
+- PCI: Add PCI_VDEVICE_SUB helper macro (Corinna Vinschen) [RHEL-85809]
+- ixgbe: fix media cage present detection for E610 device (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Enable link management in E610 device (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Clean up the E610 link management related code (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Add ixgbe_x540 multiple header inclusion protection (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Add support for EEPROM dump in E610 device (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Add support for NVM handling in E610 device (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Add link management support for E610 device (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Add support for E610 device capabilities detection (Corinna Vinschen) [RHEL-85809]
+- ixgbe: Add support for E610 FW Admin Command Interface (Corinna Vinschen) [RHEL-85809]
 
 * Tue Apr 29 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.16.1.el9_6]
 - soc: qcom: socinfo: Avoid out of bounds read of serial number (Jared Kangas) [RHEL-88252] {CVE-2024-58007}
