@@ -75,7 +75,7 @@ for major in sorted(kernels):
             cmd = ['git', 'tag', tag]
             call(cmd)
         else:
-            cmd = ['git', 'show-ref', '--tags', '--quiet', minor]
+            cmd = ['git', 'show-ref', '--quiet', minor]
             p2 = subprocess.call(cmd)
             if p2 != 0:
                 cmd = ['git', 'checkout', prev]
