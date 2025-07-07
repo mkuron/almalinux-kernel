@@ -74,8 +74,8 @@ struct blkcg_gq {
 
 	struct blkg_policy_data		*pd[BLKCG_MAX_POLS];
 #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
-	spinlock_t			async_bio_lock;
-	struct bio_list			async_bios;
+	RH_KABI_EXTEND(spinlock_t	async_bio_lock)
+	RH_KABI_EXTEND(struct bio_list	async_bios)
 #endif
 	union {
 		struct work_struct	async_bio_work;
