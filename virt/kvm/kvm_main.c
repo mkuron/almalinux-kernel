@@ -2878,11 +2878,13 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
 			       unsigned long addr, bool write_fault,
 			       bool *writable, kvm_pfn_t *p_pfn)
 {
-	struct follow_pfnmap_args args = { .vma = vma, .address = addr };
 	kvm_pfn_t pfn;
+	pte_t *ptep;
+	pte_t pte;
+	spinlock_t *ptl;
 	int r;
 
-	r = follow_pfnmap_start(&args);
+	r = follow_pte(vma->vm_mm, addr, &ptep, &ptl);
 	if (r) {
 		/*
 		 * get_user_pages fails for VM_IO and VM_PFNMAP vmas and does
@@ -2897,19 +2899,21 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
 		if (r)
 			return r;
 
-		r = follow_pfnmap_start(&args);
+		r = follow_pte(vma->vm_mm, addr, &ptep, &ptl);
 		if (r)
 			return r;
 	}
 
-	if (write_fault && !args.writable) {
+	pte = ptep_get(ptep);
+
+	if (write_fault && !pte_write(pte)) {
 		pfn = KVM_PFN_ERR_RO_FAULT;
 		goto out;
 	}
 
 	if (writable)
-		*writable = args.writable;
-	pfn = args.pfn;
+		*writable = pte_write(pte);
+	pfn = pte_pfn(pte);
 
 	/*
 	 * Get a reference here because callers of *hva_to_pfn* and
@@ -2930,8 +2934,9 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
 	 */
 	if (!kvm_try_get_pfn(pfn))
 		r = -EFAULT;
+
 out:
-	follow_pfnmap_end(&args);
+	pte_unmap_unlock(ptep, ptl);
 	*p_pfn = pfn;
 
 	return r;
