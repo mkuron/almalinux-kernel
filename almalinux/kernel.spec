@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.24.1
+%define pkgrelease 570.25.1
 %define kversion 5
-%define tarfile_release 5.14.0-570.24.1.el9_6
+%define tarfile_release 5.14.0-570.25.1.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.24.1%{?buildid}%{?dist}
+%define specrelease 570.25.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.24.1.el9_6
+%define kabiversion 5.14.0-570.25.1.el9_6
 
 #
 # End of genspec.sh variables
@@ -3863,7 +3863,7 @@ fi
 #
 #
 %changelog
-* Tue Jul 01 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.24.1
+* Wed Jul 09 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.25.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3874,10 +3874,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Jul 01 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.24.1
+* Wed Jul 09 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.25.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Sat Jun 28 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.25.1.el9_6]
+- udf: Fix a slab-out-of-bounds write bug in udf_find_entry() (CKI Backport Bot) [RHEL-99124] {CVE-2022-49846}
+- vmxnet3: Fix malformed packet sizing in vmxnet3_process_xdp (CKI Backport Bot) [RHEL-97110] {CVE-2025-37799}
+- NFSv4: Don't check for OPEN feature support in v4.1 (Scott Mayhew) [RHEL-95252]
+- ipv6: mcast: extend RCU protection in igmp6_send() (CKI Backport Bot) [RHEL-94673] {CVE-2025-21759}
+- ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up (CKI Backport Bot) [RHEL-93445] {CVE-2025-21887}
+- net: atm: fix use after free in lec_send() (CKI Backport Bot) [RHEL-93132] {CVE-2025-22004}
+- block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone (Ming Lei) [RHEL-92268]
 
 * Sat Jun 21 2025 Patrick Talbert <ptalbert@redhat.com> [5.14.0-570.24.1.el9_6]
 - Squashfs: fix handling and sanity checking of xattr_ids count (CKI Backport Bot) [RHEL-93465] {CVE-2023-52933}
