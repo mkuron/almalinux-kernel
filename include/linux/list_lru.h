@@ -104,10 +104,9 @@ void memcg_drain_all_list_lrus(int src_idx, struct mem_cgroup *dst_memcg);
  * the previous list (with list_lru_del() for instance) before moving it
  * to @list_lru
  *
- * Return value: the total number of items in list_lru_node if the list was
- *		 updated, 0 otherwise
+ * Return value: true if the list was updated, false otherwise
  */
-long list_lru_add(struct list_lru *lru, struct list_head *item);
+bool list_lru_add(struct list_lru *lru, struct list_head *item);
 
 /**
  * list_lru_del: delete an element to the lru list
