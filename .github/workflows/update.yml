@@ -22,5 +22,6 @@ jobs:
     - run: |
         python3 update.py
     - run: |
+        git branch -D master
         git push --all https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git push --tags https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
