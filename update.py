@@ -60,7 +60,7 @@ for major in sorted(kernels):
             cmd = f'curl -Ls {url} | rpm2cpio - | cpio -idmD almalinux'
             cmd = ['bash', '-c', cmd]
             call(cmd)
-            cmd = 'tar --strip-components=1 -xJf almalinux/linux-*-*.el*.tar*'
+            cmd = 'tar --exclude=.git --strip-components=1 -xJf almalinux/linux-*-*.el*.tar*'
             cmd = ['bash', '-c', cmd]
             call(cmd)
             cmd = 'rm almalinux/*.tar*'
