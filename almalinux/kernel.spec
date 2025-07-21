@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.20.1
+%define pkgrelease 55.21.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.20.1.el10_0
+%define tarfile_release 6.12.0-55.21.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.20.1%{?buildid}%{?dist}
+%define specrelease 55.21.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.20.1.el10_0
+%define kabiversion 6.12.0-55.21.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4359,7 +4359,7 @@ fi\
 #
 #
 %changelog
-* Tue Jul 08 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.20.1
+* Mon Jul 21 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.21.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4370,9 +4370,28 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Jul 08 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.20.1
+* Mon Jul 21 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.21.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Jul 15 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.21.1.el10_0]
+- Bump internal version to 55.21.1
+- ice, irdma: fix an off by one in error handling code
+- irdma: free iwdev->rf after removing MSI-X
+- ice: Fix signedness bug in ice_init_interrupt_scheme()
+- ice: init flow director before RDMA
+- ice: simplify VF MSI-X managing
+- ice: enable_rdma devlink param
+- ice: treat dyn_allowed only as suggestion
+- ice, irdma: move interrupts code to irdma
+- ice: get rid of num_lan_msix field
+- ice: remove splitting MSI-X between features
+- ice: devlink PF MSI-X max and min parameter
+- ice: ice_probe: init ice_adapter after HW init
+- ice: minor: rename goto labels from err to unroll
+- ice: split ice_init_hw() out from ice_init_dev()
+- ice: c827: move wait for FW to ice_init_hw()
+- exfat: fix random stack corruption after get_block - CVE-2025-22036
 
 * Mon Jul 07 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.20.1.el10_0]
 - Bump internal version to 55.20.1
@@ -4388,7 +4407,7 @@ fi\
 - dm mpath: Interface for explicit probing of active paths
 - dm: Allow .prepare_ioctl to handle ioctls directly
 - ipv6: mcast: extend RCU protection in igmp6_send() - CVE-2025-21759
-
+ 
 * Tue Jul 01 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.19.1.el10_0]
 - Clean git history at setup stage
 - Prevent kABI check error for BLK_CGROUP_PUNT_BIO
