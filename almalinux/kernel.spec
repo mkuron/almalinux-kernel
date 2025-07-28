@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.21.1
+%define pkgrelease 55.22.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.21.1.el10_0
+%define tarfile_release 6.12.0-55.22.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.21.1%{?buildid}%{?dist}
+%define specrelease 55.22.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.21.1.el10_0
+%define kabiversion 6.12.0-55.22.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4359,7 +4359,7 @@ fi\
 #
 #
 %changelog
-* Mon Jul 21 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.21.1
+* Mon Jul 28 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.22.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4370,9 +4370,27 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Jul 21 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.21.1
+* Mon Jul 28 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.22.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Jul 22 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.22.1.el10_0]
+- Bump internal version to 55.22.1
+- mm/huge_memory: fix dereferencing invalid pmd migration entry - CVE-2025-37958
+- i2c: tegra: check msg length in SMBUS block read
+- s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
+- sunrpc: handle SVC_GARBAGE during svc auth processing as auth error - CVE-2025-38089
+- media: uvcvideo: Announce the user our deprecation intentions
+- media: uvcvideo: Allow changing noparam on the fly
+- media: uvcvideo: Invert default value for nodrop module param
+- media: uvcvideo: Propagate buf->error to userspace
+- media: uvcvideo: Flush the control cache when we get an event
+- media: uvcvideo: Annotate lock requirements for uvc_ctrl_set
+- media: uvcvideo: Remove dangling pointers - CVE-2024-58002
+- media: uvcvideo: Remove redundant NULL assignment
+- media: uvcvideo: Only save async fh if success
+- media: uvcvideo: Fix double free in error path - CVE-2024-57980
+- wifi: iwlwifi: limit printed string from FW file - CVE-2025-21905
 
 * Tue Jul 15 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.21.1.el10_0]
 - Bump internal version to 55.21.1
