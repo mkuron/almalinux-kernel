@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.22.1
+%define pkgrelease 55.24.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.22.1.el10_0
+%define tarfile_release 6.12.0-55.24.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.22.1%{?buildid}%{?dist}
+%define specrelease 55.24.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.22.1.el10_0
+%define kabiversion 6.12.0-55.24.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4359,7 +4359,7 @@ fi\
 #
 #
 %changelog
-* Mon Jul 28 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.22.1
+* Mon Aug 04 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.24.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4370,9 +4370,21 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Jul 28 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.22.1
+* Mon Aug 04 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.24.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Jul 29 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.24.1.el10_0]
+- Bump internal version to 55.24.1
+- net_sched: hfsc: Fix a UAF vulnerability in class handling - CVE-2025-37797
+- ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all() - CVE-2025-22121
+- ext4: introduce ITAIL helper - CVE-2025-22121
+- net/mdiobus: Fix potential out-of-bounds clause 45 read/write access - CVE-2025-38110
+- powerpc/vas: Return -EINVAL if the offset is non-zero in mmap() - CVE-2025-38088
+- powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap - CVE-2025-38088
+- net/mlx5: Fill out devlink dev info only for PFs
+- RDMA/mlx5: Fix page_size variable overflow - CVE-2025-22091
+- ACPI: CPPC: Fix _CPC register setting issue
 
 * Tue Jul 22 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.22.1.el10_0]
 - Bump internal version to 55.22.1
