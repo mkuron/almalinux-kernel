@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.66.1.el8_10
+%define pkgrelease 553.69.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.66.1%{?dist}
+%define specrelease 553.69.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Wed Aug 06 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.66.1
+* Mon Aug 11 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.69.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,53 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Aug 06 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.66.1
+* Mon Aug 11 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.69.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Aug 07 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.69.1.el8_10]
+- Revert "sch_htb: make htb_qlen_notify() idempotent" (Denys Vlasenko) [RHEL-108140]
+- Revert "sch_drr: make drr_qlen_notify() idempotent" (Denys Vlasenko) [RHEL-108140]
+- Revert "sch_qfq: make qfq_qlen_notify() idempotent" (Denys Vlasenko) [RHEL-108140]
+- Revert "codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()" (Denys Vlasenko) [RHEL-108140]
+- Revert "sch_htb: make htb_deactivate() idempotent" (Denys Vlasenko) [RHEL-108140]
+- Revert "net/sched: Always pass notifications when child class becomes empty" (Denys Vlasenko) [RHEL-108140]
+- Revert "sch_cbq: make cbq_qlen_notify() idempotent" (Denys Vlasenko) [RHEL-108140]
+
+* Mon Aug 04 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.68.1.el8_10]
+- ipv6: mcast: extend RCU protection in igmp6_send() (Hangbin Liu) [RHEL-102392] {CVE-2025-21759}
+- md/md-bitmap: move bitmap_{start, end}write to md upper layer (Nigel Croxon) [RHEL-57991]
+- md/raid5: implement pers->bitmap_sector() (Nigel Croxon) [RHEL-57991]
+- md: add a new callback pers->bitmap_sector() (Nigel Croxon) [RHEL-57991]
+- md/md-bitmap: remove the last parameter for bimtap_ops->endwrite() (Nigel Croxon) [RHEL-57991]
+- md/md-bitmap: factor behind write counters out from bitmap_{start/end}write() (Nigel Croxon) [RHEL-57991]
+- md/raid5: recheck if reshape has finished with device_lock held (Nigel Croxon) [RHEL-57991]
+- md/md-linear: enable io accounting (Nigel Croxon) [RHEL-59928]
+- md/md-multipath: enable io accounting (Nigel Croxon) [RHEL-59928]
+- md/raid10: switch to use md_account_bio() for io accounting (Nigel Croxon) [RHEL-59928]
+- md/raid1: switch to use md_account_bio() for io accounting (Nigel Croxon) [RHEL-59928]
+- raid5: fix missing io accounting in raid5_align_endio() (Nigel Croxon) [RHEL-59928]
+- md: also clone new io if io accounting is disabled (Nigel Croxon) [RHEL-59928]
+- sch_cbq: make cbq_qlen_notify() idempotent (Ivan Vecera) [RHEL-93376]
+- net/sched: Always pass notifications when child class becomes empty (CKI Backport Bot) [RHEL-93376] {CVE-2025-38350}
+- sch_htb: make htb_deactivate() idempotent (CKI Backport Bot) [RHEL-93376] {CVE-2025-38350}
+- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() (CKI Backport Bot) [RHEL-93376] {CVE-2025-38350}
+- sch_qfq: make qfq_qlen_notify() idempotent (CKI Backport Bot) [RHEL-93376] {CVE-2025-38350}
+- sch_drr: make drr_qlen_notify() idempotent (CKI Backport Bot) [RHEL-93376] {CVE-2025-38350}
+- sch_htb: make htb_qlen_notify() idempotent (CKI Backport Bot) [RHEL-93376] {CVE-2025-38350}
+- can: peak_usb: fix use after free bugs (CKI Backport Bot) [RHEL-99447] {CVE-2021-47670}
+- wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds (CKI Backport Bot) [RHEL-103141] {CVE-2025-38159}
+- net/ipv6: release expired exception dst cached in socket (Guillaume Nault) [RHEL-105794] {CVE-2024-56644}
+
+* Thu Jul 31 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.67.1.el8_10]
+- mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race (Rafael Aquini) [RHEL-101233] {CVE-2025-38085}
+- mm/khugepaged: fix collapse_pte_mapped_thp() to allow anon_vma (Rafael Aquini) [RHEL-101233] {CVE-2025-38085}
+- mm/khugepaged: fix GUP-fast interaction by sending IPI (Rafael Aquini) [RHEL-101233] {CVE-2025-38085}
+- mm/khugepaged: take the right locks for page table retraction (Rafael Aquini) [RHEL-101233] {CVE-2025-38085}
+- mm/khugepaged: unify collapse pmd clear, flush and free (Rafael Aquini) [RHEL-101233] {CVE-2025-38085}
+- padata: fix UAF in padata_reorder (Waiman Long) [RHEL-101398] {CVE-2025-21727}
+- redhat: update BUILD_TARGET to rhel-8.10.0-z-test-pesign (Jan Stancek)
+- ftrace: Clean up hash direct_functions on register failures (Gregory Bell) [RHEL-103912]
 
 * Mon Jul 28 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.66.1.el8_10]
 - net_sched: hfsc: Address reentrant enqueue adding class to eltree twice (Xin Long) [RHEL-105415] {CVE-2025-38001}
