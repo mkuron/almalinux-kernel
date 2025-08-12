@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.24.1
+%define pkgrelease 55.25.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.24.1.el10_0
+%define tarfile_release 6.12.0-55.25.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.24.1%{?buildid}%{?dist}
+%define specrelease 55.25.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.24.1.el10_0
+%define kabiversion 6.12.0-55.25.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4359,7 +4359,7 @@ fi\
 #
 #
 %changelog
-* Mon Aug 04 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.24.1
+* Tue Aug 12 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.25.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4370,9 +4370,37 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Aug 04 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.24.1
+* Tue Aug 12 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.25.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Aug 07 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.25.1.el10_0]
+- Bump internal version to 55.25.1
+- net_sched: hfsc: Address reentrant enqueue adding class to eltree twice - CVE-2025-38001
+- sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue() - CVE-2025-38000
+- net_sched: hfsc: Fix a UAF vulnerability in class with netem as child qdisc - CVE-2025-37890
+- sch_hfsc: make hfsc_qlen_notify() idempotent
+- RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem - CVE-2025-38022
+- RDMA/core: Fix use-after-free when rename device name - CVE-2025-22085
+- nvme-tcp: sanitize request list handling - CVE-2025-38264
+- net: tipc: fix refcount warning in tipc_aead_encrypt
+- net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done - CVE-2025-38052
+- tcp: adjust rcvq_space after updating scaling ratio
+- ext4: avoid journaling sb update on error if journal is destroying - CVE-2025-22113
+- ext4: define ext4_journal_destroy wrapper - CVE-2025-22113
+- HID: intel-ish-hid: Fix use-after-free issue in ishtp_hid_remove() - CVE-2025-21928
+- HID: intel-ish-hid: Fix use-after-free issue in hid_ishtp_cl_remove() - CVE-2025-21929
+- usb: hub: Fix flushing of delayed work used for post resume purposes
+- usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
+- usb: hub: fix detection of high tier USB3 devices behind suspended hubs
+- net/sched: fix use-after-free in taprio_dev_notifier - CVE-2025-38087
+- net: ch9200: fix uninitialised access during mii_nway_restart - CVE-2025-38086
+- padata: avoid UAF for reorder_work - CVE-2025-21726
+- padata: fix UAF in padata_reorder - CVE-2025-21727
+- padata: add pd get/put refcnt helper
+- padata: fix sysfs store callback check
+- padata: Clean up in padata_do_multithreaded()
+- memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove - CVE-2025-22020
 
 * Tue Jul 29 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.24.1.el10_0]
 - Bump internal version to 55.24.1
