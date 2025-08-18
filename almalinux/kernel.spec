@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.69.1.el8_10
+%define pkgrelease 553.70.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.69.1%{?dist}
+%define specrelease 553.70.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Aug 11 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.69.1
+* Mon Aug 18 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.70.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,18 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Aug 11 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.69.1
+* Mon Aug 18 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.70.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Aug 12 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.70.1.el8_10]
+- i2c/designware: Fix an initialization issue (CKI Backport Bot) [RHEL-106617] {CVE-2025-38380}
+- Bluetooth: hci_core: Fix use-after-free in vhci_flush() (David Marlin) [RHEL-103246] {CVE-2025-38250}
+- net_sched: ets: Fix double list add in class with netem as child qdisc (Xin Long) [RHEL-104717] {CVE-2025-37914}
+- sch_ets: make est_qlen_notify() idempotent (Xin Long) [RHEL-104717]
+- drm/vkms: Fix use after free and double free on init error (CKI Backport Bot) [RHEL-99402] {CVE-2025-22097}
+- s390/pci: Do not try re-enabling load/store if device is disabled (Mete Durlu) [RHEL-105600]
+- s390/pci: Fix stale function handles in error handling (Mete Durlu) [RHEL-105600]
 
 * Thu Aug 07 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.69.1.el8_10]
 - Revert "sch_htb: make htb_qlen_notify() idempotent" (Denys Vlasenko) [RHEL-108140]
