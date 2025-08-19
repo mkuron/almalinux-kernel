@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.25.1
+%define pkgrelease 55.27.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.25.1.el10_0
+%define tarfile_release 6.12.0-55.27.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.25.1%{?buildid}%{?dist}
+%define specrelease 55.27.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.25.1.el10_0
+%define kabiversion 6.12.0-55.27.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4359,7 +4359,7 @@ fi\
 #
 #
 %changelog
-* Tue Aug 12 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.25.1
+* Tue Aug 19 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.27.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4370,9 +4370,42 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Aug 12 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.25.1
+* Tue Aug 19 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.27.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Aug 14 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.27.1.el10_0]
+- Bump internal version to 55.27.1
+- Fix includes for mm: fix copy_vma() error handling for hugetlb mappings
+- Revert sch_htb: make htb_qlen_notify() idempotent
+- Revert sch_drr: make drr_qlen_notify() idempotent
+- Revert sch_qfq: make qfq_qlen_notify() idempotent
+- Revert codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
+- Revert sch_htb: make htb_deactivate() idempotent
+- Revert net/sched: Always pass notifications when child class becomes empty
+- wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds - CVE-2025-38159
+- Documentation: Fix pci=config_acs= example
+- PCI/ACS: Fix 'pci=config_acs=' parameter
+- Revert "smb: client: fix TCP timers deadlock after rmmod" - CVE-2025-22077
+- Revert smb: client: Fix netns refcount imbalance causing leaks and use-after-free 
+- smb: client: Fix netns refcount imbalance causing leaks and use-after-free
+- wifi: ath12k: fix invalid access to memory - CVE-2025-38292
+- x86/CPU/AMD: Terminate the erratum_1386_microcode array - CVE-2024-56721
+- crypto: algif_hash - fix double free in hash_accept - CVE-2025-38079
+- net/sched: Always pass notifications when child class becomes empty - CVE-2025-38350
+- sch_htb: make htb_deactivate() idempotent - CVE-2025-38350
+- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() - CVE-2025-38350
+- sch_qfq: make qfq_qlen_notify() idempotent - CVE-2025-38350
+- sch_drr: make drr_qlen_notify() idempotent - CVE-2025-38350
+- sch_htb: make htb_qlen_notify() idempotent - CVE-2025-38350
+- mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race - CVE-2025-38085
+- mm/hugetlb: unshare page tables during VMA split, not before - CVE-2025-38084
+- tools/testing/vma: add missing function stub
+- mm: fix copy_vma() error handling for hugetlb mappings
+- PCI: Use downstream bridges for distributing resources
+- PCI/pwrctrl: Cancel outstanding rescan work when unregistering - CVE-2025-38137
+- bnxt_en: Skip MAC loopback selftest if it is unsupported by FW
+- bnxt_en: Skip PHY loopback ethtool selftest if unsupported by FW
 
 * Thu Aug 07 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.25.1.el10_0]
 - Bump internal version to 55.25.1
