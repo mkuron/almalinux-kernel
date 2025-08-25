@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.70.1.el8_10
+%define pkgrelease 553.71.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.70.1%{?dist}
+%define specrelease 553.71.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Aug 18 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.70.1
+* Mon Aug 25 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.71.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,20 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Aug 18 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.70.1
+* Mon Aug 25 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.71.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Fri Aug 15 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.71.1.el8_10]
+- udp: Fix memory accounting leak. (Xin Long) [RHEL-104084] {CVE-2025-22058}
+- i40e: fix MMIO write access to an invalid page in i40e_clear_hw (Dennis Chen) [RHEL-106041] {CVE-2025-38200}
+- gfs2: Don't clear sb->s_fs_info in gfs2_sys_fs_add (Andrew Price) [RHEL-88072]
+- gfs2: Remove unnecessary NULL check before free_percpu() (Andreas Gruenbacher) [RHEL-88072]
+- gfs2: replace sd_aspace with sd_inode (Andreas Gruenbacher) [RHEL-88072]
+- writeback: fix false warning in inode_to_wb() (Andreas Gruenbacher) [RHEL-88072]
+- gfs2: No more self recovery (Andreas Gruenbacher) [RHEL-104232]
+- gfs2: Get rid of gfs2_glock_queue_put in signal_our_withdraw (Andreas Gruenbacher) [RHEL-104232]
+- gfs2: Fix withdraw race (Andreas Gruenbacher) [RHEL-104232]
 
 * Tue Aug 12 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.70.1.el8_10]
 - i2c/designware: Fix an initialization issue (CKI Backport Bot) [RHEL-106617] {CVE-2025-38380}
