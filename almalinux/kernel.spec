@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.27.1
+%define pkgrelease 55.28.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.27.1.el10_0
+%define tarfile_release 6.12.0-55.28.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.27.1%{?buildid}%{?dist}
+%define specrelease 55.28.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.27.1.el10_0
+%define kabiversion 6.12.0-55.28.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1152,6 +1152,7 @@ Recommends: linux-firmware\
 Requires(preun): systemd >= 200\
 Conflicts: xfsprogs < 4.3.0-1\
 Conflicts: xorg-x11-drv-vmmouse < 13.0.99\
+Conflicts: xdp-tools < 1.5.4\
 %{expand:%%{?kernel%{?1:_%{1}}_conflicts:Conflicts: %%{kernel%{?1:_%{1}}_conflicts}}}\
 %{expand:%%{?kernel%{?1:_%{1}}_obsoletes:Obsoletes: %%{kernel%{?1:_%{1}}_obsoletes}}}\
 %{expand:%%{?kernel%{?1:_%{1}}_provides:Provides: %%{kernel%{?1:_%{1}}_provides}}}\
@@ -4359,7 +4360,7 @@ fi\
 #
 #
 %changelog
-* Tue Aug 19 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.27.1
+* Tue Aug 26 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.28.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4370,9 +4371,31 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Aug 19 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.27.1
+* Tue Aug 26 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.28.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Aug 20 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.28.1.el10_0]
+- Conflict with xdp-tools < 1.5.4
+- Bump internal version to 55.28.1
+- tls: always refresh the queue when reading sock - CVE-2025-38471
+- selftests: net: bpf_offload: add 'libbpf_global' to ignored maps
+- selftests: net: fix error message in bpf_offload
+- selftests: net: add more info to error in bpf_offload
+- net: fix udp gso skb_segment after pull from frag_list - CVE-2025-38124
+- powerpc/pseries/vas: Add close() callback in vas_vm_ops struct
+- s390/pci: Serialize device addition and removal
+- s390/pci: Allow re-add of a reserved but not yet removed device
+- s390/pci: Prevent self deletion in disable_slot()
+- s390/pci: Remove redundant bus removal and disable from zpci_release_device()
+- s390/pci: Fix duplicate pci_dev_put() in disable_slot() when PF has child VFs
+- s390/pci: Fix missing check for zpci_create_device() error return
+- s390/pci: Fix potential double remove of hotplug slot
+- s390/topology: Improve topology detection
+- Bluetooth: hci_core: Fix use-after-free in vhci_flush() - CVE-2025-38250
+- selftests/bpf: Adjust data size to have ETH_HLEN - CVE-2025-21867
+- bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type() - CVE-2025-21867
+- i2c/designware: Fix an initialization issue - CVE-2025-38380
 
 * Thu Aug 14 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.27.1.el10_0]
 - Bump internal version to 55.27.1
