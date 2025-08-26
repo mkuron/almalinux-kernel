@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.35.1
+%define pkgrelease 570.37.1
 %define kversion 5
-%define tarfile_release 5.14.0-570.35.1.el9_6
+%define tarfile_release 5.14.0-570.37.1.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.35.1%{?buildid}%{?dist}
+%define specrelease 570.37.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.35.1.el9_6
+%define kabiversion 5.14.0-570.37.1.el9_6
 
 #
 # End of genspec.sh variables
@@ -3866,7 +3866,7 @@ fi
 #
 #
 %changelog
-* Thu Aug 21 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.35.1
+* Tue Aug 26 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.37.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3878,10 +3878,21 @@ fi
   unmaintained
 - NFSD: fix hang in nfsd4_shutdown_callback
 
-* Thu Aug 21 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.35.1
+* Tue Aug 26 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.37.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Sat Aug 16 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.37.1.el9_6]
+- ice: fix eswitch code memory leak in reset scenario (CKI Backport Bot) [RHEL-108152] {CVE-2025-38417}
+- ftrace: Clean up hash direct_functions on register failures (Gregory Bell) [RHEL-105151]
+- ethtool: Fix set RXNFC command with symmetric RSS hash (Mohammad Heib) [RHEL-103526]
+- drm/i915: Give i915 and xe each their own display tracepoints (Jocelyn Falempe) [RHEL-94419]
+
+* Wed Aug 13 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.36.1.el9_6]
+- udp: Fix memory accounting leak. (Xin Long) [RHEL-104091] {CVE-2025-22058}
+- net_sched: ets: Fix double list add in class with netem as child qdisc (CKI Backport Bot) [RHEL-104719] {CVE-2025-37914}
+- sch_ets: make est_qlen_notify() idempotent (Ivan Vecera) [RHEL-104719]
 
 * Sat Aug 09 2025 Patrick Talbert <ptalbert@redhat.com> [5.14.0-570.35.1.el9_6]
 - s390/dasd: Remove DMA alignment (CKI Backport Bot) [RHEL-91593]

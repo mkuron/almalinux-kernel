@@ -1,3 +1,16 @@
+* Sat Aug 16 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.37.1.el9_6]
+- ice: fix eswitch code memory leak in reset scenario (CKI Backport Bot) [RHEL-108152] {CVE-2025-38417}
+- ftrace: Clean up hash direct_functions on register failures (Gregory Bell) [RHEL-105151]
+- ethtool: Fix set RXNFC command with symmetric RSS hash (Mohammad Heib) [RHEL-103526]
+- drm/i915: Give i915 and xe each their own display tracepoints (Jocelyn Falempe) [RHEL-94419]
+Resolves: RHEL-103526, RHEL-105151, RHEL-108152, RHEL-94419
+
+* Wed Aug 13 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.36.1.el9_6]
+- udp: Fix memory accounting leak. (Xin Long) [RHEL-104091] {CVE-2025-22058}
+- net_sched: ets: Fix double list add in class with netem as child qdisc (CKI Backport Bot) [RHEL-104719] {CVE-2025-37914}
+- sch_ets: make est_qlen_notify() idempotent (Ivan Vecera) [RHEL-104719]
+Resolves: RHEL-104091, RHEL-104719
+
 * Sat Aug 09 2025 Patrick Talbert <ptalbert@redhat.com> [5.14.0-570.35.1.el9_6]
 - s390/dasd: Remove DMA alignment (CKI Backport Bot) [RHEL-91593]
 - s390/cpumf: Update CPU Measurement facility extended counter set support (CKI Backport Bot) [RHEL-103066]
