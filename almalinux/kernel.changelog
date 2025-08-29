@@ -5612,4 +5612,3 @@ Resolves: RHEL-56700
 - serial: 8250: Switch to nbcon console (John Ogness)
 - Linux v6.12-rc4
 Resolves: RHEL-56700
-

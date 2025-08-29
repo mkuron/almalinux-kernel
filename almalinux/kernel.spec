@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.28.1
+%define pkgrelease 55.29.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.28.1.el10_0
+%define tarfile_release 6.12.0-55.29.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.28.1%{?buildid}%{?dist}
+%define specrelease 55.29.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.28.1.el10_0
+%define kabiversion 6.12.0-55.29.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4360,7 +4360,7 @@ fi\
 #
 #
 %changelog
-* Tue Aug 26 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.28.1
+* Fri Aug 29 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.29.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4371,9 +4371,18 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Aug 26 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.28.1
+* Fri Aug 29 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.29.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Aug 26 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.29.1.el10_0]
+- Bump internal version to 55.29.1
+- ice: fix eswitch code memory leak in reset scenario - CVE-2025-38417
+- net/sched: Abort __tc_modify_qdisc if parent class does not exist
+- net_sched: ets: Fix double list add in class with netem as child qdisc - CVE-2025-37914
+- sch_ets: make est_qlen_notify() idempotent
+- i40e: fix MMIO write access to an invalid page in i40e_clear_hw - CVE-2025-38200
+- cxgb4: use port number to set mac addr
 
 * Wed Aug 20 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.28.1.el10_0]
 - Conflict with xdp-tools < 1.5.4
@@ -4456,7 +4465,7 @@ fi\
 - padata: add pd get/put refcnt helper
 - padata: fix sysfs store callback check
 - padata: Clean up in padata_do_multithreaded()
-- memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove - CVE-2025-22020
+- memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove -CVE-2025-22020
 
 * Tue Jul 29 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.24.1.el10_0]
 - Bump internal version to 55.24.1
