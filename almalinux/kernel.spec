@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.71.1.el8_10
+%define pkgrelease 553.72.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.71.1%{?dist}
+%define specrelease 553.72.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Aug 25 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.71.1
+* Tue Sep 02 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.72.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,50 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Aug 25 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.71.1
+* Tue Sep 02 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.72.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Sat Aug 23 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.72.1.el8_10]
+- scsi: lpfc: Use memcpy() for BIOS version (Ewan D. Milne) [RHEL-105927] {CVE-2025-38332}
+- watchdog/perf: properly initialize the turbo mode timestamp and rearm counter (David Arcari) [RHEL-103371]
+- RDMA/iwcm: Fix use-after-free of work objects after cm_id destruction (Michal Schmidt) [RHEL-104260] {CVE-2025-38211}
+- RDMA/iwcm: Fix WARNING:at_kernel/workqueue.c:#check_flush_dependency (Michal Schmidt) [RHEL-104260] {CVE-2024-47696}
+- RDMA/iwcm: Fix a use-after-free related to destroying CM IDs (Michal Schmidt) [RHEL-104260] {CVE-2024-42285}
+- net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class (CKI Backport Bot) [RHEL-106312] {CVE-2025-38477}
+- net/sched: sch_qfq: Fix race condition on qfq_aggregate (CKI Backport Bot) [RHEL-106312] {CVE-2025-38477}
+- cxgb4: use port number to set mac addr (CKI Backport Bot) [RHEL-75976]
+- net/sched: Abort __tc_modify_qdisc if parent class does not exist (CKI Backport Bot) [RHEL-107894]
+- aacraid: fix a buffer overflow (Tomas Henzl) [RHEL-62313]
+- filemap: remove use of wait bookmarks (Brian Foster) [RHEL-107181]
+- x86/efistub: Omit physical KASLR when memory reservations exist (Ricardo Robaina) [RHEL-82369]
+- efi/libstub: Check return value of efi_parse_options (Ricardo Robaina) [RHEL-82369]
+- efi/x86: Support builtin command line (Ricardo Robaina) [RHEL-82369]
+- tipc: Fix use-after-free in tipc_conn_close(). (CKI Backport Bot) [RHEL-106635] {CVE-2025-38464}
+- sbitmap: remove stale comment in sbq_calc_wake_batch (Ming Lei) [RHEL-81758]
+- block: Fix lockdep warning in blk_mq_mark_tag_wait (Ming Lei) [RHEL-81758]
+- blk-mq: fix potential io hang by wrong 'wake_batch' (Ming Lei) [RHEL-81758]
+- lib/sbitmap: define swap_lock as raw_spinlock_t (Ming Lei) [RHEL-81758]
+- sbitmap: fix io hung due to race on sbitmap_word::cleared (Ming Lei) [RHEL-81758]
+- sbitmap: use READ_ONCE to access map->word (Ming Lei) [RHEL-81758]
+- sbitmap: fix batching wakeup (Ming Lei) [RHEL-81758]
+- sbitmap: correct wake_batch recalculation to avoid potential IO hung (Ming Lei) [RHEL-81758]
+- sbitmap: add sbitmap_find_bit to remove repeat code in __sbitmap_get/__sbitmap_get_shallow (Ming Lei) [RHEL-81758]
+- sbitmap: rewrite sbitmap_find_bit_in_index to reduce repeat code (Ming Lei) [RHEL-81758]
+- sbitmap: remove redundant check in __sbitmap_queue_get_batch (Ming Lei) [RHEL-81758]
+- sbitmap: remove unnecessary calculation of alloc_hint in __sbitmap_get_shallow (Ming Lei) [RHEL-81758]
+- sbitmap: Use atomic_long_try_cmpxchg in __sbitmap_queue_get_batch (Ming Lei) [RHEL-81758]
+- sbitmap: remove unnecessary code in __sbitmap_queue_get_batch (Ming Lei) [RHEL-81758]
+- lib/sbitmap: Fix invalid loop in __sbitmap_queue_get_batch() (Ming Lei) [RHEL-81758]
+- lib/sbitmap: kill 'depth' from sbitmap_word (Ming Lei) [RHEL-81758]
+- sbitmap: add __sbitmap_queue_get_batch() (Ming Lei) [RHEL-81758]
+- sbitmap: Try each queue to wake up at least one waiter (Ming Lei) [RHEL-81758]
+- wait: Return number of exclusive waiters awaken (Ming Lei) [RHEL-81758]
+- sched/wait: Deduplicate code with do-while (Ming Lei) [RHEL-81758]
+- sbitmap: Advance the queue index before waking up a queue (Ming Lei) [RHEL-81758]
+- sbitmap: Use single per-bitmap counting to wake up queued tags (Ming Lei) [RHEL-81758]
+- blk-mq: Fix wrong wakeup batch configuration which will cause hang (Ming Lei) [RHEL-81758]
+- blk-mq: fix tag_get wait task can't be awakened (Ming Lei) [RHEL-81758]
 
 * Fri Aug 15 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.71.1.el8_10]
 - udp: Fix memory accounting leak. (Xin Long) [RHEL-104084] {CVE-2025-22058}
