@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.72.1.el8_10
+%define pkgrelease 553.74.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.72.1%{?dist}
+%define specrelease 553.74.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Tue Sep 02 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.72.1
+* Mon Sep 08 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.74.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Sep 02 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.72.1
+* Mon Sep 08 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.74.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Sun Sep 07 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.74.1.el8_10]
+- posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del() (Oleg Nesterov) [RHEL-112775] {CVE-2025-38352}
+
+* Thu Aug 28 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.73.1.el8_10]
+- ACPI: resource: Honor MADT INT_SRC_OVR settings for IRQ1 on AMD Zen (Jay Shin) [RHEL-108360]
+- ACPI: resource: Always use MADT override IRQ settings for all legacy non i8042 IRQs (Jay Shin) [RHEL-108360]
+- s390/pci: Allow automatic recovery with minimal driver support (Mete Durlu) [RHEL-110234]
+- bpf: Don't use tnum_range on array range checking for poke descriptors (CKI Backport Bot) [RHEL-109298] {CVE-2022-49985}
+- s390/ism: fix concurrency management in ism_cmd() (Mete Durlu) [RHEL-110208]
 
 * Sat Aug 23 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.72.1.el8_10]
 - scsi: lpfc: Use memcpy() for BIOS version (Ewan D. Milne) [RHEL-105927] {CVE-2025-38332}
