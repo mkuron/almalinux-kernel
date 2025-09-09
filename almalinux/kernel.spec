@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.29.1
+%define pkgrelease 55.30.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.29.1.el10_0
+%define tarfile_release 6.12.0-55.30.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.29.1%{?buildid}%{?dist}
+%define specrelease 55.30.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.29.1.el10_0
+%define kabiversion 6.12.0-55.30.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4360,7 +4360,7 @@ fi\
 #
 #
 %changelog
-* Fri Aug 29 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.29.1
+* Tue Sep 09 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.30.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4371,9 +4371,24 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Fri Aug 29 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.29.1
+* Tue Sep 09 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.30.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Sep 03 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.30.1.el10_0]
+- tipc: Fix use-after-free in tipc_conn_close(). - CVE-2025-38464
+- Bump internal version to 55.30.1
+- net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too - CVE-2025-37823
+- s390/pci: Fix zpci_bus_is_isolated_vf() for non-VFs
+- s390/pci: Fix handling of isolated VFs
+- s390/pci: Pull search for parent PF out of zpci_iov_setup_virtfn()
+- s390/pci: Fix SR-IOV for PFs initially in standby
+- RDMA/iwcm: Fix use-after-free of work objects after cm_id destruction - CVE-2025-38211
+- udp: Fix memory accounting leak. - CVE-2025-22058
+- udp: Fix multiple wraparounds of sk->sk_rmem_alloc.
+- ext4: only dirty folios when data journaling regular files - CVE-2025-38220
+- vsock: Fix transport_* TOCTOU - CVE-2025-38461
+- netfilter: nf_conntrack: fix crash due to removal of uninitialised entry - CVE-2025-38472
 
 * Tue Aug 26 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.29.1.el10_0]
 - Bump internal version to 55.29.1
