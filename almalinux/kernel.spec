@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.30.1
+%define pkgrelease 55.31.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.30.1.el10_0
+%define tarfile_release 6.12.0-55.31.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.30.1%{?buildid}%{?dist}
+%define specrelease 55.31.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.30.1.el10_0
+%define kabiversion 6.12.0-55.31.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4360,7 +4360,7 @@ fi\
 #
 #
 %changelog
-* Tue Sep 09 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.30.1
+* Fri Sep 12 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.31.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4371,9 +4371,32 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Sep 09 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.30.1
+* Fri Sep 12 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.31.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Sep 10 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.31.1.el10_0]
+- Adjust sched/fair: Adhere to place_entity() constraints
+- Bump internal version to 55.31.1
+- sched/fair: Adhere to place_entity() constraints
+- sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
+- sched/fair: Fix EEVDF entity placement bug causing scheduling lag
+- sched/fair: optimize the PLACE_LAG when se->vlag is zero
+- net/sched: ets: use old 'nbands' while purging unused classes - CVE-2025-38350
+- net/sched: Always pass notifications when child class becomes empty - CVE-2025-38350
+- net_sched: ets: fix a race in ets_qdisc_change() - CVE-2025-38107
+- sch_htb: make htb_deactivate() idempotent - CVE-2025-37953
+- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() - CVE-2025-37798
+- sch_qfq: make qfq_qlen_notify() idempotent - CVE-2025-38350
+- sch_drr: make drr_qlen_notify() idempotent - CVE-2025-38350
+- sch_htb: make htb_qlen_notify() idempotent - CVE-2025-37932
+- drm/vkms: Fix use after free and double free on init error - CVE-2025-22097
+- Revert "cxl/acpi: Fix load failures due to single window creation failure"
+- udmabuf: fix a buf size overflow issue during udmabuf creation - CVE-2025-37803
+- drm/framebuffer: Acquire internal references on GEM handles - CVE-2025-38449
+- drm/gem: Acquire references on GEM handles for framebuffers - CVE-2025-38449
+- nvme/ioctl: don't warn on vectorized uring_cmd with fixed buffer
+- nvme-ioctl: fix leaked requests on mapping error
 
 * Wed Sep 03 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.30.1.el10_0]
 - tipc: Fix use-after-free in tipc_conn_close(). - CVE-2025-38464
