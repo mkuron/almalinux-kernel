@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.41.1
+%define pkgrelease 570.42.2
 %define kversion 5
-%define tarfile_release 5.14.0-570.41.1.el9_6
+%define tarfile_release 5.14.0-570.42.2.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.41.1%{?buildid}%{?dist}
+%define specrelease 570.42.2%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.41.1.el9_6
+%define kabiversion 5.14.0-570.42.2.el9_6
 
 #
 # End of genspec.sh variables
@@ -3866,7 +3866,7 @@ fi
 #
 #
 %changelog
-* Thu Sep 11 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.41.1
+* Mon Sep 15 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.42.2
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3878,10 +3878,21 @@ fi
   unmaintained
 - NFSD: fix hang in nfsd4_shutdown_callback
 
-* Thu Sep 11 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.41.1
+* Mon Sep 15 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.42.2
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Mon Sep 08 2025 Patrick Talbert <ptalbert@redhat.com> [5.14.0-570.42.2.el9_6]
+- posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del() (CKI Backport Bot) [RHEL-112780] {CVE-2025-38352}
+- powerpc/pseries/iommu: create DDW for devices with DMA mask less than 64-bits (CKI Backport Bot) [RHEL-113173]
+
+* Sat Aug 30 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.42.1.el9_6]
+- powerpc/pseries/iommu: memory notifier incorrectly adds TCEs for pmemory (Mamatha Inamdar) [RHEL-103015]
+- drm/framebuffer: Acquire internal references on GEM handles (José Expósito) [RHEL-106699] {CVE-2025-38449}
+- drm/gem: Acquire references on GEM handles for framebuffers (José Expósito) [RHEL-106699] {CVE-2025-38449}
+- drm/vkms: Fix use after free and double free on init error (CKI KWF BOT) [RHEL-99420] {CVE-2025-22097}
+- scsi: lpfc: Use memcpy() for BIOS version (Ewan D. Milne) [RHEL-105933] {CVE-2025-38332}
 
 * Thu Aug 28 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.41.1.el9_6]
 - powerpc/pseries/iommu: Fix kmemleak in TCE table userspace view (Mamatha Inamdar) [RHEL-107002]
