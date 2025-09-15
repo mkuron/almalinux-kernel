@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.74.1.el8_10
+%define pkgrelease 553.75.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.74.1%{?dist}
+%define specrelease 553.75.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Sep 08 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.74.1
+* Mon Sep 15 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.75.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,33 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Sep 08 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.74.1
+* Mon Sep 15 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.75.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Sep 09 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.75.1.el8_10]
+- Revert "module, async: async_synchronize_full() on module init iff async is used" (Herton R. Krzesinski) [RHEL-99812]
+- mm/page_alloc: make sure free_pcppages_bulk() bails when given count < 0 (Rafael Aquini) [RHEL-85453]
+- sch_cbq: make cbq_qlen_notify() idempotent (Ivan Vecera) [RHEL-93376]
+- net/sched: ets: use old 'nbands' while purging unused classes (Ivan Vecera) [RHEL-107541] {CVE-2025-38350}
+- net_sched: sch_ets: implement lockless ets_dump() (Ivan Vecera) [RHEL-107541] {CVE-2025-38350}
+- net/sched: Always pass notifications when child class becomes empty (Ivan Vecera) [RHEL-93376] {CVE-2025-38350}
+- net_sched: ets: fix a race in ets_qdisc_change() (Ivan Vecera) [RHEL-107541] {CVE-2025-38107}
+- sch_htb: make htb_deactivate() idempotent (Ivan Vecera) [RHEL-93376] {CVE-2025-37953}
+- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() (Ivan Vecera) [RHEL-93376] {CVE-2025-37798}
+- sch_qfq: make qfq_qlen_notify() idempotent (Ivan Vecera) [RHEL-93376] {CVE-2025-38350}
+- sch_drr: make drr_qlen_notify() idempotent (Ivan Vecera) [RHEL-93376] {CVE-2025-38350}
+- sch_htb: make htb_qlen_notify() idempotent (Ivan Vecera) [RHEL-93376] {CVE-2025-37932}
+- idpf: convert control queue mutex to a spinlock (CKI Backport Bot) [RHEL-106049] {CVE-2025-38392}
+- drm/framebuffer: Acquire internal references on GEM handles (Anusha Srivatsa) [RHEL-106684] {CVE-2025-38449}
+- drm/gem: Acquire references on GEM handles for framebuffers (Anusha Srivatsa) [RHEL-106684] {CVE-2025-38449}
+- tracing: Disable interrupt or preemption before acquiring arch_spinlock_t (partial) (Luis Claudio R. Goncalves) [RHEL-95713]
+- vmxnet3: disable rx data ring on dma allocation failure (Michal Schmidt) [RHEL-106160]
+- xfs: fix error returns from xfs_bmapi_write (Carlos Maiolino) [RHEL-93655]
+- xfs: handle nimaps=0 from xfs_bmapi_write in xfs_alloc_file_space (Carlos Maiolino) [RHEL-93655]
+- net: usb: smsc75xx: Move packet length check to prevent kernel panic in skb_pull (CKI Backport Bot) [RHEL-112239] {CVE-2023-53125}
+- net: usb: smsc75xx: Limit packet length to skb->len (CKI Backport Bot) [RHEL-112239] {CVE-2023-53125}
+- PCI: Support BAR sizes up to 8TB (Myron Stowe) [RHEL-106671]
 
 * Sun Sep 07 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.74.1.el8_10]
 - posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del() (Oleg Nesterov) [RHEL-112775] {CVE-2025-38352}
