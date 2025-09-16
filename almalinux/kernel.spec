@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.31.1
+%define pkgrelease 55.32.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.31.1.el10_0
+%define tarfile_release 6.12.0-55.32.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.31.1%{?buildid}%{?dist}
+%define specrelease 55.32.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.31.1.el10_0
+%define kabiversion 6.12.0-55.32.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4360,7 +4360,7 @@ fi\
 #
 #
 %changelog
-* Fri Sep 12 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.31.1
+* Tue Sep 16 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.32.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4371,9 +4371,13 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Fri Sep 12 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.31.1
+* Tue Sep 16 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.32.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Fri Sep 12 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.32.1.el10_0]
+- Bump internal version to 55.32.1
+- posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del() - CVE-2025-38352
 
 * Wed Sep 10 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.31.1.el10_0]
 - Adjust sched/fair: Adhere to place_entity() constraints
