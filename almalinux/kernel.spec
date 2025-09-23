@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.75.1.el8_10
+%define pkgrelease 553.76.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.75.1%{?dist}
+%define specrelease 553.76.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Sep 15 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.75.1
+* Tue Sep 23 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.76.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Sep 15 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.75.1
+* Tue Sep 23 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.76.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Sun Sep 14 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.76.1.el8_10]
+- HID: core: Harden s32ton() against conversion to 0 bits (CKI Backport Bot) [RHEL-111027] {CVE-2025-38556}
+- HID: stop exporting hid_snto32() (CKI Backport Bot) [RHEL-111027] {CVE-2025-38556}
+- HID: simplify snto32() (CKI Backport Bot) [RHEL-111027] {CVE-2025-38556}
+- HID: core: fix shift-out-of-bounds in hid_report_raw_event (CKI Backport Bot) [RHEL-111027] {CVE-2025-38556}
+- use uniform permission checks for all mount propagation changes (Ian Kent) [RHEL-107299] {CVE-2025-38498}
+- do_change_type(): refuse to operate on unmounted/not ours mounts (Ian Kent) [RHEL-107299] {CVE-2025-38498}
+- xfs: make sure sb_fdblocks is non-negative (Pavel Reichl) [RHEL-104193]
+- vsock: Fix transport_* TOCTOU (CKI Backport Bot) [RHEL-105991] {CVE-2025-38461}
 
 * Tue Sep 09 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.75.1.el8_10]
 - Revert "module, async: async_synchronize_full() on module init iff async is used" (Herton R. Krzesinski) [RHEL-99812]
