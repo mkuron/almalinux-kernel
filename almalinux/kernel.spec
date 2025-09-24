@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.44.1
+%define pkgrelease 570.46.1
 %define kversion 5
-%define tarfile_release 5.14.0-570.44.1.el9_6
+%define tarfile_release 5.14.0-570.46.1.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.44.1%{?buildid}%{?dist}
+%define specrelease 570.46.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.44.1.el9_6
+%define kabiversion 5.14.0-570.46.1.el9_6
 
 #
 # End of genspec.sh variables
@@ -3866,7 +3866,7 @@ fi
 #
 #
 %changelog
-* Wed Sep 17 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.44.1
+* Wed Sep 24 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.46.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3878,10 +3878,30 @@ fi
   unmaintained
 - NFSD: fix hang in nfsd4_shutdown_callback
 
-* Wed Sep 17 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.44.1
+* Wed Sep 24 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.46.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Tue Sep 16 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.46.1.el9_6]
+- net: usb: smsc75xx: Move packet length check to prevent kernel panic in skb_pull (CKI Backport Bot) [RHEL-112246] {CVE-2023-53125}
+- net: usb: smsc75xx: Limit packet length to skb->len (CKI Backport Bot) [RHEL-112246] {CVE-2023-53125}
+- s390/sclp: Fix SCCB present check (CKI Backport Bot) [RHEL-113558] {CVE-2025-39694}
+- use uniform permission checks for all mount propagation changes (Ian Kent) [RHEL-107301] {CVE-2025-38498}
+- do_change_type(): refuse to operate on unmounted/not ours mounts (Ian Kent) [RHEL-107301] {CVE-2025-38498}
+- usb: dwc3: gadget: check that event count does not exceed event buffer length (CKI Backport Bot) [RHEL-107649] {CVE-2025-37810}
+
+* Sat Sep 13 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.45.1.el9_6]
+- tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu(). (Adrian Moreno) [RHEL-113279]
+- igc: fix lock order in igc_ptp_reset (CKI Backport Bot) [RHEL-108118]
+- igc: add lock preventing multiple simultaneous PTM transactions (CKI Backport Bot) [RHEL-108118]
+- igc: cleanup PTP module if probe fails (CKI Backport Bot) [RHEL-108118]
+- igc: handle the IGC_PTP_ENABLED flag correctly (CKI Backport Bot) [RHEL-108118]
+- igc: move ktime snapshot into PTM retry loop (CKI Backport Bot) [RHEL-108118]
+- igc: increase wait time before retrying PTM (CKI Backport Bot) [RHEL-108118]
+- igc: fix PTM cycle trigger logic (CKI Backport Bot) [RHEL-108118]
+- ice: use fixed adapter index for E825C embedded devices (CKI Backport Bot) [RHEL-111766]
+- ice: use DSN instead of PCI BDF for ice_adapter index (CKI Backport Bot) [RHEL-111766]
 
 * Tue Sep 09 2025 Chao YE <cye@redhat.com> [5.14.0-570.44.1.el9_6]
 - ipv6: mcast: Delay put pmc->idev in mld_del_delrec() (CKI Backport Bot) [RHEL-111149] {CVE-2025-38550}
