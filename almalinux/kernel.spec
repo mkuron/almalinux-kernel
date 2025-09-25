@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.33.1
+%define pkgrelease 55.34.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.33.1.el10_0
+%define tarfile_release 6.12.0-55.34.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.33.1%{?buildid}%{?dist}
+%define specrelease 55.34.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.33.1.el10_0
+%define kabiversion 6.12.0-55.34.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4363,7 +4363,7 @@ fi\
 #
 #
 %changelog
-* Thu Sep 25 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.33.1
+* Thu Sep 25 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.34.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4374,9 +4374,15 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Sep 25 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.33.1
+* Thu Sep 25 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.34.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Sep 24 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.34.1.el10_0]
+- Bump internal version to 55.34.1
+- sunrpc: fix handling of server side tls alerts - CVE-2025-38566
+- i40e: When removing VF MAC filters, only check PF-set MAC
+- usb: dwc3: gadget: check that event count does not exceed event buffer length - CVE-2025-37810
 
 * Thu Sep 18 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.33.1.el10_0]
 - Fix kABI for net_namespace.h
