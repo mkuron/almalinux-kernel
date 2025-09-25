@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.32.1
+%define pkgrelease 55.33.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.32.1.el10_0
+%define tarfile_release 6.12.0-55.33.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.32.1%{?buildid}%{?dist}
+%define specrelease 55.33.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.32.1.el10_0
+%define kabiversion 6.12.0-55.33.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -3310,7 +3310,7 @@ export CFLAGS="%{build_cflags}"
 # 'make install' for bpf is broken and upstream refuses to fix it.
 # Install the needed files manually.
 %{log_msg "install selftests"}
-for dir in bpf bpf/no_alu32 bpf/progs; do
+for dir in bpf bpf/no_alu32 bpf/cpuv4 bpf/progs; do
 	# In ARK, the rpm build continues even if some of the selftests
 	# cannot be built. It's not always possible to build selftests,
 	# as upstream sometimes dependens on too new llvm version or has
@@ -3326,14 +3326,17 @@ done
 
 %buildroot_save_unstripped "usr/libexec/kselftests/bpf/test_progs"
 %buildroot_save_unstripped "usr/libexec/kselftests/bpf/test_progs-no_alu32"
+%buildroot_save_unstripped "usr/libexec/kselftests/bpf/test_progs-cpuv4"
 
 # The urandom_read binary doesn't pass the check-rpaths check and upstream
 # refuses to fix it. So, we save it to buildroot_unstripped and delete it so it
 # will be hidden from check-rpaths and will automatically get restored later.
 %buildroot_save_unstripped "usr/libexec/kselftests/bpf/urandom_read"
 %buildroot_save_unstripped "usr/libexec/kselftests/bpf/no_alu32/urandom_read"
+%buildroot_save_unstripped "usr/libexec/kselftests/bpf/cpuv4/urandom_read"
 rm -f %{buildroot}/usr/libexec/kselftests/bpf/urandom_read
 rm -f %{buildroot}/usr/libexec/kselftests/bpf/no_alu32/urandom_read
+rm -f %{buildroot}/usr/libexec/kselftests/bpf/cpuv4/urandom_read
 
 popd
 %{log_msg "end build selftests"}
@@ -4360,7 +4363,7 @@ fi\
 #
 #
 %changelog
-* Tue Sep 16 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.32.1
+* Thu Sep 25 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.33.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4371,9 +4374,26 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Sep 16 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.32.1
+* Thu Sep 25 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.33.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Sep 18 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.33.1.el10_0]
+- Fix kABI for net_namespace.h
+- Bump internal version to 55.33.1
+- xfrm: interface: fix use-after-free after changing collect_md xfrm interface - CVE-2025-38500
+- idpf: convert control queue mutex to a spinlock - CVE-2025-38392
+- eth: bnxt: fix missing ring index trim on error path - CVE-2025-37873
+- tcp: Correct signedness in skb remaining space calculation - CVE-2025-38463
+- ipv6: mcast: Delay put pmc->idev in mld_del_delrec() - CVE-2025-38550
+- redhat: selftests/bpf: Add cpuv4 variant
+- i40e: report VF tx_dropped with tx_errors instead of tx_discards - CVE-2025-38200
+- use uniform permission checks for all mount propagation changes - CVE-2025-38498
+- do_change_type(): refuse to operate on unmounted/not ours mounts - CVE-2025-38498
+- ublk: make sure ubq->canceling is set when queue is frozen - CVE-2025-22068
+- net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM
+- scsi: lpfc: Use memcpy() for BIOS version - CVE-2025-38332
+- net: introduce per netns packet chains
 
 * Fri Sep 12 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.32.1.el10_0]
 - Bump internal version to 55.32.1
