@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.76.1.el8_10
+%define pkgrelease 553.77.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.76.1%{?dist}
+%define specrelease 553.77.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Tue Sep 23 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.76.1
+* Tue Sep 30 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.77.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,17 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Sep 23 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.76.1
+* Tue Sep 30 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.77.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Sep 18 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.77.1.el8_10]
+- net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too (CKI Backport Bot) [RHEL-109847] {CVE-2025-37797}
+- net_sched: hfsc: Fix a UAF vulnerability in class handling (CKI Backport Bot) [RHEL-109847] {CVE-2025-37797}
+- net: openvswitch: Fix the dead loop of MPLS parse (Aaron Conole) [RHEL-95609]
+- sctp: linearize cloned gso packets in sctp_rcv (CKI Backport Bot) [RHEL-113329] {CVE-2025-38718}
+- firmware: arm_scpi: Ensure scpi_info is not assigned if the probe fails (Charles Mirabile) [RHEL-109394] {CVE-2022-50087}
+- nfsd: don't ignore the return code of svc_proc_register() (Olga Kornievskaia) [RHEL-111639] {CVE-2025-22026}
 
 * Sun Sep 14 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.76.1.el8_10]
 - HID: core: Harden s32ton() against conversion to 0 bits (CKI Backport Bot) [RHEL-111027] {CVE-2025-38556}
