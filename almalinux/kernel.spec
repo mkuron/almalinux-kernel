@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.34.1
+%define pkgrelease 55.37.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.34.1.el10_0
+%define tarfile_release 6.12.0-55.37.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.34.1%{?buildid}%{?dist}
+%define specrelease 55.37.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.34.1.el10_0
+%define kabiversion 6.12.0-55.37.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4363,7 +4363,7 @@ fi\
 #
 #
 %changelog
-* Thu Sep 25 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.34.1
+* Thu Oct 02 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.37.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4374,9 +4374,36 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Sep 25 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.34.1
+* Thu Oct 02 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.37.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Oct 01 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.37.1.el10_0]
+- fix kABI build errors
+- Adjust new tls selftest for current code
+- Bump internal version to 55.37.1
+- selftests: tls: add tests for zero-length records - CVE-2025-39682
+- tls: fix handling of zero-length records on the rx_list - CVE-2025-39682
+- fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass - CVE-2025-38396
+- io_uring/futex: ensure io_futex_wait() cleans up properly on failure - CVE-2025-39698
+- ice: use fixed adapter index for E825C embedded devices
+- ice: use DSN instead of PCI BDF for ice_adapter index
+- tcp: drop secpath at the same time as we currently drop dst
+- cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
+- cifs: Fix the smbd_response slab to allow usercopy - CVE-2025-38523
+- smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data
+- smb: client: fix max_sge overflow in smb_extract_folioq_to_rdma()
+- smb: client: make use of common smbdirect_socket_parameters
+- smb: smbdirect: introduce smbdirect_socket_parameters
+- smb: client: make use of common smbdirect_socket
+- smb: smbdirect: add smbdirect_socket.h
+- smb: client: make use of common smbdirect.h
+- smb: smbdirect: add smbdirect.h with public structures
+- smb: client: make use of common smbdirect_pdu.h
+- smb: smbdirect: add smbdirect_pdu.h with protocol definitions
+- s390/sclp: Fix SCCB present check - CVE-2025-39694
+- net: stmmac: fix TSO DMA API usage causing oops
+- smb: client: fix use-after-free in cifs_oplock_break - CVE-2025-38527
 
 * Wed Sep 24 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.34.1.el10_0]
 - Bump internal version to 55.34.1
