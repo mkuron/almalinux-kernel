@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.49.1
+%define pkgrelease 570.51.1
 %define kversion 5
-%define tarfile_release 5.14.0-570.49.1.el9_6
+%define tarfile_release 5.14.0-570.51.1.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.49.1%{?buildid}%{?dist}
+%define specrelease 570.51.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.49.1.el9_6
+%define kabiversion 5.14.0-570.51.1.el9_6
 
 #
 # End of genspec.sh variables
@@ -3866,7 +3866,7 @@ fi
 #
 #
 %changelog
-* Tue Sep 30 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.49.1
+* Wed Oct 08 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.51.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3878,10 +3878,18 @@ fi
   unmaintained
 - NFSD: fix hang in nfsd4_shutdown_callback
 
-* Tue Sep 30 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.49.1
+* Wed Oct 08 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.51.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Sat Sep 27 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.51.1.el9_6]
+- wifi: ath12k: Decrement TID on RX peer frag setup error handling (CKI Backport Bot) [RHEL-114705] {CVE-2025-39761}
+- RDMA/cxgb4: Notify rdma stack for IB_EVENT_QP_LAST_WQE_REACHED event (CKI Backport Bot) [RHEL-100798]
+
+* Thu Sep 25 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.50.1.el9_6]
+- security/keys: fix slab-out-of-bounds in key_task_permission (CKI Backport Bot) [RHEL-68092] {CVE-2024-50301}
+- KVM: x86/hyper-v: Skip non-canonical addresses during PV TLB flush (Jon Maloy) [RHEL-104730] {CVE-2025-38351}
 
 * Tue Sep 23 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.49.1.el9_6]
 - io_uring/futex: ensure io_futex_wait() cleans up properly on failure (CKI Backport Bot) [RHEL-114335] {CVE-2025-39698}
