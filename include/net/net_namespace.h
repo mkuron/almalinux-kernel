@@ -83,9 +83,6 @@ struct net {
 	struct llist_node	defer_free_list;
 	struct llist_node	cleanup_list;	/* namespaces on death row */
 
-	RH_KABI_EXTEND(struct list_head ptype_all)
-	RH_KABI_EXTEND(struct list_head ptype_specific)
-
 #ifdef CONFIG_KEYS
 	struct key_tag		*key_domain;	/* Key domain of operation tag */
 #endif
@@ -192,6 +189,9 @@ struct net {
 #if IS_ENABLED(CONFIG_SMC)
 	struct netns_smc	smc;
 #endif
+
+	RH_KABI_EXTEND(struct list_head ptype_all)
+	RH_KABI_EXTEND(struct list_head ptype_specific)
 } __randomize_layout;
 
 #include <linux/seq_file_net.h>

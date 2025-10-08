@@ -128,6 +128,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
 		ret = -EINVAL;
 		goto out;
 	}
+
 	if (ioucmd && (ioucmd->flags & IORING_URING_CMD_FIXED)) {
 		struct iov_iter iter;
 

@@ -162,15 +162,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 55.37.1
+%define pkgrelease 55.38.1
 %define kversion 6
-%define tarfile_release 6.12.0-55.37.1.el10_0
+%define tarfile_release 6.12.0-55.38.1.el10_0
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 55.37.1%{?buildid}%{?dist}
+%define specrelease 55.38.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-55.37.1.el10_0
+%define kabiversion 6.12.0-55.38.1.el10_0
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1973,8 +1973,6 @@ ApplyOptionalPatch()
 mv linux-%{tarfile_release} linux-%{KVERREL}
 
 cd linux-%{KVERREL}
-#removal of git history
-rm -rf .git
 cp -a %{SOURCE1} .
 
 %{log_msg "Start of patch applications"}
@@ -4363,7 +4361,7 @@ fi\
 #
 #
 %changelog
-* Thu Oct 02 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.37.1
+* Wed Oct 08 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 6.12.0-55.38.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4374,392 +4372,425 @@ fi\
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Oct 02 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.37.1
+* Wed Oct 08 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-55.38.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 
-* Wed Oct 01 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.37.1.el10_0]
-- fix kABI build errors
-- Adjust new tls selftest for current code
-- Bump internal version to 55.37.1
-- selftests: tls: add tests for zero-length records - CVE-2025-39682
-- tls: fix handling of zero-length records on the rx_list - CVE-2025-39682
-- fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass - CVE-2025-38396
-- io_uring/futex: ensure io_futex_wait() cleans up properly on failure - CVE-2025-39698
-- ice: use fixed adapter index for E825C embedded devices
-- ice: use DSN instead of PCI BDF for ice_adapter index
-- tcp: drop secpath at the same time as we currently drop dst
-- cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
-- cifs: Fix the smbd_response slab to allow usercopy - CVE-2025-38523
-- smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data
-- smb: client: fix max_sge overflow in smb_extract_folioq_to_rdma()
-- smb: client: make use of common smbdirect_socket_parameters
-- smb: smbdirect: introduce smbdirect_socket_parameters
-- smb: client: make use of common smbdirect_socket
-- smb: smbdirect: add smbdirect_socket.h
-- smb: client: make use of common smbdirect.h
-- smb: smbdirect: add smbdirect.h with public structures
-- smb: client: make use of common smbdirect_pdu.h
-- smb: smbdirect: add smbdirect_pdu.h with protocol definitions
-- s390/sclp: Fix SCCB present check - CVE-2025-39694
-- net: stmmac: fix TSO DMA API usage causing oops
-- smb: client: fix use-after-free in cifs_oplock_break - CVE-2025-38527
+* Tue Sep 30 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-55.38.1.el10_0]
+- hv_netvsc: Fix panic during namespace deletion with VF (Maxim Levitsky) [RHEL-114930]
+- RDMA/mana_ib: Fix DSCP value in modify QP (Maxim Levitsky) [RHEL-114930]
+- net: mana: Handle Reset Request from MANA NIC (Maxim Levitsky) [RHEL-114930]
+- net: mana: Set tx_packets to post gso processing packet count (Maxim Levitsky) [RHEL-114930]
+- net: mana: Handle unsupported HWC commands (Maxim Levitsky) [RHEL-114930]
+- net: mana: Add handler for hardware servicing events (Maxim Levitsky) [RHEL-114930]
+- net: mana: Expose additional hardware counters for drop and TC via ethtool. (Maxim Levitsky) [RHEL-114930]
+- hv_netvsc: Set VF priv_flags to IFF_NO_ADDRCONF before open to prevent IPv6 addrconf (Maxim Levitsky) [RHEL-114930]
+- net: mana: Record doorbell physical address in PF mode (Maxim Levitsky) [RHEL-114930]
+- net: mana: Add support for Multi Vports on Bare metal (Maxim Levitsky) [RHEL-114930]
+- net: mana: Switch to page pool for jumbo frames (Maxim Levitsky) [RHEL-114930]
+- net: mana: Add metadata support for xdp mode (Maxim Levitsky) [RHEL-114930]
+- RDMA/mana_ib: Handle net event for pointing to the current netdev (Maxim Levitsky) [RHEL-114930]
+- net: mana: Change the function signature of mana_get_primary_netdev_rcu (Maxim Levitsky) [RHEL-114930]
+- RDMA/mana_ib: Ensure variable err is initialized (Maxim Levitsky) [RHEL-114930]
+- net: mana: Add debug logs in MANA network driver (Maxim Levitsky) [RHEL-114930]
+- hv_netvsc: Use VF's tso_max_size value when data path is VF (Maxim Levitsky) [RHEL-114930]
+- net: mana: Allow tso_max_size to go up-to GSO_MAX_SIZE (Maxim Levitsky) [RHEL-114930]
+- RDMA/mana_ib: request error CQEs when supported (Maxim Levitsky) [RHEL-114930]
+- RDMA/mana_ib: Query feature_flags bitmask from FW (Maxim Levitsky) [RHEL-114930]
+- net: mana: Support holes in device list reply msg (Maxim Levitsky) [RHEL-114930]
+- RDMA/mana_ib: Allocate PAGE aligned doorbell index (Maxim Levitsky) [RHEL-114930]
+- hv_netvsc: Link queues to NAPIs (Maxim Levitsky) [RHEL-114930]
+- sctp: linearize cloned gso packets in sctp_rcv (CKI Backport Bot) [RHEL-113339] {CVE-2025-38718}
+- nfsd: don't ignore the return code of svc_proc_register() (Olga Kornievskaia) [RHEL-93626] {CVE-2025-22026}
+- smb: client: fix session setup against servers that require SPN (Paulo Alcantara) [RHEL-107110]
+- smb: client: allow parsing zero-length AV pairs (Paulo Alcantara) [RHEL-107110]
+- RDMA/cxgb4: Notify rdma stack for IB_EVENT_QP_LAST_WQE_REACHED event (CKI Backport Bot) [RHEL-100817]
 
-* Wed Sep 24 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.34.1.el10_0]
-- Bump internal version to 55.34.1
-- sunrpc: fix handling of server side tls alerts - CVE-2025-38566
-- i40e: When removing VF MAC filters, only check PF-set MAC
-- usb: dwc3: gadget: check that event count does not exceed event buffer length - CVE-2025-37810
+* Wed Sep 24 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-55.37.1.el10_0]
+- selftests: tls: add tests for zero-length records (Sabrina Dubroca) [RHEL-114331] {CVE-2025-39682}
+- tls: fix handling of zero-length records on the rx_list (Sabrina Dubroca) [RHEL-114331] {CVE-2025-39682}
+- fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass (Audra Mitchell) [RHEL-110313] {CVE-2025-38396}
 
-* Thu Sep 18 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.33.1.el10_0]
-- Fix kABI for net_namespace.h
-- Bump internal version to 55.33.1
-- xfrm: interface: fix use-after-free after changing collect_md xfrm interface - CVE-2025-38500
-- idpf: convert control queue mutex to a spinlock - CVE-2025-38392
-- eth: bnxt: fix missing ring index trim on error path - CVE-2025-37873
-- tcp: Correct signedness in skb remaining space calculation - CVE-2025-38463
-- ipv6: mcast: Delay put pmc->idev in mld_del_delrec() - CVE-2025-38550
-- redhat: selftests/bpf: Add cpuv4 variant
-- i40e: report VF tx_dropped with tx_errors instead of tx_discards - CVE-2025-38200
-- use uniform permission checks for all mount propagation changes - CVE-2025-38498
-- do_change_type(): refuse to operate on unmounted/not ours mounts - CVE-2025-38498
-- ublk: make sure ubq->canceling is set when queue is frozen - CVE-2025-22068
-- net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM
-- scsi: lpfc: Use memcpy() for BIOS version - CVE-2025-38332
-- net: introduce per netns packet chains
+* Mon Sep 22 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-55.36.1.el10_0]
+- io_uring/futex: ensure io_futex_wait() cleans up properly on failure (CKI Backport Bot) [RHEL-114341] {CVE-2025-39698}
+- ice: use fixed adapter index for E825C embedded devices (CKI Backport Bot) [RHEL-111792]
+- ice: use DSN instead of PCI BDF for ice_adapter index (CKI Backport Bot) [RHEL-111792]
+- tcp: drop secpath at the same time as we currently drop dst (Sabrina Dubroca) [RHEL-82133]
 
-* Fri Sep 12 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.32.1.el10_0]
-- Bump internal version to 55.32.1
-- posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del() - CVE-2025-38352
+* Fri Sep 19 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-55.35.1.el10_0]
+- cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code (Paulo Alcantara) [RHEL-111177]
+- cifs: Fix the smbd_response slab to allow usercopy (Paulo Alcantara) [RHEL-111177] {CVE-2025-38523}
+- smb: client: let smbd_post_send_iter() respect the peers max_send_size and transmit all data (Paulo Alcantara) [RHEL-111177]
+- smb: client: fix max_sge overflow in smb_extract_folioq_to_rdma() (Paulo Alcantara) [RHEL-111177]
+- smb: client: make use of common smbdirect_socket_parameters (Paulo Alcantara) [RHEL-111177]
+- smb: smbdirect: introduce smbdirect_socket_parameters (Paulo Alcantara) [RHEL-111177]
+- smb: client: make use of common smbdirect_socket (Paulo Alcantara) [RHEL-111177]
+- smb: smbdirect: add smbdirect_socket.h (Paulo Alcantara) [RHEL-111177]
+- smb: client: make use of common smbdirect.h (Paulo Alcantara) [RHEL-111177]
+- smb: smbdirect: add smbdirect.h with public structures (Paulo Alcantara) [RHEL-111177]
+- smb: client: make use of common smbdirect_pdu.h (Paulo Alcantara) [RHEL-111177]
+- smb: smbdirect: add smbdirect_pdu.h with protocol definitions (Paulo Alcantara) [RHEL-111177]
+- s390/sclp: Fix SCCB present check (CKI Backport Bot) [RHEL-113561] {CVE-2025-39694}
+- net: stmmac: fix TSO DMA API usage causing oops (Izabela Bakollari) [RHEL-105352]
+- smb: client: fix use-after-free in cifs_oplock_break (CKI Backport Bot) [RHEL-111198] {CVE-2025-38527}
 
-* Wed Sep 10 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.31.1.el10_0]
-- Adjust sched/fair: Adhere to place_entity() constraints
-- Bump internal version to 55.31.1
-- sched/fair: Adhere to place_entity() constraints
-- sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE
-- sched/fair: Fix EEVDF entity placement bug causing scheduling lag
-- sched/fair: optimize the PLACE_LAG when se->vlag is zero
-- net/sched: ets: use old 'nbands' while purging unused classes - CVE-2025-38350
-- net/sched: Always pass notifications when child class becomes empty - CVE-2025-38350
-- net_sched: ets: fix a race in ets_qdisc_change() - CVE-2025-38107
-- sch_htb: make htb_deactivate() idempotent - CVE-2025-37953
-- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() - CVE-2025-37798
-- sch_qfq: make qfq_qlen_notify() idempotent - CVE-2025-38350
-- sch_drr: make drr_qlen_notify() idempotent - CVE-2025-38350
-- sch_htb: make htb_qlen_notify() idempotent - CVE-2025-37932
-- drm/vkms: Fix use after free and double free on init error - CVE-2025-22097
-- Revert "cxl/acpi: Fix load failures due to single window creation failure"
-- udmabuf: fix a buf size overflow issue during udmabuf creation - CVE-2025-37803
-- drm/framebuffer: Acquire internal references on GEM handles - CVE-2025-38449
-- drm/gem: Acquire references on GEM handles for framebuffers - CVE-2025-38449
-- nvme/ioctl: don't warn on vectorized uring_cmd with fixed buffer
-- nvme-ioctl: fix leaked requests on mapping error
+* Mon Sep 15 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-55.34.1.el10_0]
+- sunrpc: fix handling of server side tls alerts (Olga Kornievskaia) [RHEL-111073] {CVE-2025-38566}
+- i40e: When removing VF MAC filters, only check PF-set MAC (CKI Backport Bot) [RHEL-109771]
+- usb: dwc3: gadget: check that event count does not exceed event buffer length (CKI Backport Bot) [RHEL-107659] {CVE-2025-37810}
 
-* Wed Sep 03 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.30.1.el10_0]
-- tipc: Fix use-after-free in tipc_conn_close(). - CVE-2025-38464
-- Bump internal version to 55.30.1
-- net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too - CVE-2025-37823
-- s390/pci: Fix zpci_bus_is_isolated_vf() for non-VFs
-- s390/pci: Fix handling of isolated VFs
-- s390/pci: Pull search for parent PF out of zpci_iov_setup_virtfn()
-- s390/pci: Fix SR-IOV for PFs initially in standby
-- RDMA/iwcm: Fix use-after-free of work objects after cm_id destruction - CVE-2025-38211
-- udp: Fix memory accounting leak. - CVE-2025-22058
-- udp: Fix multiple wraparounds of sk->sk_rmem_alloc.
-- ext4: only dirty folios when data journaling regular files - CVE-2025-38220
-- vsock: Fix transport_* TOCTOU - CVE-2025-38461
-- netfilter: nf_conntrack: fix crash due to removal of uninitialised entry - CVE-2025-38472
+* Tue Sep 09 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.33.1.el10_0]
+- xfrm: interface: fix use-after-free after changing collect_md xfrm interface (CKI Backport Bot) [RHEL-109530] {CVE-2025-38500}
+- idpf: convert control queue mutex to a spinlock (CKI Backport Bot) [RHEL-106061] {CVE-2025-38392}
+- eth: bnxt: fix missing ring index trim on error path (CKI Backport Bot) [RHEL-104564] {CVE-2025-37873}
+- tcp: Correct signedness in skb remaining space calculation (CKI Backport Bot) [RHEL-107844] {CVE-2025-38463}
+- ipv6: mcast: Delay put pmc->idev in mld_del_delrec() (CKI Backport Bot) [RHEL-111154] {CVE-2025-38550}
+- redhat: selftests/bpf: Add cpuv4 variant (Viktor Malik) [RHEL-109928]
+- i40e: report VF tx_dropped with tx_errors instead of tx_discards (Dennis Chen) [RHEL-105138] {CVE-2025-38200}
+- use uniform permission checks for all mount propagation changes (Ian Kent) [RHEL-107306] {CVE-2025-38498}
+- do_change_type(): refuse to operate on unmounted/not ours mounts (Ian Kent) [RHEL-107306] {CVE-2025-38498}
+- ublk: make sure ubq->canceling is set when queue is frozen (Ming Lei) [RHEL-99437] {CVE-2025-22068}
+- net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM JIRA: https://issues.redhat.com/browse/RHEL-109821 Y-JIRA: https://issues.redhat.com/browse/RHEL-79173 (Jakub Ramaseuski)
+- scsi: lpfc: Use memcpy() for BIOS version (Ewan D. Milne) [RHEL-105936] {CVE-2025-38332}
+- net: introduce per netns packet chains (Paolo Abeni) [RHEL-88923]
 
-* Tue Aug 26 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.29.1.el10_0]
-- Bump internal version to 55.29.1
-- ice: fix eswitch code memory leak in reset scenario - CVE-2025-38417
-- net/sched: Abort __tc_modify_qdisc if parent class does not exist
-- net_sched: ets: Fix double list add in class with netem as child qdisc - CVE-2025-37914
-- sch_ets: make est_qlen_notify() idempotent
-- i40e: fix MMIO write access to an invalid page in i40e_clear_hw - CVE-2025-38200
-- cxgb4: use port number to set mac addr
+* Tue Sep 09 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.32.1.el10_0]
+- posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del() (CKI Backport Bot) [RHEL-112784] {CVE-2025-38352}
 
-* Wed Aug 20 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.28.1.el10_0]
-- Conflict with xdp-tools < 1.5.4
-- Bump internal version to 55.28.1
-- tls: always refresh the queue when reading sock - CVE-2025-38471
-- selftests: net: bpf_offload: add 'libbpf_global' to ignored maps
-- selftests: net: fix error message in bpf_offload
-- selftests: net: add more info to error in bpf_offload
-- net: fix udp gso skb_segment after pull from frag_list - CVE-2025-38124
-- powerpc/pseries/vas: Add close() callback in vas_vm_ops struct
-- s390/pci: Serialize device addition and removal
-- s390/pci: Allow re-add of a reserved but not yet removed device
-- s390/pci: Prevent self deletion in disable_slot()
-- s390/pci: Remove redundant bus removal and disable from zpci_release_device()
-- s390/pci: Fix duplicate pci_dev_put() in disable_slot() when PF has child VFs
-- s390/pci: Fix missing check for zpci_create_device() error return
-- s390/pci: Fix potential double remove of hotplug slot
-- s390/topology: Improve topology detection
-- Bluetooth: hci_core: Fix use-after-free in vhci_flush() - CVE-2025-38250
-- selftests/bpf: Adjust data size to have ETH_HLEN - CVE-2025-21867
-- bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type() - CVE-2025-21867
-- i2c/designware: Fix an initialization issue - CVE-2025-38380
+* Sun Aug 31 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.31.1.el10_0]
+- sched/fair: Adhere to place_entity() constraints (Phil Auld) [RHEL-91404]
+- sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE (Phil Auld) [RHEL-91404]
+- sched/fair: Fix EEVDF entity placement bug causing scheduling lag (Phil Auld) [RHEL-91404]
+- sched/fair: optimize the PLACE_LAG when se->vlag is zero (Phil Auld) [RHEL-91404]
+- net/sched: ets: use old 'nbands' while purging unused classes (Ivan Vecera) [RHEL-107544] {CVE-2025-38350}
+- net/sched: Always pass notifications when child class becomes empty (Ivan Vecera) [RHEL-93365] {CVE-2025-38350}
+- net_sched: ets: fix a race in ets_qdisc_change() (Ivan Vecera) [RHEL-107544] {CVE-2025-38107}
+- sch_htb: make htb_deactivate() idempotent (Ivan Vecera) [RHEL-93365] {CVE-2025-37953}
+- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() (Ivan Vecera) [RHEL-93365] {CVE-2025-37798}
+- sch_qfq: make qfq_qlen_notify() idempotent (Ivan Vecera) [RHEL-93365] {CVE-2025-38350}
+- sch_drr: make drr_qlen_notify() idempotent (Ivan Vecera) [RHEL-93365] {CVE-2025-38350}
+- sch_htb: make htb_qlen_notify() idempotent (Ivan Vecera) [RHEL-93365] {CVE-2025-37932}
+- drm/vkms: Fix use after free and double free on init error (Jocelyn Falempe) [RHEL-99432] {CVE-2025-22097}
+- Revert "cxl/acpi: Fix load failures due to single window creation failure" (John W. Linville) [RHEL-85055]
+- udmabuf: fix a buf size overflow issue during udmabuf creation (Lyude Paul) [RHEL-99760] {CVE-2025-37803}
+- drm/framebuffer: Acquire internal references on GEM handles (Mika Penttilä) [RHEL-106710] {CVE-2025-38449}
+- drm/gem: Acquire references on GEM handles for framebuffers (Mika Penttilä) [RHEL-106710] {CVE-2025-38449}
+- nvme/ioctl: don't warn on vectorized uring_cmd with fixed buffer (Maurizio Lombardi) [RHEL-109753]
+- nvme-ioctl: fix leaked requests on mapping error (Maurizio Lombardi) [RHEL-109753]
 
-* Thu Aug 14 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.27.1.el10_0]
-- Bump internal version to 55.27.1
-- Fix includes for mm: fix copy_vma() error handling for hugetlb mappings
-- Revert sch_htb: make htb_qlen_notify() idempotent
-- Revert sch_drr: make drr_qlen_notify() idempotent
-- Revert sch_qfq: make qfq_qlen_notify() idempotent
-- Revert codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
-- Revert sch_htb: make htb_deactivate() idempotent
-- Revert net/sched: Always pass notifications when child class becomes empty
-- wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds - CVE-2025-38159
-- Documentation: Fix pci=config_acs= example
-- PCI/ACS: Fix 'pci=config_acs=' parameter
-- Revert "smb: client: fix TCP timers deadlock after rmmod" - CVE-2025-22077
-- Revert smb: client: Fix netns refcount imbalance causing leaks and use-after-free 
-- smb: client: Fix netns refcount imbalance causing leaks and use-after-free
-- wifi: ath12k: fix invalid access to memory - CVE-2025-38292
-- x86/CPU/AMD: Terminate the erratum_1386_microcode array - CVE-2024-56721
-- crypto: algif_hash - fix double free in hash_accept - CVE-2025-38079
-- net/sched: Always pass notifications when child class becomes empty - CVE-2025-38350
-- sch_htb: make htb_deactivate() idempotent - CVE-2025-38350
-- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() - CVE-2025-38350
-- sch_qfq: make qfq_qlen_notify() idempotent - CVE-2025-38350
-- sch_drr: make drr_qlen_notify() idempotent - CVE-2025-38350
-- sch_htb: make htb_qlen_notify() idempotent - CVE-2025-38350
-- mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race - CVE-2025-38085
-- mm/hugetlb: unshare page tables during VMA split, not before - CVE-2025-38084
-- tools/testing/vma: add missing function stub
-- mm: fix copy_vma() error handling for hugetlb mappings
-- PCI: Use downstream bridges for distributing resources
-- PCI/pwrctrl: Cancel outstanding rescan work when unregistering - CVE-2025-38137
-- bnxt_en: Skip MAC loopback selftest if it is unsupported by FW
-- bnxt_en: Skip PHY loopback ethtool selftest if unsupported by FW
+* Sun Aug 24 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.30.1.el10_0]
+- net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too (CKI Backport Bot) [RHEL-107641] {CVE-2025-37823}
+- s390/pci: Fix zpci_bus_is_isolated_vf() for non-VFs (Mete Durlu) [RHEL-95537]
+- s390/pci: Fix handling of isolated VFs (CKI Backport Bot) [RHEL-84462]
+- s390/pci: Pull search for parent PF out of zpci_iov_setup_virtfn() (CKI Backport Bot) [RHEL-84462]
+- s390/pci: Fix SR-IOV for PFs initially in standby (CKI Backport Bot) [RHEL-84462]
+- RDMA/iwcm: Fix use-after-free of work objects after cm_id destruction (CKI Backport Bot) [RHEL-104285] {CVE-2025-38211}
+- udp: Fix memory accounting leak. (CKI Backport Bot) [RHEL-104102] {CVE-2025-22058}
+- udp: Fix multiple wraparounds of sk->sk_rmem_alloc. (Xin Long) [RHEL-104102]
+- ext4: only dirty folios when data journaling regular files (CKI Backport Bot) [RHEL-106815] {CVE-2025-38220}
+- tipc: Fix use-after-free in tipc_conn_close(). (CKI Backport Bot) [RHEL-106660] {CVE-2025-38464}
+- vsock: Fix transport_* TOCTOU (CKI Backport Bot) [RHEL-106015] {CVE-2025-38461}
+- netfilter: nf_conntrack: fix crash due to removal of uninitialised entry (CKI Backport Bot) [RHEL-106442] {CVE-2025-38472}
 
-* Thu Aug 07 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.25.1.el10_0]
-- Bump internal version to 55.25.1
-- net_sched: hfsc: Address reentrant enqueue adding class to eltree twice - CVE-2025-38001
-- sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue() - CVE-2025-38000
-- net_sched: hfsc: Fix a UAF vulnerability in class with netem as child qdisc - CVE-2025-37890
-- sch_hfsc: make hfsc_qlen_notify() idempotent
-- RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem - CVE-2025-38022
-- RDMA/core: Fix use-after-free when rename device name - CVE-2025-22085
-- nvme-tcp: sanitize request list handling - CVE-2025-38264
-- net: tipc: fix refcount warning in tipc_aead_encrypt
-- net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done - CVE-2025-38052
-- tcp: adjust rcvq_space after updating scaling ratio
-- ext4: avoid journaling sb update on error if journal is destroying - CVE-2025-22113
-- ext4: define ext4_journal_destroy wrapper - CVE-2025-22113
-- HID: intel-ish-hid: Fix use-after-free issue in ishtp_hid_remove() - CVE-2025-21928
-- HID: intel-ish-hid: Fix use-after-free issue in hid_ishtp_cl_remove() - CVE-2025-21929
-- usb: hub: Fix flushing of delayed work used for post resume purposes
-- usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm
-- usb: hub: fix detection of high tier USB3 devices behind suspended hubs
-- net/sched: fix use-after-free in taprio_dev_notifier - CVE-2025-38087
-- net: ch9200: fix uninitialised access during mii_nway_restart - CVE-2025-38086
-- padata: avoid UAF for reorder_work - CVE-2025-21726
-- padata: fix UAF in padata_reorder - CVE-2025-21727
-- padata: add pd get/put refcnt helper
-- padata: fix sysfs store callback check
-- padata: Clean up in padata_do_multithreaded()
-- memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove -CVE-2025-22020
+* Sun Aug 17 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.29.1.el10_0]
+- ice: fix eswitch code memory leak in reset scenario (CKI Backport Bot) [RHEL-108153] {CVE-2025-38417}
+- net/sched: Abort __tc_modify_qdisc if parent class does not exist (CKI Backport Bot) [RHEL-107896]
+- net_sched: ets: Fix double list add in class with netem as child qdisc (CKI Backport Bot) [RHEL-104727] {CVE-2025-37914}
+- sch_ets: make est_qlen_notify() idempotent (Ivan Vecera) [RHEL-104727]
+- i40e: fix MMIO write access to an invalid page in i40e_clear_hw (Dennis Chen) [RHEL-106047] {CVE-2025-38200}
+- cxgb4: use port number to set mac addr (CKI Backport Bot) [RHEL-79668]
 
-* Tue Jul 29 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.24.1.el10_0]
-- Bump internal version to 55.24.1
-- net_sched: hfsc: Fix a UAF vulnerability in class handling - CVE-2025-37797
-- ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all() - CVE-2025-22121
-- ext4: introduce ITAIL helper - CVE-2025-22121
-- net/mdiobus: Fix potential out-of-bounds clause 45 read/write access - CVE-2025-38110
-- powerpc/vas: Return -EINVAL if the offset is non-zero in mmap() - CVE-2025-38088
-- powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap - CVE-2025-38088
-- net/mlx5: Fill out devlink dev info only for PFs
-- RDMA/mlx5: Fix page_size variable overflow - CVE-2025-22091
-- ACPI: CPPC: Fix _CPC register setting issue
+* Mon Aug 11 2025 Julio Faracco <jfaracco@redhat.com> [6.12.0-55.28.1.el10_0]
+- tls: always refresh the queue when reading sock (CKI Backport Bot) [RHEL-106091] {CVE-2025-38471}
+- selftests: net: bpf_offload: add 'libbpf_global' to ignored maps (Hangbin Liu) [RHEL-105901]
+- selftests: net: fix error message in bpf_offload (Hangbin Liu) [RHEL-105901]
+- selftests: net: add more info to error in bpf_offload (Hangbin Liu) [RHEL-105901]
+- net: fix udp gso skb_segment after pull from frag_list (Guillaume Nault) [RHEL-103035] {CVE-2025-38124}
+- powerpc/pseries/vas: Add close() callback in vas_vm_ops struct (Mamatha Inamdar) [RHEL-87181]
+- s390/pci: Serialize device addition and removal (CKI Backport Bot) [RHEL-100158]
+- s390/pci: Allow re-add of a reserved but not yet removed device (CKI Backport Bot) [RHEL-100158]
+- s390/pci: Prevent self deletion in disable_slot() (CKI Backport Bot) [RHEL-100158]
+- s390/pci: Remove redundant bus removal and disable from zpci_release_device() (CKI Backport Bot) [RHEL-100158]
+- s390/pci: Fix duplicate pci_dev_put() in disable_slot() when PF has child VFs (CKI Backport Bot) [RHEL-100158]
+- s390/pci: Fix missing check for zpci_create_device() error return (CKI Backport Bot) [RHEL-100158]
+- s390/pci: Fix potential double remove of hotplug slot (CKI Backport Bot) [RHEL-100158]
+- s390/topology: Improve topology detection (CKI Backport Bot) [RHEL-92096]
+- Bluetooth: hci_core: Fix use-after-free in vhci_flush() (CKI Backport Bot) [RHEL-103270] {CVE-2025-38250}
+- redhat: Mark kernel incompatible with xdp-tools<1.5.4 (Felix Maurer) [RHEL-100447]
+- selftests/bpf: Adjust data size to have ETH_HLEN (Felix Maurer) [RHEL-100447] {CVE-2025-21867}
+- bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type() (Felix Maurer) [RHEL-100447] {CVE-2025-21867}
+- i2c/designware: Fix an initialization issue (CKI Backport Bot) [RHEL-106626] {CVE-2025-38380}
 
-* Tue Jul 22 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.22.1.el10_0]
-- Bump internal version to 55.22.1
-- mm/huge_memory: fix dereferencing invalid pmd migration entry - CVE-2025-37958
-- i2c: tegra: check msg length in SMBUS block read
-- s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
-- sunrpc: handle SVC_GARBAGE during svc auth processing as auth error - CVE-2025-38089
-- media: uvcvideo: Announce the user our deprecation intentions
-- media: uvcvideo: Allow changing noparam on the fly
-- media: uvcvideo: Invert default value for nodrop module param
-- media: uvcvideo: Propagate buf->error to userspace
-- media: uvcvideo: Flush the control cache when we get an event
-- media: uvcvideo: Annotate lock requirements for uvc_ctrl_set
-- media: uvcvideo: Remove dangling pointers - CVE-2024-58002
-- media: uvcvideo: Remove redundant NULL assignment
-- media: uvcvideo: Only save async fh if success
-- media: uvcvideo: Fix double free in error path - CVE-2024-57980
-- wifi: iwlwifi: limit printed string from FW file - CVE-2025-21905
+* Fri Aug 08 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.27.1.el10_0]
+- Revert "sch_htb: make htb_qlen_notify() idempotent" (Jan Stancek) [RHEL-108141]
+- Revert "sch_drr: make drr_qlen_notify() idempotent" (Jan Stancek) [RHEL-108141]
+- Revert "sch_qfq: make qfq_qlen_notify() idempotent" (Jan Stancek) [RHEL-108141]
+- Revert "codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()" (Jan Stancek) [RHEL-108141]
+- Revert "sch_htb: make htb_deactivate() idempotent" (Jan Stancek) [RHEL-108141]
+- Revert "net/sched: Always pass notifications when child class becomes empty" (Jan Stancek) [RHEL-108141]
 
-* Tue Jul 15 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.21.1.el10_0]
-- Bump internal version to 55.21.1
-- ice, irdma: fix an off by one in error handling code
-- irdma: free iwdev->rf after removing MSI-X
-- ice: Fix signedness bug in ice_init_interrupt_scheme()
-- ice: init flow director before RDMA
-- ice: simplify VF MSI-X managing
-- ice: enable_rdma devlink param
-- ice: treat dyn_allowed only as suggestion
-- ice, irdma: move interrupts code to irdma
-- ice: get rid of num_lan_msix field
-- ice: remove splitting MSI-X between features
-- ice: devlink PF MSI-X max and min parameter
-- ice: ice_probe: init ice_adapter after HW init
-- ice: minor: rename goto labels from err to unroll
-- ice: split ice_init_hw() out from ice_init_dev()
-- ice: c827: move wait for FW to ice_init_hw()
-- exfat: fix random stack corruption after get_block - CVE-2025-22036
+* Sun Aug 03 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.26.1.el10_0]
+- wifi: rtw88: fix the 'para' buffer size to avoid reading out of bounds (CKI Backport Bot) [RHEL-103169] {CVE-2025-38159}
+- Documentation: Fix pci=config_acs= example (Steve Dunnagan) [RHEL-102663]
+- PCI/ACS: Fix 'pci=config_acs=' parameter (Steve Dunnagan) [RHEL-102663]
+- Revert "smb: client: fix TCP timers deadlock after rmmod" (Paulo Alcantara) [RHEL-106417] {CVE-2025-22077}
+- Revert "smb: client: Fix netns refcount imbalance causing leaks and use-after-free" (Paulo Alcantara) [RHEL-106417]
+- smb: client: Fix netns refcount imbalance causing leaks and use-after-free (Paulo Alcantara) [RHEL-106417]
+- wifi: ath12k: fix invalid access to memory (CKI Backport Bot) [RHEL-103228] {CVE-2025-38292}
+- x86/CPU/AMD: Terminate the erratum_1386_microcode array (CKI Backport Bot) [RHEL-104884] {CVE-2024-56721}
+- crypto: algif_hash - fix double free in hash_accept (CKI Backport Bot) [RHEL-102247] {CVE-2025-38079}
+- net/sched: Always pass notifications when child class becomes empty (CKI Backport Bot) [RHEL-93365] {CVE-2025-38350}
+- sch_htb: make htb_deactivate() idempotent (CKI Backport Bot) [RHEL-93365] {CVE-2025-38350}
+- codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog() (CKI Backport Bot) [RHEL-93365] {CVE-2025-38350}
+- sch_qfq: make qfq_qlen_notify() idempotent (CKI Backport Bot) [RHEL-93365] {CVE-2025-38350}
+- sch_drr: make drr_qlen_notify() idempotent (CKI Backport Bot) [RHEL-93365] {CVE-2025-38350}
+- sch_htb: make htb_qlen_notify() idempotent (CKI Backport Bot) [RHEL-93365] {CVE-2025-38350}
+- redhat: update BUILD_TARGET to use rhel-10.0-z-test-pesign (Jan Stancek)
+- mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race (Rafael Aquini) [RHEL-101263] {CVE-2025-38085}
+- mm/hugetlb: unshare page tables during VMA split, not before (Rafael Aquini) [RHEL-101298] {CVE-2025-38084}
+- tools/testing/vma: add missing function stub (Rafael Aquini) [RHEL-101298]
+- mm: fix copy_vma() error handling for hugetlb mappings (Rafael Aquini) [RHEL-101298]
+- PCI: Use downstream bridges for distributing resources (Jennifer Berringer) [RHEL-102664]
+- PCI/pwrctrl: Cancel outstanding rescan work when unregistering (Myron Stowe) [RHEL-103212] {CVE-2025-38137}
+- bnxt_en: Skip MAC loopback selftest if it is unsupported by FW (CKI Backport Bot) [RHEL-82538]
+- bnxt_en: Skip PHY loopback ethtool selftest if unsupported by FW (CKI Backport Bot) [RHEL-82538]
 
-* Mon Jul 07 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.20.1.el10_0]
-- Bump internal version to 55.20.1
-- Adjust page_pool: Track DMA-mapped pages and unmap them when destroying the pool
-- Adjust dm mpath: Interface for explicit probing of active paths
-- x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes - CVE-2025-21991
-- page_pool: Track DMA-mapped pages and unmap them when destroying the pool
-- page_pool: Move pp_magic check into helper functions
-- scsi: storvsc: Explicitly set max_segment_size to UINT_MAX
-- vmxnet3: Fix malformed packet sizing in vmxnet3_process_xdp - CVE-2025-37799
-- dm mpath: replace spin_lock_irqsave with spin_lock_irq
-- dm-mpath: Don't grab work_mutex while probing paths
-- dm mpath: Interface for explicit probing of active paths
-- dm: Allow .prepare_ioctl to handle ioctls directly
-- ipv6: mcast: extend RCU protection in igmp6_send() - CVE-2025-21759
- 
-* Tue Jul 01 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.19.1.el10_0]
-- Clean git history at setup stage
-- Prevent kABI check error for BLK_CGROUP_PUNT_BIO
-- Bump internal version to 55.19.1
-- ibmvnic: Use kernel helpers for hex dumps
-- eth: bnxt: fix truesize for mb-xdp-pass case
-- ice: Avoid setting default Rx VSI twice in switchdev setup
-- ice: Fix deinitializing VF in error path
-- ice: add E830 HW VF mailbox message limit support
-- block/Kconfig: Allow selecting BLK_CGROUP_PUNT_BIO
+* Mon Jul 28 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.25.1.el10_0]
+- net_sched: hfsc: Address reentrant enqueue adding class to eltree twice (Ivan Vecera) [RHEL-97533] {CVE-2025-38001}
+- sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue() (Davide Caratti) [RHEL-97533] {CVE-2025-38000}
+- net_sched: hfsc: Fix a UAF vulnerability in class with netem as child qdisc (Ivan Vecera) [RHEL-97533] {CVE-2025-37890}
+- sch_hfsc: make hfsc_qlen_notify() idempotent (Ivan Vecera) [RHEL-97533]
+- RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem (Michal Schmidt) [RHEL-99060] {CVE-2025-38022}
+- RDMA/core: Fix use-after-free when rename device name (Michal Schmidt) [RHEL-99060] {CVE-2025-22085}
+- nvme-tcp: sanitize request list handling (CKI Backport Bot) [RHEL-103235] {CVE-2025-38264}
+- net: tipc: fix refcount warning in tipc_aead_encrypt (Xin Long) [RHEL-103097]
+- net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done (CKI Backport Bot) [RHEL-103097] {CVE-2025-38052}
+- tcp: adjust rcvq_space after updating scaling ratio (Guillaume Nault) [RHEL-101775]
+- ext4: avoid journaling sb update on error if journal is destroying (CKI Backport Bot) [RHEL-93608] {CVE-2025-22113}
+- ext4: define ext4_journal_destroy wrapper (CKI Backport Bot) [RHEL-93608] {CVE-2025-22113}
+- HID: intel-ish-hid: Fix use-after-free issue in ishtp_hid_remove() (CKI Backport Bot) [RHEL-98862] {CVE-2025-21928}
+- HID: intel-ish-hid: Fix use-after-free issue in hid_ishtp_cl_remove() (CKI Backport Bot) [RHEL-98886] {CVE-2025-21929}
+- usb: hub: Fix flushing of delayed work used for post resume purposes (Desnes Nunes) [RHEL-104681]
+- usb: hub: Fix flushing and scheduling of delayed work that tunes runtime pm (Desnes Nunes) [RHEL-104681]
+- usb: hub: fix detection of high tier USB3 devices behind suspended hubs (Desnes Nunes) [RHEL-104681]
+- net/sched: fix use-after-free in taprio_dev_notifier (CKI Backport Bot) [RHEL-101322] {CVE-2025-38087}
+- net: ch9200: fix uninitialised access during mii_nway_restart (CKI Backport Bot) [RHEL-101224] {CVE-2025-38086}
+- padata: avoid UAF for reorder_work (Waiman Long) [RHEL-97040] {CVE-2025-21726}
+- padata: fix UAF in padata_reorder (Waiman Long) [RHEL-97040] {CVE-2025-21727}
+- padata: add pd get/put refcnt helper (Waiman Long) [RHEL-97040]
+- padata: fix sysfs store callback check (Waiman Long) [RHEL-97040]
+- padata: Clean up in padata_do_multithreaded() (Waiman Long) [RHEL-97040]
+- memstick: rtsx_usb_ms: Fix slab-use-after-free in rtsx_usb_ms_drv_remove (CKI Backport Bot) [RHEL-99041] {CVE-2025-22020}
 
-* Tue Jun 24 2025 Alex Burmashev <alexander.burmashev@oracle.com> [6.12.0-55.18.1.el10_0]
-- Import config changes from Centos Stream kernel kernel-6.12.0-77.el10
-- Bump internal version to 55.18.1
-- drm/i915/dp_mst: Handle error during DSC BW overhead/slice calculation
-- sched/rt: Fix race in push_rt_task MIME-Version: 1.0 Content-Type: text/plain; charset=UTF-8 Content-Transfer-Encoding: 8bit
-- mm/vmalloc: combine all TLB flush operations of KASAN shadow virtual address into one operation - upstream CVE-2024-56559
-- block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone
-- proc: fix UAF in proc_get_inode() CVE-2025-21999
-- ext4: ignore xattrs past end CVE-2025-37738
-- nvme-fabrics: handle zero MAXCMD without closing the connection
-- ext4: fix off-by-one error in do_split CVE-2025-23150
-- r8169: disable RTL8126 ZRX-DC timeout
-- r8169: enable RTL8168H/RTL8168EP/RTL8168FP ASPM support
-- vmxnet3: unregister xdp rxq info in the reset path
-- block: fix 'kmem_cache of name 'bio-108' already exists'
-- ice: implement low latency PHY timer updates
-- ice: check low latency PHY timer update firmware capability
-- ice: add lock to protect low latency interface
-- ice: rename TS_LL_READ* macros to REG_LL_PROXY_H_*
-- ice: use read_poll_timeout_atomic in ice_read_phy_tstamp_ll_e810
-- cifs: Fix integer overflow while processing acdirmax mount option CVE-2025-21963
-- smb: client: fix UAF in decryption with multichannel CVE-2025-37750
-- sched/fair: Fix CPU bandwidth limit bypass during CPU hotplug
-- keys: Fix UAF in key_put() CVE-2025-21893
-- ndisc: use RCU protection in ndisc_alloc_skb() CVE-2025-21764
-- ipv6: use RCU protection in ip6_default_advmss() CVE-2025-21765
-- net: add dev_net_rcu() helper CVE-2025-21765
-- vfio/pci: Align huge faults to order
-- Bluetooth: L2CAP: Fix corrupted list in hci_chan_del CVE-2025-21969
-- Bluetooth: L2CAP: Fix slab-use-after-free Read in l2cap_send_cmd CVE-2025-21969
-- cifs: Fix integer overflow while processing closetimeo mount option CVE-2025-21962
-- ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up CVE-2025-21887
-- wifi: cfg80211: init wiphy_work before allocating rfkill fails CVE-2025-21979
-- wifi: cfg80211: cancel wiphy_work before freeing wiphy CVE-2025-21979
-- net: fix geneve_opt length integer overflow CVE-2025-22055
-- vsock/virtio: discard packets if the transport changes CVE-2025-21669
-- net: gso: fix ownership in __udp_gso_segment CVE-2025-21926
-- xsk: fix an integer overflow in xp_create_and_assign_umem() CVE-2025-21997
-- wifi: ath12k: Fix invalid data access in ath12k_dp_rx_h_undecap_nwifi CVE-2025-37943
-- sched/fair: Fix potential memory corruption in child_cfs_rq_on_list CVE-2025-21919
-- drm/i915/display: Use joined pipes in dsc helpers for slices, bpp - upstream
-- drm/i915/display: Use joined pipes in intel_mode_valid_max_plane_size - upstream
-- drm/i915/display: Use joined pipes in intel_dp_joiner_needs_dsc - upstream
-- drm/i915/display: Simplify intel_joiner_num_pipes and it's usage - upstream
-- drm/i915/display: Check whether platform supports joiner - upstream
-- Revert drm/i915/dp_mst: Handle error during DSC BW overhead/slice
-- Revert drm/i915/dp_mst: Don't require DSC hblank quirk for a non-DSC
-- drm/mgag200: Added support for the new device G200eH5 - upstream
-- cifs: Fix integer overflow while processing acregmax mount option CVE-2025-21964
-- ext4: fix OOB read when checking dotdot dir CVE-2025-37785
-- vsock: Orphan socket after transport release CVE-2025-21756
-- vsock: Keep the binding until socket destruction CVE-2025-21756
-- bpf, vsock: Invoke proto::close on close() CVE-2025-21756
-- idpf: call set_real_num_queues in idpf_open
-- media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format CVE-2024-53104
-- redhat: enable CONFIG_WERROR=y
-- redhat: don't enforce WERROR for 3rd-party OOT kmods
-- redhat: make ENABLE_WERROR enable also KVM_WERROR
-- fortify: Hide run-time copy size from value range tracking
-- resolve_btfids: Fix compiler warnings
-- ixgbe: fix media cage present detection for E610 device
-- ixgbe: fix media type detection for E610 device
-- ixgbevf: Add support for Intel(R) E610 device
-- PCI: Add PCI_VDEVICE_SUB helper macro
-- ixgbe: Enable link management in E610 device
-- ixgbe: Clean up the E610 link management related code
-- ixgbe: Add ixgbe_x540 multiple header inclusion protection
-- ixgbe: Add support for EEPROM dump in E610 device
-- ixgbe: Add support for NVM handling in E610 device
-- ixgbe: Add link management support for E610 device
-- ixgbe: Add support for E610 device capabilities detection
-- ixgbe: Add support for E610 FW Admin Command Interface
-- smb: client: don't retry IO on failed negprotos with soft mounts - pick from MR
-- scsi: core: Fix command pass through retry regression - cherry pick from MR
-- dm-flakey: Fix memory corruption in optional corrupt_bio_byte feature CVE-2025-21966
-- ice: stop storing XDP verdict within ice_rx_buf
-- ice: gather page_count()'s of each frag right before XDP prog call
-- ice: put Rx buffers after being done with current frame
-- iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic() CVE-2025-21993
-- smb: client: fix regression with guest option
-- pnfs/flexfiles: retry getting layout segment for reads
-- nfs: fix incorrect error handling in LOCALIO
-- nfs: probe for LOCALIO when v3 client reconnects to server
-- nfs: probe for LOCALIO when v4 client reconnects to server
-- nfs/localio: remove redundant code and simplify LOCALIO enablement
-- nfs_common: add nfs_localio trace events
-- nfs_common: track all open nfsd_files per LOCALIO nfs_client
-- nfs_common: rename nfslocalio nfs_uuid_lock to nfs_uuids_lock
-- nfsd: nfsd_file_acquire_local no longer returns GC'd nfsd_file
-- nfsd: rename nfsd_serv_ prefixed methods and variables with nfsd_net_
-- nfsd: update percpu_ref to manage references on nfsd_net
-- nfs: cache all open LOCALIO nfsd_file(s) in client
-- nfs_common: move localio_lock to new lock member of nfs_uuid_t
-- nfs_common: rename functions that invalidate LOCALIO nfs_clients
-- nfsd: add nfsd_file_{get,put} to 'nfs_to' nfsd_localio_operations
-- nfs/localio: add direct IO enablement with sync and async IO support
-- ice: ensure periodic output start time is in the future
-- ice: fix PHY Clock Recovery availability check
-- ice: Drop auxbus use for PTP to finalize ice_adapter move
-- ice: Use ice_adapter for PTP shared data instead of auxdev
-- ice: Initial support for E825C hardware in ice_adapter
-- ice: Add ice_get_ctrl_ptp() wrapper to simplify the code
-- ice: Introduce ice_get_phy_model() wrapper
-- ice: Enable 1PPS out from CGU for E825C products
-- ice: Read SDP section from NVM for pin definitions
-- ice: Disable shared pin on E810 on setfunc
-- ice: Cache perout/extts requests and check flags
-- ice: Align E810T GPIO to other products
-- ice: Add SDPs support for E825C
-- ice: Implement ice_ptp_pin_desc
-- nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu() - modified CVE-2025-21927
-- scsi: storvsc: Set correct data length for sending SCSI command without payload
-- smb: client: fix chmod(2) regression with ATTR_READONLY
-- mm/hugetlb: fix hugepage allocation for interleaved memory nodes
-- net: mana: use ethtool string helpers
-- net: mana: cleanup mana struct after debugfs_remove() - upstream
-- net: mana: Cleanup "mana" debugfs dir after cleanup of all children
-- net: mana: Fix irq_contexts memory leak in mana_gd_setup_irqs
-- net: mana: Fix memory leak in mana_gd_setup_irqs
-- net :mana :Request a V2 response version for MANA_QUERY_GF_STAT
-- net: mana: Enable debugfs files for MANA device
-- net: mana: Increase the DEF_RX_BUFFERS_PER_QUEUE to 1024
-- net: mana: Add get_link and get_link_ksettings in ethtool
+* Wed Jul 23 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.24.1.el10_0]
+- net_sched: hfsc: Fix a UAF vulnerability in class handling (CKI Backport Bot) [RHEL-95867] {CVE-2025-37797}
+
+* Sun Jul 20 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.23.1.el10_0]
+- ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all() (CKI Backport Bot) [RHEL-93570] {CVE-2025-22121}
+- ext4: introduce ITAIL helper (CKI Backport Bot) [RHEL-93570] {CVE-2025-22121}
+- net/mdiobus: Fix potential out-of-bounds clause 45 read/write access (CKI Backport Bot) [RHEL-102097] {CVE-2025-38110}
+- powerpc/vas: Return -EINVAL if the offset is non-zero in mmap() (Mamatha Inamdar) [RHEL-101307] {CVE-2025-38088}
+- powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap (Mamatha Inamdar) [RHEL-101307] {CVE-2025-38088}
+- net/mlx5: Fill out devlink dev info only for PFs (CKI Backport Bot) [RHEL-93772]
+- RDMA/mlx5: Fix page_size variable overflow (CKI Backport Bot) [RHEL-99325] {CVE-2025-22091}
+- ACPI: CPPC: Fix _CPC register setting issue (Mark Langsdorf) [RHEL-85317]
+
+* Sun Jul 13 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.22.1.el10_0]
+- mm/huge_memory: fix dereferencing invalid pmd migration entry (Luiz Capitulino) [RHEL-96384] {CVE-2025-37958}
+- i2c: tegra: check msg length in SMBUS block read (Steve Dunnagan) [RHEL-99824]
+- s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues (CKI Backport Bot) [RHEL-87558]
+- sunrpc: handle SVC_GARBAGE during svc auth processing as auth error (CKI Backport Bot) [RHEL-101331] {CVE-2025-38089}
+- media: uvcvideo: Announce the user our deprecation intentions (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Allow changing noparam on the fly (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Invert default value for nodrop module param (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Propagate buf->error to userspace (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Flush the control cache when we get an event (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Annotate lock requirements for uvc_ctrl_set (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Remove dangling pointers (Desnes Nunes) [RHEL-98779] {CVE-2024-58002}
+- media: uvcvideo: Remove redundant NULL assignment (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Only save async fh if success (Desnes Nunes) [RHEL-98779]
+- media: uvcvideo: Fix double free in error path (CKI Backport Bot) [RHEL-98805] {CVE-2024-57980}
+- wifi: iwlwifi: limit printed string from FW file (CKI Backport Bot) [RHEL-99396] {CVE-2025-21905}
+
+* Sun Jul 06 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.21.1.el10_0]
+- ice, irdma: fix an off by one in error handling code (Petr Oros) [RHEL-80558]
+- irdma: free iwdev->rf after removing MSI-X (Petr Oros) [RHEL-80558]
+- ice: Fix signedness bug in ice_init_interrupt_scheme() (Petr Oros) [RHEL-80558]
+- ice: init flow director before RDMA (Petr Oros) [RHEL-80558]
+- ice: simplify VF MSI-X managing (Petr Oros) [RHEL-80558]
+- ice: enable_rdma devlink param (Petr Oros) [RHEL-80558]
+- ice: treat dyn_allowed only as suggestion (Petr Oros) [RHEL-80558]
+- ice, irdma: move interrupts code to irdma (Petr Oros) [RHEL-80558]
+- ice: get rid of num_lan_msix field (Petr Oros) [RHEL-80558]
+- ice: remove splitting MSI-X between features (Petr Oros) [RHEL-80558]
+- ice: devlink PF MSI-X max and min parameter (Petr Oros) [RHEL-80558]
+- ice: ice_probe: init ice_adapter after HW init (Petr Oros) [RHEL-80558]
+- ice: minor: rename goto labels from err to unroll (Petr Oros) [RHEL-80558]
+- ice: split ice_init_hw() out from ice_init_dev() (Petr Oros) [RHEL-80558]
+- ice: c827: move wait for FW to ice_init_hw() (Petr Oros) [RHEL-80558]
+- exfat: fix random stack corruption after get_block (CKI Backport Bot) [RHEL-99441] {CVE-2025-22036}
+
+* Mon Jun 30 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.20.1.el10_0]
+- x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes (CKI Backport Bot) [RHEL-99007] {CVE-2025-21991}
+- page_pool: Track DMA-mapped pages and unmap them when destroying the pool (Toke Høiland-Jørgensen) [RHEL-84148]
+- page_pool: Move pp_magic check into helper functions (Toke Høiland-Jørgensen) [RHEL-84148]
+- scsi: storvsc: Explicitly set max_segment_size to UINT_MAX (Ewan D. Milne) [RHEL-97172]
+- vmxnet3: Fix malformed packet sizing in vmxnet3_process_xdp (CKI Backport Bot) [RHEL-97116] {CVE-2025-37799}
+- dm mpath: replace spin_lock_irqsave with spin_lock_irq (Benjamin Marzinski) [RHEL-89484]
+- dm-mpath: Don't grab work_mutex while probing paths (Benjamin Marzinski) [RHEL-89484]
+- dm mpath: Interface for explicit probing of active paths (Benjamin Marzinski) [RHEL-89484]
+- dm: Allow .prepare_ioctl to handle ioctls directly (Benjamin Marzinski) [RHEL-89484]
+- ipv6: mcast: extend RCU protection in igmp6_send() (CKI Backport Bot) [RHEL-94685] {CVE-2025-21759}
+- net: add dev_net_rcu() helper (Hangbin Liu) [RHEL-94685]
+
+* Sun Jun 22 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.19.1.el10_0]
+- ibmvnic: Use kernel helpers for hex dumps (CKI Backport Bot) [RHEL-89031] {CVE-2025-22104}
+- eth: bnxt: fix truesize for mb-xdp-pass case (CKI Backport Bot) [RHEL-88329] {CVE-2025-21961}
+- ice: Avoid setting default Rx VSI twice in switchdev setup (Petr Oros) [RHEL-88309]
+- ice: Fix deinitializing VF in error path (Petr Oros) [RHEL-88309] {CVE-2025-21883}
+- ice: add E830 HW VF mailbox message limit support (Petr Oros) [RHEL-88309]
+- block/Kconfig: Allow selecting BLK_CGROUP_PUNT_BIO (Ming Lei) [RHEL-87376]
+
+* Mon Jun 16 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.18.1.el10_0]
+- sched/rt: Fix race in push_rt_task (Phil Auld) [RHEL-91792]
+- mm/vmalloc: combine all TLB flush operations of KASAN shadow virtual address into one operation (Luiz Capitulino) [RHEL-86954] {CVE-2024-56559}
+- block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone (Ming Lei) [RHEL-92013]
+- proc: fix UAF in proc_get_inode() (CKI Backport Bot) [RHEL-86810] {CVE-2025-21999}
+- ext4: ignore xattrs past end (CKI Backport Bot) [RHEL-94260] {CVE-2025-37738}
+- nvme-fabrics: handle zero MAXCMD without closing the connection (Maurizio Lombardi) [RHEL-94205]
+- ext4: fix off-by-one error in do_split (CKI Backport Bot) [RHEL-93645] {CVE-2025-23150}
+- r8169: disable RTL8126 ZRX-DC timeout (CKI Backport Bot) [RHEL-93482]
+- r8169: enable RTL8168H/RTL8168EP/RTL8168FP ASPM support (CKI Backport Bot) [RHEL-93482]
+
+* Sun Jun 08 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.17.1.el10_0]
+- vmxnet3: unregister xdp rxq info in the reset path (CKI Backport Bot) [RHEL-92473]
+- block: fix 'kmem_cache of name 'bio-108' already exists' (Ming Lei) [RHEL-89955]
+- ice: implement low latency PHY timer updates (Petr Oros) [RHEL-89810]
+- ice: check low latency PHY timer update firmware capability (Petr Oros) [RHEL-89810]
+- ice: add lock to protect low latency interface (Petr Oros) [RHEL-89810]
+- ice: rename TS_LL_READ* macros to REG_LL_PROXY_H_* (Petr Oros) [RHEL-89810]
+- ice: use read_poll_timeout_atomic in ice_read_phy_tstamp_ll_e810 (Petr Oros) [RHEL-89810]
+- cifs: Fix integer overflow while processing acdirmax mount option (Paulo Alcantara) [RHEL-87945] {CVE-2025-21963}
+- smb: client: fix UAF in decryption with multichannel (CKI Backport Bot) [RHEL-94463] {CVE-2025-37750}
+- sched/fair: Fix CPU bandwidth limit bypass during CPU hotplug (Phil Auld) [RHEL-86346]
+- keys: Fix UAF in key_put() (CKI Backport Bot) [RHEL-86853] {CVE-2025-21893}
+- ndisc: use RCU protection in ndisc_alloc_skb() (Xin Long) [RHEL-89556] {CVE-2025-21764}
+- ipv6: use RCU protection in ip6_default_advmss() (Xin Long) [RHEL-89556] {CVE-2025-21765}
+- net: add dev_net_rcu() helper (Xin Long) [RHEL-89556] {CVE-2025-21765}
+- vfio/pci: Align huge faults to order (Alex Williamson) [RHEL-93762]
+- Bluetooth: L2CAP: Fix corrupted list in hci_chan_del (David Marlin) [RHEL-87894] {CVE-2025-21969}
+- Bluetooth: L2CAP: Fix slab-use-after-free Read in l2cap_send_cmd (CKI Backport Bot) [RHEL-87894] {CVE-2025-21969}
+- cifs: Fix integer overflow while processing closetimeo mount option (CKI Backport Bot) [RHEL-87904] {CVE-2025-21962}
+- ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up (CKI Backport Bot) [RHEL-93459] {CVE-2025-21887}
+- wifi: cfg80211: init wiphy_work before allocating rfkill fails (CKI Backport Bot) [RHEL-87935] {CVE-2025-21979}
+- wifi: cfg80211: cancel wiphy_work before freeing wiphy (CKI Backport Bot) [RHEL-87935] {CVE-2025-21979}
+
+* Tue Jun 03 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.16.1.el10_0]
+- net: fix geneve_opt length integer overflow (Guillaume Nault) [RHEL-87980] {CVE-2025-22055}
+- vsock/virtio: discard packets if the transport changes (Jon Maloy) [RHEL-86874] {CVE-2025-21669}
+
+* Fri May 30 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.15.1.el10_0]
+- net: gso: fix ownership in __udp_gso_segment (CKI Backport Bot) [RHEL-88518] {CVE-2025-21926}
+- xsk: fix an integer overflow in xp_create_and_assign_umem() (CKI Backport Bot) [RHEL-87915] {CVE-2025-21997}
+- wifi: ath12k: Fix invalid data access in ath12k_dp_rx_h_undecap_nwifi (CKI Backport Bot) [RHEL-93269] {CVE-2025-37943}
+
+* Mon May 26 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.14.1.el10_0]
+- sched/fair: Fix potential memory corruption in child_cfs_rq_on_list (CKI Backport Bot) [RHEL-88323] {CVE-2025-21919}
+- drm/i915/dp_mst: Don't require DSC hblank quirk for a non-DSC compatible mode (Jocelyn Falempe) [RHEL-88536]
+- drm/i915/dp_mst: Handle error during DSC BW overhead/slice calculation (Jocelyn Falempe) [RHEL-88536]
+- drm/i915/display: Use joined pipes in dsc helpers for slices, bpp (Jocelyn Falempe) [RHEL-88536]
+- drm/i915/display: Use joined pipes in intel_mode_valid_max_plane_size (Jocelyn Falempe) [RHEL-88536]
+- drm/i915/display: Use joined pipes in intel_dp_joiner_needs_dsc (Jocelyn Falempe) [RHEL-88536]
+- drm/i915/display: Simplify intel_joiner_num_pipes and its usage (Jocelyn Falempe) [RHEL-88536]
+- drm/i915/display: Check whether platform supports joiner (Jocelyn Falempe) [RHEL-88536]
+- Revert "drm/i915/dp_mst: Handle error during DSC BW overhead/slice calculation" (Jocelyn Falempe) [RHEL-88536]
+- Revert "drm/i915/dp_mst: Don't require DSC hblank quirk for a non-DSC compatible mode" (Jocelyn Falempe) [RHEL-88536]
+- drm/mgag200: Added support for the new device G200eH5 (Jocelyn Falempe) [RHEL-88909]
+- cifs: Fix integer overflow while processing acregmax mount option (CKI Backport Bot) [RHEL-87925] {CVE-2025-21964}
+- ext4: fix OOB read when checking dotdot dir (CKI Backport Bot) [RHEL-87991] {CVE-2025-37785}
+
+* Sun May 18 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.13.1.el10_0]
+- gitlab-ci: use rhel10.0 builder image (Michael Hofmann)
+- vsock: Orphan socket after transport release (Jay Shin) [RHEL-89161] {CVE-2025-21756}
+- vsock: Keep the binding until socket destruction (Jay Shin) [RHEL-89161] {CVE-2025-21756}
+- bpf, vsock: Invoke proto::close on close() (Jay Shin) [RHEL-89161] {CVE-2025-21756}
+- idpf: call set_real_num_queues in idpf_open (CKI Backport Bot) [RHEL-79479]
+- media: uvcvideo: Skip parsing frames of type UVC_VS_UNDEFINED in uvc_parse_format (CKI Backport Bot) [RHEL-89591] {CVE-2024-53104}
+- redhat: enable CONFIG_WERROR=y (Jan Stancek) [RHEL-89564]
+- redhat: don't enforce WERROR for 3rd-party OOT kmods (Jan Stancek) [RHEL-89564]
+- redhat: make ENABLE_WERROR enable also KVM_WERROR (Jan Stancek) [RHEL-89564]
+- fortify: Hide run-time copy size from value range tracking (Jan Stancek) [RHEL-89564]
+- resolve_btfids: Fix compiler warnings (Jan Stancek) [RHEL-89564]
+- ixgbe: fix media type detection for E610 device (Corinna Vinschen) [RHEL-85810]
+- ixgbevf: Add support for Intel(R) E610 device (Corinna Vinschen) [RHEL-85810]
+- PCI: Add PCI_VDEVICE_SUB helper macro (Corinna Vinschen) [RHEL-85810]
+- ixgbe: fix media cage present detection for E610 device (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Enable link management in E610 device (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Clean up the E610 link management related code (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Add ixgbe_x540 multiple header inclusion protection (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Add support for EEPROM dump in E610 device (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Add support for NVM handling in E610 device (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Add link management support for E610 device (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Add support for E610 device capabilities detection (Corinna Vinschen) [RHEL-85810]
+- ixgbe: Add support for E610 FW Admin Command Interface (Corinna Vinschen) [RHEL-85810]
+- smb: client: don't retry IO on failed negprotos with soft mounts (Jay Shin) [RHEL-85525]
+
+* Mon May 12 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.12.1.el10_0]
+- scsi: core: Fix command pass through retry regression (Ewan D. Milne) [RHEL-77121]
+- dm-flakey: Fix memory corruption in optional corrupt_bio_byte feature (CKI Backport Bot) [RHEL-86903] {CVE-2025-21966}
+- ice: stop storing XDP verdict within ice_rx_buf (Petr Oros) [RHEL-86860]
+- ice: gather page_count()'s of each frag right before XDP prog call (Petr Oros) [RHEL-86860]
+- ice: put Rx buffers after being done with current frame (Petr Oros) [RHEL-86860]
+- iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic() (CKI Backport Bot) [RHEL-86847] {CVE-2025-21993}
+
+* Thu Apr 24 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.11.1.el10_0]
+- smb: client: fix regression with guest option (Jay Shin) [RHEL-83861]
+- pnfs/flexfiles: retry getting layout segment for reads (Benjamin Coddington) [RHEL-87770]
+- nfs: fix incorrect error handling in LOCALIO (Benjamin Coddington) [RHEL-87770]
+- nfs: probe for LOCALIO when v3 client reconnects to server (Benjamin Coddington) [RHEL-87770]
+- nfs: probe for LOCALIO when v4 client reconnects to server (Benjamin Coddington) [RHEL-87770]
+- nfs/localio: remove redundant code and simplify LOCALIO enablement (Benjamin Coddington) [RHEL-87770]
+- nfs_common: add nfs_localio trace events (Benjamin Coddington) [RHEL-87770]
+- nfs_common: track all open nfsd_files per LOCALIO nfs_client (Benjamin Coddington) [RHEL-87770]
+- nfs_common: rename nfslocalio nfs_uuid_lock to nfs_uuids_lock (Benjamin Coddington) [RHEL-87770]
+- nfsd: nfsd_file_acquire_local no longer returns GC'd nfsd_file (Benjamin Coddington) [RHEL-87770]
+- nfsd: rename nfsd_serv_ prefixed methods and variables with nfsd_net_ (Benjamin Coddington) [RHEL-87770]
+- nfsd: update percpu_ref to manage references on nfsd_net (Benjamin Coddington) [RHEL-87770]
+- nfs: cache all open LOCALIO nfsd_file(s) in client (Benjamin Coddington) [RHEL-87770]
+- nfs_common: move localio_lock to new lock member of nfs_uuid_t (Benjamin Coddington) [RHEL-87770]
+- nfs_common: rename functions that invalidate LOCALIO nfs_clients (Benjamin Coddington) [RHEL-87770]
+- nfsd: add nfsd_file_{get,put} to 'nfs_to' nfsd_localio_operations (Benjamin Coddington) [RHEL-87770]
+- nfs/localio: add direct IO enablement with sync and async IO support (Benjamin Coddington) [RHEL-87770]
+- ice: ensure periodic output start time is in the future (Petr Oros) [RHEL-86858]
+- ice: fix PHY Clock Recovery availability check (Petr Oros) [RHEL-86858]
+- ice: Drop auxbus use for PTP to finalize ice_adapter move (Petr Oros) [RHEL-86858]
+- ice: Use ice_adapter for PTP shared data instead of auxdev (Petr Oros) [RHEL-86858]
+- ice: Initial support for E825C hardware in ice_adapter (Petr Oros) [RHEL-86858]
+- ice: Add ice_get_ctrl_ptp() wrapper to simplify the code (Petr Oros) [RHEL-86858]
+- ice: Introduce ice_get_phy_model() wrapper (Petr Oros) [RHEL-86858]
+- ice: Enable 1PPS out from CGU for E825C products (Petr Oros) [RHEL-86858]
+- ice: Read SDP section from NVM for pin definitions (Petr Oros) [RHEL-86858]
+- ice: Disable shared pin on E810 on setfunc (Petr Oros) [RHEL-86858]
+- ice: Cache perout/extts requests and check flags (Petr Oros) [RHEL-86858]
+- ice: Align E810T GPIO to other products (Petr Oros) [RHEL-86858]
+- ice: Add SDPs support for E825C (Petr Oros) [RHEL-86858]
+- ice: Implement ice_ptp_pin_desc (Petr Oros) [RHEL-86858]
+- nvme-tcp: fix potential memory corruption in nvme_tcp_recv_pdu() (Chris Leech) [RHEL-86922] {CVE-2025-21927}
+- scsi: storvsc: Set correct data length for sending SCSI command without payload (Cathy Avery) [RHEL-83216]
+- smb: client: fix chmod(2) regression with ATTR_READONLY (Jan Stancek) [RHEL-82677]
+- mm/hugetlb: fix hugepage allocation for interleaved memory nodes (CKI Backport Bot) [RHEL-85441]
+
+* Thu Apr 17 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.10.1.el10_0]
+- net: mana: use ethtool string helpers (Maxim Levitsky) [RHEL-85943]
+- net: mana: cleanup mana struct after debugfs_remove() (Maxim Levitsky) [RHEL-85943]
+- net: mana: Cleanup "mana" debugfs dir after cleanup of all children (Maxim Levitsky) [RHEL-85943]
+- net: mana: Fix irq_contexts memory leak in mana_gd_setup_irqs (Maxim Levitsky) [RHEL-85943]
+- net: mana: Fix memory leak in mana_gd_setup_irqs (Maxim Levitsky) [RHEL-85943]
+- net :mana :Request a V2 response version for MANA_QUERY_GF_STAT (Maxim Levitsky) [RHEL-85943]
+- net: mana: Enable debugfs files for MANA device (Maxim Levitsky) [RHEL-85943]
+- net: mana: Add get_link and get_link_ksettings in ethtool (Maxim Levitsky) [RHEL-85943]
+- net: mana: Increase the DEF_RX_BUFFERS_PER_QUEUE to 1024 (Maxim Levitsky) [RHEL-85943]
+- redhat: drop Y issues from changelog (Jan Stancek)
 
 * Tue Mar 25 2025 Jan Stancek <jstancek@redhat.com> [6.12.0-55.9.1.el10_0]
 - af_packet: fix vlan_get_protocol_dgram() vs MSG_PEEK (Davide Caratti) [RHEL-80306] {CVE-2024-57901}
