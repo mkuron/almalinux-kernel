@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.78.1.el8_10
+%define pkgrelease 553.79.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.78.1%{?dist}
+%define specrelease 553.79.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Tue Oct 07 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.78.1
+* Mon Oct 13 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.79.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,13 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Oct 07 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.78.1
+* Mon Oct 13 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.79.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Oct 02 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.79.1.el8_10]
+- Bluetooth: L2CAP: Fix use-after-free (CKI Backport Bot) [RHEL-116277] {CVE-2023-53305}
+- KVM: SVM: Don't BUG if userspace injects an interrupt with GIF=0 (CKI Backport Bot) [RHEL-109748] {CVE-2022-50228}
 
 * Thu Sep 25 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.78.1.el8_10]
 - mm/migrate: set swap entry values of THP tail pages properly. (Luiz Capitulino) [RHEL-101302]
