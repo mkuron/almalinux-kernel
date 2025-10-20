@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.79.1.el8_10
+%define pkgrelease 553.80.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.79.1%{?dist}
+%define specrelease 553.80.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Oct 13 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.79.1
+* Mon Oct 20 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.80.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Oct 13 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.79.1
+* Mon Oct 20 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.80.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Oct 09 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.80.1.el8_10]
+- block: remove some blk_mq_hw_ctx debugfs entries (Ricardo Robaina) [RHEL-8816]
+- blk-mq: Remove the hctx 'run' debugfs attribute (Ricardo Robaina) [RHEL-8816]
+- block: remove debugfs blk_mq_ctx dispatched/merged/completed attributes (Ricardo Robaina) [RHEL-8816]
+- ALSA: hda/ca0132: Fix buffer overflow in add_tuning_control (CKI Backport Bot) [RHEL-114840] {CVE-2025-39751}
+- crypto: seqiv - Handle EBUSY correctly (CKI Backport Bot) [RHEL-117228] {CVE-2023-53373}
+- ALSA: usb-audio: Validate UAC3 power domain descriptors, too (Jaroslav Kysela) [RHEL-114681] {CVE-2025-38729}
+- ALSA: usb-audio: Fix size validation in convert_chmap_v3() (Jaroslav Kysela) [RHEL-114681]
+- ALSA: usb-audio: Validate UAC3 cluster segment descriptors (Jaroslav Kysela) [RHEL-114681] {CVE-2025-39757}
 
 * Thu Oct 02 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.79.1.el8_10]
 - Bluetooth: L2CAP: Fix use-after-free (CKI Backport Bot) [RHEL-116277] {CVE-2023-53305}
