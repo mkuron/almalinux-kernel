@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.80.1.el8_10
+%define pkgrelease 553.81.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.80.1%{?dist}
+%define specrelease 553.81.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Oct 20 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.80.1
+* Mon Oct 27 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.81.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,107 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Oct 20 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.80.1
+* Mon Oct 27 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.81.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Oct 16 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.81.1.el8_10]
+- Bluetooth: L2CAP: Fix user-after-free (CKI Backport Bot) [RHEL-117369] {CVE-2022-50386}
+- Bluetooth: Fix potential use-after-free when clear keys (CKI Backport Bot) [RHEL-117193] {CVE-2023-53386}
+- efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare (CKI Backport Bot) [RHEL-117924] {CVE-2025-39817}
+- scsi: lpfc: Fix buffer free/clear order in deferred receive path (CKI Backport Bot) [RHEL-117707] {CVE-2025-39841}
+- mm, meminit: recalculate pcpu batch and high limits after init completes (Audra Mitchell) [RHEL-108920]
+- Bluetooth: L2CAP: fix "bad unlock balance" in l2cap_disconnect_rsp (CKI Backport Bot) [RHEL-118478] {CVE-2023-53297}
+- net/mlx5: Stop waiting for PCI if pci channel is offline (CKI Backport Bot) [RHEL-114111]
+- mm/shmem: fix potential dead loop in shmem_unuse() (Rafael Aquini) [RHEL-104909]
+- mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable() (Rafael Aquini) [RHEL-104909]
+- mm: fix apply_to_existing_page_range() (Rafael Aquini) [RHEL-104909]
+- arm64: mm: Correct the update of max_pfn (Rafael Aquini) [RHEL-104909]
+- mm, percpu: do not consider sleepable allocations atomic (Rafael Aquini) [RHEL-104909]
+- mm/hugetlb: wait for hugetlb folios to be freed (Rafael Aquini) [RHEL-104909]
+- x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs (Rafael Aquini) [RHEL-104909]
+- x86/mm/pat: cpa-test: fix length for CPA_ARRAY test (Rafael Aquini) [RHEL-104909]
+- arm64: Fix KASAN random tag seed initialization (Rafael Aquini) [RHEL-104909]
+- mm/numa_balancing: teach mpol_to_str about the balancing mode (Rafael Aquini) [RHEL-104909]
+- s390/mm: Fix clearing storage keys for huge pages (Rafael Aquini) [RHEL-104909]
+- s390/mm: Fix storage key clearing for guest huge pages (Rafael Aquini) [RHEL-104909]
+- mm/slub, kunit: Use inverted data to corrupt kmem cache (Rafael Aquini) [RHEL-104909]
+- mm: memcg: use larger batches for proactive reclaim (Rafael Aquini) [RHEL-104909]
+- mm: memcg: don't periodically flush stats when memcg is disabled (Rafael Aquini) [RHEL-104909]
+- mm: writeback: ratelimit stat flush from mem_cgroup_wb_stats (Rafael Aquini) [RHEL-104909]
+- mm: memcontrol: don't throttle dying tasks on memory.high (Rafael Aquini) [RHEL-104909]
+- arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify (Rafael Aquini) [RHEL-104909]
+- arm64/mm: Set only the PTE_DIRTY bit while preserving the HW dirty state (Rafael Aquini) [RHEL-104909]
+- base/node.c: initialize the accessor list before registering (Rafael Aquini) [RHEL-104909]
+- mm: hugetlb: eliminate memory-less nodes handling (Rafael Aquini) [RHEL-104909]
+- mm: hugetlb: simplify per-node sysfs creation and removal (Rafael Aquini) [RHEL-104909]
+- powerpc/pseries: fix potential memory leak in init_cpu_associativity() (Rafael Aquini) [RHEL-104909]
+- writeback, cgroup: switch inodes with dirty timestamps to release dying cgwbs (Rafael Aquini) [RHEL-104909]
+- vfs: fix readahead(2) on block devices (Rafael Aquini) [RHEL-104909]
+- mm/page_alloc: correct start page when guard page debug is enabled (Rafael Aquini) [RHEL-104909]
+- mm/memory_hotplug: use pfn math in place of direct struct page manipulation (Rafael Aquini) [RHEL-104909]
+- mm/cma: use nth_page() in place of direct struct page manipulation (Rafael Aquini) [RHEL-104909]
+- slab: kmalloc_size_roundup() must not return 0 for non-zero size (Rafael Aquini) [RHEL-104909]
+- mm: memcontrol: fix GFP_NOFS recursion in memory.high enforcement (Rafael Aquini) [RHEL-104909]
+- mm/vmalloc: add a safer version of find_vm_area() for debug (Rafael Aquini) [RHEL-104909]
+- mm/vmalloc: extend __find_vmap_area() with one more argument (Rafael Aquini) [RHEL-104909]
+- mm: memory-failure: fix unexpected return value in soft_offline_page() (Rafael Aquini) [RHEL-104909]
+- mm: memory-failure: kill soft_offline_free_page() (Rafael Aquini) [RHEL-104909]
+- radix tree: remove unused variable (Rafael Aquini) [RHEL-104909]
+- mm: add a call to flush_cache_vmap() in vmap_pfn() (Rafael Aquini) [RHEL-104909]
+- tmpfs: verify {g,u}id mount options correctly (Rafael Aquini) [RHEL-104909]
+- powerpc/mm/altmap: Fix altmap boundary check (Rafael Aquini) [RHEL-104909]
+- powerpc/mm/dax: Fix the condition when checking if altmap vmemap can cross-boundary (Rafael Aquini) [RHEL-104909]
+- writeback: fix dereferencing NULL mapping->host on writeback_page_template (Rafael Aquini) [RHEL-104909]
+- x86/mm: Avoid using set_pgd() outside of real PGD pages (Rafael Aquini) [RHEL-104909]
+- mm: vmalloc must set pte via arch code (Rafael Aquini) [RHEL-104909]
+- mm: zswap: shrink until can accept (Rafael Aquini) [RHEL-104909]
+- mm, compaction: finish pageblocks on complete migration failure (Rafael Aquini) [RHEL-104909]
+- mm, compaction: finish scanning the current pageblock if requested (Rafael Aquini) [RHEL-104909]
+- mm, compaction: check if a page has been captured before draining PCP pages (Rafael Aquini) [RHEL-104909]
+- mm, compaction: rename compact_control->rescan to finish_pageblock (Rafael Aquini) [RHEL-104909]
+- mm/compaction: move compaction_suitable's comment to right place (Rafael Aquini) [RHEL-104909]
+- mm/compaction: rename 'start_pfn' to 'iteration_start_pfn' in compact_zone() (Rafael Aquini) [RHEL-104909]
+- mm: memcg: fix NULL pointer in mem_cgroup_track_foreign_dirty_slowpath() (Rafael Aquini) [RHEL-104909]
+- Revert "mm/compaction: fix set skip in fast_find_migrateblock" (Rafael Aquini) [RHEL-104909]
+- mm/page_reporting: replace rcu_access_pointer() with rcu_dereference_protected() (Rafael Aquini) [RHEL-104909]
+- mm/compaction: fix set skip in fast_find_migrateblock (Rafael Aquini) [RHEL-104909]
+- memregion: Fix memregion_free() fallback definition (Rafael Aquini) [RHEL-104909]
+- s390/extable: fix exception table sorting (Rafael Aquini) [RHEL-104909]
+- shmem: shmem_writepage() split unlikely i915 THP (Rafael Aquini) [RHEL-104909]
+- huge tmpfs: decide stat.st_blksize by shmem_is_huge() (Rafael Aquini) [RHEL-104909]
+- huge tmpfs: shmem_is_huge(vma, inode, index) (Rafael Aquini) [RHEL-104909]
+- huge tmpfs: SGP_NOALLOC to stop collapse_file() on race (Rafael Aquini) [RHEL-104909]
+- huge tmpfs: move shmem_huge_enabled() upwards (Rafael Aquini) [RHEL-104909]
+- huge tmpfs: remove shrinklist addition from shmem_setattr() (Rafael Aquini) [RHEL-104909]
+- mm,shmem,thp: limit shmem THP allocations to requested zones (Rafael Aquini) [RHEL-104909]
+- mm,thp,shm: limit gfp mask to no more than specified (Rafael Aquini) [RHEL-104909]
+- mm,thp,shmem: limit shmem THP alloc gfp_mask (Rafael Aquini) [RHEL-104909]
+- mm/swap: optimise get_shadow_from_swap_cache (Rafael Aquini) [RHEL-104909]
+- mm/shmem: use pagevec_lookup in shmem_unlock_mapping (Rafael Aquini) [RHEL-104909]
+- mm: make pagecache tagged lookups return only head pages (Rafael Aquini) [RHEL-104909]
+- mm: fix madvise WILLNEED performance problem (Rafael Aquini) [RHEL-104909]
+- mm: pagemap.h: fix two kernel-doc markups (Rafael Aquini) [RHEL-104909]
+- mm: add find_lock_head (Rafael Aquini) [RHEL-104909]
+- mm/shmem: return head page from find_lock_entry (Rafael Aquini) [RHEL-104909]
+- mm: convert find_get_entry to return the head page (Rafael Aquini) [RHEL-104909]
+- i915: use find_lock_page instead of find_lock_entry (Rafael Aquini) [RHEL-104909]
+- proc: optimise smaps for shmem entries (Rafael Aquini) [RHEL-104909]
+- mm: optimise madvise WILLNEED (Rafael Aquini) [RHEL-104909]
+- mm: use find_get_incore_page in memcontrol (Rafael Aquini) [RHEL-104909]
+- mm: factor find_get_incore_page out of mincore_page (Rafael Aquini) [RHEL-104909]
+- mm/shmem: fix build without THP (Rafael Aquini) [RHEL-104909]
+- mm: huge tmpfs: try to split_huge_page() when punching hole (Rafael Aquini) [RHEL-104909]
+- mm/shmem.c: clean code by removing unnecessary assignment (Rafael Aquini) [RHEL-104909]
+- mm/shmem.c: distribute switch variables for initialization (Rafael Aquini) [RHEL-104909]
+- include/linux/pagemap.h: optimise find_subpage for !THP (Rafael Aquini) [RHEL-104909]
+- mm/filemap.c: unexport find_get_entry (Rafael Aquini) [RHEL-104909]
+- include/linux/pagemap.h: rename arguments to find_subpage (Rafael Aquini) [RHEL-104909]
+- powerpc/mm: drop #ifdef CONFIG_MMU in is_ioremap_addr() (Rafael Aquini) [RHEL-104909]
+- powerpc: remove the __kernel_io_end export (Rafael Aquini) [RHEL-104909]
+- mm/shmem: make find_get_pages_range() work for huge page (Rafael Aquini) [RHEL-104909]
+- wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result() (CKI Backport Bot) [RHEL-117577] {CVE-2025-39849}
+- dlm: move to rinfo for all middle conversion cases (Alexander Aring) [RHEL-110032]
 
 * Thu Oct 09 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.80.1.el8_10]
 - block: remove some blk_mq_hw_ctx debugfs entries (Ricardo Robaina) [RHEL-8816]
