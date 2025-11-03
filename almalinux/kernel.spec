@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.81.1.el8_10
+%define pkgrelease 553.82.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.81.1%{?dist}
+%define specrelease 553.82.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Oct 27 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.81.1
+* Mon Nov 03 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.82.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,160 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Oct 27 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.81.1
+* Mon Nov 03 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.82.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Oct 23 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.82.1.el8_10]
+- smb: client: fix missing timestamp updates after utime(2) (Paulo Alcantara) [RHEL-109431]
+- cifs: fix leak of iface for primary channel (Paulo Alcantara) [RHEL-109546]
+- cifs: reset iface weights when we cannot find a candidate (Paulo Alcantara) [RHEL-109546]
+- cifs: deal with the channel loading lag while picking channels (Paulo Alcantara) [RHEL-109546]
+- smb3: missing lock when picking channel (Paulo Alcantara) [RHEL-109546] {CVE-2024-35999}
+- smb: client: fix potential deadlock when reconnecting channels (Paulo Alcantara) [RHEL-109546] {CVE-2025-38244}
+- cifs: update dstaddr whenever channel iface is updated (Paulo Alcantara) [RHEL-109546]
+- smb: client: fix oops due to unset link speed (Paulo Alcantara) [RHEL-109546] {CVE-2025-21725}
+- smb: client: fix use-after-free of signing key (Paulo Alcantara) [RHEL-109546] {CVE-2024-53179}
+- smb: client: fix UAF in smb2_reconnect_server() (Paulo Alcantara) [RHEL-109546] {CVE-2024-35870}
+- cifs: failure to add channel on iface should bump up weight (Paulo Alcantara) [RHEL-109546]
+- cifs: update iface_last_update on each query-and-update (Paulo Alcantara) [RHEL-109546]
+- cifs: do not depend on release_iface for maintaining iface_list (Paulo Alcantara) [RHEL-109546]
+- cifs: cifs_chan_is_iface_active should be called with chan_lock held (Paulo Alcantara) [RHEL-109546]
+- cifs: account for primary channel in the interface list (Paulo Alcantara) [RHEL-109546]
+- cifs: distribute channels across interfaces based on speed (Paulo Alcantara) [RHEL-109546]
+- cifs: handle cases where a channel is closed (Paulo Alcantara) [RHEL-109546]
+- cifs: force interface update before a fresh session setup (Paulo Alcantara) [RHEL-109546]
+- cifs: do not reset chan_max if multichannel is not supported at mount (Paulo Alcantara) [RHEL-109546]
+- cifs: reconnect helper should set reconnect for the right channel (Paulo Alcantara) [RHEL-109546]
+- smb: client: fix use-after-free bug in cifs_debug_data_proc_show() (Paulo Alcantara) [RHEL-109546] {CVE-2023-52752}
+- cifs: print last update time for interface list (Paulo Alcantara) [RHEL-109546]
+- cifs: fix session state transition to avoid use-after-free issue (Paulo Alcantara) [RHEL-109546]
+- cifs: log session id when a matching ses is not found (Paulo Alcantara) [RHEL-109546]
+- cifs: fix session state check in smb2_find_smb_ses (Paulo Alcantara) [RHEL-109546]
+- cifs: fix session state check in reconnect to avoid use-after-free issue (Paulo Alcantara) [RHEL-109546]
+- cifs: do all necessary checks for credits within or before locking (Paulo Alcantara) [RHEL-109546]
+- cifs: fix potential use-after-free bugs in TCP_Server_Info::hostname (Paulo Alcantara) [RHEL-109546]
+- cifs: print smb3_fs_context::source when mounting (Paulo Alcantara) [RHEL-109546]
+- cifs: protect session status check in smb2_reconnect() (Paulo Alcantara) [RHEL-109546]
+- cifs: missing lock when updating session status (Paulo Alcantara) [RHEL-109546]
+- cifs: refcount only the selected iface during interface update (Paulo Alcantara) [RHEL-109546]
+- cifs: double lock in cifs_reconnect_tcon() (Paulo Alcantara) [RHEL-109546]
+- cifs: get rid of dead check in smb2_reconnect() (Paulo Alcantara) [RHEL-109546]
+- cifs: avoid races in parallel reconnects in smb1 (Paulo Alcantara) [RHEL-109546]
+- cifs: fix missing unload_nls() in smb2_reconnect() (Paulo Alcantara) [RHEL-109546]
+- cifs: avoid race conditions with parallel reconnects (Paulo Alcantara) [RHEL-109546]
+- cifs: empty interface list when server doesn't support query interfaces (Paulo Alcantara) [RHEL-109546]
+- cifs: do not poll server interfaces too regularly (Paulo Alcantara) [RHEL-109546]
+- cifs: generate signkey for the channel that's reconnecting (Paulo Alcantara) [RHEL-109546]
+- cifs: Move the in_send statistic to __smb_send_rqst() (Paulo Alcantara) [RHEL-109546]
+- cifs: prevent data race in cifs_reconnect_tcon() (Paulo Alcantara) [RHEL-109546]
+- cifs: reuse cifs_match_ipaddr for comparison of dstaddr too (Paulo Alcantara) [RHEL-109546]
+- cifs: match even the scope id for ipv6 addresses (Paulo Alcantara) [RHEL-109546]
+- cifs: update ip_addr for ses only for primary chan setup (Paulo Alcantara) [RHEL-109546]
+- cifs: use tcon allocation functions even for dummy tcon (Paulo Alcantara) [RHEL-109546]
+- cifs: use the least loaded channel for sending requests (Paulo Alcantara) [RHEL-109546]
+- cifs: get rid of dns resolve worker (Paulo Alcantara) [RHEL-109546]
+- cifs: prevent data race in smb2_reconnect() (Paulo Alcantara) [RHEL-109546]
+- cifs: do not query ifaces on smb1 mounts (Paulo Alcantara) [RHEL-109546]
+- cifs: fix interface count calculation during refresh (Paulo Alcantara) [RHEL-109546]
+- cifs: protect access of TCP_Server_Info::{dstaddr,hostname} (Paulo Alcantara) [RHEL-109546]
+- cifs: fix race in assemble_neg_contexts() (Paulo Alcantara) [RHEL-109546]
+- cifs: set correct status of tcon ipc when reconnecting (Paulo Alcantara) [RHEL-109546]
+- cifs: set correct ipc status after initial tree connect (Paulo Alcantara) [RHEL-109546]
+- cifs: set correct tcon status after initial tree connect (Paulo Alcantara) [RHEL-109546]
+- cifs: Use after free in debug code (Paulo Alcantara) [RHEL-109546]
+- cifs: avoid unnecessary iteration of tcp sessions (Paulo Alcantara) [RHEL-109546]
+- smb3: interface count displayed incorrectly (Paulo Alcantara) [RHEL-109546]
+- cifs: Fix xid leak in cifs_ses_add_channel() (Paulo Alcantara) [RHEL-109546]
+- smb3: clarify multichannel warning (Paulo Alcantara) [RHEL-109546]
+- smb3: do not log confusing message when server returns no network interfaces (Paulo Alcantara) [RHEL-109546]
+- cifs: return correct error in ->calc_signature() (Paulo Alcantara) [RHEL-109546]
+- cifs: add missing spinlock around tcon refcount (Paulo Alcantara) [RHEL-109546]
+- cifs: fix small mempool leak in SMB2_negotiate() (Paulo Alcantara) [RHEL-109546] {CVE-2022-49938}
+- cifs: remove useless parameter 'is_fsctl' from SMB2_ioctl() (Paulo Alcantara) [RHEL-109546]
+- cifs: remove unused server parameter from calc_smb_size() (Paulo Alcantara) [RHEL-109546]
+- smb3: limit noisy error (Paulo Alcantara) [RHEL-109546]
+- cifs: alloc_mid function should be marked as static (Paulo Alcantara) [RHEL-109546]
+- cifs: remove "cifs_" prefix from init/destroy mids functions (Paulo Alcantara) [RHEL-109546]
+- cifs: fix wrong unlock before return from cifs_tree_connect() (Paulo Alcantara) [RHEL-109546]
+- cifs: avoid use of global locks for high contention data (Paulo Alcantara) [RHEL-109546]
+- cifs: remove remaining build warnings (Paulo Alcantara) [RHEL-109546]
+- cifs: remove minor build warning (Paulo Alcantara) [RHEL-109546]
+- cifs: remove some camelCase and also some static build warnings (Paulo Alcantara) [RHEL-109546]
+- cifs: remove unnecessary (void*) conversions. (Paulo Alcantara) [RHEL-109546]
+- cifs: remove unnecessary type castings (Paulo Alcantara) [RHEL-109546]
+- cifs: remove redundant initialization to variable mnt_sign_enabled (Paulo Alcantara) [RHEL-109546]
+- smb3: check xattr value length earlier (Paulo Alcantara) [RHEL-109546]
+- cifs: remove unnecessary locking of chan_lock while freeing session (Paulo Alcantara) [RHEL-109546]
+- cifs: fix race condition with delayed threads (Paulo Alcantara) [RHEL-109546]
+- cifs: update cifs_ses::ip_addr after failover (Paulo Alcantara) [RHEL-109546]
+- cifs: avoid deadlocks while updating iface (Paulo Alcantara) [RHEL-109546]
+- cifs: periodically query network interfaces from server (Paulo Alcantara) [RHEL-109546]
+- cifs: during reconnect, update interface if necessary (Paulo Alcantara) [RHEL-109546]
+- cifs: change iface_list from array to sorted linked list (Paulo Alcantara) [RHEL-109546]
+- cifs: when a channel is not found for server, log its connection id (Paulo Alcantara) [RHEL-109546]
+- cifs: fix potential deadlock in direct reclaim (Paulo Alcantara) [RHEL-109546]
+- cifs: return errors during session setup during reconnects (Paulo Alcantara) [RHEL-109546]
+- cifs: remove repeated debug message on cifs_put_smb_ses() (Paulo Alcantara) [RHEL-109546]
+- cifs: avoid parallel session setups on same channel (Paulo Alcantara) [RHEL-109546]
+- cifs: use new enum for ses_status (Paulo Alcantara) [RHEL-109546]
+- cifs: fix incorrect use of list iterator after the loop (Paulo Alcantara) [RHEL-109546]
+- cifs: do not use tcpStatus after negotiate completes (Paulo Alcantara) [RHEL-109546]
+- cifs: use correct lock type in cifs_reconnect() (Paulo Alcantara) [RHEL-109546]
+- cifs: Use kzalloc instead of kmalloc/memset (Paulo Alcantara) [RHEL-109546]
+- cifs: force new session setup and tcon for dfs (Paulo Alcantara) [RHEL-109546]
+- cifs: fix potential race with cifsd thread (Paulo Alcantara) [RHEL-109546]
+- smb3: cleanup and clarify status of tree connections (Paulo Alcantara) [RHEL-109546]
+- cifs: use a different reconnect helper for non-cifsd threads (Paulo Alcantara) [RHEL-109546]
+- smb3: fix incorrect session setup check for multiuser mounts (Paulo Alcantara) [RHEL-109546]
+- cifs: mark sessions for reconnection in helper function (Paulo Alcantara) [RHEL-109546]
+- cifs: call helper functions for marking channels for reconnect (Paulo Alcantara) [RHEL-109546]
+- cifs: call cifs_reconnect when a connection is marked (Paulo Alcantara) [RHEL-109546]
+- cifs: unlock chan_lock before calling cifs_put_tcp_session (Paulo Alcantara) [RHEL-109546]
+- cifs: cifs_ses_mark_for_reconnect should also update reconnect bits (Paulo Alcantara) [RHEL-109546]
+- cifs: update tcpStatus during negotiate and sess setup (Paulo Alcantara) [RHEL-109546]
+- cifs: make status checks in version independent callers (Paulo Alcantara) [RHEL-109546]
+- cifs: remove repeated state change in dfs tree connect (Paulo Alcantara) [RHEL-109546]
+- cifs: fix the cifs_reconnect path for DFS (Paulo Alcantara) [RHEL-109546]
+- cifs: remove unused variable ses_selected (Paulo Alcantara) [RHEL-109546]
+- cifs: protect all accesses to chan_* with chan_lock (Paulo Alcantara) [RHEL-109546]
+- cifs: fix the connection state transitions with multichannel (Paulo Alcantara) [RHEL-109546]
+- cifs: check reconnects for channels of active tcons too (Paulo Alcantara) [RHEL-109546]
+- cifs: avoid race during socket reconnect between send and recv (Paulo Alcantara) [RHEL-109546]
+- cifs: maintain a state machine for tcp/smb/tcon sessions (Paulo Alcantara) [RHEL-109546]
+- cifs: fix hang on cifs_get_next_mid() (Paulo Alcantara) [RHEL-109546]
+- cifs: take cifs_tcp_ses_lock for status checks (Paulo Alcantara) [RHEL-109546]
+- cifs: reconnect only the connection and not smb session where possible (Paulo Alcantara) [RHEL-109546]
+- cifs: add WARN_ON for when chan_count goes below minimum (Paulo Alcantara) [RHEL-109546]
+- cifs: adjust DebugData to use chans_need_reconnect for conn status (Paulo Alcantara) [RHEL-109546]
+- cifs: use the chans_need_reconnect bitmap for reconnect status (Paulo Alcantara) [RHEL-109546]
+- cifs: track individual channel status using chans_need_reconnect (Paulo Alcantara) [RHEL-109546]
+- cifs: Adjust key sizes and key generation routines for AES256 encryption (Paulo Alcantara) [RHEL-109546]
+- cifs: fix allocation size on newly created files (Paulo Alcantara) [RHEL-109546]
+- veth: try harder when allocating queue memory (Davide Caratti) [RHEL-92515]
+- net: enable memcg accounting for veth queues (Davide Caratti) [RHEL-92515]
+- gfs2: No more gfs2_find_jhead caching (Andreas Gruenbacher) [RHEL-92461]
+- gfs2: Clean up revokes on normal withdraws (Bob Peterson) [RHEL-92461]
+- gfs2: Get rid of duplicate log head lookup (Andreas Gruenbacher) [RHEL-92461]
+- gfs2: Improve gfs2_make_fs_rw error handling (Andreas Gruenbacher) [RHEL-92461]
+- gfs2: Simplify clean_journal (Andreas Gruenbacher) [RHEL-92461]
+- gfs2: Simplify gfs2_log_pointers_init (Andreas Gruenbacher) [RHEL-92461]
+- gfs2: Fix glock recursion in freeze_go_xmote_bh (Bob Peterson) [RHEL-92461]
+- gfs2: Move gfs2_log_pointers_init (Andreas Gruenbacher) [RHEL-92461]
+- mm: hugetlb: conditionally disable tlb_remove_table_sync_one() in huge_pmd_unshare() (Rafael Aquini) [RHEL-120391]
+- kernel: extend rh_waived to cope better with the CVE mitigations case (Rafael Aquini) [RHEL-120391]
+- Add support to rh_waived cmdline boot parameter (Rafael Aquini) [RHEL-120391]
+- wifi: cfg80211: fix use-after-free in cmp_bss() (CKI Backport Bot) [RHEL-117792] {CVE-2025-39864}
+- ext4: prevent stale extent cache entries caused by concurrent I/O writeback (Brian Foster) [RHEL-50745]
+- ext4: ext4: unify EXT4_EX_NOCACHE|NOFAIL flags in ext4_ext_remove_space() (Brian Foster) [RHEL-50745]
+- ext4: check the extent status again before inserting delalloc block (Brian Foster) [RHEL-50745]
+- ext4: factor out a common helper to query extent map (Brian Foster) [RHEL-50745]
+- ext4: convert to exclusive lock while inserting delalloc extents (Brian Foster) [RHEL-50745]
+- ext4: refactor ext4_da_map_blocks() (Brian Foster) [RHEL-50745]
+- wifi: mac80211: check S1G action frame size (Jose Ignacio Tornos Martinez) [RHEL-116069] {CVE-2023-53257}
+- wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet (Jose Ignacio Tornos Martinez) [RHEL-115516] {CVE-2023-53226}
+- wifi: mwifiex: Fix missed return in oob checks failed path (Jose Ignacio Tornos Martinez) [RHEL-115516] {CVE-2023-53226}
+- wifi: mwifiex: Fix OOB and integer underflow when rx packets (Jose Ignacio Tornos Martinez) [RHEL-115516] {CVE-2023-53226}
 
 * Thu Oct 16 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.81.1.el8_10]
 - Bluetooth: L2CAP: Fix user-after-free (CKI Backport Bot) [RHEL-117369] {CVE-2022-50386}
