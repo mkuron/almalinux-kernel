@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.82.1.el8_10
+%define pkgrelease 553.83.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.82.1%{?dist}
+%define specrelease 553.83.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Nov 03 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.82.1
+* Mon Nov 10 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.83.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,32 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Nov 03 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.82.1
+* Mon Nov 10 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.83.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Oct 30 2025 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.83.1.el8_10]
+- fs: fix UAF/GPF bug in nilfs_mdt_destroy (Abhi Das) [RHEL-116658] {CVE-2022-50367}
+- redhat/configs: Enable CONFIG_MITIGATION_VMSCAPE for x86_64 (Waiman Long) [RHEL-114285]
+- x86/vmscape: Add old Intel CPUs to affected list (Waiman Long) [RHEL-114285] {CVE-2025-40300}
+- x86/vmscape: Warn when STIBP is disabled with SMT (Waiman Long) [RHEL-114285] {CVE-2025-40300}
+- x86/bugs: Move cpu_bugs_smt_update() down (Waiman Long) [RHEL-114285] {CVE-2025-40300}
+- x86/vmscape: Enable the mitigation (Waiman Long) [RHEL-114285] {CVE-2025-40300}
+- x86/vmscape: Add conditional IBPB mitigation (Waiman Long) [RHEL-114285] {CVE-2025-40300}
+- x86/vmscape: Enumerate VMSCAPE bug (Waiman Long) [RHEL-114285] {CVE-2025-40300}
+- Documentation/hw-vuln: Add VMSCAPE documentation (Waiman Long) [RHEL-114285] {CVE-2025-40300}
+- i40e: fix Jumbo Frame support after iPXE boot (Mohammad Heib) [RHEL-121781]
+- i40e: Report MFS in decimal base instead of hex (Mohammad Heib) [RHEL-121781]
+- i40e: Fix unexpected MFS warning message (Mohammad Heib) [RHEL-121781]
+- bitfield: Add FIELD_MODIFY() helper (Mohammad Heib) [RHEL-121781]
+- bitops: Add non-atomic bitops for pointers (Mohammad Heib) [RHEL-121781]
+- qed/qede: Fix scheduling while atomic (CKI Backport Bot) [RHEL-9757]
+- fanotify: add watchdog for permission events (Miklos Szeredi) [RHEL-123215]
+- jiffies: Cast to unsigned long in secs_to_jiffies() conversion (Miklos Szeredi) [RHEL-123215]
+- jiffies: Define secs_to_jiffies() (Miklos Szeredi) [RHEL-123215]
+- s390/pci: Fix __pcilg_mio_inuser() inline assembly (Mete Durlu) [RHEL-105611]
+- mm: zswap: fix missing folio cleanup in writeback race path (Aristeu Rozanski) [RHEL-116239] {CVE-2023-53178}
+- mm: fix zswap writeback race condition (Aristeu Rozanski) [RHEL-116239] {CVE-2023-53178}
 
 * Thu Oct 23 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.82.1.el8_10]
 - smb: client: fix missing timestamp updates after utime(2) (Paulo Alcantara) [RHEL-109431]
