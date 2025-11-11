@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 570.60.1
+%define pkgrelease 570.62.1
 %define kversion 5
-%define tarfile_release 5.14.0-570.60.1.el9_6
+%define tarfile_release 5.14.0-570.62.1.el9_6
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 570.60.1%{?buildid}%{?dist}
+%define specrelease 570.62.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-570.60.1.el9_6
+%define kabiversion 5.14.0-570.62.1.el9_6
 
 #
 # End of genspec.sh variables
@@ -3866,7 +3866,7 @@ fi
 #
 #
 %changelog
-* Wed Nov 05 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.60.1
+* Tue Nov 11 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-570.62.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3878,10 +3878,93 @@ fi
   unmaintained
 - NFSD: fix hang in nfsd4_shutdown_callback
 
-* Wed Nov 05 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.60.1
+* Tue Nov 11 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-570.62.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Mon Nov 03 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.62.1.el9_6]
+- redhat/configs: Enable CONFIG_MITIGATION_VMSCAPE for x86 (Waiman Long) [RHEL-114270]
+- x86/vmscape: Add old Intel CPUs to affected list (Waiman Long) [RHEL-114270] {CVE-2025-40300}
+- x86/vmscape: Warn when STIBP is disabled with SMT (Waiman Long) [RHEL-114270] {CVE-2025-40300}
+- x86/bugs: Move cpu_bugs_smt_update() down (Waiman Long) [RHEL-114270] {CVE-2025-40300}
+- x86/vmscape: Enable the mitigation (Waiman Long) [RHEL-114270] {CVE-2025-40300}
+- x86/vmscape: Add conditional IBPB mitigation (Waiman Long) [RHEL-114270] {CVE-2025-40300}
+- x86/vmscape: Enumerate VMSCAPE bug (Waiman Long) [RHEL-114270] {CVE-2025-40300}
+- Documentation/hw-vuln: Add VMSCAPE documentation (Waiman Long) [RHEL-114270] {CVE-2025-40300}
+- randomize_kstack: Remove non-functional per-arch entropy filtering (Waiman Long) [RHEL-114270]
+- redhat/configs: Enable CONFIG_MITIGATION_TSA for x86 (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/process: Move the buffer clearing before MONITOR (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2024-36357 CVE-2024-36350}
+- x86/microcode/AMD: Add TSA microcode SHAs (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2024-36357 CVE-2024-36350}
+- KVM: SVM: Advertise TSA CPUID bits to guests (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2024-36357 CVE-2024-36350}
+- x86/bugs: Add a Transient Scheduler Attacks mitigation (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2024-36357 CVE-2024-36350}
+- x86/bugs: Rename MDS machinery to something more generic (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2024-36357 CVE-2024-36350}
+- x86/idle: Use MONITOR and MWAIT mnemonics in <asm/mwait.h> (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/idle: Remove .s output beautifying delimiters from simpler asm() templates (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/idle: Standardize argument types for MONITOR{,X} and MWAIT{,X} instruction wrappers on 'u32' (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/idle: Remove MFENCEs for X86_BUG_CLFLUSH_MONITOR in mwait_idle_with_hints() and  prefer_mwait_c1_over_halt() (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Rename mmio_stale_data_clear to cpu_buf_vm_clear (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode: Consolidate the loader enablement checking (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Fix __apply_microcode_amd()'s return value (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2025-22047}
+- x86/microcode/AMD: Add some forgotten models to the SHA check (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Load only SHA256-checksummed patches (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Add get_patch_level() (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Get rid of the _load_microcode_amd() forward declaration (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Merge early_apply_microcode() into its single callsite (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Remove unused save_microcode_in_initrd_amd() declarations (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Remove ugly linebreak in __verify_patch_section() signature (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpu: Introduce new microcode matching helper (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Remove ret local var in early_apply_microcode() (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Have __apply_microcode_amd() return bool (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Return bool from find_blobs_in_containers() (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Flush patch buffer mapping after application (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/CPU/AMD: Terminate the erratum_1386_microcode array (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2024-56721}
+- x86/mm: Carve out INVLPG inline asm for use by others (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpu: Fix formatting of cpuid_bits[] in scattered.c (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpufeatures: Add X86_FEATURE_AMD_WORKLOAD_CLASS feature bit (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Split load_microcode_amd() (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Pay attention to the stepping dynamically (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Use code segment selector for VERW operand (Waiman Long) [RHEL-83896 RHEL-83905] {CVE-2024-50072}
+- x86/microcode/AMD: Fix a -Wsometimes-uninitialized clang false positive (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/microcode/AMD: Use the family,model,stepping encoded in the patch ID (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/CPU/AMD: Improve the erratum 1386 workaround (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86: Add a comment about the "magic" behind shadow sti before mwait (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Revert "Reverse instruction order of CLEAR_CPU_BUFFERS" (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: KVM: Add support for SRSO_MSR_FIX (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit (Waiman Long) [RHEL-83896 RHEL-83905]
+- KVM: x86: Advertise SRSO_USER_KERNEL_NO to userspace (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add SRSO_USER_KERNEL_NO support (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Do not use UNTRAIN_RET with IBPB on entry (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Skip RSB fill at VMEXIT (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpufeatures: Add a IBPB_NO_RET BUG flag (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpufeatures: Define X86_FEATURE_AMD_IBPB_RET (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Fix handling when SRSO mitigation is disabled (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add missing NO_SSB flag (Waiman Long) [RHEL-83896 RHEL-83905]
+- Documentation/srso: Document a method for checking safe RET operates properly (Waiman Long) [RHEL-83896 RHEL-83905]
+- redhat/configs: Add new CONFIG_MITIGATION_* kconfig files (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for GDS (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Remove GDS Force Kconfig option (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for SSB (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for Spectre V2 (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for SRBDS (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for Spectre v1 (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for RETBLEED (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for L1TF (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for MMIO Stable Data (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for TAA (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Add a separate config for MDS (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpufeatures: Flip the /proc/cpuinfo appearance logic (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/bugs: Switch to new Intel CPU model defines (Waiman Long) [RHEL-83896 RHEL-83905]
+- x86/cpu: Use EXPORT_PER_CPU_SYMBOL_GPL() for x86_spec_ctrl_current (Waiman Long) [RHEL-83896 RHEL-83905]
+- docs: move x86 documentation into Documentation/arch/ (Waiman Long) [RHEL-83896 RHEL-83905]
+- cxgb4: Avoid removal of uninserted tid JIRA: https://issues.redhat.com/browse/RHEL-112152 (Jakub Ramaseuski)
+
+* Thu Oct 30 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.61.1.el9_6]
+- NFS: Extend rdirplus mount option with "force|none" (CKI Backport Bot) [RHEL-118450]
+- sched: Fix stop_one_cpu_nowait() vs hotplug (Luis Claudio R. Goncalves) [RHEL-116212]
+- s390/hypfs: Enable limited access during lockdown (CKI Backport Bot) [RHEL-114433]
+- s390/hypfs: Avoid unnecessary ioctl registration in debugfs (CKI Backport Bot) [RHEL-114433]
+- debugfs: lockdown: Allow reading debugfs files that are not world readable (Mete Durlu) [RHEL-114433]
 
 * Sat Oct 25 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-570.60.1.el9_6]
 - ibmveth: Add multi buffers rx replenishment hcall support (Mamatha Inamdar) [RHEL-117437]
