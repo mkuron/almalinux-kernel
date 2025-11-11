@@ -2428,6 +2428,18 @@ source "kernel/livepatch/Kconfig"
 
 endmenu
 
+config CC_HAS_NAMED_AS
+	def_bool CC_IS_GCC && GCC_VERSION >= 120100
+
+config USE_X86_SEG_SUPPORT
+	def_bool y
+	depends on CC_HAS_NAMED_AS
+	#
+	# -fsanitize=kernel-address (KASAN) is at the moment incompatible
+	# with named address spaces - see GCC PR sanitizer/111736.
+	#
+	depends on !KASAN
+
 config CC_HAS_SLS
 	def_bool $(cc-option,-mharden-sls=all)
 
@@ -2621,17 +2633,6 @@ config MITIGATION_SPECTRE_BHI
 	  indirect branches.
 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
 
-config MITIGATION_ITS
-	bool "Enable Indirect Target Selection mitigation"
-	depends on CPU_SUP_INTEL && X86_64
-	depends on MITIGATION_RETPOLINE && MITIGATION_RETHUNK
-	default y
-	help
-	  Enable Indirect Target Selection (ITS) mitigation. ITS is a bug in
-	  BPU on some Intel CPUs that may allow Spectre V2 style attacks. If
-	  disabled, mitigation cannot be enabled via cmdline.
-	  See <file:Documentation/admin-guide/hw-vuln/indirect-target-selection.rst>
-
 config MITIGATION_MDS
 	bool "Mitigate Microarchitectural Data Sampling (MDS) hardware bug"
 	depends on CPU_SUP_INTEL
@@ -2733,6 +2734,17 @@ config MITIGATION_SSB
 	  of speculative execution in a similar way to the Meltdown and Spectre
 	  security vulnerabilities.
 
+config MITIGATION_ITS
+	bool "Enable Indirect Target Selection mitigation"
+	depends on CPU_SUP_INTEL && X86_64
+	depends on MITIGATION_RETPOLINE && MITIGATION_RETHUNK
+	default y
+	help
+	  Enable Indirect Target Selection (ITS) mitigation. ITS is a bug in
+	  BPU on some Intel CPUs that may allow Spectre V2 style attacks. If
+	  disabled, mitigation cannot be enabled via cmdline.
+	  See <file:Documentation/admin-guide/hw-vuln/indirect-target-selection.rst>
+
 config MITIGATION_TSA
 	bool "Mitigate Transient Scheduler Attacks"
 	depends on CPU_SUP_AMD
@@ -2742,15 +2754,6 @@ config MITIGATION_TSA
 	  security vulnerability on AMD CPUs which can lead to forwarding of
 	  invalid info to subsequent instructions and thus can affect their
 	  timing and thereby cause a leakage.
-
-config MITIGATION_VMSCAPE
-	bool "Mitigate VMSCAPE"
-	depends on KVM
-	default y
-	help
-	  Enable mitigation for VMSCAPE attacks. VMSCAPE is a hardware security
-	  vulnerability on Intel and AMD CPUs that may allow a guest to do
-	  Spectre v2 style attacks on userspace hypervisor.
 endif
 
 config ARCH_HAS_ADD_PAGES
