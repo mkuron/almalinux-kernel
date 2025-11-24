@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.84.1.el8_10
+%define pkgrelease 553.85.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.84.1%{?dist}
+%define specrelease 553.85.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Tue Nov 18 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.84.1
+* Mon Nov 24 2025 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.85.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,26 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Nov 18 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.84.1
+* Mon Nov 24 2025 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.85.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Nov 13 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.85.1.el8_10]
+- i40e: add mask to apply valid bits for itr_idx (Michal Schmidt) [RHEL-123799]
+- i40e: add max boundary check for VF filters (Michal Schmidt) [RHEL-123799] {CVE-2025-39968}
+- i40e: fix validation of VF state in get resources (Michal Schmidt) [RHEL-123799] {CVE-2025-39969}
+- i40e: fix input validation logic for action_meta (Michal Schmidt) [RHEL-123799] {CVE-2025-39970}
+- i40e: Fix filter input checks to prevent config with invalid values (Michal Schmidt) [RHEL-123799]
+- i40e: fix idx validation in config queues msg (Michal Schmidt) [RHEL-123799] {CVE-2025-39971}
+- i40e: fix: remove needless retries of NVM update (Michal Schmidt) [RHEL-123799]
+- i40e: remove i40e_status (Michal Schmidt) [RHEL-123799]
+- i40e: fix idx validation in i40e_validate_queue_map (Michal Schmidt) [RHEL-123799] {CVE-2025-39972}
+- i40e: add validation for ring_len param (Michal Schmidt) [RHEL-123799] {CVE-2025-39973}
+- i40e: increase max descriptors for XL710 (Michal Schmidt) [RHEL-123799]
+- drm/nouveau: Don't create connectors that aren't in disp.conn_mask (Lyude Paul) [RHEL-22122]
+- NFS: Fix a race when updating an existing write (Olga Kornievskaia) [RHEL-113849] {CVE-2025-39697}
+- nfs: fold nfs_page_group_lock_subrequests into nfs_lock_and_join_requests (Olga Kornievskaia) [RHEL-113849] {CVE-2025-39697}
+- The rpminspect.yaml emptyrpm list needs to be expanded (Alexandra Hájková)
 
 * Thu Nov 06 2025 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.84.1.el8_10]
 - cgroup: don't put ERR_PTR() into fc->root (CKI Backport Bot) [RHEL-123775]

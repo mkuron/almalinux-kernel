@@ -26,6 +26,8 @@ emptyrpm:
         - kernel-debug
         - kernel-zfcpdump
         - kernel-zfcpdump-modules
+        - kernel-rt
+        - kernel-rt-debug
 
 patches:
     ignore_list:
