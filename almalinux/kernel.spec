@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.21.1
+%define pkgrelease 124.27.1
 %define kversion 6
-%define tarfile_release 6.12.0-124.21.1.el10_1
+%define tarfile_release 6.12.0-124.27.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.21.1%{?buildid}%{?dist}
+%define specrelease 124.27.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-124.21.1.el10_1
+%define kabiversion 6.12.0-124.27.1.el10_1
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4389,14 +4389,14 @@ fi\
 #
 #
 %changelog
-* Mon Dec 22 2025 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.21.1
+* Tue Jan 13 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.27.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Mon Dec 22 2025 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.21.1
+* Tue Jan 13 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.27.1
 - Enable Btrfs support for all kernel variants
 
-* Mon Dec 22 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.21.1
+* Tue Jan 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.27.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4406,6 +4406,52 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Sat Dec 27 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.27.1.el10_1]
+- arm64: errata: Expand speculative SSBS workaround for Cortex-A720AE (Waiman Long) [RHEL-120684]
+- arm64: cputype: Add Cortex-A720AE definitions (Waiman Long) [RHEL-120684]
+- arm64: errata: Add missing sentinels to Spectre-BHB MIDR arrays (Waiman Long) [RHEL-120684]
+- arm64: Add support for HIP09 Spectre-BHB mitigation (Waiman Long) [RHEL-120684]
+- arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists (Waiman Long) [RHEL-120684]
+- arm64: cputype: Add MIDR_CORTEX_A76AE (Waiman Long) [RHEL-120684]
+- arm64: errata: Add KRYO 2XX/3XX/4XX silver cores to Spectre BHB safe list (Waiman Long) [RHEL-120684]
+- kmem/tracing: add kmem name to kmem_cache_alloc tracepoint (Charles Haithcock) [RHEL-129882]
+- mm: memory-tiering: fix PGPROMOTE_CANDIDATE counting (Rafael Aquini) [RHEL-128383]
+
+* Tue Dec 23 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.26.1.el10_1]
+- usb: dwc3: Fix race condition between concurrent dwc3_remove_requests() call paths (CKI Backport Bot) [RHEL-137150] {CVE-2025-68287}
+- drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE (CKI Backport Bot) [RHEL-134431] {CVE-2025-40277}
+- net: phylink: add lock for serializing concurrent pl->phydev writes with resolver (CKI Backport Bot) [RHEL-129812] {CVE-2025-39905}
+
+* Sat Dec 20 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.25.1.el10_1]
+- sctp: avoid NULL dereference when chunk data buffer is missing (CKI Backport Bot) [RHEL-134010] {CVE-2025-40240}
+- HID: i2c-hid: Resolve touchpad issues on Dell systems during S4 (CKI Backport Bot) [RHEL-128281]
+- HID: multitouch: fix slab out-of-bounds access in mt_report_fixup() (CKI Backport Bot) [RHEL-124610] {CVE-2025-39806}
+- inetpeer: do not get a refcount in inet_getpeer() (Guillaume Nault) [RHEL-115287]
+- inetpeer: update inetpeer timestamp in inet_getpeer() (Guillaume Nault) [RHEL-115287]
+- inetpeer: remove create argument of inet_getpeer() (Guillaume Nault) [RHEL-115287]
+- inetpeer: remove create argument of inet_getpeer_v[46]() (Guillaume Nault) [RHEL-115287]
+
+* Tue Dec 16 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.24.1.el10_1]
+- audit: fix out-of-bounds read in audit_compare_dname_path() (Richard Guy Briggs) [RHEL-119185] {CVE-2025-39840}
+
+* Sat Dec 13 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.23.1.el10_1]
+- redhat: use RELEASE_LOCALVERSION also for dist-get-tag (Jan Stancek)
+- redhat: introduce RELEASE_LOCALVERSION variable (Jan Stancek)
+- iommufd: Fix race during abort for file descriptors (Eder Zulian) [RHEL-123789] {CVE-2025-39966}
+- smb: client: handle lack of IPC in dfs_cache_refresh() (Paulo Alcantara) [RHEL-126227]
+- mm: slub: avoid wake up kswapd in set_track_prepare (Audra Mitchell) [RHEL-125522] {CVE-2025-39843}
+- dpll: zl3073x: Increase maximum size of flash utility (Ivan Vecera) [RHEL-116157]
+- dpll: zl3073x: Fix double free in zl3073x_devlink_flash_update() (Ivan Vecera) [RHEL-116157]
+- dpll: zl3073x: Implement devlink flash callback (Ivan Vecera) [RHEL-116157]
+- dpll: zl3073x: Add firmware loading functionality (Ivan Vecera) [RHEL-116157]
+- dpll: zl3073x: Add low-level flash functions (Ivan Vecera) [RHEL-116157]
+- dpll: zl3073x: Add functions to access hardware registers (Ivan Vecera) [RHEL-116157]
+
+* Sun Dec 07 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.22.1.el10_1]
+- ASoC: Intel: sof_sdw: Add quirks for Lenovo P1 and P16 (CKI Backport Bot) [RHEL-130550]
+- tls: wait for pending async decryptions if tls_strp_msg_hold fails (CKI Backport Bot) [RHEL-128866] {CVE-2025-40176}
+- sched/deadline: Fix RT task potential starvation when expiry time passed (CKI Backport Bot) [RHEL-124660]
 
 * Thu Dec 04 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.21.1.el10_1]
 - CVE-2025-38499 kernel: clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns (Abhi Das) [RHEL-129282] {CVE-2025-38499}
