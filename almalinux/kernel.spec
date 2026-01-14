@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.16.1
+%define pkgrelease 611.20.1
 %define kversion 5
-%define tarfile_release 5.14.0-611.16.1.el9_7
+%define tarfile_release 5.14.0-611.20.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.16.1%{?buildid}%{?dist}
+%define specrelease 611.20.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-611.16.1.el9_7
+%define kabiversion 5.14.0-611.20.1.el9_7
 
 #
 # End of genspec.sh variables
@@ -3768,7 +3768,7 @@ fi
 #
 #
 %changelog
-* Mon Dec 22 2025 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.16.1
+* Wed Jan 14 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.20.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3779,10 +3779,37 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Dec 22 2025 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.16.1
+* Wed Jan 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.20.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Sat Dec 20 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.20.1.el9_7]
+- HID: multitouch: fix slab out-of-bounds access in mt_report_fixup() (CKI Backport Bot) [RHEL-124607] {CVE-2025-39806}
+- sctp: avoid NULL dereference when chunk data buffer is missing (CKI Backport Bot) [RHEL-134001] {CVE-2025-40240}
+- selftests/landlock: Add a new test for setuid() (Štěpán Horáček) [RHEL-132712]
+- selftests/landlock: Split signal_scoping_threads tests (Štěpán Horáček) [RHEL-132712]
+- landlock: Always allow signals between threads of the same process (Štěpán Horáček) [RHEL-132712]
+- landlock: Prepare to add second errata (Štěpán Horáček) [RHEL-132712]
+- landlock: Add the errata interface (Štěpán Horáček) [RHEL-132712]
+- selftests/landlock: Test signal scoping for threads (Štěpán Horáček) [RHEL-132712]
+- selftests/landlock: Test signal scoping (Štěpán Horáček) [RHEL-132712]
+- landlock: Add signal scoping (Štěpán Horáček) [RHEL-132712]
+
+* Thu Dec 18 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.19.1.el9_7]
+- scsi: st: Skip buffer flush for information ioctls (John Meneghini) [RHEL-133543]
+- scsi: st: Separate st-unique ioctl handling from SCSI common ioctl handling (John Meneghini) [RHEL-133543]
+- audit: fix out-of-bounds read in audit_compare_dname_path() (Richard Guy Briggs) [RHEL-119176] {CVE-2025-39840}
+
+* Sat Dec 13 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.18.1.el9_7]
+- NFS: remove revoked delegation from server's delegation list (Benjamin Coddington) [RHEL-134237]
+- redhat: use RELEASE_LOCALVERSION also for dist-get-tag (Jan Stancek)
+- redhat: introduce RELEASE_LOCALVERSION variable (Jan Stancek)
+
+* Thu Dec 11 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.17.1.el9_7]
+- smb: client: handle lack of IPC in dfs_cache_refresh() (Paulo Alcantara) [RHEL-126165]
+- smb: client: get rid of d_drop() in cifs_do_rename() (Paulo Alcantara) [RHEL-124917]
+- mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory (CKI Backport Bot) [RHEL-119150] {CVE-2025-39883}
 
 * Sun Dec 07 2025 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.16.1.el9_7]
 - CVE-2025-38499 kernel: clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns (Abhi Das) [RHEL-129261] {CVE-2025-38499}
