@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.92.1.el8_10
+%define pkgrelease 553.94.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.92.1%{?dist}
+%define specrelease 553.94.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Wed Jan 14 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.92.1
+* Mon Jan 19 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.94.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Jan 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.92.1
+* Mon Jan 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.94.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Jan 13 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.94.1.el8_10]
+- net: atlantic: fix fragment overflow handling in RX path (CKI Backport Bot) [RHEL-139482] {CVE-2025-68301}
+- smb: client: let recv_done verify data_offset, data_length and remaining_data_length (Paulo Alcantara) [RHEL-131387] {CVE-2025-39933}
+- smb: client: Fix use-after-free in cifs_fill_dirent (CKI Backport Bot) [RHEL-134369] {CVE-2025-38051}
+
+* Thu Jan 08 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.93.1.el8_10]
+- mm: compaction: update the COMPACT[STALL|FAIL] events properly (Lucas Oakley) [RHEL-132449]
+- drm/sched: Fix potential double free in drm_sched_job_add_resv_dependencies (Mika Penttilä) [RHEL-125456] {CVE-2025-40096}
+- drm/i915: mark requests for GuC virtual engines to avoid use-after-free (CKI Backport Bot) [RHEL-124682] {CVE-2023-53552}
 
 * Tue Jan 06 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.92.1.el8_10]
 - libceph: fix potential use-after-free in have_mon_and_osd_map() (CKI Backport Bot) [RHEL-137395] {CVE-2025-68285}
