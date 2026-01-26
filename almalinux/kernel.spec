@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.94.1.el8_10
+%define pkgrelease 553.97.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.94.1%{?dist}
+%define specrelease 553.97.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Jan 19 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.94.1
+* Mon Jan 26 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.97.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,51 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Jan 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.94.1
+* Mon Jan 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.97.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Jan 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.97.1.el8_10]
+- ASoC: Intel: bytcr_rt5640: Fix invalid quirk input mapping (CKI Backport Bot) [RHEL-129107] {CVE-2025-40154}
+
+* Sat Jan 17 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.96.1.el8_10]
+- Bluetooth: hci_event: call disconnect callback before deleting conn (CKI Backport Bot) [RHEL-137039] {CVE-2023-53673}
+- drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE (CKI Backport Bot) [RHEL-134423] {CVE-2025-40277}
+- xen: delay xen_hvm_init_time_ops() if kdump is boot on vcpu>=32 (John J Coleman) [RHEL-111354]
+- xen: Fix x86 sched_clock() interface for xen (John J Coleman) [RHEL-111354]
+- x86/xen/time: Output xen sched_clock time from 0 (John J Coleman) [RHEL-111354]
+
+* Thu Jan 15 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.95.1.el8_10]
+- NFSv4: Check for delegation validity in nfs_start_delegation_return_locked() (Olga Kornievskaia) [RHEL-132819]
+- vsock: Ignore signal/timeout on connect() if already established (CKI Backport Bot) [RHEL-139273] {CVE-2025-40248}
+- scsi: lpfc: avoid crashing in lpfc_nlp_get() if lpfc_nodelist was freed (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix reusing an ndlp that is marked NLP_DROPPED during FLOGI (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Avoid potential ndlp use-after-free in dev_loss_tmo_callbk (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Prevent failure to reregister with NVMe transport after PRLI retry (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix lpfc_check_sli_ndlp() handling for GEN_REQUEST64 commands (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Ignore ndlp rport mismatch in dev_loss_tmo callbk (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Modify handling of ADISC based on ndlp state and RPI registration (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Delete NLP_TARGET_REMOVE flag due to obsolete usage (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Prevent NDLP reference count underflow in dev_loss_tmo callback (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Check devloss callbk done flag for potential stale NDLP ptrs (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Ensure DA_ID handling completion before deleting an NPIV instance (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix kref imbalance on fabric ndlps from dev_loss_tmo handler (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Update PRLO handling in direct attached topology (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix unsolicited FLOGI kref imbalance when in direct attached topology (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix handling of fully recovered fabric node in dev_loss callbk (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Add condition to delete ndlp object after sending BLS_RJT to an ABTS (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Remove NLP_RCV_PLOGI early return during RSCN processing for ndlps (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Allow lpfc_plogi_confirm_nport() logic to execute for Fabric nodes (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix list_entry null check warning in lpfc_cmpl_els_plogi() (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix possible file string name overflow when updating firmware (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Validate ELS LS_ACC completion payload (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Remove extra ndlp kref decrement in FLOGI cmpl for loop topology (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Revise NPIV ELS unsol rcv cmpl logic to drop ndlp based on nlp_state (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix double free in lpfc_cmpl_els_logo_acc() caused by lpfc_nlp_not_used() (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Move scsi_host_template outside dynamically allocated/freed phba (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fill in missing ndlp kref puts in error paths (Ewan D. Milne) [RHEL-32324]
+- scsi: lpfc: Fix kasan slab-out-of-bounds error in lpfc_unreg_login (Ewan D. Milne) [RHEL-32324]
 
 * Tue Jan 13 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.94.1.el8_10]
 - net: atlantic: fix fragment overflow handling in RX path (CKI Backport Bot) [RHEL-139482] {CVE-2025-68301}
