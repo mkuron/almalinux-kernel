@@ -76,6 +76,7 @@
 0x79aa0e31	__ip_dev_find	vmlinux	EXPORT_SYMBOL	
 0x0d542439	__ipv6_addr_type	vmlinux	EXPORT_SYMBOL	
 0x199c4833	__irq_apply_affinity_hint	vmlinux	EXPORT_SYMBOL_GPL	
+0xe08433f8	__kabi__alt_instr	vmlinux	EXPORT_SYMBOL_GPL	
 0xeb233a45	__kmalloc	vmlinux	EXPORT_SYMBOL	
 0x1ba59527	__kmalloc_node	vmlinux	EXPORT_SYMBOL	
 0x68f31cbd	__list_add_valid	vmlinux	EXPORT_SYMBOL	
