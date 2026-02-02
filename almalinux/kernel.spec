@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.97.1.el8_10
+%define pkgrelease 553.100.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.97.1%{?dist}
+%define specrelease 553.100.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Jan 26 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.97.1
+* Mon Feb 02 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.100.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,31 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Jan 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.97.1
+* Mon Feb 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.100.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Jan 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.100.1.el8_10]
+- IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (Kamal Heib) [RHEL-138396] {CVE-2024-26766}
+
+* Sat Jan 24 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.99.1.el8_10]
+- fbdev: bitblit: bound-check glyph index in bit_putcs* (Jocelyn Falempe) [RHEL-136937] {CVE-2025-40322}
+- atm: clip: Fix infinite recursive call of clip_push(). (Guillaume Nault) [RHEL-137591] {CVE-2025-38459}
+- squashfs: fix memory leak in squashfs_fill_super (Abhi Das) [RHEL-138010] {CVE-2025-38415}
+- Squashfs: check return result of sb_min_blocksize (CKI Backport Bot) [RHEL-138010] {CVE-2025-38415}
+- usb: core: config: Prevent OOB read in SS endpoint companion parsing (CKI Backport Bot) [RHEL-137362] {CVE-2025-39760}
+- RDMA/rxe: Fix slab-use-after-free Read in rxe_queue_cleanup bug (CKI Backport Bot) [RHEL-137058] {CVE-2025-38024}
+
+* Thu Jan 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.98.1.el8_10]
+- vfs: use READ_ONCE() to access ->i_link (Jay Shin) [RHEL-141790]
+- fold generic_readlink() into its only caller (Jay Shin) [RHEL-141790]
+- fs/proc: fix uaf in proc_readdir_de() (Pavel Reichl) [RHEL-137093] {CVE-2025-40271}
+- Backport 'create an empty changelog file when changing its name' (Alexandra Hájková)
+- mptcp: fix race condition in mptcp_schedule_work() (Paolo Abeni) [RHEL-134443] {CVE-2025-40258}
+- mptcp: use mptcp_schedule_work instead of open-coding it (Paolo Abeni) [RHEL-134443]
+- tcp: fix a signed-integer-overflow bug in tcp_add_backlog() (Guillaume Nault) [RHEL-137976] {CVE-2022-50865}
+- tcp: minor optimization in tcp_add_backlog() (Guillaume Nault) [RHEL-137976] {CVE-2022-50865}
+- RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem (Kamal Heib) [RHEL-134347] {CVE-2025-38022}
 
 * Tue Jan 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.97.1.el8_10]
 - ASoC: Intel: bytcr_rt5640: Fix invalid quirk input mapping (CKI Backport Bot) [RHEL-129107] {CVE-2025-40154}
