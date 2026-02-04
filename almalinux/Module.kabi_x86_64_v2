@@ -64,6 +64,7 @@
 0x07bdb893	__ip_dev_find	vmlinux	EXPORT_SYMBOL	
 0x0d542439	__ipv6_addr_type	vmlinux	EXPORT_SYMBOL	
 0x199c4833	__irq_apply_affinity_hint	vmlinux	EXPORT_SYMBOL_GPL	
+0xe08433f8	__kabi__alt_instr	vmlinux	EXPORT_SYMBOL_GPL	
 0xb47efcb0	__kmalloc_cache_node_noprof	vmlinux	EXPORT_SYMBOL	
 0xb34f2269	__kmalloc_cache_noprof	vmlinux	EXPORT_SYMBOL	
 0xa67f04f8	__kmalloc_large_node_noprof	vmlinux	EXPORT_SYMBOL	
