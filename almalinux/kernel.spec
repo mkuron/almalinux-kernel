@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.100.1.el8_10
+%define pkgrelease 553.104.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.100.1%{?dist}
+%define specrelease 553.104.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Feb 02 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.100.1
+* Mon Feb 09 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.104.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,42 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Feb 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.100.1
+* Mon Feb 09 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.104.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Feb 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.104.1.el8_10]
+- Revert "audit: Avoid excessive dput/dget in audit_context setup and reset paths" (Alexandra Hájková) [RHEL-145856]
+
+* Tue Feb 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.103.1.el8_10]
+- ext4: fix use-after-free in ext4_orphan_cleanup (CKI Backport Bot) [RHEL-136000] {CVE-2022-50673}
+- ext4: lost matching-pair of trace in ext4_truncate (CKI Backport Bot) [RHEL-136000] {CVE-2022-50673}
+- ALSA: usb-audio: Fix potential overflow of PCM transfer buffer (CKI Backport Bot) [RHEL-136904] {CVE-2025-40269}
+
+* Sat Jan 31 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.102.1.el8_10]
+- nvme-tcp: fix NULL pointer dereferences in nvmet_tcp_build_pdu_iovec (CKI Backport Bot) [RHEL-144327] {CVE-2026-22998}
+- NFSv4: ensure the open stateid seqid doesn't go backwards (Scott Mayhew) [RHEL-121683]
+- audit: Avoid excessive dput/dget in audit_context setup and reset paths (Waiman Long) [RHEL-140776]
+- lockref: remove lockref_put_not_zero (Waiman Long) [RHEL-140776]
+- lockref: stop doing cpu_relax in the cmpxchg loop (Waiman Long) [RHEL-140776]
+- lockref: remove unused 'lockref_get_or_lock()' function (Waiman Long) [RHEL-140776]
+- lockref: Limit number of cmpxchg loop retries (Waiman Long) [RHEL-140776]
+- net: use dst_dev_rcu() in sk_setup_caps() (Hangbin Liu) [RHEL-129079] {CVE-2025-40170}
+- ipv6: use RCU in ip6_xmit() (Hangbin Liu) [RHEL-129004] {CVE-2025-40135}
+- ipv6: use RCU in ip6_output() (Hangbin Liu) [RHEL-128966] {CVE-2025-40158}
+- net: dst: introduce dst->dev_rcu (Hangbin Liu) [RHEL-128966]
+- net: Add locking to protect skb->dev access in ip_output (Hangbin Liu) [RHEL-128966]
+- net: dst: add four helpers to annotate data-races around dst->dev (Hangbin Liu) [RHEL-128966]
+- ipv4: use RCU protection in __ip_rt_update_pmtu() (Hangbin Liu) [RHEL-128966] {CVE-2025-21766}
+- net: gain ipv4 mtu when mtu is not locked (Hangbin Liu) [RHEL-128966]
+- ipv4: use RCU protection in ip_dst_mtu_maybe_forward() (Hangbin Liu) [RHEL-128966]
+- ipv4: add RCU protection to ip4_dst_hoplimit() (Hangbin Liu) [RHEL-128966]
+
+* Thu Jan 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.101.1.el8_10]
+- i40e: avoid redundant VF link state updates (CKI Backport Bot) [RHEL-141878]
+- NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid (CKI Backport Bot) [RHEL-140255] {CVE-2025-68349}
+- vsock/vmci: Clear the vmci transport packet properly when initializing it (CKI Backport Bot) [RHEL-137692] {CVE-2025-38403}
+- sched: Fix stop_one_cpu_nowait() vs hotplug (Herton R. Krzesinski) [RHEL-85625]
 
 * Tue Jan 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.100.1.el8_10]
 - IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (Kamal Heib) [RHEL-138396] {CVE-2024-26766}
