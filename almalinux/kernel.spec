@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.104.1.el8_10
+%define pkgrelease 553.105.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.104.1%{?dist}
+%define specrelease 553.105.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Mon Feb 09 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.104.1
+* Tue Feb 17 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.105.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,11 +2729,33 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Feb 09 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.104.1
+* Tue Feb 17 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.105.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 
-* Tue Feb 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.104.1.el8_10]
+* Sat Feb 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.105.1.el8_10]
+- s390/ipl: Clear SBP flag when bootprog is set (Mete Durlu) [RHEL-145334]
+- Bluetooth: hci_event: Fix checking conn for le_conn_complete_evt (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_sync: Fix UAF on hci_abort_conn_sync (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_conn: Consolidate code for aborting connections (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: Fix printing errors if LE Connection times out (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_conn: Fix not cleaning up on LE Connection failure (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_sync: hold hdev->lock when cleanup hci_conn (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: Move hci_abort_conn to hci_conn.c (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: mgmt: Fix using hci_conn_abort (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_conn: Fix hci_connect_le_sync (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_sync: Cleanup hci_conn if it cannot be aborted (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_event: Fix checking for invalid handle on error status (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: call hci_le_conn_failed with hdev lock in hci_le_conn_failed (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_sync: fix undefined return of hci_disconnect_all_sync() (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: hci_event: Ignore multiple conn complete events (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- Bluetooth: fix null ptr deref on hci_sync_conn_complete_evt (David Marlin) [RHEL-137111] {CVE-2023-53762}
+- fbdev: Add bounds checking in bit_putcs to fix vmalloc-out-of-bounds (CKI Backport Bot) [RHEL-137678] {CVE-2025-40304}
+- gfs2: Fix duplicate should_fault_in_pages() call (Andreas Gruenbacher) [RHEL-130505]
+- smc: Use __sk_dst_get() and dst_dev_rcu() in smc_clc_prfx_match(). (Mete Durlu) [RHEL-130012] {CVE-2025-40168}
+
+* Wed Feb 04 2026 Alexandra Hájková <ahajkova@redhat.com> [4.18.0-553.104.1.el8_10]
 - Revert "audit: Avoid excessive dput/dget in audit_context setup and reset paths" (Alexandra Hájková) [RHEL-145856]
 
 * Tue Feb 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.103.1.el8_10]
