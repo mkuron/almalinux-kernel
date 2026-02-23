@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.105.1.el8_10
+%define pkgrelease 553.107.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.105.1%{?dist}
+%define specrelease 553.107.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2718,7 +2718,7 @@ fi
 #
 #
 %changelog
-* Tue Feb 17 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.105.1
+* Mon Feb 23 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.107.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2729,23 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Feb 17 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.105.1
+* Mon Feb 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.107.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Feb 17 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.107.1.el8_10]
+- autofs: use wake_up() instead of wake_up_interruptible(() (Ian Kent) [RHEL-143685]
+- autofs: fix memory leak of waitqueues in autofs_catatonic_mode (Ian Kent) [RHEL-143685] {CVE-2023-54134}
+- i40e: validate ring_len parameter against hardware-specific values (CKI Backport Bot) [RHEL-141709]
+- xfs: set max_agbno to allow sparse alloc of last full inode chunk (Brian Foster) [RHEL-136693]
+- audit: merge loops in __audit_inode_child() (Ricardo Robaina) [RHEL-140442]
+
+* Tue Feb 17 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.106.1.el8_10]
+- bridge: mcast: Fix use-after-free during router port configuration (Mohammad Heib) [RHEL-138422] {CVE-2025-38248}
+- net/sched: Enforce that teql can only be used as root qdisc (CKI Backport Bot) [RHEL-146992] {CVE-2026-23074}
+- page_pool: Fix use-after-free in page_pool_recycle_in_ring (Marc Milgram) [RHEL-137838] {CVE-2025-38129}
+- mlxsw: spectrum_mr: Fix use-after-free when updating multicast route stats (CKI Backport Bot) [RHEL-143189] {CVE-2025-68800}
+- smc: Fix use-after-free in __pnet_find_base_ndev(). (Mete Durlu) [RHEL-126886] {CVE-2025-40064}
 
 * Sat Feb 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.105.1.el8_10]
 - s390/ipl: Clear SBP flag when bootprog is set (Mete Durlu) [RHEL-145334]
