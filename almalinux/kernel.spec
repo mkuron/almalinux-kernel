@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.34.1
+%define pkgrelease 611.35.1
 %define kversion 5
-%define tarfile_release 5.14.0-611.34.1.el9_7
+%define tarfile_release 5.14.0-611.35.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.34.1%{?buildid}%{?dist}
+%define specrelease 611.35.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-611.34.1.el9_7
+%define kabiversion 5.14.0-611.35.1.el9_7
 
 #
 # End of genspec.sh variables
@@ -3771,7 +3771,7 @@ fi
 #
 #
 %changelog
-* Wed Feb 18 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.34.1
+* Wed Feb 25 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.35.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3782,10 +3782,14 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Feb 18 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.34.1
+* Wed Feb 25 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.35.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Tue Feb 17 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.35.1.el9_7]
+- page_pool: Fix use-after-free in page_pool_recycle_in_ring (Paolo Abeni) [RHEL-137841] {CVE-2025-38129}
+- exfat: fix double free in delayed_free (CKI Backport Bot) [RHEL-146403] {CVE-2025-38206}
 
 * Sat Feb 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.34.1.el9_7]
 - scsi: storvsc: Process unsupported MODE_SENSE_10 (Li Tian) [RHEL-145183]
