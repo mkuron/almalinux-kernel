@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.109.1.el8_10
+%define pkgrelease 553.111.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.109.1%{?dist}
+%define specrelease 553.111.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -448,16 +448,10 @@ Source9: x509.genkey
 %endif
 
 Source10: almalinuxsecurebootca0.cer
-Source11: almalinuxsecurebootca0.cer
-
-%define secureboot_ca_0 %{SOURCE10}
-%define secureboot_ca_1 %{SOURCE11}
-%define secureboot_ca_2 %{SOURCE11}
-
-%define secureboot_key_0 %{SOURCE10}
-%define pesign_name_0 almalinuxsecurebootca0
-
-
+Source11: almalinuxsecureboot0.cer
+%define secureboot_ca_0  %{SOURCE10}
+%define secureboot_key_0 %{SOURCE11}
+%define pesign_name_0 almalinuxsecureboot0
 
 Source17: mod-blacklist.sh
 Source18: mod-sign.sh
@@ -527,7 +521,6 @@ Source4001: rpminspect.yaml
 
 # AlmaLinux Source
 Source9000: almalinux.pem
-Source9001: almalinuxsecurebootca0.cer
 
 ## Patches needed for building this package
 
@@ -2718,7 +2711,7 @@ fi
 #
 #
 %changelog
-* Mon Mar 02 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.109.1
+* Sun Mar 08 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.111.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2729,9 +2722,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Mar 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.109.1
+* Sun Mar 08 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.111.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Sat Feb 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.111.1.el8_10]
+- macvlan: fix possible UAF in macvlan_forward_source() (Hangbin Liu) [RHEL-144120] {CVE-2026-23001}
+
+* Thu Feb 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.110.1.el8_10]
+- pNFS: fix a missing wake up while waiting on NFS_LAYOUT_DRAIN (Olga Kornievskaia) [RHEL-131922]
+- fbcon: Avoid using FNTCHARCNT() and hard-coded built-in font charcount (Jocelyn Falempe) [RHEL-148636]
+- audit: Use the new {get,put}_fs_pwd_pool() APIs to get/put pwd references (Waiman Long) [RHEL-146026]
+- fs: Add a pool of extra fs->pwd references to fs_struct (Waiman Long) [RHEL-146026]
+- ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr() (CKI Backport Bot) [RHEL-143535] {CVE-2025-71085}
 
 * Tue Feb 24 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.109.1.el8_10]
 - migrate: correct lock ordering for hugetlb file folios (Luiz Capitulino) [RHEL-147261] {CVE-2026-23097}
