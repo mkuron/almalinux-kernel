@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.40.1
+%define pkgrelease 124.43.1
 %define kversion 6
-%define tarfile_release 6.12.0-124.40.1.el10_1
+%define tarfile_release 6.12.0-124.43.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.40.1%{?buildid}%{?dist}
+%define specrelease 124.43.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-124.40.1.el10_1
+%define kabiversion 6.12.0-124.43.1.el10_1
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -929,19 +929,7 @@ Source13: redhatsecureboot501.cer
 %define secureboot_ca_0 %{_datadir}/pki/sb-certs/secureboot-ca-%{_arch}.cer
 %define secureboot_key_0 %{_datadir}/pki/sb-certs/secureboot-kernel-%{_arch}.cer
 
-%if 0%{?centos}
-%define pesign_name_0 centossecureboot201
-%else
-%ifarch x86_64 aarch64
-%define pesign_name_0 redhatsecureboot801
-%endif
-%ifarch s390x
-%define pesign_name_0 redhatsecureboot302
-%endif
-%ifarch ppc64le
-%define pesign_name_0 redhatsecureboot701
-%endif
-%endif
+%define pesign_name_0 almalinuxsecureboot0
 # rhel && !eln
 %endif
 
@@ -4389,14 +4377,14 @@ fi\
 #
 #
 %changelog
-* Wed Mar 04 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.40.1
+* Wed Mar 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.43.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Mar 04 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.40.1
+* Wed Mar 11 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.43.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Mar 04 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.40.1
+* Wed Mar 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.43.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4406,6 +4394,58 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Tue Mar 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.43.1.el10_1]
+- HID: intel-thc-hid: intel-thc: Fix incorrect pointer arithmetic in I2C regs save (CKI Backport Bot) [RHEL-142253] {CVE-2025-39818}
+- drm/xe: Make dma-fences compliant with the safe access rules (Mika Penttilä) [RHEL-122272] {CVE-2025-38703}
+
+* Sat Feb 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.42.1.el10_1]
+- dpll: zl3073x: Fix ref frequency setting (Ivan Vecera) [RHEL-139828]
+- dpll: Prevent duplicate registrations (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Remove unused dev wrappers (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Cache all output properties in zl3073x_out (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Cache all reference properties in zl3073x_ref (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Cache reference monitor status (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Split ref, out, and synth logic from core (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Store raw register values instead of parsed state (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: fix kernel-doc name and missing parameter in fw.c (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Specify phase adjustment granularity for pins (Ivan Vecera) [RHEL-139828]
+- dpll: add phase-adjust-gran pin attribute (Ivan Vecera) [RHEL-139828]
+- dpll: fix device-id-get and pin-id-get to return errors properly (Ivan Vecera) [RHEL-139828]
+- dpll: spec: add missing module-name and clock-id to pin-get reply (Ivan Vecera) [RHEL-139828]
+- dpll: zl3073x: Allow to configure phase offset averaging factor (Ivan Vecera) [RHEL-139828]
+- dpll: add phase_offset_avg_factor_get/set callback ops (Ivan Vecera) [RHEL-139828]
+- dpll: add phase-offset-avg-factor device attribute to netlink spec (Ivan Vecera) [RHEL-139828]
+- dpll: fix clock quality level reporting (Ivan Vecera) [RHEL-139828]
+- dpll: add reference sync get/set (Ivan Vecera) [RHEL-139828]
+- dpll: add reference-sync netlink attribute (Ivan Vecera) [RHEL-139828]
+- dpll: remove documentation of rclk_dev_name (Ivan Vecera) [RHEL-139828]
+- ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr() (CKI Backport Bot) [RHEL-143548] {CVE-2025-71085}
+- usb: core: config: Prevent OOB read in SS endpoint companion parsing (CKI Backport Bot) [RHEL-137370] {CVE-2025-39760}
+- sched_ext: Fix scx_kick_pseqs corruption on concurrent scheduler loads (Phil Auld) [RHEL-124637]
+- sched_ext: Allocate scx_kick_cpus_pnt_seqs lazily using kvzalloc() (Phil Auld) [RHEL-124637]
+
+* Thu Feb 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.41.1.el10_1]
+- vfs: check dentry is still valid in get_link() (Ian Kent) [RHEL-134853]
+- efivarfs: fix error propagation in efivar_entry_get() (CKI Backport Bot) [RHEL-150116] {CVE-2026-23156}
+- KVM: x86: Apply runtime updates to current CPUID during KVM_SET_CPUID{,2} (Igor Mammedov) [RHEL-148458]
+- printk: Use console_is_usable on console_unblank (CKI Backport Bot) [RHEL-148303]
+- printk: Avoid irq_work for printk_deferred() on suspend (CKI Backport Bot) [RHEL-148303]
+- printk: Avoid scheduling irq_work on suspend (CKI Backport Bot) [RHEL-148303]
+- printk: Allow printk_trigger_flush() to flush all types (CKI Backport Bot) [RHEL-148303]
+- printk: Check CON_SUSPEND when unblanking a console (CKI Backport Bot) [RHEL-148303]
+- printk: nbcon: Allow reacquire during panic (CKI Backport Bot) [RHEL-148303]
+- migrate: correct lock ordering for hugetlb file folios (Luiz Capitulino) [RHEL-147270] {CVE-2026-23097}
+- io_uring/sqpoll: don't put task_struct on tctx setup failure (Jeff Moyer) [RHEL-137992]
+- io_uring: consistently use rcu semantics with sqpoll thread (Jeff Moyer) [RHEL-137992]
+- io_uring: fix use-after-free of sq->thread in __io_uring_show_fdinfo() (Jeff Moyer) [RHEL-137992] {CVE-2025-38106}
+- io_uring/sqpoll: fix sqpoll error handling races (Jeff Moyer) [RHEL-137992]
+- gpio: cdev: Fix resource leaks on errors in lineinfo_changed_notify() (CKI Backport Bot) [RHEL-145597] {CVE-2025-40249}
+- gpio: cdev: make sure the cdev fd is still active before emitting events (CKI Backport Bot) [RHEL-145597] {CVE-2025-40249}
+- macvlan: fix possible UAF in macvlan_forward_source() (CKI Backport Bot) [RHEL-144128] {CVE-2026-23001}
+- dm: use READ_ONCE in dm_blk_report_zones (Benjamin Marzinski) [RHEL-137953]
+- dm: fix unlocked test for dm_suspended_md (Benjamin Marzinski) [RHEL-137953]
+- dm: fix dm_blk_report_zones (CKI Backport Bot) [RHEL-137953] {CVE-2025-38141}
 
 * Thu Feb 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.40.1.el10_1]
 - s390/mm: Fix __ptep_rdp() inline assembly (Mete Durlu) [RHEL-143715]
