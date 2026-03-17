@@ -1,3 +1,17 @@
+* Tue Mar 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.45.1.el10_1]
+- ipv6: Fix use-after-free in inet6_addr_del(). (CKI Backport Bot) [RHEL-144768] {CVE-2026-23010}
+Resolves: RHEL-144768
+
+* Thu Mar 05 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.44.1.el10_1]
+- dpll: expose fractional frequency offset in ppt (Ivan Vecera) [RHEL-146354]
+- dpll: zl3073x: Implement device mode setting support (Ivan Vecera) [RHEL-151824]
+- dpll: add dpll_device op to set working mode (Ivan Vecera) [RHEL-151824]
+- dpll: add dpll_device op to get supported modes (Ivan Vecera) [RHEL-151824]
+- net: vxlan: prevent NULL deref in vxlan_xmit_one (Antoine Tenart) [RHEL-133362]
+- NFS: Fixup allocation flags for nfsiod's __GFP_NORETRY (Olga Kornievskaia) [RHEL-144916]
+- s390/pci: Allow automatic recovery with minimal driver support (CKI Backport Bot) [RHEL-118883]
+Resolves: RHEL-118883, RHEL-133362, RHEL-144916, RHEL-146354, RHEL-151824
+
 * Tue Mar 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.43.1.el10_1]
 - HID: intel-thc-hid: intel-thc: Fix incorrect pointer arithmetic in I2C regs save (CKI Backport Bot) [RHEL-142253] {CVE-2025-39818}
 - drm/xe: Make dma-fences compliant with the safe access rules (Mika Penttilä) [RHEL-122272] {CVE-2025-38703}

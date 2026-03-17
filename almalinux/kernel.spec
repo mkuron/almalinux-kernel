@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.43.1
+%define pkgrelease 124.45.1
 %define kversion 6
-%define tarfile_release 6.12.0-124.43.1.el10_1
+%define tarfile_release 6.12.0-124.45.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.43.1%{?buildid}%{?dist}
+%define specrelease 124.45.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-124.43.1.el10_1
+%define kabiversion 6.12.0-124.45.1.el10_1
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4377,14 +4377,14 @@ fi\
 #
 #
 %changelog
-* Wed Mar 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.43.1
+* Tue Mar 17 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.45.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Mar 11 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.43.1
+* Tue Mar 17 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.45.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Mar 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.43.1
+* Tue Mar 17 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.45.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4394,6 +4394,18 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Tue Mar 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.45.1.el10_1]
+- ipv6: Fix use-after-free in inet6_addr_del(). (CKI Backport Bot) [RHEL-144768] {CVE-2026-23010}
+
+* Thu Mar 05 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.44.1.el10_1]
+- dpll: expose fractional frequency offset in ppt (Ivan Vecera) [RHEL-146354]
+- dpll: zl3073x: Implement device mode setting support (Ivan Vecera) [RHEL-151824]
+- dpll: add dpll_device op to set working mode (Ivan Vecera) [RHEL-151824]
+- dpll: add dpll_device op to get supported modes (Ivan Vecera) [RHEL-151824]
+- net: vxlan: prevent NULL deref in vxlan_xmit_one (Antoine Tenart) [RHEL-133362]
+- NFS: Fixup allocation flags for nfsiod's __GFP_NORETRY (Olga Kornievskaia) [RHEL-144916]
+- s390/pci: Allow automatic recovery with minimal driver support (CKI Backport Bot) [RHEL-118883]
 
 * Tue Mar 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.43.1.el10_1]
 - HID: intel-thc-hid: intel-thc: Fix incorrect pointer arithmetic in I2C regs save (CKI Backport Bot) [RHEL-142253] {CVE-2025-39818}
