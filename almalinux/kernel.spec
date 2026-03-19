@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.38.1
+%define pkgrelease 611.41.1
 %define kversion 5
-%define tarfile_release 5.14.0-611.38.1.el9_7
+%define tarfile_release 5.14.0-611.41.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.38.1%{?buildid}%{?dist}
+%define specrelease 611.41.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-611.38.1.el9_7
+%define kabiversion 5.14.0-611.41.1.el9_7
 
 #
 # End of genspec.sh variables
@@ -3771,7 +3771,7 @@ fi
 #
 #
 %changelog
-* Tue Mar 10 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.38.1
+* Thu Mar 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.41.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3782,10 +3782,21 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Mar 10 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.38.1
+* Thu Mar 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.41.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Sat Mar 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.41.1.el9_7]
+- net: vxlan: prevent NULL deref in vxlan_xmit_one (Antoine Tenart) [RHEL-133369]
+- ACPI: PRM: Reduce unnecessary printing to avoid user confusion (Mark Langsdorf) [RHEL-123057]
+
+* Thu Mar 05 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.40.1.el9_7]
+- s390/pci: Allow automatic recovery with minimal driver support (CKI Backport Bot) [RHEL-118881]
+- mm/hugetlb: ignore hugepage kernel args if hugepages are unsupported (Luiz Capitulino) [RHEL-143846]
+
+* Tue Mar 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.39.1.el9_7]
+- HID: intel-thc-hid: intel-thc: Fix incorrect pointer arithmetic in I2C regs save (CKI Backport Bot) [RHEL-142232] {CVE-2025-39818}
 
 * Sat Feb 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.38.1.el9_7]
 - mlxsw: spectrum_mr: Fix use-after-free when updating multicast route stats (CKI Backport Bot) [RHEL-143194] {CVE-2025-68800}
