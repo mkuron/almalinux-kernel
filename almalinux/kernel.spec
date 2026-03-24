@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.41.1
+%define pkgrelease 611.42.1
 %define kversion 5
-%define tarfile_release 5.14.0-611.41.1.el9_7
+%define tarfile_release 5.14.0-611.42.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.41.1%{?buildid}%{?dist}
+%define specrelease 611.42.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-611.41.1.el9_7
+%define kabiversion 5.14.0-611.42.1.el9_7
 
 #
 # End of genspec.sh variables
@@ -3771,7 +3771,7 @@ fi
 #
 #
 %changelog
-* Thu Mar 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.41.1
+* Tue Mar 24 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.42.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3782,10 +3782,16 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Mar 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.41.1
+* Tue Mar 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.42.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Thu Mar 12 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.42.1.el9_7]
+- scsi: qla2xxx: Allow recovery for tape devices (Ewan D. Milne) [RHEL-153437]
+- xfs: set max_agbno to allow sparse alloc of last full inode chunk (Brian Foster) [RHEL-142600]
+- mm/debug_vm_pgtable: clear page table entries at destroy_args() (Herton R. Krzesinski) [RHEL-128734]
+- kbuild: use $(srctree)/$(src) for some Makefiles to fix the buildcheck test (Herton R. Krzesinski) [RHEL-106032]
 
 * Sat Mar 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.41.1.el9_7]
 - net: vxlan: prevent NULL deref in vxlan_xmit_one (Antoine Tenart) [RHEL-133369]
