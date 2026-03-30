@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.111.1.el8_10
+%define pkgrelease 553.115.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.111.1%{?dist}
+%define specrelease 553.115.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2711,7 +2711,7 @@ fi
 #
 #
 %changelog
-* Sun Mar 08 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.111.1
+* Mon Mar 30 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.115.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2722,9 +2722,167 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Sun Mar 08 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.111.1
+* Mon Mar 30 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.115.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Mar 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.115.1.el8_10]
+- x86/microcode/AMD: Revert "Backport AMD microcode commits for better microcode loading support" (Waiman Long) [RHEL-155860]
+- net/sched: cls_u32: use skb_header_pointer_careful() (Paolo Abeni) [RHEL-150398] {CVE-2026-23204}
+- net: add skb_header_pointer_careful() helper (Paolo Abeni) [RHEL-150398]
+- tcp: fix forever orphan socket caused by tcp_abort (Paolo Abeni) [RHEL-146187]
+- xfs: fix minimum agno handling for xfs alloc modes in RHEL8 (Brian Foster) [RHEL-102464]
+- xfs: fix uninitialized use of flags variable in xfs_alloc_vextent() (Brian Foster) [RHEL-102464]
+- ipv4/tcp: do not use per netns ctl sockets (Davide Caratti) [RHEL-82523]
+- tcp: use this_cpu_read(*X) instead of *this_cpu_ptr(X) (Davide Caratti) [RHEL-82523]
+- macvlan: observe an RCU grace period in macvlan_common_newlink() error path (Hangbin Liu) [RHEL-150221]
+- macvlan: fix error recovery in macvlan_common_newlink() (CKI Backport Bot) [RHEL-150221] {CVE-2026-23209}
+- x86/uprobes: Fix XOL allocation failure for 32-bit tasks (Oleg Nesterov) [RHEL-96016]
+
+* Wed Mar 18 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.114.1.el8_10]
+- s390/kexec: Emit an error message when cmdline is too long (Mete Durlu) [RHEL-144946]
+- s390/boot: Fix kernel size in bootparm area (Mete Durlu) [RHEL-144946]
+- redhat: genlog: add new JIRA cloud server hostname (Jan Stancek)
+- mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather (Rafael Aquini) [RHEL-137123]
+- gfs2: Fix data loss during inode evict (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: minor evict_[un]linked_inode cleanup (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: Remove useless transaction in evict_linked_inode (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: Remove unnecessary check in gfs2_evict_inode (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: Call unlock_new_inode before d_instantiate (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: Don't remember delete unless it's successful (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: Remove redundant check for GLF_INSTANTIATE_NEEDED (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: fiemap page fault fix (Andreas Gruenbacher) [RHEL-151614]
+- gfs2: Don't get stuck writing page onto itself under direct I/O (Andreas Gruenbacher) [RHEL-151614]
+- net: atm: fix /proc/net/atm/lec handling (Hangbin Liu) [RHEL-146419] {CVE-2025-38180}
+- net: atm: add lec_mutex (Hangbin Liu) [RHEL-146419] {CVE-2025-38323}
+
+* Wed Mar 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.113.1.el8_10]
+- scsi: st: Skip buffer flush for information ioctls (John Meneghini) [RHEL-136288]
+- scsi: st: Separate st-unique ioctl handling from SCSI common ioctl handling (John Meneghini) [RHEL-136288]
+- scsi: core: Fix the unit attention counter implementation (John Meneghini) [RHEL-136288]
+- scsi: st: Tighten the page format heuristics with MODE SELECT (John Meneghini) [RHEL-136288]
+- scsi: st: ERASE does not change tape location (John Meneghini) [RHEL-136288]
+- scsi: st: Fix array overflow in st_setup() (John Meneghini) [RHEL-136288]
+- scsi: st: Add sysfs file position_lost_in_reset (John Meneghini) [RHEL-136288]
+- scsi: st: Modify st.c to use the new scsi_error counters (John Meneghini) [RHEL-136288]
+- scsi: core: Add counters for New Media and Power On/Reset UNIT ATTENTIONs (John Meneghini) [RHEL-136288]
+- scsi: st: Restore some drive settings after reset (John Meneghini) [RHEL-136288]
+- scsi: st: Fix input/output error on empty drive reset (John Meneghini) [RHEL-136288]
+
+* Thu Mar 05 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.112.1.el8_10]
+- smb: client: handle lack of IPC in dfs_cache_refresh() (Paulo Alcantara) [RHEL-138235]
+- smb: client: allow parsing zero-length AV pairs (Paulo Alcantara) [RHEL-138235]
+- cifs: reduce warning log level for server not advertising interfaces (Paulo Alcantara) [RHEL-138235]
+- smb: client: Fix match_session bug preventing session reuse (Paulo Alcantara) [RHEL-138235]
+- smb: client: get rid of kstrdup() in get_ses_refpath() (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix noisy when tree connecting to DFS interlink targets (Paulo Alcantara) [RHEL-138235]
+- smb: client: don't trust DFSREF_STORAGE_SERVER bit (Paulo Alcantara) [RHEL-138235]
+- smb: client: don't check for @leaf_fullpath in match_server() (Paulo Alcantara) [RHEL-138235]
+- smb: client: get rid of TCP_Server_Info::refpath_lock (Paulo Alcantara) [RHEL-138235]
+- smb: client: don't retry DFS targets on server shutdown (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix return value of parse_dfs_referrals() (Paulo Alcantara) [RHEL-138235]
+- smb: client: optimize referral walk on failed link targets (Paulo Alcantara) [RHEL-138235]
+- smb: client: provide dns_resolve_{unc,name} helpers (Paulo Alcantara) [RHEL-138235]
+- smb: client: parse DNS domain name from domain= option (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix DFS mount against old servers with NTLMSSP (Paulo Alcantara) [RHEL-138235]
+- smb: client: parse av pair type 4 in CHALLENGE_MESSAGE (Paulo Alcantara) [RHEL-138235]
+- smb: client: introduce av_for_each_entry() helper (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix double free of TCP_Server_Info::hostname (Paulo Alcantara) [RHEL-138235] {CVE-2025-21673}
+- smb: client: fix potential race in cifs_put_tcon() (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix noisy message when mounting shares (Paulo Alcantara) [RHEL-138235]
+- smb: client: don't try following DFS links in cifs_tree_connect() (Paulo Alcantara) [RHEL-138235]
+- smb: client: allow reconnect when sending ioctl (Paulo Alcantara) [RHEL-138235]
+- smb: client: get rid of @nlsc param in cifs_tree_connect() (Paulo Alcantara) [RHEL-138235]
+- smb: client: allow more DFS referrals to be cached (Paulo Alcantara) [RHEL-138235]
+- smb: client: propagate error from cifs_construct_tcon() (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix DFS failover in multiuser mounts (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix DFS interlink failover (Paulo Alcantara) [RHEL-138235]
+- smb: client: improve purging of cached referrals (Paulo Alcantara) [RHEL-138235]
+- smb: client: avoid unnecessary reconnects when refreshing referrals (Paulo Alcantara) [RHEL-138235]
+- smb: client: serialise cifs_construct_tcon() with cifs_mount_mutex (Paulo Alcantara) [RHEL-138235]
+- smb: client: handle DFS tcons in cifs_construct_tcon() (Paulo Alcantara) [RHEL-138235]
+- smb: client: refresh referral without acquiring refpath_lock (Paulo Alcantara) [RHEL-138235]
+- smb: client: guarantee refcounted children from parent session (Paulo Alcantara) [RHEL-138235] {CVE-2024-35869}
+- smb: client: set correct id, uid and cruid for multiuser automounts (Paulo Alcantara) [RHEL-138235] {CVE-2024-26822}
+- cifs: change tcon status when need_reconnect is set on it (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix potential NULL deref in parse_dfs_referrals() (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix mount when dns_resolver key is not available (Paulo Alcantara) [RHEL-138235]
+- smb: client: get rid of dfs code dep in namespace.c (Paulo Alcantara) [RHEL-138235]
+- smb: client: get rid of dfs naming in automount code (Paulo Alcantara) [RHEL-138235]
+- smb: client: rename cifs_dfs_ref.c to namespace.c (Paulo Alcantara) [RHEL-138235]
+- smb: client: ensure to try all targets when finding nested links (Paulo Alcantara) [RHEL-138235]
+- smb: client: introduce DFS_CACHE_TGT_LIST() (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix null auth (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix dfs link mount against w2k8 (Paulo Alcantara) [RHEL-138235]
+- cifs: fix charset issue in reconnection (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix missed ses refcounting (Paulo Alcantara) [RHEL-138235] {CVE-2023-54076}
+- fs/nls: make load_nls() take a const parameter (Paulo Alcantara) [RHEL-138235]
+- smb: client: remove redundant pointer 'server' (Paulo Alcantara) [RHEL-138235]
+- smb: client: improve DFS mount check (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix shared DFS root mounts with different prefixes (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix parsing of source mount option (Paulo Alcantara) [RHEL-138235]
+- smb: client: fix warning in cifs_match_super() (Paulo Alcantara) [RHEL-138235]
+- cifs: fix max_credits implementation (Paulo Alcantara) [RHEL-138235]
+- cifs: fix sockaddr comparison in iface_cmp (Paulo Alcantara) [RHEL-138235]
+- cifs: fix status checks in cifs_tree_connect (Paulo Alcantara) [RHEL-138235]
+- cifs: fix smb1 mount regression (Paulo Alcantara) [RHEL-138235]
+- cifs: fix sharing of DFS connections (Paulo Alcantara) [RHEL-138235]
+- cifs: avoid potential races when handling multiple dfs tcons (Paulo Alcantara) [RHEL-138235]
+- cifs: protect access of TCP_Server_Info::{origin,leaf}_fullpath (Paulo Alcantara) [RHEL-138235]
+- cifs: avoid dup prefix path in dfs_get_automount_devname() (Paulo Alcantara) [RHEL-138235]
+- cifs: fix DFS traversal oops without CONFIG_CIFS_DFS_UPCALL (Paulo Alcantara) [RHEL-138235] {CVE-2023-53246}
+- smb3: fix unusable share after force unmount failure (Paulo Alcantara) [RHEL-138235]
+- cifs: check only tcon status on tcon related functions (Paulo Alcantara) [RHEL-138235]
+- cifs: return DFS root session id in DebugData (Paulo Alcantara) [RHEL-138235]
+- cifs: fix use-after-free bug in refresh_cache_worker() (Paulo Alcantara) [RHEL-138235] {CVE-2023-53052}
+- cifs: set DFS root session in cifs_get_smb_ses() (Paulo Alcantara) [RHEL-138235]
+- cifs: remove unused function (Paulo Alcantara) [RHEL-138235]
+- cifs: remove duplicate code in __refresh_tcon() (Paulo Alcantara) [RHEL-138235]
+- cifs: remove redundant assignment to the variable match (Paulo Alcantara) [RHEL-138235]
+- cifs: use origin fullpath for automounts (Paulo Alcantara) [RHEL-138235]
+- cifs: fix source pathname comparison of dfs supers (Paulo Alcantara) [RHEL-138235]
+- cifs: fix confusing debug message (Paulo Alcantara) [RHEL-138235]
+- cifs: don't block in dfs_cache_noreq_update_tgthint() (Paulo Alcantara) [RHEL-138235]
+- cifs: refresh root referrals (Paulo Alcantara) [RHEL-138235]
+- cifs: fix refresh of cached referrals (Paulo Alcantara) [RHEL-138235]
+- cifs: share dfs connections and supers (Paulo Alcantara) [RHEL-138235]
+- cifs: split out ses and tcon retrieval from mount_get_conns() (Paulo Alcantara) [RHEL-138235]
+- cifs: set resolved ip in sockaddr (Paulo Alcantara) [RHEL-138235]
+- cifs: remove unused smb3_fs_context::mount_options (Paulo Alcantara) [RHEL-138235]
+- cifs: get rid of mount options string parsing (Paulo Alcantara) [RHEL-138235]
+- cifs: use fs_context for automounts (Paulo Alcantara) [RHEL-138235]
+- cifs: remove various function description warnings (Paulo Alcantara) [RHEL-138235]
+- x86/microcode/AMD: Fix Entrysign revision check for Zen5/Strix Halo (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Select which microcode patch to load (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Add Zen5 model 0x44, stepping 0x1 minrev (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Add more known models to entry sign checking (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Limit Entrysign signature checking to known generations (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Use sha256() instead of init/update/final (Waiman Long) [RHEL-132479]
+- x86/microcode: Fix Entrysign revision check for Zen1/Naples (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Handle the case of no BIOS microcode (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Extend the SHA check to Zen5, block loading of any unreleased standalone Zen5 microcode patches (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Fix __apply_microcode_amd()'s return value (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Add some forgotten models to the SHA check (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Load only SHA256-checksummed patches (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Add get_patch_level() (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Merge early_apply_microcode() into its single callsite (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Have __apply_microcode_amd() return bool (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Flush patch buffer mapping after application (Waiman Long) [RHEL-132479]
+- x86/mm: Carve out INVLPG inline asm for use by others (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Split load_microcode_amd() (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Pay attention to the stepping dynamically (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Fix a -Wsometimes-uninitialized clang false positive (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Use the family,model,stepping encoded in the patch ID (Waiman Long) [RHEL-132479]
+- x86/microcode/amd: Cache builtin microcode too (Waiman Long) [RHEL-132479]
+- x86/microcode/amd: Use correct per CPU ucode_cpu_info (Waiman Long) [RHEL-132479]
+- x86/microcode/amd: Remove X86_32 specific code in early_apply_microcode() & get_builtin_microcode() (Waiman Long) [RHEL-132479]
+- x86/microcode: Move core specific defines to local header (Waiman Long) [RHEL-132479]
+- x86/microcode/intel: Rename get_datasize() since its used externally (Waiman Long) [RHEL-132479]
+- x86/microcode: Make reload_early_microcode() static (Waiman Long) [RHEL-132479]
+- x86/microcode: Include vendor headers into microcode.h (Waiman Long) [RHEL-132479]
+- x86/microcode/intel: Move microcode functions out of cpu/intel.c (Waiman Long) [RHEL-132479]
+- x86/microcode/AMD: Get rid of __find_equiv_id() (Waiman Long) [RHEL-132479]
+- x86/microcode: Add explicit CPU vendor dependency (Waiman Long) [RHEL-132479]
 
 * Sat Feb 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.111.1.el8_10]
 - macvlan: fix possible UAF in macvlan_forward_source() (Hangbin Liu) [RHEL-144120] {CVE-2026-23001}
