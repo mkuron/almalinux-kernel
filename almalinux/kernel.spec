@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.52.1
+%define pkgrelease 124.52.2
 %define kversion 6
 %define tarfile_release 6.12.0-124.52.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.52.1%{?buildid}%{?dist}
+%define specrelease 124.52.2%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-124.52.1.el10_1
 
@@ -1128,6 +1128,7 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
+Patch1100: 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1989,6 +1990,7 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
+ApplyPatch 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4377,14 +4379,25 @@ fi\
 #
 #
 %changelog
-* Wed Apr 22 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.52.1
+* Thu Apr 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.2
+- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
+- crypto: scatterwalk - Backport memcpy_sglist()
+- crypto: algif_aead - use memcpy_sglist() instead of null skcipher
+- crypto: algif_aead - Revert to operating out-of-place
+- crypto: algif_aead - snapshot IV for async AEAD requests
+- crypto: authenc - use memcpy_sglist() instead of null skcipher
+- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption
+- crypto: authencesn - Fix src offset when decrypting in-place
+- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
+
+* Wed Apr 29 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.52.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Apr 22 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.52.1
+* Wed Apr 29 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.52.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Apr 22 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.1
+* Wed Apr 29 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
