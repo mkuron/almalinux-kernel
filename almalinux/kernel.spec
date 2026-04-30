@@ -165,13 +165,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.49.1
+%define pkgrelease 611.49.2
 %define kversion 5
 %define tarfile_release 5.14.0-611.49.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.49.1%{?buildid}%{?dist}
+%define specrelease 611.49.2%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-611.49.1.el9_7
 
@@ -956,6 +956,7 @@ Patch2004: 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2005: 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+Patch1100: 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 
 Patch11111: ppc64le-kvm-support.patch
 
@@ -1700,6 +1701,7 @@ ApplyPatch 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+ApplyPatch 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -3771,6 +3773,18 @@ fi
 #
 #
 %changelog
+* Thu Apr 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.49.2
+- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
+- crypto: scatterwalk - Backport memcpy_sglist()
+- crypto: algif_aead - use memcpy_sglist() instead of null skcipher
+- crypto: algif_aead - Revert to operating out-of-place
+- crypto: algif_aead - snapshot IV for async AEAD requests
+- crypto: authenc - use memcpy_sglist() instead of null skcipher
+- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption
+- crypto: authencesn - Fix src offset when decrypting in-place
+- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
+- crypto: algif_aead - Fix minimum RX size check for decryption
+
 * Tue Apr 21 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.49.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3782,7 +3796,7 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Apr 21 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.49.1
+* Wed Apr 29 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.49.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
