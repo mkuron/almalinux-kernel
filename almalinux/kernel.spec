@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.120.1.el8_10
+%define pkgrelease 553.121.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.120.1%{?dist}
+%define specrelease 553.121.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -530,6 +530,7 @@ Patch999999: linux-kernel-test.patch
 # AlmaLinux Patch
 Patch1000: debrand-single-cpu.patch
 Patch1002: debrand-rh-i686-cpu.patch
+Patch1100: 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2003: 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1107,6 +1108,7 @@ ApplyOptionalPatch linux-kernel-test.patch
 # Applying AlmaLinux Patch
 ApplyPatch debrand-single-cpu.patch
 ApplyPatch debrand-rh-i686-cpu.patch
+ApplyPatch 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2713,7 +2715,17 @@ fi
 #
 #
 %changelog
-* Mon Apr 20 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.120.1
+* Thu Apr 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.121.1
+- crypto: authencesn - reject too-short AAD (assoclen<8)
+- crypto: scatterwalk - Backport memcpy_sglist()
+- crypto: algif_aead - use memcpy_sglist() instead of null skcipher
+- crypto: algif_aead - Revert to operating out-of-place
+- crypto: algif_aead - snapshot IV for async AEAD requests
+- crypto: authenc - use memcpy_sglist() instead of null skcipher
+- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption
+- crypto: authencesn - Fix src offset when decrypting in-place
+- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
+- crypto: algif_aead - Fix minimum RX size check for decryption
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2724,9 +2736,12 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Apr 20 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.120.1
+* Wed Apr 29 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.121.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Apr 15 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.121.1.el8_10]
+- nfsd: fix heap overflow in NFSv4.0 LOCK replay cache (Scott Mayhew) [RHEL-167011] {CVE-2026-31402}
 
 * Wed Apr 08 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.120.1.el8_10]
 - gfs2: bufdata allocation race (Andreas Gruenbacher) [RHEL-160075]
