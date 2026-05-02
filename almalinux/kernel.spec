@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.52.2
+%define pkgrelease 124.52.3
 %define kversion 6
 %define tarfile_release 6.12.0-124.52.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.52.2%{?buildid}%{?dist}
+%define specrelease 124.52.3%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-124.52.1.el10_1
 
@@ -494,14 +494,14 @@ Summary: The Linux kernel
 %define use_vdso 1
 %endif
 
-%ifnarch aarch64
+%ifnarch x86_64
 %define with_kernel_abi_stablelists 0
 %endif
 
 # Overrides for generic default options
 
 # only package docs noarch
-%ifnarch aarch64
+%ifnarch x86_64
 %define with_doc 0
 %define doc_build_fail true
 %endif
@@ -4379,6 +4379,9 @@ fi\
 #
 #
 %changelog
+* Sat May 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.3
+- Bump release
+
 * Thu Apr 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.2
 - crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
 - crypto: scatterwalk - Backport memcpy_sglist()
