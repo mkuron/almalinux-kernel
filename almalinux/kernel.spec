@@ -38,10 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.121.1.el8_10
+%define pkgrelease 553.123.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.121.1%{?dist}
+%define specrelease 553.123.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -530,7 +530,6 @@ Patch999999: linux-kernel-test.patch
 # AlmaLinux Patch
 Patch1000: debrand-single-cpu.patch
 Patch1002: debrand-rh-i686-cpu.patch
-Patch1100: 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2003: 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1108,7 +1107,6 @@ ApplyOptionalPatch linux-kernel-test.patch
 # Applying AlmaLinux Patch
 ApplyPatch debrand-single-cpu.patch
 ApplyPatch debrand-rh-i686-cpu.patch
-ApplyPatch 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2715,17 +2713,7 @@ fi
 #
 #
 %changelog
-* Thu Apr 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.121.1
-- crypto: authencesn - reject too-short AAD (assoclen<8)
-- crypto: scatterwalk - Backport memcpy_sglist()
-- crypto: algif_aead - use memcpy_sglist() instead of null skcipher
-- crypto: algif_aead - Revert to operating out-of-place
-- crypto: algif_aead - snapshot IV for async AEAD requests
-- crypto: authenc - use memcpy_sglist() instead of null skcipher
-- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption
-- crypto: authencesn - Fix src offset when decrypting in-place
-- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
-- crypto: algif_aead - Fix minimum RX size check for decryption
+* Tue May 05 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.123.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2736,9 +2724,28 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Apr 29 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.121.1
+* Tue May 05 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.123.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon May 04 2026 Denys Vlasenko <dvlasenk@redhat.com> [4.18.0-553.123.1.el8_10]
+- crypto: algif_aead - snapshot IV for async AEAD requests (Herbert Xu) [RHEL-172187]
+- crypto: algif_aead - Fix minimum RX size check for decryption (Herbert Xu) [RHEL-172187]
+- crypto: authencesn - reject short ahash digests during instance creation (Herbert Xu) [RHEL-172187]
+- crypto: authencesn - Fix src offset when decrypting in-place (Herbert Xu) [RHEL-172187]
+- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption (Herbert Xu) [RHEL-172187] {CVE-2026-31431}
+- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec (Herbert Xu) [RHEL-172187] {CVE-2026-23060}
+- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl (Herbert Xu) [RHEL-172187]
+- crypto: af_alg - limit RX SG extraction by receive buffer budget (Herbert Xu) [RHEL-172187] {CVE-2026-31677}
+- crypto: algif_aead - Revert to operating out-of-place (Herbert Xu) [RHEL-172187] {CVE-2026-31431}
+- crypto: af-alg - fix NULL pointer dereference in scatterwalk (Herbert Xu) [RHEL-172187]
+- KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE (Paolo Bonzini) [RHEL-153727] {CVE-2026-23401}
+
+* Fri Apr 24 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.122.1.el8_10]
+- nvme: avoid double free special payload (Maurizio Lombardi) [RHEL-51303] {CVE-2024-41073}
+- crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id (CKI Backport Bot) [RHEL-166921] {CVE-2025-68724}
+- net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end() (Jay Shin) [RHEL-166155] {CVE-2025-40252}
+- kernel.h: Move ARRAY_SIZE() to a separate header (Jay Shin) [RHEL-166155] {CVE-2025-40252}
 
 * Wed Apr 15 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.121.1.el8_10]
 - nfsd: fix heap overflow in NFSv4.0 LOCK replay cache (Scott Mayhew) [RHEL-167011] {CVE-2026-31402}
