@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.52.3
+%define pkgrelease 124.55.1
 %define kversion 6
-%define tarfile_release 6.12.0-124.52.1.el10_1
+%define tarfile_release 6.12.0-124.55.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.52.3%{?buildid}%{?dist}
+%define specrelease 124.55.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-124.52.1.el10_1
+%define kabiversion 6.12.0-124.55.1.el10_1
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1128,7 +1128,6 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
-Patch1100: 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1990,7 +1989,6 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
-ApplyPatch 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4379,28 +4377,14 @@ fi\
 #
 #
 %changelog
-* Sat May 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.3
-- Bump release
-
-* Thu Apr 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.2
-- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
-- crypto: scatterwalk - Backport memcpy_sglist()
-- crypto: algif_aead - use memcpy_sglist() instead of null skcipher
-- crypto: algif_aead - Revert to operating out-of-place
-- crypto: algif_aead - snapshot IV for async AEAD requests
-- crypto: authenc - use memcpy_sglist() instead of null skcipher
-- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption
-- crypto: authencesn - Fix src offset when decrypting in-place
-- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
-
-* Wed Apr 29 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.52.1
+* Wed May 06 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.55.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Apr 29 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.52.1
+* Wed May 06 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.55.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Apr 29 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.52.1
+* Wed May 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.55.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4410,6 +4394,28 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Sat May 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.55.1.el10_1]
+- crypto: algif_aead - snapshot IV for async AEAD requests (Vladislav Dronov) [RHEL-172211]
+- crypto: algif_aead - Fix minimum RX size check for decryption (Vladislav Dronov) [RHEL-172211]
+- crypto: authencesn - reject short ahash digests during instance creation (Vladislav Dronov) [RHEL-172211]
+- crypto: authencesn - Fix src offset when decrypting in-place (Vladislav Dronov) [RHEL-172211]
+- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption (Vladislav Dronov) [RHEL-172211] {CVE-2026-31431}
+- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec (Vladislav Dronov) [RHEL-172211] {CVE-2026-23060}
+- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl (Vladislav Dronov) [RHEL-172211]
+- crypto: af_alg - limit RX SG extraction by receive buffer budget (Vladislav Dronov) [RHEL-172211] {CVE-2026-31677}
+- crypto: algif_aead - Revert to operating out-of-place (Vladislav Dronov) [RHEL-172211] {CVE-2026-31431}
+- crypto: af-alg - fix NULL pointer dereference in scatterwalk (Vladislav Dronov) [RHEL-172211]
+
+* Mon Apr 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.54.1.el10_1]
+- thunderbolt: Fix wake on connect at runtime (Desnes Nunes) [RHEL-108357]
+- thunderbolt: Fix a logic error in wake on connect (Desnes Nunes) [RHEL-108357]
+- thunderbolt: Use wake on connect and disconnect over suspend (Desnes Nunes) [RHEL-108357]
+- net: bonding: fix use-after-free in bond_xmit_broadcast() (CKI Backport Bot) [RHEL-168071] {CVE-2026-31419}
+- net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks (CKI Backport Bot) [RHEL-157330] {CVE-2026-23270}
+
+* Tue Apr 14 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.53.1.el10_1]
+- nfsd: fix heap overflow in NFSv4.0 LOCK replay cache (Scott Mayhew) [RHEL-167019] {CVE-2026-31402}
 
 * Sat Apr 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.52.1.el10_1]
 - md/raid1: fix data lost for writemostly rdev (Nigel Croxon) [RHEL-143660]
