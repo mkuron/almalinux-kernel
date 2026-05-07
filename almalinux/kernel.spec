@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.55.1
+%define pkgrelease 124.55.3
 %define kversion 6
 %define tarfile_release 6.12.0-124.55.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.55.1%{?buildid}%{?dist}
+%define specrelease 124.55.3%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-124.55.1.el10_1
 
@@ -1128,6 +1128,8 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
+Patch1100: 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
+Patch1101: 1101-rxrpc-linearize-paged-frags.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1989,6 +1991,8 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
+ApplyPatch 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
+ApplyPatch 1101-rxrpc-linearize-paged-frags.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4377,6 +4381,12 @@ fi\
 #
 #
 %changelog
+* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.55.3
+- rxrpc: linearize incoming DATA packet when it has paged frags
+
+* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.55.2
+- xfrm: esp: avoid in-place decrypt on shared skb frags
+
 * Wed May 06 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.55.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
