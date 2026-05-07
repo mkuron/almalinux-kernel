@@ -165,13 +165,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.54.1
+%define pkgrelease 611.54.3
 %define kversion 5
 %define tarfile_release 5.14.0-611.54.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.54.1%{?buildid}%{?dist}
+%define specrelease 611.54.3%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-611.54.1.el9_7
 
@@ -956,6 +956,8 @@ Patch2004: 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2005: 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+Patch1100: 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
+Patch1101: 1101-rxrpc-linearize-paged-frags.patch
 
 Patch11111: ppc64le-kvm-support.patch
 
@@ -1700,6 +1702,8 @@ ApplyPatch 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+ApplyPatch 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
+ApplyPatch 1101-rxrpc-linearize-paged-frags.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -3771,6 +3775,12 @@ fi
 #
 #
 %changelog
+* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.3
+- rxrpc: linearize incoming DATA packet when it has paged frags
+
+* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.2
+- xfrm: esp: avoid in-place decrypt on shared skb frags
+
 * Wed May 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
