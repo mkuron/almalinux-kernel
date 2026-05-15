@@ -165,13 +165,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.54.3
+%define pkgrelease 611.54.6
 %define kversion 5
 %define tarfile_release 5.14.0-611.54.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.54.3%{?buildid}%{?dist}
+%define specrelease 611.54.6%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-611.54.1.el9_7
 
@@ -958,6 +958,8 @@ Patch2006: 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch1100: 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
 Patch1101: 1101-rxrpc-linearize-paged-frags.patch
+Patch1102: 1102-net-skbuff-propagate-shared-frag-marker.patch
+Patch1103: 1103-ptrace-require-cap-on-mm-less-task.patch
 
 Patch11111: ppc64le-kvm-support.patch
 
@@ -1704,6 +1706,8 @@ ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
 ApplyPatch 1101-rxrpc-linearize-paged-frags.patch
+ApplyPatch 1102-net-skbuff-propagate-shared-frag-marker.patch
+ApplyPatch 1103-ptrace-require-cap-on-mm-less-task.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -3775,6 +3779,15 @@ fi
 #
 #
 %changelog
+* Fri May 15 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.6
+- ptrace: require CAP_SYS_PTRACE when task has no mm (kABI-safe)
+
+* Thu May 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.54.5
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers
+
+* Wed May 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.4
+- net: skbuff: propagate shared-frag marker through pskb_copy()
+
 * Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.3
 - rxrpc: linearize incoming DATA packet when it has paged frags
 
