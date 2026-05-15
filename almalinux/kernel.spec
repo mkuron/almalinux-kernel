@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 124.55.3
+%define pkgrelease 124.56.5
 %define kversion 6
-%define tarfile_release 6.12.0-124.55.1.el10_1
+%define tarfile_release 6.12.0-124.56.1.el10_1
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 124.55.3%{?buildid}%{?dist}
+%define specrelease 124.56.5%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-124.55.1.el10_1
+%define kabiversion 6.12.0-124.56.1.el10_1
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1128,8 +1128,8 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
-Patch1100: 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
-Patch1101: 1101-rxrpc-linearize-paged-frags.patch
+Patch1100: 1100-net-skbuff-propagate-shared-frag-marker.patch
+Patch1101: 1101-ptrace-require-cap-on-mm-less-task.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1991,8 +1991,8 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0010-Bring-back-deprecated-pci-ids-to-aacraid-driver.patch
-ApplyPatch 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
-ApplyPatch 1101-rxrpc-linearize-paged-frags.patch
+ApplyPatch 1100-net-skbuff-propagate-shared-frag-marker.patch
+ApplyPatch 1101-ptrace-require-cap-on-mm-less-task.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4381,20 +4381,27 @@ fi\
 #
 #
 %changelog
-* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.55.3
-- rxrpc: linearize incoming DATA packet when it has paged frags
+* Fri May 15 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.56.5
+- ptrace: require CAP_SYS_PTRACE when task has no mm (kABI-safe replacement
+  for the upstream 31e62c2ebbfd which broke task_struct kABI)
 
-* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.55.2
-- xfrm: esp: avoid in-place decrypt on shared skb frags
+* Fri May 15 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.56.4
+- ptrace: slightly saner get_dumpable() logic (upstream 31e62c2ebbfd)
 
-* Wed May 06 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.55.1
+* Thu May 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.56.3
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers
+
+* Wed May 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.56.2
+- net: skbuff: propagate shared-frag marker through pskb_copy()
+
+* Wed May 13 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-124.56.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed May 06 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.55.1
+* Wed May 13 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-124.56.1
 - Enable Btrfs support for all kernel variants
 
-* Wed May 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.55.1
+* Wed May 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-124.56.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4404,6 +4411,9 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Sat May 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.56.1.el10_1]
+- xfrm: esp: avoid in-place decrypt on shared skb frags (CKI Backport Bot) [RHEL-174548] {CVE-2026-43284}
 
 * Sat May 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-124.55.1.el10_1]
 - crypto: algif_aead - snapshot IV for async AEAD requests (Vladislav Dronov) [RHEL-172211]
