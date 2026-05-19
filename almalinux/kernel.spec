@@ -165,15 +165,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 611.54.6
+%define pkgrelease 611.55.1
 %define kversion 5
-%define tarfile_release 5.14.0-611.54.1.el9_7
+%define tarfile_release 5.14.0-611.55.1.el9_7
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 611.54.6%{?buildid}%{?dist}
+%define specrelease 611.55.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-611.54.1.el9_7
+%define kabiversion 5.14.0-611.55.1.el9_7
 
 #
 # End of genspec.sh variables
@@ -956,7 +956,6 @@ Patch2004: 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2005: 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-Patch1100: 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
 Patch1101: 1101-rxrpc-linearize-paged-frags.patch
 Patch1102: 1102-net-skbuff-propagate-shared-frag-marker.patch
 Patch1103: 1103-ptrace-require-cap-on-mm-less-task.patch
@@ -1704,7 +1703,6 @@ ApplyPatch 0004-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-ApplyPatch 1100-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
 ApplyPatch 1101-rxrpc-linearize-paged-frags.patch
 ApplyPatch 1102-net-skbuff-propagate-shared-frag-marker.patch
 ApplyPatch 1103-ptrace-require-cap-on-mm-less-task.patch
@@ -3779,22 +3777,14 @@ fi
 #
 #
 %changelog
-* Fri May 15 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.6
-- ptrace: require CAP_SYS_PTRACE when task has no mm (kABI-safe)
-
-* Thu May 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.54.5
+* Tue May 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.55.1
+- rxrpc: linearize incoming DATA packet when it has paged frags (CVE-2026-43500)
 - net: skbuff: propagate shared-frag marker through frag-transfer helpers
+  (CVE-2026-46300 "Fragnesia")
+- ptrace: require CAP_SYS_PTRACE on mm-less tasks (CVE-2026-46333, kABI-safe
+  replacement for upstream 31e62c2ebbfd, Qualys Security Advisory)
 
-* Wed May 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.4
-- net: skbuff: propagate shared-frag marker through pskb_copy()
-
-* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.3
-- rxrpc: linearize incoming DATA packet when it has paged frags
-
-* Thu May 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.2
-- xfrm: esp: avoid in-place decrypt on shared skb frags
-
-* Wed May 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.54.1
+* Mon May 18 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-611.55.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3805,10 +3795,13 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed May 06 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.54.1
+* Mon May 18 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-611.55.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
+
+* Sat May 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.55.1.el9_7]
+- xfrm: esp: avoid in-place decrypt on shared skb frags (Sabrina Dubroca) [RHEL-174561] {CVE-2026-43284}
 
 * Sat May 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-611.54.1.el9_7]
 - crypto: algif_aead - snapshot IV for async AEAD requests (Vladislav Dronov) [RHEL-172201]
