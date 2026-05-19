@@ -1,0 +1,2 @@
+sbat,1,SBAT Version,sbat,1,https://github.com/rhboot/shim/blob/main/SBAT.md
+kernel.almalinux,1,AlmaLinux,kernel-core,@KVER,mailto:security@almalinux.org
