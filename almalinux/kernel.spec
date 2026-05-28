@@ -182,7 +182,7 @@ Summary: The Linux kernel
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.7.3%{?buildid}%{?dist}
+%define specrelease 211.7.4%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1143,6 +1143,7 @@ Patch1101: 1101-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
 Patch1102: 1102-rxrpc-linearize-paged-frags.patch
 Patch1103: 1103-net-skbuff-propagate-shared-frag-marker.patch
 Patch1104: 1104-ptrace-require-cap-on-mm-less-task.patch
+Patch1105: 1105-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -2008,6 +2009,7 @@ ApplyPatch 1101-xfrm-esp-avoid-in-place-decrypt-shared-skb-frags.patch
 ApplyPatch 1102-rxrpc-linearize-paged-frags.patch
 ApplyPatch 1103-net-skbuff-propagate-shared-frag-marker.patch
 ApplyPatch 1104-ptrace-require-cap-on-mm-less-task.patch
+ApplyPatch 1105-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4514,6 +4516,13 @@ fi\
 #
 #
 %changelog
+* Thu May 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.7.4
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers
+  (refresh to upstream v5: now also covers skb_segment() and
+  tcp_clone_payload(); CVE-2026-46300 "Fragnesia")
+- smb: client: reject userspace cifs.spnego descriptions (upstream commit
+  3da1fdf4efbc)
+
 * Tue May 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.7.3
 - xfrm: esp: avoid in-place decrypt on shared skb frags (CVE-2026-43284)
 - rxrpc: linearize incoming DATA packet when it has paged frags (CVE-2026-43500)
