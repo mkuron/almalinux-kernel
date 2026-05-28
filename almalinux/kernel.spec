@@ -38,10 +38,11 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.126.1.el8_10
+%define pkgrelease 553.126.2.el8_10
+%define tarfile_release 553.126.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.126.1%{?dist}
+%define specrelease 553.126.2%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -435,7 +436,7 @@ BuildRequires: xmlto
 BuildRequires: asciidoc
 %endif
 
-Source0: linux-%{specversion}-%{pkgrelease}.tar.xz
+Source0: linux-%{specversion}-%{tarfile_release}.tar.xz
 
 Source9: x509.genkey
 
@@ -530,6 +531,8 @@ Patch999999: linux-kernel-test.patch
 # AlmaLinux Patch
 Patch1000: debrand-single-cpu.patch
 Patch1002: debrand-rh-i686-cpu.patch
+Patch1100: 1100-smb-client-reject-userspace-cifs.spnego-descriptions.patch
+
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2003: 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1096,9 +1099,9 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n %{name}-%{specversion}-%{pkgrelease} -c
-cp -v %{SOURCE9000} linux-%{specversion}-%{pkgrelease}/certs/rhel.pem
-mv linux-%{specversion}-%{pkgrelease} linux-%{KVERREL}
+%setup -q -n %{name}-%{specversion}-%{tarfile_release} -c
+cp -v %{SOURCE9000} linux-%{specversion}-%{tarfile_release}/certs/rhel.pem
+mv linux-%{specversion}-%{tarfile_release} linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 
@@ -1107,6 +1110,7 @@ ApplyOptionalPatch linux-kernel-test.patch
 # Applying AlmaLinux Patch
 ApplyPatch debrand-single-cpu.patch
 ApplyPatch debrand-rh-i686-cpu.patch
+ApplyPatch 1100-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2713,6 +2717,10 @@ fi
 #
 #
 %changelog
+* Thu May 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.126.2
+- smb: client: reject userspace cifs.spnego descriptions (upstream commit
+  3da1fdf4efbc)
+
 * Thu May 28 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.126.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
