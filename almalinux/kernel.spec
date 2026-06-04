@@ -38,11 +38,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.126.2.el8_10
-%define tarfile_release 553.126.1.el8_10
+%define pkgrelease 553.129.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.126.2%{?dist}
+%define specrelease 553.129.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -436,7 +435,7 @@ BuildRequires: xmlto
 BuildRequires: asciidoc
 %endif
 
-Source0: linux-%{specversion}-%{tarfile_release}.tar.xz
+Source0: linux-%{specversion}-%{pkgrelease}.tar.xz
 
 Source9: x509.genkey
 
@@ -531,8 +530,6 @@ Patch999999: linux-kernel-test.patch
 # AlmaLinux Patch
 Patch1000: debrand-single-cpu.patch
 Patch1002: debrand-rh-i686-cpu.patch
-Patch1100: 1100-smb-client-reject-userspace-cifs.spnego-descriptions.patch
-
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2003: 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1099,9 +1096,9 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n %{name}-%{specversion}-%{tarfile_release} -c
-cp -v %{SOURCE9000} linux-%{specversion}-%{tarfile_release}/certs/rhel.pem
-mv linux-%{specversion}-%{tarfile_release} linux-%{KVERREL}
+%setup -q -n %{name}-%{specversion}-%{pkgrelease} -c
+cp -v %{SOURCE9000} linux-%{specversion}-%{pkgrelease}/certs/rhel.pem
+mv linux-%{specversion}-%{pkgrelease} linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 
@@ -1110,7 +1107,6 @@ ApplyOptionalPatch linux-kernel-test.patch
 # Applying AlmaLinux Patch
 ApplyPatch debrand-single-cpu.patch
 ApplyPatch debrand-rh-i686-cpu.patch
-ApplyPatch 1100-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0003-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2717,11 +2713,7 @@ fi
 #
 #
 %changelog
-* Thu May 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.126.2
-- smb: client: reject userspace cifs.spnego descriptions (upstream commit
-  3da1fdf4efbc)
-
-* Thu May 28 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.126.1
+* Thu Jun 04 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.129.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2732,9 +2724,24 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu May 28 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.126.1
+* Thu Jun 04 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.129.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Jun 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.129.1.el8_10]
+- smb: client: reject userspace cifs.spnego descriptions (Paulo Alcantara) [RHEL-178938] {CVE-2026-46243}
+
+* Fri May 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.128.1.el8_10]
+- smb: client: fix OOB reads parsing symlink error response (Paulo Alcantara) [RHEL-171465] {CVE-2026-31613}
+- geneve: Suppress list corruption splat in geneve_destroy_tunnels(). (Antoine Tenart) [RHEL-168961]
+- geneve: Fix use-after-free in geneve_find_dev(). (Antoine Tenart) [RHEL-168961] {CVE-2025-21858}
+- netfilter: nf_tables: release flowtable after rcu grace period on error (Florian Westphal) [RHEL-160514] {CVE-2026-23392}
+
+* Wed May 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.127.1.el8_10]
+- smc: Fix use-after-free in tcp_write_timer_handler(). (Steve Best) [RHEL-167084] {CVE-2023-53781}
+- nbd: defer config unlock in nbd_genl_connect (CKI Backport Bot) [RHEL-166939] {CVE-2025-68366}
+- libceph: prevent potential out-of-bounds reads in handle_auth_done() (CKI Backport Bot) [RHEL-143892] {CVE-2026-22984}
+- libceph: replace overzealous BUG_ON in osdmap_apply_incremental() (CKI Backport Bot) [RHEL-143874] {CVE-2026-22990}
 
 * Wed May 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.126.1.el8_10]
 - crypto: af_alg - Work around empty control messages without MSG_MORE (Thomas Huth) [RHEL-175772]
