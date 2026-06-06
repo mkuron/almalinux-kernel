@@ -182,7 +182,7 @@ Summary: The Linux kernel
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.5.1%{?buildid}%{?dist}
+%define specrelease 687.10.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -975,6 +975,104 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0001-Make-KVM-PMU-symbols-global-for-ppc64le-module-build.patch
 Patch2009: 0001-proc-fix-a-dentry-lock-race-between-release_task-and-lookup.patch
 
+Patch1100: 1100-rtnetlink-allocate-vfinfo-size-for-vf-guids-when-supported.patch
+Patch1101: 1101-net-sched-make-cake-enqueue-return-net-xmit-cn-when-past-buf.patch
+Patch1102: 1102-net-sched-sch-cake-fix-incorrect-qlen-reduction-in-cake-drop.patch
+Patch1103: 1103-ice-fix-page-leak-for-zero-size-rx-descriptors.patch
+Patch1104: 1104-net-hv-netvsc-reject-rss-hash-key-programming-without-rx-ind.patch
+Patch1105: 1105-rdma-bnxt-re-support-extended-stats-for-thor2-vf.patch
+Patch1106: 1106-rdma-bnxt-re-fix-size-of-uverbs-copy-to-in-bnxt-re-method-ge.patch
+Patch1107: 1107-rdma-bnxt-re-support-2g-message-size.patch
+Patch1108: 1108-rdma-bnxt-re-use-macro-instead-of-hard-coded-value.patch
+Patch1109: 1109-rdma-bnxt-re-congestion-control-settings-using-debugfs-hook.patch
+Patch1110: 1110-rdma-bnxt-re-fix-buffer-overflow-in-debugfs-code.patch
+Patch1111: 1111-rdma-bnxt-re-fix-the-condition-check-while-programming-conge.patch
+Patch1112: 1112-rdma-bnxt-re-fix-incorrect-display-of-inactivity-cp-in-debug.patch
+Patch1113: 1113-rdma-bnxt-re-fix-missing-error-handling-for-tx-queue.patch
+Patch1114: 1114-rdma-bnxt-re-fix-return-code-of-bnxt-re-configure-cc.patch
+Patch1115: 1115-rdma-bnxt-re-convert-timeouts-to-secs-to-jiffies.patch
+Patch1116: 1116-ionic-fix-persistent-mac-address-override-on-pf.patch
+Patch1117: 1117-smb-client-fix-krb5-mount-with-username-option.patch
+Patch1118: 1118-scsi-qla2xxx-fix-improper-freeing-of-purex-item.patch
+Patch1119: 1119-nfsd-fix-heap-overflow-in-nfsv4-0-lock-replay-cache.patch
+Patch1120: 1120-net-add-skb-header-pointer-careful-helper.patch
+Patch1121: 1121-net-sched-cls-u32-use-skb-header-pointer-careful.patch
+Patch1122: 1122-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs.patch
+Patch1123: 1123-x86-boot-handle-relative-config-efi-sbat-file-file-paths.patch
+Patch1124: 1124-drm-i915-dsc-add-helper-to-enable-the-dsc-configuration-for-.patch
+Patch1125: 1125-drm-i915-dp-ensure-the-fec-state-stays-disabled-for-uhbr-lin.patch
+Patch1126: 1126-drm-i915-dp-export-helper-to-determine-if-fec-on-non-uhbr-li.patch
+Patch1127: 1127-drm-i915-dp-mst-reuse-the-dp-sst-helper-function-to-compute-.patch
+Patch1128: 1128-drm-i915-dp-mst-track-dsc-enabled-status-on-the-mst-link.patch
+Patch1129: 1129-drm-i915-dp-mst-recompute-all-mst-link-crtcs-if-dsc-gets-ena.patch
+Patch1130: 1130-drm-i915-dp-fix-panel-replay-when-dsc-is-enabled.patch
+Patch1131: 1131-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-12.patch
+Patch1132: 1132-revert-scsi-lpfc-add-capability-to-register-platform-name-id.patch
+Patch1133: 1133-revert-scsi-lpfc-allow-support-for-bb-credit-recovery-in-poi.patch
+Patch1134: 1134-revert-scsi-lpfc-modify-kref-handling-for-fabric-controller-.patch
+Patch1135: 1135-revert-scsi-lpfc-fix-leaked-ndlp-krefs-when-in-point-to-poin.patch
+Patch1136: 1136-revert-scsi-lpfc-ensure-unregistration-of-rpis-for-received-.patch
+Patch1137: 1137-revert-scsi-lpfc-remove-redundant-null-ptr-assignment-in-lpf.patch
+Patch1138: 1138-revert-scsi-lpfc-revise-discovery-related-function-headers-a.patch
+Patch1139: 1139-revert-scsi-lpfc-update-various-npiv-diagnostic-log-messagin.patch
+Patch1140: 1140-revert-scsi-lpfc-copyright-updates-for-14-4-0-11-patches.patch
+Patch1141: 1141-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-11.patch
+Patch1142: 1142-revert-scsi-lpfc-convert-debugfs-directory-counts-from-atomi.patch
+Patch1143: 1143-revert-scsi-lpfc-clean-up-extraneous-phba-dentries.patch
+Patch1144: 1144-revert-scsi-lpfc-use-switch-case-statements-in-dif-debugfs-h.patch
+Patch1145: 1145-revert-scsi-lpfc-fix-memory-leak-when-nvmeio-trc-debugfs-ent.patch
+Patch1146: 1146-revert-scsi-lpfc-define-size-of-debugfs-entry-for-xri-rebala.patch
+Patch1147: 1147-revert-scsi-lpfc-ensure-plogi-acc-is-sent-prior-to-prli-in-p.patch
+Patch1148: 1148-revert-scsi-lpfc-check-return-status-of-lpfc-reset-flush-io-.patch
+Patch1149: 1149-revert-scsi-lpfc-decrement-ndlp-kref-after-fdisc-retries-exh.patch
+Patch1150: 1150-revert-scsi-lpfc-remove-ndlp-kref-decrement-clause-for-f-por.patch
+Patch1151: 1151-revert-scsi-lpfc-clean-up-allocated-queues-when-queue-setup-.patch
+Patch1152: 1152-revert-scsi-lpfc-abort-outstanding-els-wqes-regardless-of-if.patch
+Patch1153: 1153-revert-scsi-lpfc-remove-unused-member-variables-in-struct-lp.patch
+Patch1154: 1154-revert-scsi-lpfc-use-int-type-to-store-negative-error-codes.patch
+Patch1155: 1155-revert-scsi-lpfc-use-min-to-improve-code.patch
+Patch1156: 1156-revert-scsi-lpfc-fix-wrong-function-reference-in-a-comment.patch
+Patch1157: 1157-revert-lpfc-don-t-use-file-f-path-dentry-for-comparisons.patch
+Patch1158: 1158-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-10.patch
+Patch1159: 1159-revert-scsi-lpfc-copyright-updates-for-14-4-0-10-patches.patch
+Patch1160: 1160-revert-scsi-lpfc-modify-end-of-life-adapters-model-descripti.patch
+Patch1161: 1161-revert-scsi-lpfc-revise-cq-create-set-mailbox-bitfield-defin.patch
+Patch1162: 1162-revert-scsi-lpfc-move-clearing-of-hba-setup-flag-to-before-l.patch
+Patch1163: 1163-revert-scsi-lpfc-ensure-hba-setup-flag-is-used-only-for-sli4.patch
+Patch1164: 1164-revert-scsi-lpfc-relocate-clearing-initial-phba-flags-from-l.patch
+Patch1165: 1165-revert-scsi-lpfc-simplify-error-handling-for-failed-lpfc-get.patch
+Patch1166: 1166-revert-scsi-lpfc-early-return-out-of-fdmi-cmpl-for-locally-r.patch
+Patch1167: 1167-revert-scsi-lpfc-skip-rscn-processing-when-fc-unloading-flag.patch
+Patch1168: 1168-revert-scsi-lpfc-check-for-hdwq-null-ptr-when-cleaning-up-lp.patch
+Patch1169: 1169-revert-scsi-lpfc-update-debugfs-trace-ring-initialization-me.patch
+Patch1170: 1170-revert-scsi-lpfc-revise-logging-format-for-failed-ct-mib-req.patch
+Patch1171: 1171-scsi-lpfc-avoid-crashing-in-lpfc-nlp-get-if-nodelist-freed.patch
+Patch1172: 1172-libceph-make-decode-pool-more-resilient-against-corrupted-os.patch
+Patch1173: 1173-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth.patch
+Patch1174: 1174-libceph-replace-overzealous-bug-on-in-osdmap-apply-increment.patch
+Patch1175: 1175-libceph-reset-sparse-read-state-in-osd-fault.patch
+Patch1176: 1176-powerpc-tools-drop-o-pipefail-in-gcc-check-scripts.patch
+Patch1177: 1177-kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creatin.patch
+Patch1178: 1178-crypto-af-alg-fix-null-pointer-dereference-in-scatterwalk.patch
+Patch1179: 1179-crypto-algif-aead-revert-to-operating-out-of-place.patch
+Patch1180: 1180-crypto-af-alg-limit-rx-sg-extraction-by-receive-buffer-budge.patch
+Patch1181: 1181-crypto-af-alg-fix-page-reassignment-overflow-in-af-alg-pull-.patch
+Patch1182: 1182-crypto-authencesn-reject-too-short-aad-assoclen-8-to-match-e.patch
+Patch1183: 1183-crypto-authencesn-do-not-place-hiseq-at-end-of-dst-for-out-o.patch
+Patch1184: 1184-crypto-authencesn-fix-src-offset-when-decrypting-in-place.patch
+Patch1185: 1185-crypto-authencesn-reject-short-ahash-digests-during-instance.patch
+Patch1186: 1186-crypto-algif-aead-fix-minimum-rx-size-check-for-decryption.patch
+Patch1187: 1187-crypto-algif-aead-snapshot-iv-for-async-aead-requests.patch
+Patch1188: 1188-xfrm-esp-avoid-in-place-decrypt-on-shared-skb-frags.patch
+Patch1189: 1189-can-raw-fix-ro-uniq-use-after-free-in-raw-rcv.patch
+Patch1190: 1190-usbip-validate-number-of-packets-in-usbip-pack-ret-submit.patch
+Patch1191: 1191-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
+Patch1192: 1192-md-bitmap-fix-gpf-in-write-page-caused-by-resize-race.patch
+Patch1193: 1193-ptrace-slightly-saner-get-dumpable-logic.patch
+Patch1194: 1194-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
+Patch1195: 1195-net-move-skb-gro-receive-list-from-udp-to-core.patch
+Patch1196: 1196-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
+Patch1197: 1197-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 Patch11111: ppc64le-kvm-support.patch
 
 # END OF PATCH DEFINITIONS
@@ -1721,6 +1819,104 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0001-Make-KVM-PMU-symbols-global-for-ppc64le-module-build.patch
 ApplyPatch 0001-proc-fix-a-dentry-lock-race-between-release_task-and-lookup.patch
 
+ApplyPatch 1100-rtnetlink-allocate-vfinfo-size-for-vf-guids-when-supported.patch
+ApplyPatch 1101-net-sched-make-cake-enqueue-return-net-xmit-cn-when-past-buf.patch
+ApplyPatch 1102-net-sched-sch-cake-fix-incorrect-qlen-reduction-in-cake-drop.patch
+ApplyPatch 1103-ice-fix-page-leak-for-zero-size-rx-descriptors.patch
+ApplyPatch 1104-net-hv-netvsc-reject-rss-hash-key-programming-without-rx-ind.patch
+ApplyPatch 1105-rdma-bnxt-re-support-extended-stats-for-thor2-vf.patch
+ApplyPatch 1106-rdma-bnxt-re-fix-size-of-uverbs-copy-to-in-bnxt-re-method-ge.patch
+ApplyPatch 1107-rdma-bnxt-re-support-2g-message-size.patch
+ApplyPatch 1108-rdma-bnxt-re-use-macro-instead-of-hard-coded-value.patch
+ApplyPatch 1109-rdma-bnxt-re-congestion-control-settings-using-debugfs-hook.patch
+ApplyPatch 1110-rdma-bnxt-re-fix-buffer-overflow-in-debugfs-code.patch
+ApplyPatch 1111-rdma-bnxt-re-fix-the-condition-check-while-programming-conge.patch
+ApplyPatch 1112-rdma-bnxt-re-fix-incorrect-display-of-inactivity-cp-in-debug.patch
+ApplyPatch 1113-rdma-bnxt-re-fix-missing-error-handling-for-tx-queue.patch
+ApplyPatch 1114-rdma-bnxt-re-fix-return-code-of-bnxt-re-configure-cc.patch
+ApplyPatch 1115-rdma-bnxt-re-convert-timeouts-to-secs-to-jiffies.patch
+ApplyPatch 1116-ionic-fix-persistent-mac-address-override-on-pf.patch
+ApplyPatch 1117-smb-client-fix-krb5-mount-with-username-option.patch
+ApplyPatch 1118-scsi-qla2xxx-fix-improper-freeing-of-purex-item.patch
+ApplyPatch 1119-nfsd-fix-heap-overflow-in-nfsv4-0-lock-replay-cache.patch
+ApplyPatch 1120-net-add-skb-header-pointer-careful-helper.patch
+ApplyPatch 1121-net-sched-cls-u32-use-skb-header-pointer-careful.patch
+ApplyPatch 1122-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs.patch
+ApplyPatch 1123-x86-boot-handle-relative-config-efi-sbat-file-file-paths.patch
+ApplyPatch 1124-drm-i915-dsc-add-helper-to-enable-the-dsc-configuration-for-.patch
+ApplyPatch 1125-drm-i915-dp-ensure-the-fec-state-stays-disabled-for-uhbr-lin.patch
+ApplyPatch 1126-drm-i915-dp-export-helper-to-determine-if-fec-on-non-uhbr-li.patch
+ApplyPatch 1127-drm-i915-dp-mst-reuse-the-dp-sst-helper-function-to-compute-.patch
+ApplyPatch 1128-drm-i915-dp-mst-track-dsc-enabled-status-on-the-mst-link.patch
+ApplyPatch 1129-drm-i915-dp-mst-recompute-all-mst-link-crtcs-if-dsc-gets-ena.patch
+ApplyPatch 1130-drm-i915-dp-fix-panel-replay-when-dsc-is-enabled.patch
+ApplyPatch 1131-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-12.patch
+ApplyPatch 1132-revert-scsi-lpfc-add-capability-to-register-platform-name-id.patch
+ApplyPatch 1133-revert-scsi-lpfc-allow-support-for-bb-credit-recovery-in-poi.patch
+ApplyPatch 1134-revert-scsi-lpfc-modify-kref-handling-for-fabric-controller-.patch
+ApplyPatch 1135-revert-scsi-lpfc-fix-leaked-ndlp-krefs-when-in-point-to-poin.patch
+ApplyPatch 1136-revert-scsi-lpfc-ensure-unregistration-of-rpis-for-received-.patch
+ApplyPatch 1137-revert-scsi-lpfc-remove-redundant-null-ptr-assignment-in-lpf.patch
+ApplyPatch 1138-revert-scsi-lpfc-revise-discovery-related-function-headers-a.patch
+ApplyPatch 1139-revert-scsi-lpfc-update-various-npiv-diagnostic-log-messagin.patch
+ApplyPatch 1140-revert-scsi-lpfc-copyright-updates-for-14-4-0-11-patches.patch
+ApplyPatch 1141-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-11.patch
+ApplyPatch 1142-revert-scsi-lpfc-convert-debugfs-directory-counts-from-atomi.patch
+ApplyPatch 1143-revert-scsi-lpfc-clean-up-extraneous-phba-dentries.patch
+ApplyPatch 1144-revert-scsi-lpfc-use-switch-case-statements-in-dif-debugfs-h.patch
+ApplyPatch 1145-revert-scsi-lpfc-fix-memory-leak-when-nvmeio-trc-debugfs-ent.patch
+ApplyPatch 1146-revert-scsi-lpfc-define-size-of-debugfs-entry-for-xri-rebala.patch
+ApplyPatch 1147-revert-scsi-lpfc-ensure-plogi-acc-is-sent-prior-to-prli-in-p.patch
+ApplyPatch 1148-revert-scsi-lpfc-check-return-status-of-lpfc-reset-flush-io-.patch
+ApplyPatch 1149-revert-scsi-lpfc-decrement-ndlp-kref-after-fdisc-retries-exh.patch
+ApplyPatch 1150-revert-scsi-lpfc-remove-ndlp-kref-decrement-clause-for-f-por.patch
+ApplyPatch 1151-revert-scsi-lpfc-clean-up-allocated-queues-when-queue-setup-.patch
+ApplyPatch 1152-revert-scsi-lpfc-abort-outstanding-els-wqes-regardless-of-if.patch
+ApplyPatch 1153-revert-scsi-lpfc-remove-unused-member-variables-in-struct-lp.patch
+ApplyPatch 1154-revert-scsi-lpfc-use-int-type-to-store-negative-error-codes.patch
+ApplyPatch 1155-revert-scsi-lpfc-use-min-to-improve-code.patch
+ApplyPatch 1156-revert-scsi-lpfc-fix-wrong-function-reference-in-a-comment.patch
+ApplyPatch 1157-revert-lpfc-don-t-use-file-f-path-dentry-for-comparisons.patch
+ApplyPatch 1158-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-10.patch
+ApplyPatch 1159-revert-scsi-lpfc-copyright-updates-for-14-4-0-10-patches.patch
+ApplyPatch 1160-revert-scsi-lpfc-modify-end-of-life-adapters-model-descripti.patch
+ApplyPatch 1161-revert-scsi-lpfc-revise-cq-create-set-mailbox-bitfield-defin.patch
+ApplyPatch 1162-revert-scsi-lpfc-move-clearing-of-hba-setup-flag-to-before-l.patch
+ApplyPatch 1163-revert-scsi-lpfc-ensure-hba-setup-flag-is-used-only-for-sli4.patch
+ApplyPatch 1164-revert-scsi-lpfc-relocate-clearing-initial-phba-flags-from-l.patch
+ApplyPatch 1165-revert-scsi-lpfc-simplify-error-handling-for-failed-lpfc-get.patch
+ApplyPatch 1166-revert-scsi-lpfc-early-return-out-of-fdmi-cmpl-for-locally-r.patch
+ApplyPatch 1167-revert-scsi-lpfc-skip-rscn-processing-when-fc-unloading-flag.patch
+ApplyPatch 1168-revert-scsi-lpfc-check-for-hdwq-null-ptr-when-cleaning-up-lp.patch
+ApplyPatch 1169-revert-scsi-lpfc-update-debugfs-trace-ring-initialization-me.patch
+ApplyPatch 1170-revert-scsi-lpfc-revise-logging-format-for-failed-ct-mib-req.patch
+ApplyPatch 1171-scsi-lpfc-avoid-crashing-in-lpfc-nlp-get-if-nodelist-freed.patch
+ApplyPatch 1172-libceph-make-decode-pool-more-resilient-against-corrupted-os.patch
+ApplyPatch 1173-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth.patch
+ApplyPatch 1174-libceph-replace-overzealous-bug-on-in-osdmap-apply-increment.patch
+ApplyPatch 1175-libceph-reset-sparse-read-state-in-osd-fault.patch
+ApplyPatch 1176-powerpc-tools-drop-o-pipefail-in-gcc-check-scripts.patch
+ApplyPatch 1177-kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creatin.patch
+ApplyPatch 1178-crypto-af-alg-fix-null-pointer-dereference-in-scatterwalk.patch
+ApplyPatch 1179-crypto-algif-aead-revert-to-operating-out-of-place.patch
+ApplyPatch 1180-crypto-af-alg-limit-rx-sg-extraction-by-receive-buffer-budge.patch
+ApplyPatch 1181-crypto-af-alg-fix-page-reassignment-overflow-in-af-alg-pull-.patch
+ApplyPatch 1182-crypto-authencesn-reject-too-short-aad-assoclen-8-to-match-e.patch
+ApplyPatch 1183-crypto-authencesn-do-not-place-hiseq-at-end-of-dst-for-out-o.patch
+ApplyPatch 1184-crypto-authencesn-fix-src-offset-when-decrypting-in-place.patch
+ApplyPatch 1185-crypto-authencesn-reject-short-ahash-digests-during-instance.patch
+ApplyPatch 1186-crypto-algif-aead-fix-minimum-rx-size-check-for-decryption.patch
+ApplyPatch 1187-crypto-algif-aead-snapshot-iv-for-async-aead-requests.patch
+ApplyPatch 1188-xfrm-esp-avoid-in-place-decrypt-on-shared-skb-frags.patch
+ApplyPatch 1189-can-raw-fix-ro-uniq-use-after-free-in-raw-rcv.patch
+ApplyPatch 1190-usbip-validate-number-of-packets-in-usbip-pack-ret-submit.patch
+ApplyPatch 1191-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
+ApplyPatch 1192-md-bitmap-fix-gpf-in-write-page-caused-by-resize-race.patch
+ApplyPatch 1193-ptrace-slightly-saner-get-dumpable-logic.patch
+ApplyPatch 1194-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
+ApplyPatch 1195-net-move-skb-gro-receive-list-from-udp-to-core.patch
+ApplyPatch 1196-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
+ApplyPatch 1197-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -3795,6 +3991,138 @@ fi
 #
 #
 %changelog
+* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.10.1
+- Recreate RHEL 5.14.0-687.10.1 from CentOS Stream 9 and upstream stable
+  backports (SOURCES/1100-1196)
+- Drop 687.5.3/687.5.4 security-ahead patches now superseded by the RHEL
+  backports (xfrm-esp, rxrpc, net-skbuff fragnesia, ptrace, crypto
+  authencesn/algif)
+- Keep the smb cifs.spnego ahead-fix (retained as 1197)
+- RHEL changelog for 687.6.1..687.10.1 follows:
+
+* Mon May 18 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.10.1.el9_8]
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers (Sabrina Dubroca) [RHEL-176064] {CVE-2026-46300}
+- net: move skb_gro_receive_list from udp to core (Sabrina Dubroca) [RHEL-176064] {CVE-2026-46300}
+- net: skbuff: preserve shared-frag marker during coalescing (Sabrina Dubroca) [RHEL-176064] {CVE-2026-46300}
+- ptrace: slightly saner 'get_dumpable()' logic (Ricardo Robaina) [RHEL-176454] {CVE-2026-46333}
+- md/bitmap: fix GPF in write_page caused by resize race (Nigel Croxon) [RHEL-174091] {CVE-2026-43163}
+- RDMA/umem: Fix double dma_buf_unpin in failure path (CKI Backport Bot) [RHEL-174020] {CVE-2026-43128}
+- usbip: validate number_of_packets in usbip_pack_ret_submit() (CKI Backport Bot) [RHEL-171430] {CVE-2026-31607}
+- can: raw: fix ro->uniq use-after-free in raw_rcv() (CKI Backport Bot) [RHEL-170759] {CVE-2026-31532}
+
+* Mon May 11 2026 Patrick Talbert <ptalbert@redhat.com> [5.14.0-687.9.1.el9_8]
+- xfrm: esp: avoid in-place decrypt on shared skb frags (Sabrina Dubroca) [RHEL-174563] {CVE-2026-43284}
+
+* Mon May 04 2026 Patrick Talbert <ptalbert@redhat.com> [5.14.0-687.8.1.el9_8]
+- crypto: algif_aead - snapshot IV for async AEAD requests (Herbert Xu) [RHEL-172204]
+- crypto: algif_aead - Fix minimum RX size check for decryption (Herbert Xu) [RHEL-172204]
+- crypto: authencesn - reject short ahash digests during instance creation (Herbert Xu) [RHEL-172204]
+- crypto: authencesn - Fix src offset when decrypting in-place (Herbert Xu) [RHEL-172204]
+- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption (Herbert Xu) [RHEL-172204] {CVE-2026-31431}
+- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec (Herbert Xu) [RHEL-172204] {CVE-2026-23060}
+- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl (Herbert Xu) [RHEL-172204]
+- crypto: af_alg - limit RX SG extraction by receive buffer budget (Herbert Xu) [RHEL-172204] {CVE-2026-31677}
+- crypto: algif_aead - Revert to operating out-of-place (Herbert Xu) [RHEL-172204] {CVE-2026-31431}
+- crypto: af-alg - fix NULL pointer dereference in scatterwalk (Herbert Xu) [RHEL-172204]
+
+* Fri Apr 24 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.7.1.el9_8]
+- KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE (Paolo Bonzini) [RHEL-153722] {CVE-2026-23401}
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek) [RHEL-165125]
+- libceph: reset sparse-read state in osd_fault() (CKI Backport Bot) [RHEL-169078] {CVE-2026-23136}
+- libceph: replace overzealous BUG_ON in osdmap_apply_incremental() (CKI Backport Bot) [RHEL-169071] {CVE-2026-22990}
+- libceph: prevent potential out-of-bounds reads in handle_auth_done() (CKI Backport Bot) [RHEL-169067] {CVE-2026-22984}
+- libceph: make decode_pool() more resilient against corrupted osdmaps (CKI Backport Bot) [RHEL-169063] {CVE-2025-71116}
+- scsi: lpfc: avoid crashing in lpfc_nlp_get() if lpfc_nodelist was freed (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Revise logging format for failed CT MIB requests" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Update debugfs trace ring initialization messages" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Skip RSCN processing when FC_UNLOADING flag is set" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Early return out of FDMI cmpl for locally rejected statuses" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Simplify error handling for failed lpfc_get_sli4_parameters cmd" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Relocate clearing initial phba flags from link up to link down hdlr" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Ensure HBA_SETUP flag is used only for SLI4 in dev_loss_tmo_callbk" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Move clearing of HBA_SETUP flag to before lpfc_sli4_queue_unset" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Revise CQ_CREATE_SET mailbox bitfield definitions" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Modify end-of-life adapters' model descriptions" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Copyright updates for 14.4.0.10 patches" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Update lpfc version to 14.4.0.10" (Ewan D. Milne) [RHEL-167742]
+- Revert "lpfc: don't use file->f_path.dentry for comparisons" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Fix wrong function reference in a comment" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: use min() to improve code" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Use int type to store negative error codes" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Remove unused member variables in struct lpfc_hba and lpfc_vport" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Abort outstanding ELS WQEs regardless of if rmmod is in progress" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Clean up allocated queues when queue setup mbox commands fail" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Remove ndlp kref decrement clause for F_Port_Ctrl in lpfc_cleanup" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Decrement ndlp kref after FDISC retries exhausted" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Check return status of lpfc_reset_flush_io_context during TGT_RESET" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Ensure PLOGI_ACC is sent prior to PRLI in Point to Point topology" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Define size of debugfs entry for xri rebalancing" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Fix memory leak when nvmeio_trc debugfs entry is used" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Use switch case statements in DIF debugfs handlers" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Clean up extraneous phba dentries" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Convert debugfs directory counts from atomic to unsigned int" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Update lpfc version to 14.4.0.11" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Copyright updates for 14.4.0.11 patches" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Update various NPIV diagnostic log messaging" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Revise discovery related function headers and comments" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Remove redundant NULL ptr assignment in lpfc_els_free_iocb()" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Ensure unregistration of rpis for received PLOGIs" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Fix leaked ndlp krefs when in point-to-point topology" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Modify kref handling for Fabric Controller ndlps" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Allow support for BB credit recovery in point-to-point topology" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Add capability to register Platform Name ID to fabric" (Ewan D. Milne) [RHEL-167742]
+- Revert "scsi: lpfc: Update lpfc version to 14.4.0.12" (Ewan D. Milne) [RHEL-167742]
+- drm/i915/dp: Fix panel replay when DSC is enabled (Anusha Srivatsa) [RHEL-104822]
+- drm/i915/dp_mst: Recompute all MST link CRTCs if DSC gets enabled on the link (Anusha Srivatsa) [RHEL-104822]
+- drm/i915/dp_mst: Track DSC enabled status on the MST link (Anusha Srivatsa) [RHEL-104822]
+- drm/i915/dp_mst: Reuse the DP-SST helper function to compute FEC config (Anusha Srivatsa) [RHEL-104822]
+- drm/i915/dp: Export helper to determine if FEC on non-UHBR links is required (Anusha Srivatsa) [RHEL-104822]
+- drm/i915/dp: Ensure the FEC state stays disabled for UHBR links (Anusha Srivatsa) [RHEL-104822]
+- drm/i915/dsc: Add helper to enable the DSC configuration for a CRTC (Anusha Srivatsa) [RHEL-104822]
+- x86/boot: Handle relative CONFIG_EFI_SBAT_FILE file paths (Oleksii Baranov) [RHEL-157853]
+- net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks (CKI Backport Bot) [RHEL-157235] {CVE-2026-23270}
+- net/sched: cls_u32: use skb_header_pointer_careful() (Paolo Abeni) [RHEL-150404] {CVE-2026-23204}
+- net: add skb_header_pointer_careful() helper (Paolo Abeni) [RHEL-150404]
+
+* Thu Apr 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.6.1.el9_8]
+- nfsd: fix heap overflow in NFSv4.0 LOCK replay cache (Scott Mayhew) [RHEL-167017] {CVE-2026-31402}
+- scsi: qla2xxx: Fix improper freeing of purex item (CKI Backport Bot) [RHEL-159223] {CVE-2025-68741}
+- smb: client: fix krb5 mount with username option (Paulo Alcantara) [RHEL-158988]
+- ionic: fix persistent MAC address override on PF (Mohammad Heib) [RHEL-151378]
+- RDMA/bnxt_re: convert timeouts to secs_to_jiffies() (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Fix return code of bnxt_re_configure_cc (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Fix missing error handling for tx_queue (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Fix incorrect display of inactivity_cp in debugfs output (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Fix the condition check while programming congestion control (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Fix buffer overflow in debugfs code (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Congestion control settings using debugfs hook (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Use macro instead of hard coded value (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Support 2G message size (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Fix size of uverbs_copy_to() in BNXT_RE_METHOD_GET_TOGGLE_MEM (CKI Backport Bot) [RHEL-155966]
+- RDMA/bnxt_re: Support extended stats for Thor2 VF (CKI Backport Bot) [RHEL-155966]
+- net: hv_netvsc: reject RSS hash key programming without RX indirection table (Medha Mummigatti) [RHEL-155207]
+- ice: fix page leak for zero-size Rx descriptors (CKI Backport Bot) [RHEL-154095]
+- net/sched: sch_cake: Fix incorrect qlen reduction in cake_drop (Davide Caratti) [RHEL-150444] {CVE-2025-39766}
+- net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit (Davide Caratti) [RHEL-150444] {CVE-2025-39766}
+- rtnetlink: Allocate vfinfo size for VF GUIDs when supported (Kamal Heib) [RHEL-145522] {CVE-2025-22075}
+
+* Thu May 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.5.4
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers
+  (refresh to upstream v5: now also covers skb_segment(); CVE-2026-46300
+  "Fragnesia")
+- smb: client: reject userspace cifs.spnego descriptions (upstream commit
+  3da1fdf4efbc)
+
+* Tue May 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.5.3
+- xfrm: esp: avoid in-place decrypt on shared skb frags (CVE-2026-43284)
+- rxrpc: linearize incoming DATA packet when it has paged frags (CVE-2026-43500)
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers
+  (CVE-2026-46300 "Fragnesia")
+- ptrace: require CAP_SYS_PTRACE on mm-less tasks (CVE-2026-46333, kABI-safe
+  replacement for upstream 31e62c2ebbfd, Qualys Security Advisory)
+- crypto: full set of authencesn/algif AEAD Copy-Fail fixes (CVE-2026-31431)
+
 * Tue Apr 14 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.5.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
