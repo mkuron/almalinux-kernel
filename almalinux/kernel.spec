@@ -182,7 +182,7 @@ Summary: The Linux kernel
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.16.1%{?buildid}%{?dist}
+%define specrelease 211.18.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1196,6 +1196,89 @@ Patch1158: 1158-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
 Patch1159: 1159-ptrace-slightly-saner-get-dumpable-logic.patch
 Patch1160: 1160-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
 Patch1161: 1161-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
+Patch1162: 1162-netfilter-nf-tables-release-flowtable-after-rcu-grace-period.patch
+Patch1163: 1163-can-j1939-j1939-session-new-fix-skb-reference-counting.patch
+Patch1164: 1164-ima-don-t-clear-ima-digsig-flag-when-setting-or-removing-non.patch
+Patch1165: 1165-netfilter-nf-conntrack-h323-check-for-zero-length-in-decodeq.patch
+Patch1166: 1166-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-12.patch
+Patch1167: 1167-revert-scsi-lpfc-add-capability-to-register-platform-name-id.patch
+Patch1168: 1168-revert-scsi-lpfc-allow-support-for-bb-credit-recovery-in-poi.patch
+Patch1169: 1169-revert-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-drop.patch
+Patch1170: 1170-revert-scsi-lpfc-modify-kref-handling-for-fabric-controller-.patch
+Patch1171: 1171-revert-scsi-lpfc-fix-leaked-ndlp-krefs-when-in-point-to-poin.patch
+Patch1172: 1172-revert-scsi-lpfc-ensure-unregistration-of-rpis-for-received-.patch
+Patch1173: 1173-revert-scsi-lpfc-remove-redundant-null-ptr-assignment-in-lpf.patch
+Patch1174: 1174-revert-scsi-lpfc-revise-discovery-related-function-headers-a.patch
+Patch1175: 1175-revert-scsi-lpfc-update-various-npiv-diagnostic-log-messagin.patch
+Patch1176: 1176-revert-scsi-lpfc-copyright-updates-for-14-4-0-11-patches.patch
+Patch1177: 1177-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-11.patch
+Patch1178: 1178-revert-scsi-lpfc-convert-debugfs-directory-counts-from-atomi.patch
+Patch1179: 1179-revert-scsi-lpfc-clean-up-extraneous-phba-dentries.patch
+Patch1180: 1180-revert-scsi-lpfc-use-switch-case-statements-in-dif-debugfs-h.patch
+Patch1181: 1181-revert-scsi-lpfc-fix-memory-leak-when-nvmeio-trc-debugfs-ent.patch
+Patch1182: 1182-revert-scsi-lpfc-define-size-of-debugfs-entry-for-xri-rebala.patch
+Patch1183: 1183-revert-scsi-lpfc-ensure-plogi-acc-is-sent-prior-to-prli-in-p.patch
+Patch1184: 1184-revert-scsi-lpfc-check-return-status-of-lpfc-reset-flush-io-.patch
+Patch1185: 1185-revert-scsi-lpfc-decrement-ndlp-kref-after-fdisc-retries-exh.patch
+Patch1186: 1186-revert-scsi-lpfc-remove-ndlp-kref-decrement-clause-for-f-por.patch
+Patch1187: 1187-revert-scsi-lpfc-clean-up-allocated-queues-when-queue-setup-.patch
+Patch1188: 1188-revert-scsi-lpfc-abort-outstanding-els-wqes-regardless-of-if.patch
+Patch1189: 1189-revert-scsi-lpfc-remove-unused-member-variables-in-struct-lp.patch
+Patch1190: 1190-revert-scsi-lpfc-use-int-type-to-store-negative-error-codes.patch
+Patch1191: 1191-revert-scsi-lpfc-use-min-to-improve-code.patch
+Patch1192: 1192-revert-scsi-lpfc-fix-wrong-function-reference-in-a-comment.patch
+Patch1193: 1193-revert-lpfc-don-t-use-file-f-path-dentry-for-comparisons.patch
+Patch1194: 1194-revert-scsi-lpfc-copyright-updates-for-14-4-0-10-patches.patch
+Patch1195: 1195-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-10.patch
+Patch1196: 1196-revert-scsi-lpfc-modify-end-of-life-adapters-model-descripti.patch
+Patch1197: 1197-revert-scsi-lpfc-revise-cq-create-set-mailbox-bitfield-defin.patch
+Patch1198: 1198-revert-scsi-lpfc-move-clearing-of-hba-setup-flag-to-before-l.patch
+Patch1199: 1199-revert-scsi-lpfc-ensure-hba-setup-flag-is-used-only-for-sli4.patch
+Patch1200: 1200-revert-scsi-lpfc-relocate-clearing-initial-phba-flags-from-l.patch
+Patch1201: 1201-revert-scsi-lpfc-simplify-error-handling-for-failed-lpfc-get.patch
+Patch1202: 1202-revert-scsi-lpfc-early-return-out-of-fdmi-cmpl-for-locally-r.patch
+Patch1203: 1203-revert-scsi-lpfc-skip-rscn-processing-when-fc-unloading-flag.patch
+Patch1204: 1204-revert-scsi-lpfc-check-for-hdwq-null-ptr-when-cleaning-up-lp.patch
+Patch1205: 1205-revert-scsi-lpfc-update-debugfs-trace-ring-initialization-me.patch
+Patch1206: 1206-revert-scsi-lpfc-revise-logging-format-for-failed-ct-mib-req.patch
+Patch1207: 1207-scsi-lpfc-avoid-crashing-in-lpfc-nlp-get-rhel-only.patch
+Patch1208: 1208-drm-mgag200-fix-mgag200-bmc-stop-scanout.patch
+Patch1209: 1209-net-sched-act-csum-validate-nested-vlan-headers.patch
+Patch1210: 1210-netfilter-ip6t-eui64-reject-invalid-mac-header-for-all-packe.patch
+Patch1211: 1211-cifs-remove-unnecessary-tracing-after-put-tcon.patch
+Patch1212: 1212-cifs-make-default-value-of-retrans-as-zero.patch
+Patch1213: 1213-dpll-zl3073x-add-output-pin-frequency-helper.patch
+Patch1214: 1214-dpll-zl3073x-include-current-frequency-in-supported-frequenc.patch
+Patch1215: 1215-dpll-zl3073x-fix-ref-frequency-setting.patch
+Patch1216: 1216-dpll-zl3073x-fix-ref-phase-offset-comp-register-width-for-so.patch
+Patch1217: 1217-dpll-zl3073x-remove-redundant-cleanup-in-devm-dpll-init.patch
+Patch1218: 1218-io-uring-rsrc-reject-zero-length-fixed-buffer-import.patch
+Patch1219: 1219-netfilter-nf-conntrack-helper-pass-helper-to-expect-cleanup.patch
+Patch1220: 1220-hid-wacom-fix-out-of-bounds-read-in-wacom-intuos-bt-irq.patch
+Patch1221: 1221-redhat-configs-enable-config-aqtion-on-all-archs.patch
+Patch1222: 1222-wifi-brcmfmac-validate-bsscfg-indices-in-if-events.patch
+Patch1223: 1223-netfilter-ctnetlink-ensure-safe-access-to-master-conntrack.patch
+Patch1224: 1224-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.patch
+Patch1225: 1225-net-fix-rcu-tasks-stall-in-threaded-busypoll.patch
+Patch1226: 1226-ice-use-netif-get-num-default-rss-queues.patch
+Patch1227: 1227-ice-set-max-queues-in-alloc-etherdev-mqs.patch
+Patch1228: 1228-anon-inode-use-a-proper-mode-internally.patch
+Patch1229: 1229-pidfs-use-anon-inode-getattr.patch
+Patch1230: 1230-anon-inode-explicitly-block-setattr.patch
+Patch1231: 1231-pidfs-use-anon-inode-setattr.patch
+Patch1232: 1232-anon-inode-raise-sb-i-nodev-and-sb-i-noexec.patch
+Patch1233: 1233-fs-add-s-anon-inode.patch
+Patch1234: 1234-mm-thp-deny-thp-for-files-on-anonymous-inodes.patch
+Patch1235: 1235-dpaa2-switch-prevent-zero-size-ptr-dereference-when-num-ifs-.patch
+Patch1236: 1236-dpaa2-switch-validate-num-ifs-to-prevent-out-of-bounds-write.patch
+Patch1237: 1237-mm-page-alloc-clear-page-private-in-free-pages-prepare.patch
+Patch1238: 1238-redhat-kernel-spec-template-disable-objtool-werror-for-gcov-.patch
+Patch1239: 1239-dm-thin-fix-metadata-refcount-underflow.patch
+Patch1240: 1240-crypto-tegra-disable-softirqs-before-finalizing-request.patch
+Patch1241: 1241-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
+Patch1242: 1242-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
+Patch1243: 1243-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
+Patch1244: 1244-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2114,6 +2197,89 @@ ApplyPatch 1158-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
 ApplyPatch 1159-ptrace-slightly-saner-get-dumpable-logic.patch
 ApplyPatch 1160-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
 ApplyPatch 1161-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
+ApplyPatch 1162-netfilter-nf-tables-release-flowtable-after-rcu-grace-period.patch
+ApplyPatch 1163-can-j1939-j1939-session-new-fix-skb-reference-counting.patch
+ApplyPatch 1164-ima-don-t-clear-ima-digsig-flag-when-setting-or-removing-non.patch
+ApplyPatch 1165-netfilter-nf-conntrack-h323-check-for-zero-length-in-decodeq.patch
+ApplyPatch 1166-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-12.patch
+ApplyPatch 1167-revert-scsi-lpfc-add-capability-to-register-platform-name-id.patch
+ApplyPatch 1168-revert-scsi-lpfc-allow-support-for-bb-credit-recovery-in-poi.patch
+ApplyPatch 1169-revert-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-drop.patch
+ApplyPatch 1170-revert-scsi-lpfc-modify-kref-handling-for-fabric-controller-.patch
+ApplyPatch 1171-revert-scsi-lpfc-fix-leaked-ndlp-krefs-when-in-point-to-poin.patch
+ApplyPatch 1172-revert-scsi-lpfc-ensure-unregistration-of-rpis-for-received-.patch
+ApplyPatch 1173-revert-scsi-lpfc-remove-redundant-null-ptr-assignment-in-lpf.patch
+ApplyPatch 1174-revert-scsi-lpfc-revise-discovery-related-function-headers-a.patch
+ApplyPatch 1175-revert-scsi-lpfc-update-various-npiv-diagnostic-log-messagin.patch
+ApplyPatch 1176-revert-scsi-lpfc-copyright-updates-for-14-4-0-11-patches.patch
+ApplyPatch 1177-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-11.patch
+ApplyPatch 1178-revert-scsi-lpfc-convert-debugfs-directory-counts-from-atomi.patch
+ApplyPatch 1179-revert-scsi-lpfc-clean-up-extraneous-phba-dentries.patch
+ApplyPatch 1180-revert-scsi-lpfc-use-switch-case-statements-in-dif-debugfs-h.patch
+ApplyPatch 1181-revert-scsi-lpfc-fix-memory-leak-when-nvmeio-trc-debugfs-ent.patch
+ApplyPatch 1182-revert-scsi-lpfc-define-size-of-debugfs-entry-for-xri-rebala.patch
+ApplyPatch 1183-revert-scsi-lpfc-ensure-plogi-acc-is-sent-prior-to-prli-in-p.patch
+ApplyPatch 1184-revert-scsi-lpfc-check-return-status-of-lpfc-reset-flush-io-.patch
+ApplyPatch 1185-revert-scsi-lpfc-decrement-ndlp-kref-after-fdisc-retries-exh.patch
+ApplyPatch 1186-revert-scsi-lpfc-remove-ndlp-kref-decrement-clause-for-f-por.patch
+ApplyPatch 1187-revert-scsi-lpfc-clean-up-allocated-queues-when-queue-setup-.patch
+ApplyPatch 1188-revert-scsi-lpfc-abort-outstanding-els-wqes-regardless-of-if.patch
+ApplyPatch 1189-revert-scsi-lpfc-remove-unused-member-variables-in-struct-lp.patch
+ApplyPatch 1190-revert-scsi-lpfc-use-int-type-to-store-negative-error-codes.patch
+ApplyPatch 1191-revert-scsi-lpfc-use-min-to-improve-code.patch
+ApplyPatch 1192-revert-scsi-lpfc-fix-wrong-function-reference-in-a-comment.patch
+ApplyPatch 1193-revert-lpfc-don-t-use-file-f-path-dentry-for-comparisons.patch
+ApplyPatch 1194-revert-scsi-lpfc-copyright-updates-for-14-4-0-10-patches.patch
+ApplyPatch 1195-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-10.patch
+ApplyPatch 1196-revert-scsi-lpfc-modify-end-of-life-adapters-model-descripti.patch
+ApplyPatch 1197-revert-scsi-lpfc-revise-cq-create-set-mailbox-bitfield-defin.patch
+ApplyPatch 1198-revert-scsi-lpfc-move-clearing-of-hba-setup-flag-to-before-l.patch
+ApplyPatch 1199-revert-scsi-lpfc-ensure-hba-setup-flag-is-used-only-for-sli4.patch
+ApplyPatch 1200-revert-scsi-lpfc-relocate-clearing-initial-phba-flags-from-l.patch
+ApplyPatch 1201-revert-scsi-lpfc-simplify-error-handling-for-failed-lpfc-get.patch
+ApplyPatch 1202-revert-scsi-lpfc-early-return-out-of-fdmi-cmpl-for-locally-r.patch
+ApplyPatch 1203-revert-scsi-lpfc-skip-rscn-processing-when-fc-unloading-flag.patch
+ApplyPatch 1204-revert-scsi-lpfc-check-for-hdwq-null-ptr-when-cleaning-up-lp.patch
+ApplyPatch 1205-revert-scsi-lpfc-update-debugfs-trace-ring-initialization-me.patch
+ApplyPatch 1206-revert-scsi-lpfc-revise-logging-format-for-failed-ct-mib-req.patch
+ApplyPatch 1207-scsi-lpfc-avoid-crashing-in-lpfc-nlp-get-rhel-only.patch
+ApplyPatch 1208-drm-mgag200-fix-mgag200-bmc-stop-scanout.patch
+ApplyPatch 1209-net-sched-act-csum-validate-nested-vlan-headers.patch
+ApplyPatch 1210-netfilter-ip6t-eui64-reject-invalid-mac-header-for-all-packe.patch
+ApplyPatch 1211-cifs-remove-unnecessary-tracing-after-put-tcon.patch
+ApplyPatch 1212-cifs-make-default-value-of-retrans-as-zero.patch
+ApplyPatch 1213-dpll-zl3073x-add-output-pin-frequency-helper.patch
+ApplyPatch 1214-dpll-zl3073x-include-current-frequency-in-supported-frequenc.patch
+ApplyPatch 1215-dpll-zl3073x-fix-ref-frequency-setting.patch
+ApplyPatch 1216-dpll-zl3073x-fix-ref-phase-offset-comp-register-width-for-so.patch
+ApplyPatch 1217-dpll-zl3073x-remove-redundant-cleanup-in-devm-dpll-init.patch
+ApplyPatch 1218-io-uring-rsrc-reject-zero-length-fixed-buffer-import.patch
+ApplyPatch 1219-netfilter-nf-conntrack-helper-pass-helper-to-expect-cleanup.patch
+ApplyPatch 1220-hid-wacom-fix-out-of-bounds-read-in-wacom-intuos-bt-irq.patch
+ApplyPatch 1221-redhat-configs-enable-config-aqtion-on-all-archs.patch
+ApplyPatch 1222-wifi-brcmfmac-validate-bsscfg-indices-in-if-events.patch
+ApplyPatch 1223-netfilter-ctnetlink-ensure-safe-access-to-master-conntrack.patch
+ApplyPatch 1224-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.patch
+ApplyPatch 1225-net-fix-rcu-tasks-stall-in-threaded-busypoll.patch
+ApplyPatch 1226-ice-use-netif-get-num-default-rss-queues.patch
+ApplyPatch 1227-ice-set-max-queues-in-alloc-etherdev-mqs.patch
+ApplyPatch 1228-anon-inode-use-a-proper-mode-internally.patch
+ApplyPatch 1229-pidfs-use-anon-inode-getattr.patch
+ApplyPatch 1230-anon-inode-explicitly-block-setattr.patch
+ApplyPatch 1231-pidfs-use-anon-inode-setattr.patch
+ApplyPatch 1232-anon-inode-raise-sb-i-nodev-and-sb-i-noexec.patch
+ApplyPatch 1233-fs-add-s-anon-inode.patch
+ApplyPatch 1234-mm-thp-deny-thp-for-files-on-anonymous-inodes.patch
+ApplyPatch 1235-dpaa2-switch-prevent-zero-size-ptr-dereference-when-num-ifs-.patch
+ApplyPatch 1236-dpaa2-switch-validate-num-ifs-to-prevent-out-of-bounds-write.patch
+ApplyPatch 1237-mm-page-alloc-clear-page-private-in-free-pages-prepare.patch
+ApplyPatch 1238-redhat-kernel-spec-template-disable-objtool-werror-for-gcov-.patch
+ApplyPatch 1239-dm-thin-fix-metadata-refcount-underflow.patch
+ApplyPatch 1240-crypto-tegra-disable-softirqs-before-finalizing-request.patch
+ApplyPatch 1241-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
+ApplyPatch 1242-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
+ApplyPatch 1243-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
+ApplyPatch 1244-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4618,6 +4784,97 @@ fi\
 #
 #
 %changelog
+* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.18.1
+- Recreate RHEL 6.12.0-211.18.1 from CentOS Stream 10 and upstream stable backports (1162-1244)
+- RHEL changelog for 211.17.1..211.18.1 follows:
+
+* Thu May 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.18.1.el10_2]
+- xfs: fix freemap adjustments when adding xattrs to leaf blocks (CKI Backport Bot) [RHEL-174051] {CVE-2026-43158}
+- xfs: delete attr leaf freemap entries when empty (CKI Backport Bot) [RHEL-174051] {CVE-2026-43158}
+- Bluetooth: SCO: fix race conditions in sco_sock_connect() (CKI Backport Bot) [RHEL-172603] {CVE-2026-43023}
+- Bluetooth: MGMT: validate LTK enc_size on load (CKI Backport Bot) [RHEL-172577] {CVE-2026-43020}
+- crypto: tegra - Disable softirqs before finalizing request (CKI Backport Bot) [RHEL-133872]
+
+* Wed May 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.17.1.el10_2]
+- dm-thin: fix metadata refcount underflow (Benjamin Marzinski) [RHEL-169625]
+- redhat/kernel.spec.template: disable OBJTOOL_WERROR for gcov builds (Oleksii Baranov)
+- mm/page_alloc: clear page->private in free_pages_prepare() (Rafael Aquini) [RHEL-174756] {CVE-2026-43303}
+- dpaa2-switch: validate num_ifs to prevent out-of-bounds write (CKI Backport Bot) [RHEL-174258] {CVE-2026-43205}
+- dpaa2-switch: prevent ZERO_SIZE_PTR dereference when num_ifs is zero (CKI Backport Bot) [RHEL-174258] {CVE-2026-43205}
+- mm: thp: deny THP for files on anonymous inodes (Rafael Aquini) [RHEL-171617] {CVE-2026-23375}
+- fs: add S_ANON_INODE (Rafael Aquini) [RHEL-171617]
+- anon_inode: raise SB_I_NODEV and SB_I_NOEXEC (Rafael Aquini) [RHEL-171617]
+- pidfs: use anon_inode_setattr() (Rafael Aquini) [RHEL-171617]
+- anon_inode: explicitly block ->setattr() (Rafael Aquini) [RHEL-171617]
+- pidfs: use anon_inode_getattr() (Rafael Aquini) [RHEL-171617]
+- anon_inode: use a proper mode internally (Rafael Aquini) [RHEL-171617]
+- ice: set max queues in alloc_etherdev_mqs() (CKI Backport Bot) [RHEL-174331]
+- ice: use netif_get_num_default_rss_queues() (CKI Backport Bot) [RHEL-174331]
+- net: Fix rcu_tasks stall in threaded busypoll (CKI Backport Bot) [RHEL-170809]
+- netfilter: xt_tcpmss: check remaining length before reading optlen (CKI Backport Bot) [RHEL-174217] {CVE-2026-43190}
+- netfilter: ctnetlink: ensure safe access to master conntrack (CKI Backport Bot) [RHEL-173872] {CVE-2026-43116}
+- wifi: brcmfmac: validate bsscfg indices in IF events (CKI Backport Bot) [RHEL-173857] {CVE-2026-43110}
+- redhat/configs: enable CONFIG_AQTION on all archs (CKI Backport Bot) [RHEL-171944]
+- HID: wacom: fix out-of-bounds read in wacom_intuos_bt_irq (CKI Backport Bot) [RHEL-172745] {CVE-2026-43051}
+- netfilter: nf_conntrack_helper: pass helper to expect cleanup (CKI Backport Bot) [RHEL-172625] {CVE-2026-43027}
+- io_uring/rsrc: reject zero-length fixed buffer import (CKI Backport Bot) [RHEL-172556] {CVE-2026-43006}
+- dpll: zl3073x: Remove redundant cleanup in devm_dpll_init() (CKI Backport Bot) [RHEL-164434]
+- dpll: zl3073x: fix REF_PHASE_OFFSET_COMP register width for some chip IDs (CKI Backport Bot) [RHEL-164434]
+- dpll: zl3073x: Fix ref frequency setting (CKI Backport Bot) [RHEL-164434]
+- dpll: zl3073x: Include current frequency in supported frequencies list (CKI Backport Bot) [RHEL-164434]
+- dpll: zl3073x: Add output pin frequency helper (CKI Backport Bot) [RHEL-164434]
+- cifs: make default value of retrans as zero (Paulo Alcantara) [RHEL-171637]
+- cifs: remove unnecessary tracing after put tcon (Paulo Alcantara) [RHEL-171637]
+- netfilter: ip6t_eui64: reject invalid MAC header for all packets (CKI Backport Bot) [RHEL-171159] {CVE-2026-31685}
+- net: sched: act_csum: validate nested VLAN headers (CKI Backport Bot) [RHEL-171142] {CVE-2026-31684}
+- drm/mgag200: fix mgag200_bmc_stop_scanout() (Jocelyn Falempe) [RHEL-150180]
+- scsi: lpfc: avoid crashing in lpfc_nlp_get() if lpfc_nodelist was freed (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Revise logging format for failed CT MIB requests" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Update debugfs trace ring initialization messages" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Skip RSCN processing when FC_UNLOADING flag is set" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Early return out of FDMI cmpl for locally rejected statuses" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Simplify error handling for failed lpfc_get_sli4_parameters cmd" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Relocate clearing initial phba flags from link up to link down hdlr" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Ensure HBA_SETUP flag is used only for SLI4 in dev_loss_tmo_callbk" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Move clearing of HBA_SETUP flag to before lpfc_sli4_queue_unset" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Revise CQ_CREATE_SET mailbox bitfield definitions" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Modify end-of-life adapters' model descriptions" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Update lpfc version to 14.4.0.10" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Copyright updates for 14.4.0.10 patches" (Ewan D. Milne) [RHEL-169786]
+- Revert "lpfc: don't use file->f_path.dentry for comparisons" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Fix wrong function reference in a comment" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: use min() to improve code" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Use int type to store negative error codes" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Remove unused member variables in struct lpfc_hba and lpfc_vport" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Abort outstanding ELS WQEs regardless of if rmmod is in progress" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Clean up allocated queues when queue setup mbox commands fail" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Remove ndlp kref decrement clause for F_Port_Ctrl in lpfc_cleanup" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Decrement ndlp kref after FDISC retries exhausted" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Check return status of lpfc_reset_flush_io_context during TGT_RESET" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Ensure PLOGI_ACC is sent prior to PRLI in Point to Point topology" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Define size of debugfs entry for xri rebalancing" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Fix memory leak when nvmeio_trc debugfs entry is used" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Use switch case statements in DIF debugfs handlers" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Clean up extraneous phba dentries" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Convert debugfs directory counts from atomic to unsigned int" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Update lpfc version to 14.4.0.11" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Copyright updates for 14.4.0.11 patches" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Update various NPIV diagnostic log messaging" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Revise discovery related function headers and comments" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Remove redundant NULL ptr assignment in lpfc_els_free_iocb()" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Ensure unregistration of rpis for received PLOGIs" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Fix leaked ndlp krefs when in point-to-point topology" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Modify kref handling for Fabric Controller ndlps" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Fix reusing an ndlp that is marked NLP_DROPPED during FLOGI" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Allow support for BB credit recovery in point-to-point topology" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Add capability to register Platform Name ID to fabric" (Ewan D. Milne) [RHEL-169786]
+- Revert "scsi: lpfc: Update lpfc version to 14.4.0.12" (Ewan D. Milne) [RHEL-169786]
+- netfilter: nf_conntrack_h323: check for zero length in DecodeQ931() (CKI Backport Bot) [RHEL-166991] {CVE-2026-23455}
+- ima: don't clear IMA_DIGSIG flag when setting or removing non-IMA xattr (Bruno Meneguele) [RHEL-169738] {CVE-2025-68183}
+- can: j1939: j1939_session_new(): fix skb reference counting (CKI Backport Bot) [RHEL-162260] {CVE-2024-56645}
+- netfilter: nf_tables: release flowtable after rcu grace period on error (CKI Backport Bot) [RHEL-160469] {CVE-2026-23392}
+
 * Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.16.1
 - Recreate RHEL 6.12.0-211.16.1 from CentOS Stream 10 and upstream stable backports (1106-1161)
 - Drop 211.7.x security-ahead patches superseded by the RHEL backports (1100-1104: crypto authencesn/algif, xfrm-esp, rxrpc, net-skbuff fragnesia, ptrace)
