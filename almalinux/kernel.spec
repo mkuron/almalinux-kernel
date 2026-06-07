@@ -182,7 +182,7 @@ Summary: The Linux kernel
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.10.1%{?buildid}%{?dist}
+%define specrelease 687.12.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1073,6 +1073,61 @@ Patch1194: 1194-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
 Patch1195: 1195-net-move-skb-gro-receive-list-from-udp-to-core.patch
 Patch1196: 1196-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
 Patch1197: 1197-smb-client-reject-userspace-cifs.spnego-descriptions.patch
+Patch1198: 1198-netfilter-nf-tables-release-flowtable-after-rcu-grace-period.patch
+Patch1199: 1199-revert-mm-pcp-increase-pcp-free-count-threshold-to-trigger-f.patch
+Patch1200: 1200-ice-fix-missing-tx-timestamps-interrupts-on-e825-devices.patch
+Patch1201: 1201-ice-fix-ptp-timestamping-broken-by-synce-code-on-e825c.patch
+Patch1202: 1202-i2c-i801-revert-i2c-i801-replace-acpi-lock-with-i2c-bus-lock.patch
+Patch1203: 1203-ima-don-t-clear-ima-digsig-flag-when-setting-or-removing-non.patch
+Patch1204: 1204-crypto-asymmetric-keys-prevent-overflow-in-asymmetric-key-ge.patch
+Patch1205: 1205-netfilter-nf-conntrack-h323-check-for-zero-length-in-decodeq.patch
+Patch1206: 1206-iommu-sva-add-kernel-page-table-iotlb-flush-notification.patch
+Patch1207: 1207-x86-mm-flush-iommu-before-freeing-kernel-page-table-pages.patch
+Patch1208: 1208-nbd-defer-config-unlock-in-nbd-genl-connect.patch
+Patch1209: 1209-drm-mgag200-fix-mgag200-bmc-stop-scanout.patch
+Patch1210: 1210-ice-fix-timestamp-interrupt-configuration-for-e825c.patch
+Patch1211: 1211-ice-perform-phy-soft-reset-for-e825c-ports-at-initialization.patch
+Patch1212: 1212-ice-fix-ready-bitmap-check-for-non-e822-devices.patch
+Patch1213: 1213-ice-fix-ice-ptp-read-tx-hwtstamp-status-eth56g.patch
+Patch1214: 1214-cifs-make-default-value-of-retrans-as-zero.patch
+Patch1215: 1215-net-sched-act-csum-validate-nested-vlan-headers.patch
+Patch1216: 1216-netfilter-ip6t-eui64-reject-invalid-mac-header-for-all-packe.patch
+Patch1217: 1217-scsi-storvsc-handle-persistent-reserve-in-truncation-for-hyp.patch
+Patch1218: 1218-dpll-zl3073x-add-output-pin-frequency-helper.patch
+Patch1219: 1219-dpll-zl3073x-include-current-frequency-in-supported-frequenc.patch
+Patch1220: 1220-dpll-zl3073x-fix-ref-frequency-setting.patch
+Patch1221: 1221-dpll-zl3073x-fix-ref-phase-offset-comp-register-width-for-so.patch
+Patch1222: 1222-dpll-zl3073x-remove-redundant-cleanup-in-devm-dpll-init.patch
+Patch1223: 1223-ice-fix-null-pointer-dereference-in-ice-reset-all-vfs.patch
+Patch1224: 1224-ice-fix-missing-sma-pin-initialization-in-dpll-subsystem.patch
+Patch1225: 1225-ice-fix-sma-and-u-fl-pin-state-changes-affecting-paired-pin.patch
+Patch1226: 1226-dpll-export-dpll-pin-change-ntf-for-use-under-dpll-lock.patch
+Patch1227: 1227-ice-fix-missing-dpll-notifications-for-sw-pins.patch
+Patch1228: 1228-ice-add-dpll-peer-notification-for-paired-sma-and-u-fl-pins.patch
+Patch1229: 1229-s390-pci-avoid-deadlock-between-pci-error-recovery-and-mlx5-.patch
+Patch1230: 1230-netfilter-nf-conntrack-helper-pass-helper-to-expect-cleanup.patch
+Patch1231: 1231-hid-wacom-fix-out-of-bounds-read-in-wacom-intuos-bt-irq.patch
+Patch1232: 1232-redhat-configs-enable-config-sclp-ofb-for-s390x.patch
+Patch1233: 1233-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
+Patch1234: 1234-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
+Patch1235: 1235-bluetooth-sco-fix-use-after-free-in-sco-recv-frame-due-to-mi.patch
+Patch1236: 1236-smb-client-validate-the-whole-dacl-before-rewriting-it-in-ci.patch
+Patch1237: 1237-smb-client-require-a-full-nfs-mode-sid-before-reading-mode-b.patch
+Patch1238: 1238-smb-client-scope-end-of-dacl-to-cifs-debug2-use-in-parse-dac.patch
+Patch1239: 1239-smb-client-use-kzalloc-to-zero-initialize-security-descripto.patch
+Patch1240: 1240-smb-client-validate-dacloffset-before-building-dacl-pointers.patch
+Patch1241: 1241-ice-fix-infinite-recursion-in-ice-cfg-tx-topo-via-ice-init-d.patch
+Patch1242: 1242-mm-page-alloc-clear-page-private-in-free-pages-prepare.patch
+Patch1243: 1243-pnfs-fix-a-missing-wake-up-while-waiting-on-nfs-layout-drain.patch
+Patch1244: 1244-proc-use-the-same-treatment-to-check-proc-lseek-as-ones-for-.patch
+Patch1245: 1245-proc-fix-missing-pde-set-flags-for-net-proc-files.patch
+Patch1246: 1246-proc-fix-type-confusion-in-pde-set-flags.patch
+Patch1247: 1247-crypto-tegra-disable-softirqs-before-finalizing-request.patch
+Patch1248: 1248-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
+Patch1249: 1249-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
+Patch1250: 1250-wifi-brcmfmac-validate-bsscfg-indices-in-if-events.patch
+Patch1251: 1251-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.patch
+Patch1252: 1252-dm-thin-fix-metadata-refcount-underflow.patch
 Patch11111: ppc64le-kvm-support.patch
 
 # END OF PATCH DEFINITIONS
@@ -1917,6 +1972,61 @@ ApplyPatch 1194-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
 ApplyPatch 1195-net-move-skb-gro-receive-list-from-udp-to-core.patch
 ApplyPatch 1196-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
 ApplyPatch 1197-smb-client-reject-userspace-cifs.spnego-descriptions.patch
+ApplyPatch 1198-netfilter-nf-tables-release-flowtable-after-rcu-grace-period.patch
+ApplyPatch 1199-revert-mm-pcp-increase-pcp-free-count-threshold-to-trigger-f.patch
+ApplyPatch 1200-ice-fix-missing-tx-timestamps-interrupts-on-e825-devices.patch
+ApplyPatch 1201-ice-fix-ptp-timestamping-broken-by-synce-code-on-e825c.patch
+ApplyPatch 1202-i2c-i801-revert-i2c-i801-replace-acpi-lock-with-i2c-bus-lock.patch
+ApplyPatch 1203-ima-don-t-clear-ima-digsig-flag-when-setting-or-removing-non.patch
+ApplyPatch 1204-crypto-asymmetric-keys-prevent-overflow-in-asymmetric-key-ge.patch
+ApplyPatch 1205-netfilter-nf-conntrack-h323-check-for-zero-length-in-decodeq.patch
+ApplyPatch 1206-iommu-sva-add-kernel-page-table-iotlb-flush-notification.patch
+ApplyPatch 1207-x86-mm-flush-iommu-before-freeing-kernel-page-table-pages.patch
+ApplyPatch 1208-nbd-defer-config-unlock-in-nbd-genl-connect.patch
+ApplyPatch 1209-drm-mgag200-fix-mgag200-bmc-stop-scanout.patch
+ApplyPatch 1210-ice-fix-timestamp-interrupt-configuration-for-e825c.patch
+ApplyPatch 1211-ice-perform-phy-soft-reset-for-e825c-ports-at-initialization.patch
+ApplyPatch 1212-ice-fix-ready-bitmap-check-for-non-e822-devices.patch
+ApplyPatch 1213-ice-fix-ice-ptp-read-tx-hwtstamp-status-eth56g.patch
+ApplyPatch 1214-cifs-make-default-value-of-retrans-as-zero.patch
+ApplyPatch 1215-net-sched-act-csum-validate-nested-vlan-headers.patch
+ApplyPatch 1216-netfilter-ip6t-eui64-reject-invalid-mac-header-for-all-packe.patch
+ApplyPatch 1217-scsi-storvsc-handle-persistent-reserve-in-truncation-for-hyp.patch
+ApplyPatch 1218-dpll-zl3073x-add-output-pin-frequency-helper.patch
+ApplyPatch 1219-dpll-zl3073x-include-current-frequency-in-supported-frequenc.patch
+ApplyPatch 1220-dpll-zl3073x-fix-ref-frequency-setting.patch
+ApplyPatch 1221-dpll-zl3073x-fix-ref-phase-offset-comp-register-width-for-so.patch
+ApplyPatch 1222-dpll-zl3073x-remove-redundant-cleanup-in-devm-dpll-init.patch
+ApplyPatch 1223-ice-fix-null-pointer-dereference-in-ice-reset-all-vfs.patch
+ApplyPatch 1224-ice-fix-missing-sma-pin-initialization-in-dpll-subsystem.patch
+ApplyPatch 1225-ice-fix-sma-and-u-fl-pin-state-changes-affecting-paired-pin.patch
+ApplyPatch 1226-dpll-export-dpll-pin-change-ntf-for-use-under-dpll-lock.patch
+ApplyPatch 1227-ice-fix-missing-dpll-notifications-for-sw-pins.patch
+ApplyPatch 1228-ice-add-dpll-peer-notification-for-paired-sma-and-u-fl-pins.patch
+ApplyPatch 1229-s390-pci-avoid-deadlock-between-pci-error-recovery-and-mlx5-.patch
+ApplyPatch 1230-netfilter-nf-conntrack-helper-pass-helper-to-expect-cleanup.patch
+ApplyPatch 1231-hid-wacom-fix-out-of-bounds-read-in-wacom-intuos-bt-irq.patch
+ApplyPatch 1232-redhat-configs-enable-config-sclp-ofb-for-s390x.patch
+ApplyPatch 1233-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
+ApplyPatch 1234-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
+ApplyPatch 1235-bluetooth-sco-fix-use-after-free-in-sco-recv-frame-due-to-mi.patch
+ApplyPatch 1236-smb-client-validate-the-whole-dacl-before-rewriting-it-in-ci.patch
+ApplyPatch 1237-smb-client-require-a-full-nfs-mode-sid-before-reading-mode-b.patch
+ApplyPatch 1238-smb-client-scope-end-of-dacl-to-cifs-debug2-use-in-parse-dac.patch
+ApplyPatch 1239-smb-client-use-kzalloc-to-zero-initialize-security-descripto.patch
+ApplyPatch 1240-smb-client-validate-dacloffset-before-building-dacl-pointers.patch
+ApplyPatch 1241-ice-fix-infinite-recursion-in-ice-cfg-tx-topo-via-ice-init-d.patch
+ApplyPatch 1242-mm-page-alloc-clear-page-private-in-free-pages-prepare.patch
+ApplyPatch 1243-pnfs-fix-a-missing-wake-up-while-waiting-on-nfs-layout-drain.patch
+ApplyPatch 1244-proc-use-the-same-treatment-to-check-proc-lseek-as-ones-for-.patch
+ApplyPatch 1245-proc-fix-missing-pde-set-flags-for-net-proc-files.patch
+ApplyPatch 1246-proc-fix-type-confusion-in-pde-set-flags.patch
+ApplyPatch 1247-crypto-tegra-disable-softirqs-before-finalizing-request.patch
+ApplyPatch 1248-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
+ApplyPatch 1249-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
+ApplyPatch 1250-wifi-brcmfmac-validate-bsscfg-indices-in-if-events.patch
+ApplyPatch 1251-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.patch
+ApplyPatch 1252-dm-thin-fix-metadata-refcount-underflow.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -3991,6 +4101,70 @@ fi
 #
 #
 %changelog
+* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.12.1
+- Recreate RHEL 5.14.0-687.12.1 from CentOS Stream 9 and upstream stable
+  backports (SOURCES/1198-1252)
+- RHEL changelog for 687.11.1..687.12.1 follows:
+
+* Mon May 25 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.12.1.el9_8]
+- dm-thin: fix metadata refcount underflow (Benjamin Marzinski) [RHEL-169626]
+- netfilter: xt_tcpmss: check remaining length before reading optlen (CKI Backport Bot) [RHEL-174216] {CVE-2026-43190}
+- wifi: brcmfmac: validate bsscfg indices in IF events (CKI Backport Bot) [RHEL-173848] {CVE-2026-43110}
+- Bluetooth: SCO: fix race conditions in sco_sock_connect() (CKI Backport Bot) [RHEL-172599] {CVE-2026-43023}
+- Bluetooth: MGMT: validate LTK enc_size on load (CKI Backport Bot) [RHEL-172572] {CVE-2026-43020}
+- crypto: tegra - Disable softirqs before finalizing request (CKI Backport Bot) [RHEL-170914]
+- proc: fix type confusion in pde_set_flags() (Abhi Das) [RHEL-163343] {CVE-2025-38653}
+- proc: fix missing pde_set_flags() for net proc files (Abhi Das) [RHEL-163343] {CVE-2025-38653}
+- proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al (CKI Backport Bot) [RHEL-163343] {CVE-2025-38653}
+- pNFS: fix a missing wake up while waiting on NFS_LAYOUT_DRAIN (Olga Kornievskaia) [RHEL-157470]
+
+* Tue May 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.11.1.el9_8]
+- mm/page_alloc: clear page->private in free_pages_prepare() (Rafael Aquini) [RHEL-174750] {CVE-2026-43303}
+- ice: fix infinite recursion in ice_cfg_tx_topo via ice_init_dev_hw (CKI Backport Bot) [RHEL-175441]
+- smb: client: validate dacloffset before building DACL pointers (Paulo Alcantara) [RHEL-172821]
+- smb: client: use kzalloc to zero-initialize security descriptor buffer (Paulo Alcantara) [RHEL-172821]
+- smb: client: scope end_of_dacl to CIFS_DEBUG2 use in parse_dacl (Paulo Alcantara) [RHEL-172821]
+- smb: client: require a full NFS mode SID before reading mode bits (Paulo Alcantara) [RHEL-172821]
+- smb: client: validate the whole DACL before rewriting it in cifsacl (Paulo Alcantara) [RHEL-172821] {CVE-2026-31709}
+- Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold (David Marlin) [RHEL-165063] {CVE-2026-31408}
+- xfs: fix freemap adjustments when adding xattrs to leaf blocks (CKI Backport Bot) [RHEL-174058] {CVE-2026-43158}
+- xfs: delete attr leaf freemap entries when empty (CKI Backport Bot) [RHEL-174058] {CVE-2026-43158}
+- redhat/configs: enable CONFIG_SCLP_OFB for s390x (Jan Polensky) [RHEL-172927]
+- HID: wacom: fix out-of-bounds read in wacom_intuos_bt_irq (CKI Backport Bot) [RHEL-172740] {CVE-2026-43051}
+- netfilter: nf_conntrack_helper: pass helper to expect cleanup (CKI Backport Bot) [RHEL-172620] {CVE-2026-43027}
+- s390/pci: Avoid deadlock between PCI error recovery and mlx5 crdump (Ramesh Chhetri) [RHEL-166859]
+- ice: add dpll peer notification for paired SMA and U.FL pins (Petr Oros) [RHEL-171829]
+- ice: fix missing dpll notifications for SW pins (Petr Oros) [RHEL-171829]
+- dpll: export __dpll_pin_change_ntf() for use under dpll_lock (Petr Oros) [RHEL-171829]
+- ice: fix SMA and U.FL pin state changes affecting paired pin (Petr Oros) [RHEL-162179]
+- ice: fix missing SMA pin initialization in DPLL subsystem (Petr Oros) [RHEL-171832]
+- ice: fix NULL pointer dereference in ice_reset_all_vfs() (Petr Oros) [RHEL-172257]
+- dpll: zl3073x: Remove redundant cleanup in devm_dpll_init() (CKI Backport Bot) [RHEL-164442]
+- dpll: zl3073x: fix REF_PHASE_OFFSET_COMP register width for some chip IDs (CKI Backport Bot) [RHEL-164442]
+- dpll: zl3073x: Fix ref frequency setting (CKI Backport Bot) [RHEL-164442]
+- dpll: zl3073x: Include current frequency in supported frequencies list (CKI Backport Bot) [RHEL-164442]
+- dpll: zl3073x: Add output pin frequency helper (CKI Backport Bot) [RHEL-164442]
+- scsi: storvsc: Handle PERSISTENT_RESERVE_IN truncation for Hyper-V vFC (Vitaly Kuznetsov) [RHEL-171378]
+- netfilter: ip6t_eui64: reject invalid MAC header for all packets (CKI Backport Bot) [RHEL-171155] {CVE-2026-31685}
+- net: sched: act_csum: validate nested VLAN headers (CKI Backport Bot) [RHEL-171138] {CVE-2026-31684}
+- cifs: make default value of retrans as zero (Paulo Alcantara) [RHEL-170960]
+- ice: fix ice_ptp_read_tx_hwtstamp_status_eth56g (Petr Oros) [RHEL-170701]
+- ice: fix ready bitmap check for non-E822 devices (Petr Oros) [RHEL-170701]
+- ice: perform PHY soft reset for E825C ports at initialization (Petr Oros) [RHEL-170701]
+- ice: fix timestamp interrupt configuration for E825C (Petr Oros) [RHEL-170701]
+- drm/mgag200: fix mgag200_bmc_stop_scanout() (Jocelyn Falempe) [RHEL-150179]
+- nbd: defer config unlock in nbd_genl_connect (Jeff Moyer) [RHEL-166950] {CVE-2025-68366}
+- x86/mm: flush IOMMU before freeing kernel page table pages (Jerry Snitselaar) [RHEL-167100] {CVE-2025-71089}
+- iommu/sva: add kernel page table IOTLB flush notification (Jerry Snitselaar) [RHEL-167100] {CVE-2025-71089}
+- netfilter: nf_conntrack_h323: check for zero length in DecodeQ931() (CKI Backport Bot) [RHEL-166987] {CVE-2026-23455}
+- crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id (CKI Backport Bot) [RHEL-166927] {CVE-2025-68724}
+- ima: don't clear IMA_DIGSIG flag when setting or removing non-IMA xattr (Bruno Meneguele) [RHEL-169734] {CVE-2025-68183}
+- i2c: i801: Revert "i2c: i801: replace acpi_lock with I2C bus lock" (David Arcari) [RHEL-155312]
+- ice: fix PTP timestamping broken by SyncE code on E825C (Petr Oros) [RHEL-162182]
+- ice: fix missing TX timestamps interrupts on E825 devices (CKI Backport Bot) [RHEL-162185]
+- Revert "mm: pcp: increase pcp->free_count threshold to trigger free_high" (Luiz Capitulino) [RHEL-163464]
+- netfilter: nf_tables: release flowtable after rcu grace period on error (CKI Backport Bot) [RHEL-160461] {CVE-2026-23392}
+
 * Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.10.1
 - Recreate RHEL 5.14.0-687.10.1 from CentOS Stream 9 and upstream stable
   backports (SOURCES/1100-1196)
