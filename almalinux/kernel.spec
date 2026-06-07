@@ -182,7 +182,7 @@ Summary: The Linux kernel
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.7.1%{?buildid}%{?dist}
+%define specrelease 211.16.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1138,8 +1138,64 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
-Patch1100: 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
+Patch1105: 1105-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 
+Patch1106: 1106-net-sched-make-cake-enqueue-return-net-xmit-cn-when-past-buf.patch
+Patch1107: 1107-net-sched-sch-cake-fix-incorrect-qlen-reduction-in-cake-drop.patch
+Patch1108: 1108-rdma-bnxt-re-support-extended-stats-for-thor2-vf.patch
+Patch1109: 1109-rdma-bnxt-re-fix-size-of-uverbs-copy-to-in-bnxt-re-method-ge.patch
+Patch1110: 1110-rdma-bnxt-re-support-2g-message-size.patch
+Patch1111: 1111-rdma-bnxt-re-use-macro-instead-of-hard-coded-value.patch
+Patch1112: 1112-rdma-bnxt-re-fix-incorrect-display-of-inactivity-cp-in-debug.patch
+Patch1113: 1113-rdma-bnxt-re-fix-missing-error-handling-for-tx-queue.patch
+Patch1114: 1114-rdma-bnxt-re-fix-return-code-of-bnxt-re-configure-cc.patch
+Patch1115: 1115-rdma-bnxt-re-convert-timeouts-to-secs-to-jiffies.patch
+Patch1116: 1116-net-openvswitch-avoid-releasing-netdev-before-teardown-compl.patch
+Patch1117: 1117-ionic-fix-persistent-mac-address-override-on-pf.patch
+Patch1118: 1118-net-hv-netvsc-reject-rss-hash-key-programming-without-rx-ind.patch
+Patch1119: 1119-scsi-qla2xxx-fix-improper-freeing-of-purex-item.patch
+Patch1120: 1120-smb-client-fix-krb5-mount-with-username-option.patch
+Patch1121: 1121-alsa-hda-tas2781-ignore-reset-check-for-spi-device.patch
+Patch1122: 1122-i40e-drop-udp-tunnel-get-rx-info-call-from-i40e-open.patch
+Patch1123: 1123-ice-drop-udp-tunnel-get-rx-info-call-from-ndo-open.patch
+Patch1124: 1124-x86-boot-handle-relative-config-efi-sbat-file-file-paths.patch
+Patch1125: 1125-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs.patch
+Patch1126: 1126-asoc-sdca-tidy-up-some-memory-allocations.patch
+Patch1127: 1127-asoc-sdca-handle-config-pm-sleep-not-being-set.patch
+Patch1128: 1128-asoc-sdca-update-counting-of-su-ge-dapm-routes.patch
+Patch1129: 1129-asoc-add-snd-soc-lookup-component-by-name-helper.patch
+Patch1130: 1130-asoc-soc-sdw-utils-partial-match-the-codec-name.patch
+Patch1131: 1131-asoc-soc-sdw-utils-remove-index-from-sdca-codec-name.patch
+Patch1132: 1132-kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creatin.patch
+Patch1133: 1133-kvm-x86-mmu-only-warn-in-direct-mmus-when-overwriting-shadow.patch
+Patch1134: 1134-nfsd-fix-heap-overflow-in-nfsv4-0-lock-replay-cache.patch
+Patch1135: 1135-net-af-can-do-not-leave-a-dangling-sk-pointer-in-can-create.patch
+Patch1136: 1136-crypto-asymmetric-keys-prevent-overflow-in-asymmetric-key-ge.patch
+Patch1137: 1137-drm-i915-dsc-add-helper-to-enable-the-dsc-configuration-for-.patch
+Patch1138: 1138-drm-i915-dp-ensure-the-fec-state-stays-disabled-for-uhbr-lin.patch
+Patch1139: 1139-drm-i915-dp-export-helper-to-determine-if-fec-on-non-uhbr-li.patch
+Patch1140: 1140-drm-i915-dp-mst-reuse-the-dp-sst-helper-function-to-compute-.patch
+Patch1141: 1141-drm-i915-dp-mst-track-dsc-enabled-status-on-the-mst-link.patch
+Patch1142: 1142-drm-i915-dp-mst-recompute-all-mst-link-crtcs-if-dsc-gets-ena.patch
+Patch1143: 1143-drm-i915-dp-fix-panel-replay-when-dsc-is-enabled.patch
+Patch1144: 1144-bluetooth-sco-fix-use-after-free-in-sco-recv-frame-due-to-mi.patch
+Patch1145: 1145-scsi-storvsc-handle-persistent-reserve-in-truncation-for-hyp.patch
+Patch1146: 1146-crypto-af-alg-fix-null-pointer-dereference-in-scatterwalk.patch
+Patch1147: 1147-crypto-algif-aead-revert-to-operating-out-of-place.patch
+Patch1148: 1148-crypto-af-alg-limit-rx-sg-extraction-by-receive-buffer-budge.patch
+Patch1149: 1149-crypto-af-alg-fix-page-reassignment-overflow-in-af-alg-pull-.patch
+Patch1150: 1150-crypto-authencesn-reject-too-short-aad-assoclen-8-to-match-e.patch
+Patch1151: 1151-crypto-authencesn-do-not-place-hiseq-at-end-of-dst-for-out-o.patch
+Patch1152: 1152-crypto-authencesn-fix-src-offset-when-decrypting-in-place.patch
+Patch1153: 1153-crypto-authencesn-reject-short-ahash-digests-during-instance.patch
+Patch1154: 1154-crypto-algif-aead-fix-minimum-rx-size-check-for-decryption.patch
+Patch1155: 1155-crypto-algif-aead-snapshot-iv-for-async-aead-requests.patch
+Patch1156: 1156-xfrm-esp-avoid-in-place-decrypt-on-shared-skb-frags.patch
+Patch1157: 1157-usbip-validate-number-of-packets-in-usbip-pack-ret-submit.patch
+Patch1158: 1158-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
+Patch1159: 1159-ptrace-slightly-saner-get-dumpable-logic.patch
+Patch1160: 1160-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
+Patch1161: 1161-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -1999,9 +2055,65 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
-ApplyPatch 1100-CVE-2026-31431-crypto-Copy-Fail-fixes.patch
+ApplyPatch 1105-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 
 %{log_msg "End of patch applications"}
+ApplyPatch 1106-net-sched-make-cake-enqueue-return-net-xmit-cn-when-past-buf.patch
+ApplyPatch 1107-net-sched-sch-cake-fix-incorrect-qlen-reduction-in-cake-drop.patch
+ApplyPatch 1108-rdma-bnxt-re-support-extended-stats-for-thor2-vf.patch
+ApplyPatch 1109-rdma-bnxt-re-fix-size-of-uverbs-copy-to-in-bnxt-re-method-ge.patch
+ApplyPatch 1110-rdma-bnxt-re-support-2g-message-size.patch
+ApplyPatch 1111-rdma-bnxt-re-use-macro-instead-of-hard-coded-value.patch
+ApplyPatch 1112-rdma-bnxt-re-fix-incorrect-display-of-inactivity-cp-in-debug.patch
+ApplyPatch 1113-rdma-bnxt-re-fix-missing-error-handling-for-tx-queue.patch
+ApplyPatch 1114-rdma-bnxt-re-fix-return-code-of-bnxt-re-configure-cc.patch
+ApplyPatch 1115-rdma-bnxt-re-convert-timeouts-to-secs-to-jiffies.patch
+ApplyPatch 1116-net-openvswitch-avoid-releasing-netdev-before-teardown-compl.patch
+ApplyPatch 1117-ionic-fix-persistent-mac-address-override-on-pf.patch
+ApplyPatch 1118-net-hv-netvsc-reject-rss-hash-key-programming-without-rx-ind.patch
+ApplyPatch 1119-scsi-qla2xxx-fix-improper-freeing-of-purex-item.patch
+ApplyPatch 1120-smb-client-fix-krb5-mount-with-username-option.patch
+ApplyPatch 1121-alsa-hda-tas2781-ignore-reset-check-for-spi-device.patch
+ApplyPatch 1122-i40e-drop-udp-tunnel-get-rx-info-call-from-i40e-open.patch
+ApplyPatch 1123-ice-drop-udp-tunnel-get-rx-info-call-from-ndo-open.patch
+ApplyPatch 1124-x86-boot-handle-relative-config-efi-sbat-file-file-paths.patch
+ApplyPatch 1125-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs.patch
+ApplyPatch 1126-asoc-sdca-tidy-up-some-memory-allocations.patch
+ApplyPatch 1127-asoc-sdca-handle-config-pm-sleep-not-being-set.patch
+ApplyPatch 1128-asoc-sdca-update-counting-of-su-ge-dapm-routes.patch
+ApplyPatch 1129-asoc-add-snd-soc-lookup-component-by-name-helper.patch
+ApplyPatch 1130-asoc-soc-sdw-utils-partial-match-the-codec-name.patch
+ApplyPatch 1131-asoc-soc-sdw-utils-remove-index-from-sdca-codec-name.patch
+ApplyPatch 1132-kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creatin.patch
+ApplyPatch 1133-kvm-x86-mmu-only-warn-in-direct-mmus-when-overwriting-shadow.patch
+ApplyPatch 1134-nfsd-fix-heap-overflow-in-nfsv4-0-lock-replay-cache.patch
+ApplyPatch 1135-net-af-can-do-not-leave-a-dangling-sk-pointer-in-can-create.patch
+ApplyPatch 1136-crypto-asymmetric-keys-prevent-overflow-in-asymmetric-key-ge.patch
+ApplyPatch 1137-drm-i915-dsc-add-helper-to-enable-the-dsc-configuration-for-.patch
+ApplyPatch 1138-drm-i915-dp-ensure-the-fec-state-stays-disabled-for-uhbr-lin.patch
+ApplyPatch 1139-drm-i915-dp-export-helper-to-determine-if-fec-on-non-uhbr-li.patch
+ApplyPatch 1140-drm-i915-dp-mst-reuse-the-dp-sst-helper-function-to-compute-.patch
+ApplyPatch 1141-drm-i915-dp-mst-track-dsc-enabled-status-on-the-mst-link.patch
+ApplyPatch 1142-drm-i915-dp-mst-recompute-all-mst-link-crtcs-if-dsc-gets-ena.patch
+ApplyPatch 1143-drm-i915-dp-fix-panel-replay-when-dsc-is-enabled.patch
+ApplyPatch 1144-bluetooth-sco-fix-use-after-free-in-sco-recv-frame-due-to-mi.patch
+ApplyPatch 1145-scsi-storvsc-handle-persistent-reserve-in-truncation-for-hyp.patch
+ApplyPatch 1146-crypto-af-alg-fix-null-pointer-dereference-in-scatterwalk.patch
+ApplyPatch 1147-crypto-algif-aead-revert-to-operating-out-of-place.patch
+ApplyPatch 1148-crypto-af-alg-limit-rx-sg-extraction-by-receive-buffer-budge.patch
+ApplyPatch 1149-crypto-af-alg-fix-page-reassignment-overflow-in-af-alg-pull-.patch
+ApplyPatch 1150-crypto-authencesn-reject-too-short-aad-assoclen-8-to-match-e.patch
+ApplyPatch 1151-crypto-authencesn-do-not-place-hiseq-at-end-of-dst-for-out-o.patch
+ApplyPatch 1152-crypto-authencesn-fix-src-offset-when-decrypting-in-place.patch
+ApplyPatch 1153-crypto-authencesn-reject-short-ahash-digests-during-instance.patch
+ApplyPatch 1154-crypto-algif-aead-fix-minimum-rx-size-check-for-decryption.patch
+ApplyPatch 1155-crypto-algif-aead-snapshot-iv-for-async-aead-requests.patch
+ApplyPatch 1156-xfrm-esp-avoid-in-place-decrypt-on-shared-skb-frags.patch
+ApplyPatch 1157-usbip-validate-number-of-packets-in-usbip-pack-ret-submit.patch
+ApplyPatch 1158-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
+ApplyPatch 1159-ptrace-slightly-saner-get-dumpable-logic.patch
+ApplyPatch 1160-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
+ApplyPatch 1161-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4506,6 +4618,101 @@ fi\
 #
 #
 %changelog
+* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.16.1
+- Recreate RHEL 6.12.0-211.16.1 from CentOS Stream 10 and upstream stable backports (1106-1161)
+- Drop 211.7.x security-ahead patches superseded by the RHEL backports (1100-1104: crypto authencesn/algif, xfrm-esp, rxrpc, net-skbuff fragnesia, ptrace)
+- Keep the smb cifs.spnego ahead-fix (1105)
+- RHEL changelog for 211.8.1..211.16.1 follows:
+
+* Mon May 18 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.16.1.el10_2]
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers (Sabrina Dubroca) [RHEL-176053] {CVE-2026-46300}
+- net: skbuff: preserve shared-frag marker during coalescing (Sabrina Dubroca) [RHEL-176053] {CVE-2026-46300}
+- ptrace: slightly saner 'get_dumpable()' logic (Ricardo Robaina) [RHEL-176449] {CVE-2026-46333}
+- RDMA/umem: Fix double dma_buf_unpin in failure path (CKI Backport Bot) [RHEL-174029] {CVE-2026-43128}
+- usbip: validate number_of_packets in usbip_pack_ret_submit() (CKI Backport Bot) [RHEL-171434] {CVE-2026-31607}
+
+* Mon May 11 2026 Patrick Talbert <ptalbert@redhat.com> [6.12.0-211.15.1.el10_2]
+- xfrm: esp: avoid in-place decrypt on shared skb frags (CKI Backport Bot) [RHEL-174546] {CVE-2026-43284}
+
+* Mon May 04 2026 Patrick Talbert <ptalbert@redhat.com> [6.12.0-211.14.1.el10_2]
+- crypto: algif_aead - snapshot IV for async AEAD requests (Herbert Xu) [RHEL-172213]
+- crypto: algif_aead - Fix minimum RX size check for decryption (Herbert Xu) [RHEL-172213]
+- crypto: authencesn - reject short ahash digests during instance creation (Herbert Xu) [RHEL-172213]
+- crypto: authencesn - Fix src offset when decrypting in-place (Herbert Xu) [RHEL-172213]
+- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption (Herbert Xu) [RHEL-172213] {CVE-2026-31431}
+- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec (Herbert Xu) [RHEL-172213] {CVE-2026-23060}
+- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl (Herbert Xu) [RHEL-172213]
+- crypto: af_alg - limit RX SG extraction by receive buffer budget (Herbert Xu) [RHEL-172213] {CVE-2026-31677}
+- crypto: algif_aead - Revert to operating out-of-place (Herbert Xu) [RHEL-172213] {CVE-2026-31431}
+- crypto: af-alg - fix NULL pointer dereference in scatterwalk (Herbert Xu) [RHEL-172213]
+
+* Thu Apr 30 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.13.1.el10_2]
+- scsi: storvsc: Handle PERSISTENT_RESERVE_IN truncation for Hyper-V vFC (Vitaly Kuznetsov) [RHEL-171531]
+- Bluetooth: SCO: Fix use-after-free in sco_recv_frame() due to missing sock_hold (CKI Backport Bot) [RHEL-170974] {CVE-2026-31408}
+
+* Mon Apr 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.12.1.el10_2]
+- drm/i915/dp: Fix panel replay when DSC is enabled (Anusha Srivatsa) [RHEL-169354]
+- drm/i915/dp_mst: Recompute all MST link CRTCs if DSC gets enabled on the link (Anusha Srivatsa) [RHEL-169354]
+- drm/i915/dp_mst: Track DSC enabled status on the MST link (Anusha Srivatsa) [RHEL-169354]
+- drm/i915/dp_mst: Reuse the DP-SST helper function to compute FEC config (Anusha Srivatsa) [RHEL-169354]
+- drm/i915/dp: Export helper to determine if FEC on non-UHBR links is required (Anusha Srivatsa) [RHEL-169354]
+- drm/i915/dp: Ensure the FEC state stays disabled for UHBR links (Anusha Srivatsa) [RHEL-169354]
+- drm/i915/dsc: Add helper to enable the DSC configuration for a CRTC (Anusha Srivatsa) [RHEL-169354]
+- crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id (CKI Backport Bot) [RHEL-166932] {CVE-2025-68724}
+- net: af_can: do not leave a dangling sk pointer in can_create() (CKI Backport Bot) [RHEL-162253] {CVE-2024-56603}
+
+* Thu Apr 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.11.1.el10_2]
+- nfsd: fix heap overflow in NFSv4.0 LOCK replay cache (Scott Mayhew) [RHEL-168569] {CVE-2026-31402}
+- KVM: x86/mmu: Only WARN in direct MMUs when overwriting shadow-present SPTE (Paolo Bonzini) [RHEL-153716] {CVE-2026-23401}
+- KVM: x86/mmu: Drop/zap existing present SPTE even when creating an MMIO SPTE (Paolo Bonzini) [RHEL-153716] {CVE-2026-23401}
+
+* Thu Apr 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.10.1.el10_2]
+- ASoC: soc_sdw_utils: remove index from sdca codec name (Jaroslav Kysela) [RHEL-163717]
+- ASoC: soc_sdw_utils: partial match the codec name (Jaroslav Kysela) [RHEL-163717]
+- ASoC: add snd_soc_lookup_component_by_name helper (Jaroslav Kysela) [RHEL-163717]
+- ASoC: SDCA: Update counting of SU/GE DAPM routes (Jaroslav Kysela) [RHEL-163717]
+- ASoC: SDCA: Handle CONFIG_PM_SLEEP not being set (Jaroslav Kysela) [RHEL-163717]
+- ASoC: SDCA: Tidy up some memory allocations (Jaroslav Kysela) [RHEL-163717]
+- net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks (CKI Backport Bot) [RHEL-157332] {CVE-2026-23270}
+
+* Mon Apr 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.9.1.el10_2]
+- x86/boot: Handle relative CONFIG_EFI_SBAT_FILE file paths (Oleksii Baranov) [RHEL-157855]
+
+* Thu Apr 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.8.1.el10_2]
+- ice: drop udp_tunnel_get_rx_info() call from ndo_open() (Mohammad Heib) [RHEL-165081]
+- i40e: drop udp_tunnel_get_rx_info() call from i40e_open() (Mohammad Heib) [RHEL-165081]
+- ALSA: hda/tas2781: Ignore reset check for SPI device (Jaroslav Kysela) [RHEL-157285]
+- smb: client: fix krb5 mount with username option (Paulo Alcantara) [RHEL-158990]
+- scsi: qla2xxx: Fix improper freeing of purex item (CKI Backport Bot) [RHEL-159227] {CVE-2025-68741}
+- net: hv_netvsc: reject RSS hash key programming without RX indirection table (Vinay Mulugund) [RHEL-155205]
+- ionic: fix persistent MAC address override on PF (Mohammad Heib) [RHEL-158206]
+- net: openvswitch: Avoid releasing netdev before teardown completes (Toke Høiland-Jørgensen) [RHEL-157946]
+- RDMA/bnxt_re: convert timeouts to secs_to_jiffies() (CKI Backport Bot) [RHEL-155971]
+- RDMA/bnxt_re: Fix return code of bnxt_re_configure_cc (CKI Backport Bot) [RHEL-155971]
+- RDMA/bnxt_re: Fix missing error handling for tx_queue (CKI Backport Bot) [RHEL-155971]
+- RDMA/bnxt_re: Fix incorrect display of inactivity_cp in debugfs output (CKI Backport Bot) [RHEL-155971]
+- RDMA/bnxt_re: Use macro instead of hard coded value (CKI Backport Bot) [RHEL-155971]
+- RDMA/bnxt_re: Support 2G message size (CKI Backport Bot) [RHEL-155971]
+- RDMA/bnxt_re: Fix size of uverbs_copy_to() in BNXT_RE_METHOD_GET_TOGGLE_MEM (CKI Backport Bot) [RHEL-155971]
+- RDMA/bnxt_re: Support extended stats for Thor2 VF (CKI Backport Bot) [RHEL-155971]
+- net/sched: sch_cake: Fix incorrect qlen reduction in cake_drop (Davide Caratti) [RHEL-150456] {CVE-2025-39766}
+- net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit (Davide Caratti) [RHEL-150456] {CVE-2025-39766}
+
+* Thu May 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.7.4
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers
+  (refresh to upstream v5: now also covers skb_segment() and
+  tcp_clone_payload(); CVE-2026-46300 "Fragnesia")
+- smb: client: reject userspace cifs.spnego descriptions (upstream commit
+  3da1fdf4efbc)
+
+* Tue May 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.7.3
+- xfrm: esp: avoid in-place decrypt on shared skb frags (CVE-2026-43284)
+- rxrpc: linearize incoming DATA packet when it has paged frags (CVE-2026-43500)
+- net: skbuff: propagate shared-frag marker through frag-transfer helpers
+  (CVE-2026-46300 "Fragnesia")
+- ptrace: require CAP_SYS_PTRACE on mm-less tasks (CVE-2026-46333, kABI-safe
+  replacement for upstream 31e62c2ebbfd, Qualys Security Advisory)
+
 * Thu Apr 30 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.7.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
