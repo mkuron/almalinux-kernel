@@ -182,7 +182,7 @@ Summary: The Linux kernel
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.18.1%{?buildid}%{?dist}
+%define specrelease 211.20.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1279,6 +1279,49 @@ Patch1241: 1241-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
 Patch1242: 1242-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
 Patch1243: 1243-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
 Patch1244: 1244-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
+Patch1245: 1245-proc-use-the-same-treatment-to-check-proc-lseek-as-ones-for-.patch
+Patch1246: 1246-proc-fix-missing-pde-set-flags-for-net-proc-files.patch
+Patch1247: 1247-proc-fix-type-confusion-in-pde-set-flags.patch
+Patch1248: 1248-nbd-defer-config-unlock-in-nbd-genl-connect.patch
+Patch1249: 1249-crypto-authenc-correctly-pass-einprogress-back-up-to-the-cal.patch
+Patch1250: 1250-dpll-zl3073x-detect-dpll-channel-count-from-chip-id-at-runti.patch
+Patch1251: 1251-dpll-zl3073x-add-die-temperature-reporting-for-supported-chi.patch
+Patch1252: 1252-dpll-zl3073x-use-struct-group-to-partition-states.patch
+Patch1253: 1253-dpll-zl3073x-add-zl3073x-ref-state-update-helper.patch
+Patch1254: 1254-dpll-zl3073x-introduce-zl3073x-chan-for-dpll-channel-state.patch
+Patch1255: 1255-dpll-zl3073x-add-dpll-channel-status-fields-to-zl3073x-chan.patch
+Patch1256: 1256-dpll-zl3073x-add-reference-priority-to-zl3073x-chan.patch
+Patch1257: 1257-dpll-zl3073x-drop-selected-and-simplify-connected-ref-getter.patch
+Patch1258: 1258-dpll-add-frequency-monitoring-to-netlink-spec.patch
+Patch1259: 1259-dpll-add-frequency-monitoring-callback-ops.patch
+Patch1260: 1260-dpll-zl3073x-implement-frequency-monitoring.patch
+Patch1261: 1261-dpll-zl3073x-clean-up-esync-get-set-and-use-zl3073x-out-is-n.patch
+Patch1262: 1262-dpll-zl3073x-use-field-modify-for-clear-and-set-patterns.patch
+Patch1263: 1263-dpll-zl3073x-add-ref-sync-and-output-clock-type-helpers.patch
+Patch1264: 1264-dpll-zl3073x-add-ref-sync-pair-support.patch
+Patch1265: 1265-smb-client-validate-the-whole-dacl-before-rewriting-it-in-ci.patch
+Patch1266: 1266-smb-client-require-a-full-nfs-mode-sid-before-reading-mode-b.patch
+Patch1267: 1267-smb-client-scope-end-of-dacl-to-cifs-debug2-use-in-parse-dac.patch
+Patch1268: 1268-smb-client-use-kzalloc-to-zero-initialize-security-descripto.patch
+Patch1269: 1269-smb-client-validate-dacloffset-before-building-dacl-pointers.patch
+Patch1270: 1270-dpll-add-pin-operational-state.patch
+Patch1271: 1271-dpll-zl3073x-implement-pin-operational-state-reporting.patch
+Patch1272: 1272-dpll-add-fractional-frequency-offset-to-pin-parent-device.patch
+Patch1273: 1273-dpll-zl3073x-report-ffo-as-dpll-vs-input-reference-offset.patch
+Patch1274: 1274-netfilter-flowtable-strictly-check-for-maximum-number-of-act.patch
+Patch1275: 1275-bluetooth-hci-add-initial-support-for-past.patch
+Patch1276: 1276-bluetooth-iso-add-support-to-bind-to-trigger-past.patch
+Patch1277: 1277-bluetooth-hci-add-support-for-ll-extended-feature-set.patch
+Patch1278: 1278-bluetooth-hci-conn-fix-using-conn-le-tx-rx-phy-as-supported-.patch
+Patch1279: 1279-bluetooth-l2cap-add-support-for-setting-bt-phy.patch
+Patch1280: 1280-bluetooth-hci-sync-hci-cmd-sync-queue-once-return-eexist-if-.patch
+Patch1281: 1281-bluetooth-hci-sync-fix-leaks-when-hci-cmd-sync-queue-once-fa.patch
+Patch1282: 1282-bluetooth-hci-sync-fix-uaf-in-le-read-features-complete.patch
+Patch1283: 1283-pnfs-fix-a-missing-wake-up-while-waiting-on-nfs-layout-drain.patch
+Patch1284: 1284-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
+Patch1285: 1285-sched-deadline-fix-dl-server-time-accounting.patch
+Patch1286: 1286-redhat-configs-automotive-disable-config-io-uring.patch
+Patch1287: 1287-rhel-kabi-dpll-adaptation.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2280,6 +2323,49 @@ ApplyPatch 1241-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
 ApplyPatch 1242-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
 ApplyPatch 1243-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
 ApplyPatch 1244-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
+ApplyPatch 1245-proc-use-the-same-treatment-to-check-proc-lseek-as-ones-for-.patch
+ApplyPatch 1246-proc-fix-missing-pde-set-flags-for-net-proc-files.patch
+ApplyPatch 1247-proc-fix-type-confusion-in-pde-set-flags.patch
+ApplyPatch 1248-nbd-defer-config-unlock-in-nbd-genl-connect.patch
+ApplyPatch 1249-crypto-authenc-correctly-pass-einprogress-back-up-to-the-cal.patch
+ApplyPatch 1250-dpll-zl3073x-detect-dpll-channel-count-from-chip-id-at-runti.patch
+ApplyPatch 1251-dpll-zl3073x-add-die-temperature-reporting-for-supported-chi.patch
+ApplyPatch 1252-dpll-zl3073x-use-struct-group-to-partition-states.patch
+ApplyPatch 1253-dpll-zl3073x-add-zl3073x-ref-state-update-helper.patch
+ApplyPatch 1254-dpll-zl3073x-introduce-zl3073x-chan-for-dpll-channel-state.patch
+ApplyPatch 1255-dpll-zl3073x-add-dpll-channel-status-fields-to-zl3073x-chan.patch
+ApplyPatch 1256-dpll-zl3073x-add-reference-priority-to-zl3073x-chan.patch
+ApplyPatch 1257-dpll-zl3073x-drop-selected-and-simplify-connected-ref-getter.patch
+ApplyPatch 1258-dpll-add-frequency-monitoring-to-netlink-spec.patch
+ApplyPatch 1259-dpll-add-frequency-monitoring-callback-ops.patch
+ApplyPatch 1260-dpll-zl3073x-implement-frequency-monitoring.patch
+ApplyPatch 1261-dpll-zl3073x-clean-up-esync-get-set-and-use-zl3073x-out-is-n.patch
+ApplyPatch 1262-dpll-zl3073x-use-field-modify-for-clear-and-set-patterns.patch
+ApplyPatch 1263-dpll-zl3073x-add-ref-sync-and-output-clock-type-helpers.patch
+ApplyPatch 1264-dpll-zl3073x-add-ref-sync-pair-support.patch
+ApplyPatch 1265-smb-client-validate-the-whole-dacl-before-rewriting-it-in-ci.patch
+ApplyPatch 1266-smb-client-require-a-full-nfs-mode-sid-before-reading-mode-b.patch
+ApplyPatch 1267-smb-client-scope-end-of-dacl-to-cifs-debug2-use-in-parse-dac.patch
+ApplyPatch 1268-smb-client-use-kzalloc-to-zero-initialize-security-descripto.patch
+ApplyPatch 1269-smb-client-validate-dacloffset-before-building-dacl-pointers.patch
+ApplyPatch 1270-dpll-add-pin-operational-state.patch
+ApplyPatch 1271-dpll-zl3073x-implement-pin-operational-state-reporting.patch
+ApplyPatch 1272-dpll-add-fractional-frequency-offset-to-pin-parent-device.patch
+ApplyPatch 1273-dpll-zl3073x-report-ffo-as-dpll-vs-input-reference-offset.patch
+ApplyPatch 1274-netfilter-flowtable-strictly-check-for-maximum-number-of-act.patch
+ApplyPatch 1275-bluetooth-hci-add-initial-support-for-past.patch
+ApplyPatch 1276-bluetooth-iso-add-support-to-bind-to-trigger-past.patch
+ApplyPatch 1277-bluetooth-hci-add-support-for-ll-extended-feature-set.patch
+ApplyPatch 1278-bluetooth-hci-conn-fix-using-conn-le-tx-rx-phy-as-supported-.patch
+ApplyPatch 1279-bluetooth-l2cap-add-support-for-setting-bt-phy.patch
+ApplyPatch 1280-bluetooth-hci-sync-hci-cmd-sync-queue-once-return-eexist-if-.patch
+ApplyPatch 1281-bluetooth-hci-sync-fix-leaks-when-hci-cmd-sync-queue-once-fa.patch
+ApplyPatch 1282-bluetooth-hci-sync-fix-uaf-in-le-read-features-complete.patch
+ApplyPatch 1283-pnfs-fix-a-missing-wake-up-while-waiting-on-nfs-layout-drain.patch
+ApplyPatch 1284-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
+ApplyPatch 1285-sched-deadline-fix-dl-server-time-accounting.patch
+ApplyPatch 1286-redhat-configs-automotive-disable-config-io-uring.patch
+ApplyPatch 1287-rhel-kabi-dpll-adaptation.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4784,6 +4870,58 @@ fi\
 #
 #
 %changelog
+* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.20.1
+- Recreate RHEL 6.12.0-211.20.1 from CentOS Stream 10 and upstream stable backports (1245-1287)
+- smb cifs.spnego now shipped by RHEL too; existing ahead-fix 1105 is identical (RHEL's redundant copy omitted)
+- RHEL changelog for 211.19.1..211.20.1 follows:
+
+* Tue Jun 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.20.1.el10_2]
+- smb: client: reject userspace cifs.spnego descriptions (Paulo Alcantara) [RHEL-178932] {CVE-2026-46243}
+- redhat/configs: automotive: disable CONFIG_IO_URING (Brian Masney) [RHEL-179469]
+- sched/deadline: Fix dl_server time accounting (Phil Auld) [RHEL-173950]
+- smb: client: fix OOB reads parsing symlink error response (CKI Backport Bot) [RHEL-171475] {CVE-2026-31613}
+- pNFS: fix a missing wake up while waiting on NFS_LAYOUT_DRAIN (Olga Kornievskaia) [RHEL-157466]
+
+* Thu May 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.19.1.el10_2]
+- Bluetooth: hci_sync: Fix UAF in le_read_features_complete (David Marlin) [RHEL-176903] {CVE-2026-43322}
+- Bluetooth: hci_sync: fix leaks when hci_cmd_sync_queue_once fails (David Marlin) [RHEL-176903]
+- Bluetooth: hci_sync: hci_cmd_sync_queue_once() return -EEXIST if exists (David Marlin) [RHEL-176903]
+- Bluetooth: L2CAP: Add support for setting BT_PHY (David Marlin) [RHEL-176903]
+- Bluetooth: hci_conn: Fix using conn->le_{tx,rx}_phy as supported PHYs (David Marlin) [RHEL-176903]
+- Bluetooth: HCI: Add support for LL Extended Feature Set (David Marlin) [RHEL-176903]
+- Bluetooth: ISO: Add support to bind to trigger PAST (David Marlin) [RHEL-176903]
+- Bluetooth: HCI: Add initial support for PAST (David Marlin) [RHEL-176903]
+- netfilter: flowtable: strictly check for maximum number of actions (CKI Backport Bot) [RHEL-176915] {CVE-2026-43329}
+- dpll: zl3073x: report FFO as DPLL vs input reference offset (Ivan Vecera) [RHEL-175824]
+- dpll: add fractional frequency offset to pin-parent-device (Ivan Vecera) [RHEL-175824]
+- dpll: zl3073x: implement pin operational state reporting (Ivan Vecera) [RHEL-175821]
+- dpll: add pin operational state (Ivan Vecera) [RHEL-175821]
+- smb: client: validate dacloffset before building DACL pointers (Paulo Alcantara) [RHEL-172827]
+- smb: client: use kzalloc to zero-initialize security descriptor buffer (Paulo Alcantara) [RHEL-172827]
+- smb: client: scope end_of_dacl to CIFS_DEBUG2 use in parse_dacl (Paulo Alcantara) [RHEL-172827]
+- smb: client: require a full NFS mode SID before reading mode bits (Paulo Alcantara) [RHEL-172827]
+- smb: client: validate the whole DACL before rewriting it in cifsacl (Paulo Alcantara) [RHEL-172827] {CVE-2026-31709}
+- dpll: zl3073x: add ref-sync pair support (Ivan Vecera) [RHEL-167277]
+- dpll: zl3073x: add ref sync and output clock type helpers (Ivan Vecera) [RHEL-167277]
+- dpll: zl3073x: use FIELD_MODIFY() for clear-and-set patterns (Ivan Vecera) [RHEL-167277]
+- dpll: zl3073x: clean up esync get/set and use zl3073x_out_is_ndiv() (Ivan Vecera) [RHEL-167277]
+- dpll: zl3073x: implement frequency monitoring (Ivan Vecera) [RHEL-167837]
+- dpll: add frequency monitoring callback ops (Ivan Vecera) [RHEL-167837]
+- dpll: add frequency monitoring to netlink spec (Ivan Vecera) [RHEL-167837]
+- dpll: zl3073x: drop selected and simplify connected ref getter (Ivan Vecera) [RHEL-172930]
+- dpll: zl3073x: add reference priority to zl3073x_chan (Ivan Vecera) [RHEL-172930]
+- dpll: zl3073x: add DPLL channel status fields to zl3073x_chan (Ivan Vecera) [RHEL-172930]
+- dpll: zl3073x: introduce zl3073x_chan for DPLL channel state (Ivan Vecera) [RHEL-172930]
+- dpll: zl3073x: add zl3073x_ref_state_update helper (Ivan Vecera) [RHEL-172930]
+- dpll: zl3073x: use struct_group to partition states (Ivan Vecera) [RHEL-172930]
+- dpll: zl3073x: add die temperature reporting for supported chips (Ivan Vecera) [RHEL-172930]
+- dpll: zl3073x: detect DPLL channel count from chip ID at runtime (Ivan Vecera) [RHEL-172930]
+- crypto: authenc - Correctly pass EINPROGRESS back up to the caller (CKI Backport Bot) [RHEL-171302]
+- nbd: defer config unlock in nbd_genl_connect (CKI Backport Bot) [RHEL-166953] {CVE-2025-68366}
+- proc: fix type confusion in pde_set_flags() (Abhi Das) [RHEL-163345] {CVE-2025-38653}
+- proc: fix missing pde_set_flags() for net proc files (Abhi Das) [RHEL-163345] {CVE-2025-38653}
+- proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al (CKI Backport Bot) [RHEL-163345] {CVE-2025-38653}
+
 * Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.18.1
 - Recreate RHEL 6.12.0-211.18.1 from CentOS Stream 10 and upstream stable backports (1162-1244)
 - RHEL changelog for 211.17.1..211.18.1 follows:
