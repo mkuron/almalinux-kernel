@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.5.1
+%define pkgrelease 687.13.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.12.1%{?buildid}%{?dist}
+%define specrelease 687.13.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1130,6 +1130,23 @@ Patch1251: 1251-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.pat
 Patch1252: 1252-dm-thin-fix-metadata-refcount-underflow.patch
 Patch11111: ppc64le-kvm-support.patch
 
+Patch1253: 1253-mm-document-gfp-nofail-must-be-blockable.patch
+Patch1254: 1254-mm-warn-about-illegal-gfp-nofail-usage-in-a-more-appropriate.patch
+Patch1255: 1255-mm-page-alloc-c-avoid-infinite-retries-caused-by-cpuset-race.patch
+Patch1256: 1256-mm-page-alloc-thp-prevent-reclaim-for-gfp-thisnode-thp-alloc.patch
+Patch1257: 1257-mm-page-alloc-ignore-the-exact-initial-compaction-result.patch
+Patch1258: 1258-mm-page-alloc-refactor-the-initial-compaction-handling.patch
+Patch1259: 1259-mm-page-alloc-simplify-alloc-pages-slowpath-flow.patch
+Patch1260: 1260-mm-page-alloc-add-vm-thp-thisnode-reclaim-sysctl-to-allow-th.patch
+Patch1261: 1261-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
+Patch1262: 1262-crypto-authenc-fix-sleep-in-atomic-context-in-decrypt-tail.patch
+Patch1263: 1263-crypto-authenc-correctly-pass-einprogress-back-up-to-the-cal.patch
+Patch1264: 1264-buffer-overflow-in-drivers-xen-sys-hypervisor-c.patch
+Patch1265: 1265-nvme-nvme-fc-move-tagset-removal-to-nvme-fc-delete-ctrl.patch
+Patch1266: 1266-nvme-nvme-fc-ensure-ioerr-work-is-cancelled-in-nvme-fc-delet.patch
+Patch1267: 1267-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
+Patch1268: 1268-s390-dasd-move-quiesce-state-with-pprc-swap.patch
+Patch1269: 1269-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2027,6 +2044,23 @@ ApplyPatch 1249-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
 ApplyPatch 1250-wifi-brcmfmac-validate-bsscfg-indices-in-if-events.patch
 ApplyPatch 1251-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.patch
 ApplyPatch 1252-dm-thin-fix-metadata-refcount-underflow.patch
+ApplyPatch 1253-mm-document-gfp-nofail-must-be-blockable.patch
+ApplyPatch 1254-mm-warn-about-illegal-gfp-nofail-usage-in-a-more-appropriate.patch
+ApplyPatch 1255-mm-page-alloc-c-avoid-infinite-retries-caused-by-cpuset-race.patch
+ApplyPatch 1256-mm-page-alloc-thp-prevent-reclaim-for-gfp-thisnode-thp-alloc.patch
+ApplyPatch 1257-mm-page-alloc-ignore-the-exact-initial-compaction-result.patch
+ApplyPatch 1258-mm-page-alloc-refactor-the-initial-compaction-handling.patch
+ApplyPatch 1259-mm-page-alloc-simplify-alloc-pages-slowpath-flow.patch
+ApplyPatch 1260-mm-page-alloc-add-vm-thp-thisnode-reclaim-sysctl-to-allow-th.patch
+ApplyPatch 1261-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
+ApplyPatch 1262-crypto-authenc-fix-sleep-in-atomic-context-in-decrypt-tail.patch
+ApplyPatch 1263-crypto-authenc-correctly-pass-einprogress-back-up-to-the-cal.patch
+ApplyPatch 1264-buffer-overflow-in-drivers-xen-sys-hypervisor-c.patch
+ApplyPatch 1265-nvme-nvme-fc-move-tagset-removal-to-nvme-fc-delete-ctrl.patch
+ApplyPatch 1266-nvme-nvme-fc-ensure-ioerr-work-is-cancelled-in-nvme-fc-delet.patch
+ApplyPatch 1267-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
+ApplyPatch 1268-s390-dasd-move-quiesce-state-with-pprc-swap.patch
+ApplyPatch 1269-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4101,6 +4135,30 @@ fi
 #
 #
 %changelog
+* Wed Jun 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.13.1
+- Recreate RHEL 5.14.0-687.13.1 from CentOS Stream 9 and upstream stable backports (1253-1269)
+- RHEL changelog for 687.13.1 follows:
+
+* Tue Jun 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.13.1.el9_8]
+- smb: client: reject userspace cifs.spnego descriptions (Paulo Alcantara) [RHEL-178944] {CVE-2026-46243}
+- s390/dasd: Copy detected format information to secondary device (Ramesh Chhetri) [RHEL-176472]
+- s390/dasd: Move quiesce state with pprc swap (Ramesh Chhetri) [RHEL-176472]
+- s390/dasd: Fix gendisk parent after copy pair swap (Ramesh Chhetri) [RHEL-176472]
+- nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl() (Ewan D. Milne) [RHEL-171745]
+- nvme: nvme-fc: move tagset removal to nvme_fc_delete_ctrl() (Ewan D. Milne) [RHEL-171745]
+- Buffer overflow in drivers/xen/sys-hypervisor.c (Vitaly Kuznetsov) [RHEL-172510] {CVE-2026-31786}
+- crypto: authenc - Correctly pass EINPROGRESS back up to the caller (Vladislav Dronov) [RHEL-172167]
+- crypto: authenc - Fix sleep in atomic context in decrypt_tail (Vladislav Dronov) [RHEL-172167]
+- smb: client: fix OOB reads parsing symlink error response (CKI Backport Bot) [RHEL-171471] {CVE-2026-31613}
+- mm/page_alloc: add vm.thp_thisnode_reclaim sysctl to allow THP reclaim on local node (Nico Pache) [RHEL-164778]
+- mm/page_alloc: simplify __alloc_pages_slowpath() flow (Nico Pache) [RHEL-164778]
+- mm/page_alloc: refactor the initial compaction handling (Nico Pache) [RHEL-164778]
+- mm/page_alloc: ignore the exact initial compaction result (Nico Pache) [RHEL-164778]
+- mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations (Nico Pache) [RHEL-164778]
+- mm/page_alloc.c: avoid infinite retries caused by cpuset race (Nico Pache) [RHEL-164778]
+- mm: warn about illegal __GFP_NOFAIL usage in a more appropriate location and manner (Nico Pache) [RHEL-164778]
+- mm: document __GFP_NOFAIL must be blockable (Nico Pache) [RHEL-164778]
+
 * Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.12.1
 - Recreate RHEL 5.14.0-687.12.1 from CentOS Stream 9 and upstream stable
   backports (SOURCES/1198-1252)
