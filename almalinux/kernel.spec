@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.7.1
+%define pkgrelease 211.22.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.20.1%{?buildid}%{?dist}
+%define specrelease 211.22.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -494,14 +494,14 @@ Summary: The Linux kernel
 %define use_vdso 1
 %endif
 
-%ifnarch aarch64
+%ifnarch x86_64
 %define with_kernel_abi_stablelists 0
 %endif
 
 # Overrides for generic default options
 
 # only package docs noarch
-%ifnarch aarch64
+%ifnarch x86_64
 %define with_doc 0
 %define doc_build_fail true
 %endif
@@ -1322,6 +1322,70 @@ Patch1284: 1284-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
 Patch1285: 1285-sched-deadline-fix-dl-server-time-accounting.patch
 Patch1286: 1286-redhat-configs-automotive-disable-config-io-uring.patch
 Patch1287: 1287-rhel-kabi-dpll-adaptation.patch
+Patch1288: 1288-net-bonding-fix-use-after-free-in-bond-xmit-broadcast.patch
+Patch1289: 1289-s390-pci-avoid-deadlock-between-pci-error-recovery-and-mlx5-.patch
+Patch1290: 1290-ice-fix-stats-array-overflow-when-vf-requests-more-queues.patch
+Patch1291: 1291-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
+Patch1292: 1292-s390-dasd-move-quiesce-state-with-pprc-swap.patch
+Patch1293: 1293-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
+Patch1294: 1294-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
+Patch1295: 1295-can-raw-fix-ro-uniq-use-after-free-in-raw-rcv.patch
+Patch1296: 1296-erofs-add-gfp-noio-in-the-bio-completion-if-needed.patch
+Patch1297: 1297-alsa-6fire-fix-use-after-free-on-disconnect.patch
+Patch1298: 1298-ip6-tunnel-clear-skb2-cb-in-ip4ip6-err.patch
+Patch1299: 1299-ipv6-rpl-reserve-mac-len-headroom-when-recompressed-srh-grow.patch
+Patch1300: 1300-fs-constify-file-ptr-in-backing-file-accessor-helpers.patch
+Patch1301: 1301-lsm-split-the-notifier-code-out-into-lsm-notifier-c.patch
+Patch1302: 1302-lsm-split-the-init-code-out-into-lsm-init-c.patch
+Patch1303: 1303-lsm-consolidate-lsm-allowed-and-prepare-lsm-into-lsm-prepare.patch
+Patch1304: 1304-lsm-introduce-looping-macros-for-the-initialization-code.patch
+Patch1305: 1305-lsm-integrate-report-lsm-order-code-into-caller.patch
+Patch1306: 1306-lsm-integrate-lsm-early-cred-and-lsm-early-task-into-caller.patch
+Patch1307: 1307-lsm-rename-ordered-lsm-init-to-lsm-init-ordered.patch
+Patch1308: 1308-lsm-replace-the-name-field-with-a-pointer-to-the-lsm-id-stru.patch
+Patch1309: 1309-lsm-rename-the-lsm-order-variables-for-consistency.patch
+Patch1310: 1310-lsm-rework-lsm-active-cnt-and-lsm-idlist.patch
+Patch1311: 1311-lsm-get-rid-of-the-lsm-names-list-and-do-some-cleanup.patch
+Patch1312: 1312-lsm-rework-the-lsm-enable-disable-setter-getter-functions.patch
+Patch1313: 1313-lsm-rename-exists-ordered-lsm-to-lsm-order-exists.patch
+Patch1314: 1314-lsm-rename-rework-append-ordered-lsm-into-lsm-order-append.patch
+Patch1315: 1315-lsm-rename-rework-ordered-lsm-parse-to-lsm-order-parse.patch
+Patch1316: 1316-lsm-cleanup-the-lsm-blob-size-code.patch
+Patch1317: 1317-lsm-cleanup-initialize-lsm-and-rename-to-lsm-init-single.patch
+Patch1318: 1318-lsm-fold-lsm-init-ordered-into-security-init.patch
+Patch1319: 1319-lsm-add-tweak-function-header-comment-blocks-in-lsm-init-c.patch
+Patch1320: 1320-lsm-cleanup-the-debug-and-console-output-in-lsm-init-c.patch
+Patch1321: 1321-fs-prepare-for-adding-lsm-blob-to-backing-file.patch
+Patch1322: 1322-lsm-add-backing-file-lsm-hooks.patch
+Patch1323: 1323-selinux-fix-overlayfs-mmap-and-mprotect-access-checks.patch
+Patch1324: 1324-scripts-sorttable-fix-orc-sort-cmp-to-maintain-symmetry-and-.patch
+Patch1325: 1325-scripts-sorttable-remove-unused-macro-defines.patch
+Patch1326: 1326-scripts-sorttable-remove-unused-write-functions.patch
+Patch1327: 1327-scripts-sorttable-remove-unneeded-elf-rel.patch
+Patch1328: 1328-scripts-sorttable-have-the-orc-code-use-the-r-functions-to-r.patch
+Patch1329: 1329-scripts-sorttable-make-compare-extable-into-two-functions.patch
+Patch1330: 1330-scripts-sorttable-convert-elf-ehdr-to-union.patch
+Patch1331: 1331-scripts-sorttable-replace-elf-shdr-macro-with-a-union.patch
+Patch1332: 1332-scripts-sorttable-convert-elf-sym-macro-over-to-a-union.patch
+Patch1333: 1333-scripts-sorttable-add-helper-functions-for-elf-ehdr.patch
+Patch1334: 1334-scripts-sorttable-add-helper-functions-for-elf-shdr.patch
+Patch1335: 1335-scripts-sorttable-add-helper-functions-for-elf-sym.patch
+Patch1336: 1336-scripts-sorttable-use-uint64-t-for-mcount-sorting.patch
+Patch1337: 1337-scripts-sorttable-move-code-from-sorttable-h-into-sorttable-.patch
+Patch1338: 1338-scripts-sorttable-get-start-stop-mcount-loc-from-elf-file-di.patch
+Patch1339: 1339-scripts-sorttable-use-a-structure-of-function-pointers-for-e.patch
+Patch1340: 1340-arm64-scripts-sorttable-implement-sorting-mcount-loc-at-boot.patch
+Patch1341: 1341-scripts-sorttable-have-mcount-rela-sort-use-direct-values.patch
+Patch1342: 1342-scripts-sorttable-always-use-an-array-for-the-mcount-loc-sor.patch
+Patch1343: 1343-scripts-sorttable-zero-out-weak-functions-in-mcount-loc-tabl.patch
+Patch1344: 1344-ftrace-update-the-mcount-loc-check-of-skipped-entries.patch
+Patch1345: 1345-ftrace-have-ftrace-pages-output-reflect-freed-pages.patch
+Patch1346: 1346-ftrace-do-not-over-allocate-ftrace-memory.patch
+Patch1347: 1347-ftrace-test-mcount-loc-addr-before-calling-ftrace-call-addr.patch
+Patch1348: 1348-ftrace-check-against-is-kernel-text-instead-of-kaslr-offset.patch
+Patch1349: 1349-scripts-sorttable-use-normal-sort-if-theres-no-relocs-in-the.patch
+Patch1350: 1350-scripts-sorttable-allow-matches-to-functions-before-function.patch
+Patch1351: 1351-scripts-sorttable-fix-endianness-handling-in-build-time-mcou.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2366,6 +2430,70 @@ ApplyPatch 1284-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
 ApplyPatch 1285-sched-deadline-fix-dl-server-time-accounting.patch
 ApplyPatch 1286-redhat-configs-automotive-disable-config-io-uring.patch
 ApplyPatch 1287-rhel-kabi-dpll-adaptation.patch
+ApplyPatch 1288-net-bonding-fix-use-after-free-in-bond-xmit-broadcast.patch
+ApplyPatch 1289-s390-pci-avoid-deadlock-between-pci-error-recovery-and-mlx5-.patch
+ApplyPatch 1290-ice-fix-stats-array-overflow-when-vf-requests-more-queues.patch
+ApplyPatch 1291-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
+ApplyPatch 1292-s390-dasd-move-quiesce-state-with-pprc-swap.patch
+ApplyPatch 1293-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
+ApplyPatch 1294-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
+ApplyPatch 1295-can-raw-fix-ro-uniq-use-after-free-in-raw-rcv.patch
+ApplyPatch 1296-erofs-add-gfp-noio-in-the-bio-completion-if-needed.patch
+ApplyPatch 1297-alsa-6fire-fix-use-after-free-on-disconnect.patch
+ApplyPatch 1298-ip6-tunnel-clear-skb2-cb-in-ip4ip6-err.patch
+ApplyPatch 1299-ipv6-rpl-reserve-mac-len-headroom-when-recompressed-srh-grow.patch
+ApplyPatch 1300-fs-constify-file-ptr-in-backing-file-accessor-helpers.patch
+ApplyPatch 1301-lsm-split-the-notifier-code-out-into-lsm-notifier-c.patch
+ApplyPatch 1302-lsm-split-the-init-code-out-into-lsm-init-c.patch
+ApplyPatch 1303-lsm-consolidate-lsm-allowed-and-prepare-lsm-into-lsm-prepare.patch
+ApplyPatch 1304-lsm-introduce-looping-macros-for-the-initialization-code.patch
+ApplyPatch 1305-lsm-integrate-report-lsm-order-code-into-caller.patch
+ApplyPatch 1306-lsm-integrate-lsm-early-cred-and-lsm-early-task-into-caller.patch
+ApplyPatch 1307-lsm-rename-ordered-lsm-init-to-lsm-init-ordered.patch
+ApplyPatch 1308-lsm-replace-the-name-field-with-a-pointer-to-the-lsm-id-stru.patch
+ApplyPatch 1309-lsm-rename-the-lsm-order-variables-for-consistency.patch
+ApplyPatch 1310-lsm-rework-lsm-active-cnt-and-lsm-idlist.patch
+ApplyPatch 1311-lsm-get-rid-of-the-lsm-names-list-and-do-some-cleanup.patch
+ApplyPatch 1312-lsm-rework-the-lsm-enable-disable-setter-getter-functions.patch
+ApplyPatch 1313-lsm-rename-exists-ordered-lsm-to-lsm-order-exists.patch
+ApplyPatch 1314-lsm-rename-rework-append-ordered-lsm-into-lsm-order-append.patch
+ApplyPatch 1315-lsm-rename-rework-ordered-lsm-parse-to-lsm-order-parse.patch
+ApplyPatch 1316-lsm-cleanup-the-lsm-blob-size-code.patch
+ApplyPatch 1317-lsm-cleanup-initialize-lsm-and-rename-to-lsm-init-single.patch
+ApplyPatch 1318-lsm-fold-lsm-init-ordered-into-security-init.patch
+ApplyPatch 1319-lsm-add-tweak-function-header-comment-blocks-in-lsm-init-c.patch
+ApplyPatch 1320-lsm-cleanup-the-debug-and-console-output-in-lsm-init-c.patch
+ApplyPatch 1321-fs-prepare-for-adding-lsm-blob-to-backing-file.patch
+ApplyPatch 1322-lsm-add-backing-file-lsm-hooks.patch
+ApplyPatch 1323-selinux-fix-overlayfs-mmap-and-mprotect-access-checks.patch
+ApplyPatch 1324-scripts-sorttable-fix-orc-sort-cmp-to-maintain-symmetry-and-.patch
+ApplyPatch 1325-scripts-sorttable-remove-unused-macro-defines.patch
+ApplyPatch 1326-scripts-sorttable-remove-unused-write-functions.patch
+ApplyPatch 1327-scripts-sorttable-remove-unneeded-elf-rel.patch
+ApplyPatch 1328-scripts-sorttable-have-the-orc-code-use-the-r-functions-to-r.patch
+ApplyPatch 1329-scripts-sorttable-make-compare-extable-into-two-functions.patch
+ApplyPatch 1330-scripts-sorttable-convert-elf-ehdr-to-union.patch
+ApplyPatch 1331-scripts-sorttable-replace-elf-shdr-macro-with-a-union.patch
+ApplyPatch 1332-scripts-sorttable-convert-elf-sym-macro-over-to-a-union.patch
+ApplyPatch 1333-scripts-sorttable-add-helper-functions-for-elf-ehdr.patch
+ApplyPatch 1334-scripts-sorttable-add-helper-functions-for-elf-shdr.patch
+ApplyPatch 1335-scripts-sorttable-add-helper-functions-for-elf-sym.patch
+ApplyPatch 1336-scripts-sorttable-use-uint64-t-for-mcount-sorting.patch
+ApplyPatch 1337-scripts-sorttable-move-code-from-sorttable-h-into-sorttable-.patch
+ApplyPatch 1338-scripts-sorttable-get-start-stop-mcount-loc-from-elf-file-di.patch
+ApplyPatch 1339-scripts-sorttable-use-a-structure-of-function-pointers-for-e.patch
+ApplyPatch 1340-arm64-scripts-sorttable-implement-sorting-mcount-loc-at-boot.patch
+ApplyPatch 1341-scripts-sorttable-have-mcount-rela-sort-use-direct-values.patch
+ApplyPatch 1342-scripts-sorttable-always-use-an-array-for-the-mcount-loc-sor.patch
+ApplyPatch 1343-scripts-sorttable-zero-out-weak-functions-in-mcount-loc-tabl.patch
+ApplyPatch 1344-ftrace-update-the-mcount-loc-check-of-skipped-entries.patch
+ApplyPatch 1345-ftrace-have-ftrace-pages-output-reflect-freed-pages.patch
+ApplyPatch 1346-ftrace-do-not-over-allocate-ftrace-memory.patch
+ApplyPatch 1347-ftrace-test-mcount-loc-addr-before-calling-ftrace-call-addr.patch
+ApplyPatch 1348-ftrace-check-against-is-kernel-text-instead-of-kaslr-offset.patch
+ApplyPatch 1349-scripts-sorttable-use-normal-sort-if-theres-no-relocs-in-the.patch
+ApplyPatch 1350-scripts-sorttable-allow-matches-to-functions-before-function.patch
+ApplyPatch 1351-scripts-sorttable-fix-endianness-handling-in-build-time-mcou.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4870,6 +4998,78 @@ fi\
 #
 #
 %changelog
+* Wed Jun 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.22.1
+- Recreate RHEL 6.12.0-211.22.1 from CentOS Stream 10 and upstream stable backports (1288-1352)
+- RHEL changelog for 211.21.1..211.22.1 follows:
+
+* Wed Jun 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.22.1.el10_2]
+- scripts/sorttable: Fix endianness handling in build-time mcount sort (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Allow matches to functions before function entry (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Use normal sort if theres no relocs in the mcount section (Jerome Marchand) [RHEL-180932]
+- ftrace: Check against is_kernel_text() instead of kaslr_offset() (Jerome Marchand) [RHEL-180932]
+- ftrace: Test mcount_loc addr before calling ftrace_call_addr() (Jerome Marchand) [RHEL-180932]
+- ftrace: Do not over-allocate ftrace memory (Jerome Marchand) [RHEL-180932]
+- ftrace: Have ftrace pages output reflect freed pages (Jerome Marchand) [RHEL-180932]
+- ftrace: Update the mcount_loc check of skipped entries (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Zero out weak functions in mcount_loc table (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Always use an array for the mcount_loc sorting (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Have mcount rela sort use direct values (Jerome Marchand) [RHEL-180932]
+- arm64: scripts/sorttable: Implement sorting mcount_loc at boot for arm64 (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Use a structure of function pointers for elf helpers (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Get start/stop_mcount_loc from ELF file directly (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Move code from sorttable.h into sorttable.c (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Use uint64_t for mcount sorting (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Add helper functions for Elf_Sym (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Add helper functions for Elf_Shdr (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Add helper functions for Elf_Ehdr (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Convert Elf_Sym MACRO over to a union (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Replace Elf_Shdr Macro with a union (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Convert Elf_Ehdr to union (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Make compare_extable() into two functions (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Have the ORC code use the _r() functions to read (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Remove unneeded Elf_Rel (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Remove unused write functions (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: Remove unused macro defines (Jerome Marchand) [RHEL-180932]
+- scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity (Jerome Marchand) [RHEL-180932]
+- selinux: fix overlayfs mmap() and mprotect() access checks (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: add backing_file LSM hooks (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- fs: prepare for adding LSM blob to backing_file (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: cleanup the debug and console output in lsm_init.c (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: add/tweak function header comment blocks in lsm_init.c (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: fold lsm_init_ordered() into security_init() (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: cleanup initialize_lsm() and rename to lsm_init_single() (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: cleanup the LSM blob size code (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: rename/rework ordered_lsm_parse() to lsm_order_parse() (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: rename/rework append_ordered_lsm() into lsm_order_append() (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: rename exists_ordered_lsm() to lsm_order_exists() (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: rework the LSM enable/disable setter/getter functions (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: get rid of the lsm_names list and do some cleanup (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: rework lsm_active_cnt and lsm_idlist[] (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: rename the lsm order variables for consistency (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: replace the name field with a pointer to the lsm_id struct (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: rename ordered_lsm_init() to lsm_init_ordered() (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: integrate lsm_early_cred() and lsm_early_task() into caller (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: integrate report_lsm_order() code into caller (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: introduce looping macros for the initialization code (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: consolidate lsm_allowed() and prepare_lsm() into lsm_prepare() (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: split the init code out into lsm_init.c (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- lsm: split the notifier code out into lsm_notifier.c (Ondrej Mosnacek) [RHEL-179437] {CVE-2026-46054}
+- fs: constify file ptr in backing_file accessor helpers (Ondrej Mosnacek) [RHEL-179437]
+- ipv6: rpl: reserve mac_len headroom when recompressed SRH grows (Antoine Tenart) [RHEL-178413] {CVE-2026-43501}
+- ip6_tunnel: clear skb2->cb[] in ip4ip6_err() (Guillaume Nault) [RHEL-172651] {CVE-2026-43037}
+- ALSA: 6fire: fix use-after-free on disconnect (CKI Backport Bot) [RHEL-172973] {CVE-2026-31581}
+- erofs: add GFP_NOIO in the bio completion if needed (CKI Backport Bot) [RHEL-171686] {CVE-2026-31467}
+- can: raw: fix ro->uniq use-after-free in raw_rcv() (CKI Backport Bot) [RHEL-170764] {CVE-2026-31532}
+- nouveau/gsp: drop WARN_ON in ACPI probes (Gary Guo) [RHEL-167788]
+
+* Thu Jun 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.21.1.el10_2]
+- s390/dasd: Copy detected format information to secondary device (Ramesh Chhetri) [RHEL-176473]
+- s390/dasd: Move quiesce state with pprc swap (Ramesh Chhetri) [RHEL-176473]
+- s390/dasd: Fix gendisk parent after copy pair swap (Ramesh Chhetri) [RHEL-176473]
+- ice: fix stats array overflow when VF requests more queues (Michal Schmidt) [RHEL-177518]
+- s390/pci: Avoid deadlock between PCI error recovery and mlx5 crdump (Mircea Dragan) [RHEL-166855]
+- net: bonding: fix use-after-free in bond_xmit_broadcast() (CKI Backport Bot) [RHEL-168073] {CVE-2026-31419}
+
 * Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.20.1
 - Recreate RHEL 6.12.0-211.20.1 from CentOS Stream 10 and upstream stable backports (1245-1287)
 - smb cifs.spnego now shipped by RHEL too; existing ahead-fix 1105 is identical (RHEL's redundant copy omitted)
