@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.13.1
+%define pkgrelease 687.15.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.13.1%{?buildid}%{?dist}
+%define specrelease 687.15.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1147,6 +1147,21 @@ Patch1266: 1266-nvme-nvme-fc-ensure-ioerr-work-is-cancelled-in-nvme-fc-delet.pat
 Patch1267: 1267-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
 Patch1268: 1268-s390-dasd-move-quiesce-state-with-pprc-swap.patch
 Patch1269: 1269-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
+Patch1270: 1270-x86-kvm-avoid-freeing-stack-allocated-node-in-kvm-async-pf-q.patch
+Patch1271: 1271-net-bonding-fix-use-after-free-in-bond-xmit-broadcast.patch
+Patch1272: 1272-scsi-target-iscsi-fix-use-after-free-in-iscsit-dec-conn-usag.patch
+Patch1273: 1273-net-mana-fix-use-after-free-in-add-adev-error-path.patch
+Patch1274: 1274-alsa-6fire-fix-use-after-free-on-disconnect.patch
+Patch1275: 1275-dlm-validate-length-in-dlm-search-rsb-tree.patch
+Patch1276: 1276-dlm-fix-buffer-overflow-from-negative-len-in-dlm-search-rsb-.patch
+Patch1277: 1277-netfilter-ctnetlink-ensure-safe-access-to-master-conntrack.patch
+Patch1278: 1278-rdma-rxe-fix-double-free-in-rxe-srq-from-init.patch
+Patch1279: 1279-net-openvswitch-avoid-releasing-netdev-before-teardown-compl.patch
+Patch1280: 1280-ip6-tunnel-clear-skb2-cb-in-ip4ip6-err.patch
+Patch1281: 1281-ipv6-rpl-headroom.patch
+Patch1282: 1282-rdma-mlx4-srq.patch
+Patch1283: 1283-dpll-series-RHEL.patch
+Patch1284: 1284-ice-rss-queues-RHEL.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2061,6 +2076,21 @@ ApplyPatch 1266-nvme-nvme-fc-ensure-ioerr-work-is-cancelled-in-nvme-fc-delet.pat
 ApplyPatch 1267-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
 ApplyPatch 1268-s390-dasd-move-quiesce-state-with-pprc-swap.patch
 ApplyPatch 1269-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
+ApplyPatch 1270-x86-kvm-avoid-freeing-stack-allocated-node-in-kvm-async-pf-q.patch
+ApplyPatch 1271-net-bonding-fix-use-after-free-in-bond-xmit-broadcast.patch
+ApplyPatch 1272-scsi-target-iscsi-fix-use-after-free-in-iscsit-dec-conn-usag.patch
+ApplyPatch 1273-net-mana-fix-use-after-free-in-add-adev-error-path.patch
+ApplyPatch 1274-alsa-6fire-fix-use-after-free-on-disconnect.patch
+ApplyPatch 1275-dlm-validate-length-in-dlm-search-rsb-tree.patch
+ApplyPatch 1276-dlm-fix-buffer-overflow-from-negative-len-in-dlm-search-rsb-.patch
+ApplyPatch 1277-netfilter-ctnetlink-ensure-safe-access-to-master-conntrack.patch
+ApplyPatch 1278-rdma-rxe-fix-double-free-in-rxe-srq-from-init.patch
+ApplyPatch 1279-net-openvswitch-avoid-releasing-netdev-before-teardown-compl.patch
+ApplyPatch 1280-ip6-tunnel-clear-skb2-cb-in-ip4ip6-err.patch
+ApplyPatch 1281-ipv6-rpl-headroom.patch
+ApplyPatch 1282-rdma-mlx4-srq.patch
+ApplyPatch 1283-dpll-series-RHEL.patch
+ApplyPatch 1284-ice-rss-queues-RHEL.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4135,6 +4165,49 @@ fi
 #
 #
 %changelog
+* Wed Jun 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.15.1
+- Recreate RHEL 5.14.0-687.15.1 from CentOS Stream 9 and upstream stable backports (1270-1284)
+- redhat: Remove the mlx5 symbols from kabi: applied via updated Module.kabi_{aarch64,s390x,x86_64} (RHEL-181822)
+- dpll/zl3073x and ice RSS-queue series consolidated (include RHEL kABI / RHEL-only files)
+- RHEL changelog for 687.14.1..687.15.1 follows:
+
+* Wed Jun 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.15.1.el9_8]
+- ip6_tunnel: clear skb2->cb[] in ip4ip6_err() (Guillaume Nault) [RHEL-172646] {CVE-2026-43037}
+- net: openvswitch: Avoid releasing netdev before teardown completes (CKI Backport Bot) [RHEL-170539] {CVE-2026-31508}
+
+* Tue Jun 09 2026 Tanishi Srivastava <tsrivast@redhat.com> [5.14.0-687.14.1.el9_8]
+- RDMA/mlx4: Fix mis-use of RCU in mlx4_srq_event() (Kamal Heib) [RHEL-179988] {CVE-2026-46181}
+- redhat: Remove the mlx5 symbols from kabi (Kamal Heib) [RHEL-181822]
+- ipv6: rpl: reserve mac_len headroom when recompressed SRH grows (Antoine Tenart) [RHEL-178408] {CVE-2026-43501}
+- RDMA/rxe: Fix double free in rxe_srq_from_init (CKI Backport Bot) [RHEL-179712] {CVE-2026-45852}
+- netfilter: ctnetlink: ensure safe access to master conntrack (Florian Westphal) [RHEL-173843] {CVE-2026-43116}
+- ice: fix stats array overflow when VF requests more queues (Michal Schmidt) [RHEL-177526]
+- ice: set max queues in alloc_etherdev_mqs() (Michal Schmidt) [RHEL-174336]
+- ice: use netif_get_num_default_rss_queues() (Michal Schmidt) [RHEL-174336]
+- ice: set default rss queues num to physical cores / 2 (Michal Schmidt) [RHEL-174336]
+- dlm: fix buffer overflow from negative len in dlm_search_rsb_tree (Alexander Aring) [RHEL-173993] {CVE-2026-43125}
+- dlm: validate length in dlm_search_rsb_tree (Alexander Aring) [RHEL-173993] {CVE-2026-43125}
+- dpll: zl3073x: add ref-sync pair support (Ivan Vecera) [RHEL-167273]
+- dpll: zl3073x: add ref sync and output clock type helpers (Ivan Vecera) [RHEL-167273]
+- dpll: zl3073x: use FIELD_MODIFY() for clear-and-set patterns (Ivan Vecera) [RHEL-167273]
+- dpll: zl3073x: clean up esync get/set and use zl3073x_out_is_ndiv() (Ivan Vecera) [RHEL-167273]
+- dpll: zl3073x: implement frequency monitoring (Ivan Vecera) [RHEL-167833]
+- dpll: add frequency monitoring callback ops (Ivan Vecera) [RHEL-167833]
+- dpll: add frequency monitoring to netlink spec (Ivan Vecera) [RHEL-167833]
+- dpll: zl3073x: drop selected and simplify connected ref getter (Ivan Vecera) [RHEL-172938]
+- dpll: zl3073x: add reference priority to zl3073x_chan (Ivan Vecera) [RHEL-172938]
+- dpll: zl3073x: add DPLL channel status fields to zl3073x_chan (Ivan Vecera) [RHEL-172938]
+- dpll: zl3073x: introduce zl3073x_chan for DPLL channel state (Ivan Vecera) [RHEL-172938]
+- dpll: zl3073x: add zl3073x_ref_state_update helper (Ivan Vecera) [RHEL-172938]
+- dpll: zl3073x: use struct_group to partition states (Ivan Vecera) [RHEL-172938]
+- dpll: zl3073x: add die temperature reporting for supported chips (Ivan Vecera) [RHEL-172938]
+- dpll: zl3073x: detect DPLL channel count from chip ID at runtime (Ivan Vecera) [RHEL-172938]
+- ALSA: 6fire: fix use-after-free on disconnect (CKI Backport Bot) [RHEL-172969] {CVE-2026-31581}
+- net: mana: fix use-after-free in add_adev() error path (CKI Backport Bot) [RHEL-172768] {CVE-2026-43056}
+- scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count() (CKI Backport Bot) [RHEL-165564] {CVE-2026-23216}
+- net: bonding: fix use-after-free in bond_xmit_broadcast() (CKI Backport Bot) [RHEL-168068] {CVE-2026-31419}
+- x86/kvm: Avoid freeing stack-allocated node in kvm_async_pf_queue_task (Ryosuke Yasuoka) [RHEL-158916]
+
 * Wed Jun 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.13.1
 - Recreate RHEL 5.14.0-687.13.1 from CentOS Stream 9 and upstream stable backports (1253-1269)
 - RHEL changelog for 687.13.1 follows:
