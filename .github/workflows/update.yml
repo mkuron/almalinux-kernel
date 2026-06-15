@@ -22,5 +22,5 @@ jobs:
     - run: |
         python3 update.py
     - run: |
-        git push --all
-        git push --tags
+        git push -f --all
+        git push -f --tags
