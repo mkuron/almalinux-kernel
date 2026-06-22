@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.22.1
+%define pkgrelease 211.26.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.22.1%{?buildid}%{?dist}
+%define specrelease 211.26.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1386,6 +1386,28 @@ Patch1348: 1348-ftrace-check-against-is-kernel-text-instead-of-kaslr-offset.patc
 Patch1349: 1349-scripts-sorttable-use-normal-sort-if-theres-no-relocs-in-the.patch
 Patch1350: 1350-scripts-sorttable-allow-matches-to-functions-before-function.patch
 Patch1351: 1351-scripts-sorttable-fix-endianness-handling-in-build-time-mcou.patch
+Patch1352: 1352-s390-ap-expose-ap-bindings-complete-count-counter-via-sysfs.patch
+Patch1353: 1353-rxrpc-fix-rxgk-token-loading-to-check-bounds.patch
+Patch1354: 1354-xen-privcmd-fix-double-free-via-vma-splitting.patch
+Patch1355: 1355-bluetooth-hci-sync-fix-stack-buffer-overflow-in-hci-le-big-c.patch
+Patch1356: 1356-buffer-overflow-in-drivers-xen-sys-hypervisor-c.patch
+Patch1357: 1357-can-isotp-fix-tx-buf-use-after-free-in-isotp-sendmsg.patch
+Patch1358: 1358-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-dropped-dur.patch
+Patch1359: 1359-bluetooth-hci-event-fix-potential-uaf-in-ssp-passkey-handler.patch
+Patch1360: 1360-wifi-mac80211-use-safe-list-iteration-in-radar-detect-work.patch
+Patch1361: 1361-wifi-mac80211-drop-stray-static-from-fast-rx-rx-result.patch
+Patch1362: 1362-wifi-mac80211-remove-station-if-connection-prep-fails.patch
+Patch1363: 1363-bnxt-en-fix-rss-context-delete-logic.patch
+Patch1364: 1364-objtool-klp-fix-unexported-static-call-key-access-for-manual.patch
+Patch1365: 1365-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
+Patch1366: 1366-ibmveth-disable-gso-for-packets-with-small-mss.patch
+Patch1367: 1367-s390-mm-add-missing-secure-storage-access-fixups-for-donated.patch
+Patch1368: 1368-mptcp-fix-slab-use-after-free-in-inet-lookup-established.patch
+Patch1369: 1369-watchdog-wdat-wdt-fix-acpi-table-leak-in-probe-function.patch
+Patch1370: 1370-net-mana-fix-use-after-free-in-add-adev-error-path.patch
+Patch1371: 1371-crypto-caam-fix-overflow-on-long-hmac-keys.patch
+Patch1372: 1372-exit-prevent-preemption-of-oopsing-task-dead-task.patch
+Patch1373: 1373-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2494,6 +2516,28 @@ ApplyPatch 1348-ftrace-check-against-is-kernel-text-instead-of-kaslr-offset.patc
 ApplyPatch 1349-scripts-sorttable-use-normal-sort-if-theres-no-relocs-in-the.patch
 ApplyPatch 1350-scripts-sorttable-allow-matches-to-functions-before-function.patch
 ApplyPatch 1351-scripts-sorttable-fix-endianness-handling-in-build-time-mcou.patch
+ApplyPatch 1352-s390-ap-expose-ap-bindings-complete-count-counter-via-sysfs.patch
+ApplyPatch 1353-rxrpc-fix-rxgk-token-loading-to-check-bounds.patch
+ApplyPatch 1354-xen-privcmd-fix-double-free-via-vma-splitting.patch
+ApplyPatch 1355-bluetooth-hci-sync-fix-stack-buffer-overflow-in-hci-le-big-c.patch
+ApplyPatch 1356-buffer-overflow-in-drivers-xen-sys-hypervisor-c.patch
+ApplyPatch 1357-can-isotp-fix-tx-buf-use-after-free-in-isotp-sendmsg.patch
+ApplyPatch 1358-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-dropped-dur.patch
+ApplyPatch 1359-bluetooth-hci-event-fix-potential-uaf-in-ssp-passkey-handler.patch
+ApplyPatch 1360-wifi-mac80211-use-safe-list-iteration-in-radar-detect-work.patch
+ApplyPatch 1361-wifi-mac80211-drop-stray-static-from-fast-rx-rx-result.patch
+ApplyPatch 1362-wifi-mac80211-remove-station-if-connection-prep-fails.patch
+ApplyPatch 1363-bnxt-en-fix-rss-context-delete-logic.patch
+ApplyPatch 1364-objtool-klp-fix-unexported-static-call-key-access-for-manual.patch
+ApplyPatch 1365-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
+ApplyPatch 1366-ibmveth-disable-gso-for-packets-with-small-mss.patch
+ApplyPatch 1367-s390-mm-add-missing-secure-storage-access-fixups-for-donated.patch
+ApplyPatch 1368-mptcp-fix-slab-use-after-free-in-inet-lookup-established.patch
+ApplyPatch 1369-watchdog-wdat-wdt-fix-acpi-table-leak-in-probe-function.patch
+ApplyPatch 1370-net-mana-fix-use-after-free-in-add-adev-error-path.patch
+ApplyPatch 1371-crypto-caam-fix-overflow-on-long-hmac-keys.patch
+ApplyPatch 1372-exit-prevent-preemption-of-oopsing-task-dead-task.patch
+ApplyPatch 1373-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4998,6 +5042,43 @@ fi\
 #
 #
 %changelog
+* Mon Jun 22 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.26.1
+- Recreate RHEL 6.12.0-211.26.1 from CentOS Stream 10 and upstream stable backports (1352-1373)
+- Enable watchdog pretimeout panic functionality for x86 via kernel config (RHEL-182299)
+- RHEL changelog for 211.23.1..211.26.1 follows:
+
+* Thu Jun 18 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.26.1.el10_2]
+- net/sched: fix pedit partial COW leading to page cache corruption (Ivan Vecera) [RHEL-177380] {CVE-2026-46331}
+- exit: prevent preemption of oopsing TASK_DEAD task (CKI Backport Bot) [RHEL-180009] {CVE-2026-46173}
+- crypto: caam - fix overflow on long hmac keys (CKI Backport Bot) [RHEL-179769] {CVE-2026-43330}
+- net: mana: fix use-after-free in add_adev() error path (CKI Backport Bot) [RHEL-172772] {CVE-2026-43056}
+
+* Wed Jun 17 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.25.1.el10_2]
+- gitlab-ci: use rhel10.2 builder image (Michael Krausch-Hofmann)
+- redhat/configs: enable watchdog pretimout panic functionality for x86 (David Arcari) [RHEL-182299]
+- watchdog: wdat_wdt: Fix ACPI table leak in probe function (David Arcari) [RHEL-182299]
+- mptcp: fix slab-use-after-free in __inet_lookup_established (CKI Backport Bot) [RHEL-171510] {CVE-2026-31669}
+
+* Mon Jun 15 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.24.1.el10_2]
+- s390/mm: Add missing secure storage access fixups for donated memory (Jan Polensky) [RHEL-183319]
+- ibmveth: Disable GSO for packets with small MSS (Mamatha Inamdar) [RHEL-179723]
+- rbd: eliminate a race in lock_dwork draining on unmap (CKI Backport Bot) [RHEL-183127]
+- objtool/klp: Fix unexported static call key access for manually built livepatch modules (Joe Lawrence) [RHEL-178495]
+- bnxt_en: Fix RSS context delete logic (CKI Backport Bot) [RHEL-180307] {CVE-2026-43260}
+- wifi: mac80211: remove station if connection prep fails (CKI Backport Bot) [RHEL-180126] {CVE-2026-46125}
+- wifi: mac80211: drop stray 'static' from fast-RX rx_result (CKI Backport Bot) [RHEL-180060] {CVE-2026-46152}
+- wifi: mac80211: use safe list iteration in radar detect work (CKI Backport Bot) [RHEL-180022] {CVE-2026-46166}
+- Bluetooth: hci_event: fix potential UAF in SSP passkey handlers (CKI Backport Bot) [RHEL-179358] {CVE-2026-46056}
+- scsi: lpfc: Fix reusing an ndlp that is marked NLP_DROPPED during FLOGI (Ewan D. Milne) [RHEL-171774]
+- can: isotp: fix tx.buf use-after-free in isotp_sendmsg() (CKI Backport Bot) [RHEL-175533] {CVE-2026-31474}
+- Buffer overflow in drivers/xen/sys-hypervisor.c (Vitaly Kuznetsov) [RHEL-172516] {CVE-2026-31786}
+- Bluetooth: hci_sync: fix stack buffer overflow in hci_le_big_create_sync (CKI Backport Bot) [RHEL-172862] {CVE-2026-31772}
+- xen/privcmd: fix double free via VMA splitting (CKI Backport Bot) [RHEL-172492] {CVE-2026-31787}
+- rxrpc: Fix RxGK token loading to check bounds (CKI Backport Bot) [RHEL-171419] {CVE-2026-31641}
+
+* Thu Jun 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.23.1.el10_2]
+- s390/ap: Expose ap_bindings_complete_count counter via sysfs (Mircea Dragan) [RHEL-166047]
+
 * Wed Jun 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.22.1
 - Recreate RHEL 6.12.0-211.22.1 from CentOS Stream 10 and upstream stable backports (1288-1352)
 - RHEL changelog for 211.21.1..211.22.1 follows:
