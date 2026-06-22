@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.15.1
+%define pkgrelease 687.17.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.15.1%{?buildid}%{?dist}
+%define specrelease 687.17.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1162,6 +1162,33 @@ Patch1281: 1281-ipv6-rpl-headroom.patch
 Patch1282: 1282-rdma-mlx4-srq.patch
 Patch1283: 1283-dpll-series-RHEL.patch
 Patch1284: 1284-ice-rss-queues-RHEL.patch
+Patch1285: 1285-xen-privcmd-fix-double-free-via-vma-splitting.patch
+Patch1286: 1286-bluetooth-hci-sync-fix-stack-buffer-overflow-in-hci-le-big-c.patch
+Patch1287: 1287-can-isotp-fix-tx-buf-use-after-free-in-isotp-sendmsg.patch
+Patch1288: 1288-dpll-add-pin-operational-state.patch
+Patch1289: 1289-dpll-zl3073x-implement-pin-operational-state-reporting.patch
+Patch1290: 1290-dpll-add-fractional-frequency-offset-to-pin-parent-device.patch
+Patch1291: 1291-dpll-zl3073x-report-ffo-as-dpll-vs-input-reference-offset.patch
+Patch1292: 1292-mptcp-fix-slab-use-after-free-in-inet-lookup-established.patch
+Patch1293: 1293-ice-fix-null-pointer-dereference-in-ice-vsi-set-napi-queues.patch
+Patch1294: 1294-bluetooth-hci-event-fix-potential-uaf-in-ssp-passkey-handler.patch
+Patch1295: 1295-wifi-mac80211-use-safe-list-iteration-in-radar-detect-work.patch
+Patch1296: 1296-wifi-mac80211-drop-stray-static-from-fast-rx-rx-result.patch
+Patch1297: 1297-rdma-mana-validate-rx-hash-key-len.patch
+Patch1298: 1298-wifi-mac80211-remove-station-if-connection-prep-fails.patch
+Patch1299: 1299-bnxt-en-fix-rss-context-delete-logic.patch
+Patch1300: 1300-gfs2-add-metapath-dibh-helper.patch
+Patch1301: 1301-gfs2-fix-use-after-free-in-iomap-inline-data-write-path.patch
+Patch1302: 1302-s390-ap-expose-ap-bindings-complete-count-counter-via-sysfs.patch
+Patch1303: 1303-ibmveth-disable-gso-for-packets-with-small-mss.patch
+Patch1304: 1304-s390-mm-add-missing-secure-storage-access-fixups-for-donated.patch
+Patch1305: 1305-alsa-usb-audio-add-sanity-check-for-oob-writes-at-silencing.patch
+Patch1306: 1306-exit-prevent-preemption-of-oopsing-task-dead-task.patch
+Patch1307: 1307-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.patch
+Patch1308: 1308-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.patch
+Patch1309: 1309-scsi-qla2xxx-completely-fix-fcport-double-free.patch
+Patch1310: 1310-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
+Patch1311: 1311-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2091,6 +2118,33 @@ ApplyPatch 1281-ipv6-rpl-headroom.patch
 ApplyPatch 1282-rdma-mlx4-srq.patch
 ApplyPatch 1283-dpll-series-RHEL.patch
 ApplyPatch 1284-ice-rss-queues-RHEL.patch
+ApplyPatch 1285-xen-privcmd-fix-double-free-via-vma-splitting.patch
+ApplyPatch 1286-bluetooth-hci-sync-fix-stack-buffer-overflow-in-hci-le-big-c.patch
+ApplyPatch 1287-can-isotp-fix-tx-buf-use-after-free-in-isotp-sendmsg.patch
+ApplyPatch 1288-dpll-add-pin-operational-state.patch
+ApplyPatch 1289-dpll-zl3073x-implement-pin-operational-state-reporting.patch
+ApplyPatch 1290-dpll-add-fractional-frequency-offset-to-pin-parent-device.patch
+ApplyPatch 1291-dpll-zl3073x-report-ffo-as-dpll-vs-input-reference-offset.patch
+ApplyPatch 1292-mptcp-fix-slab-use-after-free-in-inet-lookup-established.patch
+ApplyPatch 1293-ice-fix-null-pointer-dereference-in-ice-vsi-set-napi-queues.patch
+ApplyPatch 1294-bluetooth-hci-event-fix-potential-uaf-in-ssp-passkey-handler.patch
+ApplyPatch 1295-wifi-mac80211-use-safe-list-iteration-in-radar-detect-work.patch
+ApplyPatch 1296-wifi-mac80211-drop-stray-static-from-fast-rx-rx-result.patch
+ApplyPatch 1297-rdma-mana-validate-rx-hash-key-len.patch
+ApplyPatch 1298-wifi-mac80211-remove-station-if-connection-prep-fails.patch
+ApplyPatch 1299-bnxt-en-fix-rss-context-delete-logic.patch
+ApplyPatch 1300-gfs2-add-metapath-dibh-helper.patch
+ApplyPatch 1301-gfs2-fix-use-after-free-in-iomap-inline-data-write-path.patch
+ApplyPatch 1302-s390-ap-expose-ap-bindings-complete-count-counter-via-sysfs.patch
+ApplyPatch 1303-ibmveth-disable-gso-for-packets-with-small-mss.patch
+ApplyPatch 1304-s390-mm-add-missing-secure-storage-access-fixups-for-donated.patch
+ApplyPatch 1305-alsa-usb-audio-add-sanity-check-for-oob-writes-at-silencing.patch
+ApplyPatch 1306-exit-prevent-preemption-of-oopsing-task-dead-task.patch
+ApplyPatch 1307-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.patch
+ApplyPatch 1308-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.patch
+ApplyPatch 1309-scsi-qla2xxx-completely-fix-fcport-double-free.patch
+ApplyPatch 1310-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
+ApplyPatch 1311-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4165,6 +4219,42 @@ fi
 #
 #
 %changelog
+* Mon Jun 22 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.17.1
+- Recreate RHEL 5.14.0-687.17.1 from CentOS Stream 9 and upstream stable backports (1285-1311)
+- RHEL changelog for 687.16.1..687.17.1 follows:
+
+* Thu Jun 18 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.17.1.el9_8]
+- net/sched: fix pedit partial COW leading to page cache corruption (Ivan Vecera) [RHEL-177392] {CVE-2026-46331}
+- gitlab-ci: use rhel9.8 builder image (Michael Krausch-Hofmann)
+- rbd: eliminate a race in lock_dwork draining on unmap (CKI Backport Bot) [RHEL-183130]
+- scsi: qla2xxx: Completely fix fcport double free (Ewan D. Milne) [RHEL-179754] {CVE-2026-43414}
+- nvmet-tcp: fix race between ICReq handling and queue teardown (Chris Leech) [RHEL-180102] {CVE-2026-46135}
+- RDMA/mana: Remove user triggerable WARN_ON() in mana_ib_create_qp_rss() (CKI Backport Bot) [RHEL-180158] {CVE-2026-46117}
+- exit: prevent preemption of oopsing TASK_DEAD task (CKI Backport Bot) [RHEL-180016] {CVE-2026-46173}
+- ALSA: usb-audio: Add sanity check for OOB writes at silencing (CKI Backport Bot) [RHEL-173941] {CVE-2026-43279}
+
+* Tue Jun 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.16.1.el9_8]
+- s390/mm: Add missing secure storage access fixups for donated memory (Jan Polensky) [RHEL-183317]
+- ibmveth: Disable GSO for packets with small MSS (Mamatha Inamdar) [RHEL-178308]
+- s390/ap: Expose ap_bindings_complete_count counter via sysfs (Jan Polensky) [RHEL-166048]
+- gfs2: Fix use-after-free in iomap inline data write path (Andrew Price) [RHEL-179589] {CVE-2026-45984}
+- gfs2: Add metapath_dibh helper (Andrew Price) [RHEL-179589] {CVE-2026-45984}
+- bnxt_en: Fix RSS context delete logic (CKI Backport Bot) [RHEL-180308] {CVE-2026-43260}
+- wifi: mac80211: remove station if connection prep fails (CKI Backport Bot) [RHEL-180121] {CVE-2026-46125}
+- RDMA/mana: Validate rx_hash_key_len (CKI Backport Bot) [RHEL-180085] {CVE-2026-46145}
+- wifi: mac80211: drop stray 'static' from fast-RX rx_result (CKI Backport Bot) [RHEL-180057] {CVE-2026-46152}
+- wifi: mac80211: use safe list iteration in radar detect work (CKI Backport Bot) [RHEL-180025] {CVE-2026-46166}
+- Bluetooth: hci_event: fix potential UAF in SSP passkey handlers (CKI Backport Bot) [RHEL-179359] {CVE-2026-46056}
+- ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues (CKI Backport Bot) [RHEL-175699]
+- mptcp: fix slab-use-after-free in __inet_lookup_established (Davide Caratti) [RHEL-171506] {CVE-2026-31669}
+- dpll: zl3073x: report FFO as DPLL vs input reference offset (Ivan Vecera) [RHEL-175823]
+- dpll: add fractional frequency offset to pin-parent-device (Ivan Vecera) [RHEL-175823]
+- dpll: zl3073x: implement pin operational state reporting (Ivan Vecera) [RHEL-175820]
+- dpll: add pin operational state (Ivan Vecera) [RHEL-175820]
+- can: isotp: fix tx.buf use-after-free in isotp_sendmsg() (CKI Backport Bot) [RHEL-175525] {CVE-2026-31474}
+- Bluetooth: hci_sync: fix stack buffer overflow in hci_le_big_create_sync (CKI Backport Bot) [RHEL-172858] {CVE-2026-31772}
+- xen/privcmd: fix double free via VMA splitting (CKI Backport Bot) [RHEL-172488] {CVE-2026-31787}
+
 * Wed Jun 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.15.1
 - Recreate RHEL 5.14.0-687.15.1 from CentOS Stream 9 and upstream stable backports (1270-1284)
 - redhat: Remove the mlx5 symbols from kabi: applied via updated Module.kabi_{aarch64,s390x,x86_64} (RHEL-181822)
