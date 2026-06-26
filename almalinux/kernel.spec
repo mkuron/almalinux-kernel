@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.26.1
+%define pkgrelease 211.28.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.26.1%{?buildid}%{?dist}
+%define specrelease 211.28.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1408,6 +1408,16 @@ Patch1370: 1370-net-mana-fix-use-after-free-in-add-adev-error-path.patch
 Patch1371: 1371-crypto-caam-fix-overflow-on-long-hmac-keys.patch
 Patch1372: 1372-exit-prevent-preemption-of-oopsing-task-dead-task.patch
 Patch1373: 1373-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
+Patch1374: 1374-kvm-arm64-vgic-its-drop-translation-cache-ref-only-for-eras.patch
+Patch1375: 1375-ipv6-icmp-clear-skb2-cb-in-ip6-err-gen-icmpv6-unreach.patch
+Patch1376: 1376-rdma-mana-validate-rx-hash-key-len.patch
+Patch1377: 1377-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.patch
+Patch1378: 1378-rxrpc-fix-response-authenticator-parser-oob-read.patch
+Patch1379: 1379-rdma-iwcm-fix-workqueue-list-corruption-by-removing-work-lis.patch
+Patch1380: 1380-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.patch
+Patch1381: 1381-scsi-qla2xxx-completely-fix-fcport-double-free.patch
+Patch1382: 1382-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
+Patch1383: 1383-selinux-rhel-only-hotfix-for-execmem-regression.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2538,6 +2548,16 @@ ApplyPatch 1370-net-mana-fix-use-after-free-in-add-adev-error-path.patch
 ApplyPatch 1371-crypto-caam-fix-overflow-on-long-hmac-keys.patch
 ApplyPatch 1372-exit-prevent-preemption-of-oopsing-task-dead-task.patch
 ApplyPatch 1373-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
+ApplyPatch 1374-kvm-arm64-vgic-its-drop-translation-cache-ref-only-for-eras.patch
+ApplyPatch 1375-ipv6-icmp-clear-skb2-cb-in-ip6-err-gen-icmpv6-unreach.patch
+ApplyPatch 1376-rdma-mana-validate-rx-hash-key-len.patch
+ApplyPatch 1377-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.patch
+ApplyPatch 1378-rxrpc-fix-response-authenticator-parser-oob-read.patch
+ApplyPatch 1379-rdma-iwcm-fix-workqueue-list-corruption-by-removing-work-lis.patch
+ApplyPatch 1380-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.patch
+ApplyPatch 1381-scsi-qla2xxx-completely-fix-fcport-double-free.patch
+ApplyPatch 1382-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
+ApplyPatch 1383-selinux-rhel-only-hotfix-for-execmem-regression.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5042,6 +5062,27 @@ fi\
 #
 #
 %changelog
+* Fri Jun 26 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.28.1
+- Recreate RHEL 6.12.0-211.28.1 from CentOS Stream 10 and upstream stable backports (1375-1383)
+- Retain AlmaLinux ahead-of-RHEL fix for CVE-2026-46316 (1374)
+- RHEL changelog for 211.27.1..211.28.1 follows:
+
+* Thu Jun 25 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.28.1.el10_2]
+- selinux: RHEL-only hotfix for execmem regression (Ondrej Mosnacek) [RHEL-185117]
+- tcp: fix potential race in tcp_v6_syn_recv_sock() (Paolo Abeni) [RHEL-174242] {CVE-2026-43198}
+- scsi: qla2xxx: Completely fix fcport double free (Ewan D. Milne) [RHEL-179755] {CVE-2026-43414}
+- RDMA/mana: Remove user triggerable WARN_ON() in mana_ib_create_qp_rss() (CKI Backport Bot) [RHEL-180155] {CVE-2026-46117}
+- RDMA/iwcm: Fix workqueue list corruption by removing work_list (CKI Backport Bot) [RHEL-179665] {CVE-2026-45898}
+- rxrpc: fix RESPONSE authenticator parser OOB read (CKI Backport Bot) [RHEL-171456] {CVE-2026-31636}
+
+* Mon Jun 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.27.1.el10_2]
+- nvmet-tcp: fix race between ICReq handling and queue teardown (CKI Backport Bot) [RHEL-180106] {CVE-2026-46135}
+- RDMA/mana: Validate rx_hash_key_len (CKI Backport Bot) [RHEL-180090] {CVE-2026-46145}
+- ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach() (Guillaume Nault) [RHEL-172675] {CVE-2026-43038}
+
+* Tue Jun 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.26.1
+- Add fix for CVE-2026-46316 (KVM arm64 vgic-its translation-cache use-after-free) ahead of RHEL (1374)
+
 * Mon Jun 22 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.26.1
 - Recreate RHEL 6.12.0-211.26.1 from CentOS Stream 10 and upstream stable backports (1352-1373)
 - Enable watchdog pretimeout panic functionality for x86 via kernel config (RHEL-182299)
