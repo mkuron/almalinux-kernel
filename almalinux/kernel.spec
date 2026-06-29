@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.17.1
+%define pkgrelease 687.19.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.17.1%{?buildid}%{?dist}
+%define specrelease 687.19.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1189,6 +1189,390 @@ Patch1308: 1308-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.pat
 Patch1309: 1309-scsi-qla2xxx-completely-fix-fcport-double-free.patch
 Patch1310: 1310-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
 Patch1311: 1311-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
+Patch1312: 1312-kvm-arm64-vgic-its-drop-translation-cache-ref-only-for-eras.patch
+Patch1313: 1313-netfilter-flowtable-strictly-check-for-maximum-number-of-act.patch
+Patch1314: 1314-drm-amd-display-do-not-skip-unrelated-mode-changes-in-dsc-va.patch
+Patch1315: 1315-ipv6-icmp-clear-skb2-cb-in-ip6-err-gen-icmpv6-unreach.patch
+Patch1316: 1316-alsa-aloop-fix-peer-runtime-uaf-during-format-change-stop.patch
+Patch1317: 1317-rdma-iwcm-fix-workqueue-list-corruption-by-removing-work-lis.patch
+Patch1318: 1318-binder-use-cred-instead-of-task-for-selinux-checks.patch
+Patch1319: 1319-locks-fix-toctou-race-when-granting-write-lease.patch
+Patch1320: 1320-fs-use-a-helper-for-opening-kernel-internal-files.patch
+Patch1321: 1321-fs-move-kmem-cache-zalloc-into-alloc-empty-file-helpers.patch
+Patch1322: 1322-fs-use-backing-file-container-for-internal-files-with-fake-f.patch
+Patch1323: 1323-ovl-enable-fsnotify-events-on-underlying-real-files.patch
+Patch1324: 1324-fs-move-cleanup-from-init-file-into-its-callers.patch
+Patch1325: 1325-lsm-constify-the-file-parameter-in-security-binder-transfer-.patch
+Patch1326: 1326-cachefiles-use-kiocb-start-end-write-helpers.patch
+Patch1327: 1327-fs-fix-kernel-doc-warnings.patch
+Patch1328: 1328-fs-rename-mnt-want-drop-write-helpers.patch
+Patch1329: 1329-fs-get-mnt-writers-count-for-an-open-backing-file-s-real-pat.patch
+Patch1330: 1330-fs-create-helper-file-user-path-for-user-displayed-mapped-fi.patch
+Patch1331: 1331-fs-store-real-path-instead-of-fake-path-in-backing-file-f-pa.patch
+Patch1332: 1332-fs-prepare-for-stackable-filesystems-backing-file-helpers.patch
+Patch1333: 1333-fs-factor-out-backing-file-read-write-iter-helpers.patch
+Patch1334: 1334-fs-factor-out-backing-file-splice-read-write-helpers.patch
+Patch1335: 1335-fs-factor-out-backing-file-mmap-helper.patch
+Patch1336: 1336-lsm-add-helper-for-blob-allocations.patch
+Patch1337: 1337-ovl-fix-nested-backing-file-paths.patch
+Patch1338: 1338-fs-constify-file-ptr-in-backing-file-accessor-helpers.patch
+Patch1339: 1339-ovl-remove-unneeded-non-const-conversion.patch
+Patch1340: 1340-ovl-remove-redundant-iocb-dio-caller-comp-clearing.patch
+Patch1341: 1341-perf-core-fix-mmap-event-path-names-with-backing-files.patch
+Patch1342: 1342-fs-prepare-for-adding-lsm-blob-to-backing-file.patch
+Patch1343: 1343-lsm-add-backing-file-lsm-hooks.patch
+Patch1344: 1344-selinux-fix-overlayfs-mmap-and-mprotect-access-checks.patch
+Patch1345: 1345-selinux-rhel-only-hotfix-for-execmem-regression.patch
+Patch1346: 1346-net-mlx5-hws-fix-matcher-action-template-attach.patch
+Patch1347: 1347-net-mlx5-hws-remove-unused-element-array.patch
+Patch1348: 1348-net-mlx5-hws-make-pool-single-resource.patch
+Patch1349: 1349-net-mlx5-hws-refactor-pool-implementation.patch
+Patch1350: 1350-net-mlx5-hws-cleanup-after-pool-refactoring.patch
+Patch1351: 1351-net-mlx5-hws-add-fullness-tracking-to-pool.patch
+Patch1352: 1352-net-mlx5-hws-fix-pool-size-optimization.patch
+Patch1353: 1353-net-mlx5-hws-implement-action-ste-pool.patch
+Patch1354: 1354-net-mlx5-hws-use-the-new-action-ste-pool.patch
+Patch1355: 1355-net-mlx5-hws-cleanup-matcher-action-ste-table.patch
+Patch1356: 1356-net-mlx5-hws-free-unused-action-ste-tables.patch
+Patch1357: 1357-net-mlx5-hws-export-action-ste-tables-to-debugfs.patch
+Patch1358: 1358-net-mlx5e-ethtool-fix-formatting-of-ptp-rq0-csum-complete-ta.patch
+Patch1359: 1359-net-mlx5-fix-spelling-mistakes-in-mlx5-core-dbg-message-and-.patch
+Patch1360: 1360-net-mlx5-hws-fix-ip-version-decision.patch
+Patch1361: 1361-net-mlx5-hws-harden-ip-version-definer-checks.patch
+Patch1362: 1362-net-mlx5-hws-disallow-matcher-ip-version-mixing.patch
+Patch1363: 1363-rdma-mlx5-fix-error-flow-upon-firmware-failure-for-rq-destru.patch
+Patch1364: 1364-net-mlx5-support-software-tx-timestamp.patch
+Patch1365: 1365-net-mlx5-hws-expose-function-mlx5hws-table-ft-set-next-ft-in.patch
+Patch1366: 1366-net-mlx5-hws-add-definer-function-to-get-field-name-str.patch
+Patch1367: 1367-net-mlx5-hws-expose-polling-function-in-header-file.patch
+Patch1368: 1368-net-mlx5-hws-introduce-isolated-matchers.patch
+Patch1369: 1369-net-mlx5-hws-support-complex-matchers.patch
+Patch1370: 1370-net-mlx5-hws-force-rehash-when-rule-insertion-failed.patch
+Patch1371: 1371-net-mlx5-hws-fix-counting-of-rules-in-the-matcher.patch
+Patch1372: 1372-net-mlx5-hws-fix-redundant-extension-of-action-templates.patch
+Patch1373: 1373-net-mlx5-hws-rework-rehash-loop.patch
+Patch1374: 1374-net-mlx5-hws-dump-bad-completion-details.patch
+Patch1375: 1375-net-mlx5-use-to-delayed-work.patch
+Patch1376: 1376-net-mlx5-sws-fix-reformat-id-error-handling.patch
+Patch1377: 1377-net-mlx5-hws-register-reformat-actions-with-fw.patch
+Patch1378: 1378-net-mlx5-hws-fix-typo-nope-to-nop.patch
+Patch1379: 1379-net-mlx5-hws-handle-modify-header-actions-dependency.patch
+Patch1380: 1380-net-mlx5-core-add-error-handling-inmlx5-query-nic-vport-qkey.patch
+Patch1381: 1381-net-mlx5e-allow-setting-mac-address-of-representors.patch
+Patch1382: 1382-net-mlx5-add-error-handling-in-mlx5-query-nic-vport-node-gui.patch
+Patch1383: 1383-net-mlx5-hws-fix-an-error-code-in-mlx5hws-bwc-rule-create-co.patch
+Patch1384: 1384-net-mlx5-ensure-fw-pages-are-always-allocated-on-same-numa.patch
+Patch1385: 1385-net-mlx5-fix-return-value-when-searching-for-existing-flow-g.patch
+Patch1386: 1386-net-mlx5-hws-init-mutex-on-the-correct-path.patch
+Patch1387: 1387-net-mlx5-hws-fix-missing-ip-version-handling-in-definer.patch
+Patch1388: 1388-net-mlx5-hws-make-sure-the-uplink-is-the-last-destination.patch
+Patch1389: 1389-net-mlx5e-fix-leak-of-geneve-tlv-option-object.patch
+Patch1390: 1390-net-mlx5-hws-add-error-checking-to-hws-bwc-rule-complex-hash.patch
+Patch1391: 1391-net-mlx5e-fix-race-between-dim-disable-and-net-dim.patch
+Patch1392: 1392-net-mlx5e-add-new-prio-for-promiscuous-mode.patch
+Patch1393: 1393-net-mlx5-correctly-set-gso-size-when-lro-is-used.patch
+Patch1394: 1394-net-mlx5-fix-memory-leak-in-cmd-exec.patch
+Patch1395: 1395-net-mlx5-e-switch-fix-peer-miss-rules-to-use-peer-eswitch.patch
+Patch1396: 1396-rdma-mlx5-convert-timeouts-to-secs-to-jiffies.patch
+Patch1397: 1397-rdma-mlx5-remove-the-redundant-mlx5-ib-stage-uar-stage.patch
+Patch1398: 1398-rdma-mlx5-add-support-for-200gbps-per-lane-speeds.patch
+Patch1399: 1399-rdma-mlx5-avoid-flexible-array-warning.patch
+Patch1400: 1400-rdma-mlx5-initialize-obj-event-obj-sub-list-before-xa-insert.patch
+Patch1401: 1401-rdma-mlx5-fix-hw-counters-query-for-non-representor-devices.patch
+Patch1402: 1402-rdma-mlx5-fix-cc-counters-query-for-mpv.patch
+Patch1403: 1403-rdma-mlx5-fix-vport-loopback-for-mpv-device.patch
+Patch1404: 1404-net-mlx5-expose-serial-numbers-in-devlink-info.patch
+Patch1405: 1405-net-mlx5e-shampo-reorganize-mlx5-rq-shampo-alloc.patch
+Patch1406: 1406-net-mlx5e-shampo-remove-redundant-params.patch
+Patch1407: 1407-net-mlx5e-shampo-improve-hw-gro-capability-checking.patch
+Patch1408: 1408-net-mlx5e-shampo-separate-pool-for-headers.patch
+Patch1409: 1409-net-mlx5e-implement-queue-mgmt-ops-and-single-channel-swap.patch
+Patch1410: 1410-net-mlx5e-support-ethtool-tcp-data-split-settings.patch
+Patch1411: 1411-net-mlx5-fs-add-multiple-prios-to-rdma-transport-steering-do.patch
+Patch1412: 1412-net-mlx5-small-refactor-for-general-object-capabilities.patch
+Patch1413: 1413-net-mlx5-add-ifc-bits-for-pcie-congestion-event-object.patch
+Patch1414: 1414-rdma-mlx5-allocate-ib-device-with-net-namespace-supplied-fro.patch
+Patch1415: 1415-net-mlx5e-fix-error-handling-in-rq-memory-model-registration.patch
+Patch1416: 1416-net-mlx5-fs-fix-rdma-transport-init-cleanup-flow.patch
+Patch1417: 1417-net-mlx5-check-device-memory-pointer-before-usage.patch
+Patch1418: 1418-net-mlx5-add-no-op-implementation-for-setting-tc-bw-on-rate-.patch
+Patch1419: 1419-net-mlx5-add-support-for-setting-tc-bw-on-nodes.patch
+Patch1420: 1420-net-mlx5-add-traffic-class-scheduling-support-for-vport-qos.patch
+Patch1421: 1421-net-mlx5-manage-tc-arbiter-nodes-and-implement-full-support-.patch
+Patch1422: 1422-net-mlx5-hws-remove-unused-create-dest-array-parameter.patch
+Patch1423: 1423-net-mlx5-hws-remove-incorrect-comment.patch
+Patch1424: 1424-net-mlx5-hws-export-rule-skip-logic.patch
+Patch1425: 1425-net-mlx5-hws-refactor-rule-skip-logic.patch
+Patch1426: 1426-net-mlx5-hws-create-stes-directly-from-matcher.patch
+Patch1427: 1427-net-mlx5-hws-decouple-matcher-rx-and-tx-sizes.patch
+Patch1428: 1428-net-mlx5-hws-track-matcher-sizes-individually.patch
+Patch1429: 1429-net-mlx5-hws-rearrange-to-prevent-forward-declaration.patch
+Patch1430: 1430-net-mlx5-hws-shrink-empty-matchers.patch
+Patch1431: 1431-net-mlx5-add-hws-as-secondary-steering-mode.patch
+Patch1432: 1432-net-mlx5-fix-spelling-mistake-disabliing-disabling.patch
+Patch1433: 1433-eth-mlx5-migrate-to-the-rxfh-context-ops.patch
+Patch1434: 1434-net-mlx5e-remove-unused-vlan-insertion-logic-in-tx-path.patch
+Patch1435: 1435-net-mlx5e-ct-extract-a-memcmp-from-a-spinlock-section.patch
+Patch1436: 1436-net-mlx5e-replace-recursive-vlan-push-handling-with-an-itera.patch
+Patch1437: 1437-net-mlx5-warn-when-write-combining-is-not-supported.patch
+Patch1438: 1438-net-mlx5e-rx-remove-unnecessary-rqt-redirects.patch
+Patch1439: 1439-net-mlx5-expose-hca-capability-bits-for-mkey-max-page-size.patch
+Patch1440: 1440-rdma-mlx5-fix-umr-modifying-of-mkey-page-size.patch
+Patch1441: 1441-net-mlx5-expose-disciplined-fr-counter-through-hca-capabilit.patch
+Patch1442: 1442-net-mlx5-ifc-updates-for-disabled-host-pf.patch
+Patch1443: 1443-net-mlx5e-create-destroy-pcie-congestion-event-object.patch
+Patch1444: 1444-net-mlx5e-add-device-pcie-congestion-ethtool-stats.patch
+Patch1445: 1445-net-mlx5-fix-an-is-err-vs-null-bug-in-esw-qos-move-node.patch
+Patch1446: 1446-net-mlx5-hws-enable-ipsec-hardware-offload-in-legacy-mode.patch
+Patch1447: 1447-net-mlx5e-fix-kdoc-warning-on-eswitch-h.patch
+Patch1448: 1448-net-mlx5e-properly-access-rcu-protected-qdisc-sleeping-varia.patch
+Patch1449: 1449-net-mlx5-add-ifc-bits-to-support-rss-for-ipsec-offload.patch
+Patch1450: 1450-net-mlx5-add-ifc-bits-and-enums-for-buf-ownership.patch
+Patch1451: 1451-net-mlx5-expose-cable-length-field-in-pfcc-register.patch
+Patch1452: 1452-net-mlx5e-shampo-cleanup-reservation-size-formula.patch
+Patch1453: 1453-net-mlx5e-shampo-remove-mlx5e-shampo-get-log-hd-entry-size.patch
+Patch1454: 1454-net-mlx5e-remove-duplicate-mkey-from-shampo-header.patch
+Patch1455: 1455-pci-tph-expose-pcie-tph-get-st-table-size.patch
+Patch1456: 1456-net-mlx5-expose-ifc-bits-for-tph.patch
+Patch1457: 1457-net-mlx5-add-support-for-device-steering-tag.patch
+Patch1458: 1458-net-mlx5-fix-build-wframe-larger-than-warnings.patch
+Patch1459: 1459-net-fix-typos.patch
+Patch1460: 1460-net-mlx5e-clear-read-only-port-buffer-size-in-pbmc-before-up.patch
+Patch1461: 1461-net-mlx5e-remove-skb-secpath-if-xfrm-state-is-not-found.patch
+Patch1462: 1462-net-mlx5e-fix-potential-deadlock-by-deferring-rx-timeout-rec.patch
+Patch1463: 1463-net-mlx5e-support-routed-networks-during-ipsec-macs-initiali.patch
+Patch1464: 1464-net-mlx5e-expose-tis-via-devlink-tx-reporter-diagnose.patch
+Patch1465: 1465-net-mlx5-correctly-set-gso-segs-when-lro-is-used.patch
+Patch1466: 1466-net-mlx5-hws-fix-bad-parameter-in-cq-creation.patch
+Patch1467: 1467-net-mlx5-hws-fix-simple-rules-rehash-error-flow.patch
+Patch1468: 1468-net-mlx5-hws-fix-complex-rules-rehash-error-flow.patch
+Patch1469: 1469-net-mlx5-hws-prevent-rehash-from-filling-up-the-queues.patch
+Patch1470: 1470-net-mlx5-hws-don-t-rehash-on-every-kind-of-insertion-failure.patch
+Patch1471: 1471-net-mlx5-hws-fix-table-creation-uid.patch
+Patch1472: 1472-net-mlx5-ct-use-the-correct-counter-offset.patch
+Patch1473: 1473-net-mlx5-base-ecvf-devlink-port-attrs-from-0.patch
+Patch1474: 1474-net-mlx5-remove-default-qos-group-and-attach-vports-directly.patch
+Patch1475: 1475-net-mlx5e-preserve-tc-bw-during-parent-changes.patch
+Patch1476: 1476-net-mlx5-destroy-vport-qos-element-when-no-configuration-rem.patch
+Patch1477: 1477-net-mlx5-fix-qos-reference-leak-in-vport-enable-error-path.patch
+Patch1478: 1478-net-mlx5-restore-missing-scheduling-node-cleanup-on-vport-en.patch
+Patch1479: 1479-net-mlx5e-query-fw-for-buffer-ownership.patch
+Patch1480: 1480-net-mlx5e-preserve-shared-buffer-capacity-during-headroom-up.patch
+Patch1481: 1481-net-mlx5-hws-fix-memory-leak-in-hws-pool-buddy-init-error-pa.patch
+Patch1482: 1482-net-mlx5-hws-fix-memory-leak-in-hws-action-get-shared-stc-ni.patch
+Patch1483: 1483-net-mlx5-hws-fix-uninitialized-variables-in-mlx5hws-pat-calc.patch
+Patch1484: 1484-net-mlx5-hws-fix-pattern-destruction-in-mlx5hws-pat-get-patt.patch
+Patch1485: 1485-net-mlx5-reload-auxiliary-drivers-on-fw-activate.patch
+Patch1486: 1486-net-mlx5-fix-lockdep-assertion-on-sync-reset-unload-event.patch
+Patch1487: 1487-net-mlx5-nack-sync-reset-when-sfs-are-present.patch
+Patch1488: 1488-net-mlx5-prevent-flow-steering-mode-changes-in-switchdev-mod.patch
+Patch1489: 1489-net-mlx5e-set-local-xoff-after-fw-update.patch
+Patch1490: 1490-net-mlx5e-harden-uplink-netdev-access-against-device-unbind.patch
+Patch1491: 1491-net-mlx5e-add-a-miss-level-for-ipsec-crypto-offload.patch
+Patch1492: 1492-net-mlx5-hws-ignore-flow-level-for-multi-dest-table.patch
+Patch1493: 1493-net-mlx5e-fix-missing-fec-rs-stats-for-rs-544-514-interleave.patch
+Patch1494: 1494-rdma-mlx5-support-driver-apis-pre-destroy-cq-and-post-destro.patch
+Patch1495: 1495-rdma-mlx5-add-multiple-priorities-support-to-rdma-transport-.patch
+Patch1496: 1496-rdma-mlx5-check-cap-net-raw-in-user-namespace-for-flow-creat.patch
+Patch1497: 1497-rdma-mlx5-check-cap-net-raw-in-user-namespace-for-anchor-cre.patch
+Patch1498: 1498-rdma-mlx5-check-cap-net-raw-in-user-namespace-for-devx-creat.patch
+Patch1499: 1499-rdma-mlx5-align-mkc-page-size-capability-check-to-prm.patch
+Patch1500: 1500-rdma-mlx5-optimize-dmabuf-mkey-page-size.patch
+Patch1501: 1501-rdma-mlx5-remove-redundant-check-on-err-on-return-expression.patch
+Patch1502: 1502-rdma-mlx5-fix-returned-type-from-mlx5r-umr-zap-mkey.patch
+Patch1503: 1503-rdma-mlx5-fix-incorrect-mkey-masking.patch
+Patch1504: 1504-rdma-mlx5-add-dmah-object-support.patch
+Patch1505: 1505-rdma-mlx5-add-dmah-support-for-reg-user-mr-reg-user-dmabuf-m.patch
+Patch1506: 1506-rdma-mlx5-refactor-optional-counters-steering-code.patch
+Patch1507: 1507-ib-mlx5-fix-obj-type-mismatch-for-srq-event-subscriptions.patch
+Patch1508: 1508-net-mlx5-don-t-use-pk-through-tracepoints.patch
+Patch1509: 1509-net-mlx5-mlx5-ifc-add-hardware-definitions-needed-for-adjace.patch
+Patch1510: 1510-net-mlx5-e-switch-cache-vport-vhca-id-on-first-cap-query.patch
+Patch1511: 1511-net-mlx5-e-switch-set-query-hca-cap-via-vhca-id.patch
+Patch1512: 1512-rdma-net-mlx5-export-mlx5-vport-get-vhca-id.patch
+Patch1513: 1513-net-mlx5-query-to-see-if-host-pf-is-disabled.patch
+Patch1514: 1514-net-mlx5-support-disabling-host-pfs.patch
+Patch1515: 1515-net-mlx5e-set-default-burst-period-for-tx-and-rx-reporters.patch
+Patch1516: 1516-eth-mlx5-remove-kconfig-co-dependency-with-vxlan.patch
+Patch1517: 1517-net-mlx5-fs-convert-vport-acls-root-namespaces-to-xarray.patch
+Patch1518: 1518-net-mlx5-e-switch-move-vport-acls-root-namespaces-creation-t.patch
+Patch1519: 1519-net-mlx5-e-switch-add-support-for-adjacent-functions-vports-.patch
+Patch1520: 1520-net-mlx5-e-switch-create-acls-root-namespace-for-adjacent-vp.patch
+Patch1521: 1521-net-mlx5-e-switch-register-representors-for-adjacent-vports.patch
+Patch1522: 1522-net-mlx5-e-switch-set-representor-attributes-for-adjacent-vf.patch
+Patch1523: 1523-net-mlx5-dr-hws-use-the-cached-vhca-id-for-this-device.patch
+Patch1524: 1524-net-mlx5-add-psp-capabilities-structures-and-bits.patch
+Patch1525: 1525-net-mlx5-extract-mtctr-register-read-logic-into-helper-funct.patch
+Patch1526: 1526-net-mlx5-support-getcyclesx-and-getcrosscycles.patch
+Patch1527: 1527-net-mlx5-add-rs-fec-histogram-infrastructure.patch
+Patch1528: 1528-net-mlx5-implement-cqe-compress-type-via-devlink-params.patch
+Patch1529: 1529-net-mlx5-implement-devlink-enable-sriov-parameter.patch
+Patch1530: 1530-net-mlx5-implement-devlink-total-vfs-parameter.patch
+Patch1531: 1531-net-mlx5e-make-pcie-congestion-event-thresholds-configurable.patch
+Patch1532: 1532-net-mlx5e-add-stale-counter-for-pcie-congestion-events.patch
+Patch1533: 1533-net-mlx5-fix-typo-in-pci-irq-c-comment.patch
+Patch1534: 1534-net-mlx5-refactor-devcom-to-use-match-attributes.patch
+Patch1535: 1535-net-mlx5-lag-move-devcom-registration-to-lag-layer.patch
+Patch1536: 1536-net-mlx5-add-net-namespace-support-to-devcom.patch
+Patch1537: 1537-net-mlx5-lag-add-net-namespace-support.patch
+Patch1538: 1538-net-mlx5-remove-vlan-insertion-fields-from-wqe-ether-segment.patch
+Patch1539: 1539-net-mlx5-refactor-macsec-wqe-metadata-shifts.patch
+Patch1540: 1540-net-mlx5e-prevent-wqe-metadata-conflicts-between-timestampin.patch
+Patch1541: 1541-net-mlx5-fix-typo-of-mlx5-eq-doorbel-offset.patch
+Patch1542: 1542-net-mlx5-remove-unused-offset-field-from-mlx5-sq-bfreg.patch
+Patch1543: 1543-net-mlx5e-remove-unused-xsk-param-of-mlx5e-build-xdpsq-param.patch
+Patch1544: 1544-net-mlx5-store-the-global-doorbell-in-mlx5-priv.patch
+Patch1545: 1545-net-mlx5e-prepare-for-using-multiple-tx-doorbells.patch
+Patch1546: 1546-net-mlx5e-prepare-for-using-different-cq-doorbells.patch
+Patch1547: 1547-net-mlx5e-use-multiple-tx-doorbells.patch
+Patch1548: 1548-net-mlx5e-use-multiple-cq-doorbells.patch
+Patch1549: 1549-net-mlx5e-use-the-num-doorbells-devlink-param.patch
+Patch1550: 1550-net-mlx5e-use-unsigned-for-mlx5e-get-max-num-channels.patch
+Patch1551: 1551-net-mlx5-add-uar-access-and-odp-page-fault-counters.patch
+Patch1552: 1552-net-mlx5-change-ttc-rules-to-match-on-undecrypted-esp-packet.patch
+Patch1553: 1553-net-mlx5e-recirculate-decrypted-packets-into-ttc-table.patch
+Patch1554: 1554-net-mlx5e-add-flow-groups-for-the-packets-decrypted-by-crypt.patch
+Patch1555: 1555-net-mlx5e-add-flow-rules-for-the-decrypted-esp-packets.patch
+Patch1556: 1556-net-mlx5-remove-dead-code-from-total-vfs-setter.patch
+Patch1557: 1557-net-mlx5-use-pe-format-specifier-for-error-pointers.patch
+Patch1558: 1558-net-mlx5-expose-uar-access-and-odp-page-fault-counters.patch
+Patch1559: 1559-net-mlx5-add-ifc-bit-for-tir-sq-order-capability.patch
+Patch1560: 1560-net-mlx5-ifc-add-balance-id-and-lag-per-mp-group-bits.patch
+Patch1561: 1561-net-mlx5-stop-polling-for-command-response-if-interface-goes.patch
+Patch1562: 1562-net-mlx5-pagealloc-fix-reclaim-race-during-command-interface.patch
+Patch1563: 1563-net-mlx5-fw-reset-add-reset-timeout-work.patch
+Patch1564: 1564-net-mlx5-improve-write-combining-test-reliability-for-arm64-.patch
+Patch1565: 1565-net-mlx5-hws-generalize-complex-matchers.patch
+Patch1566: 1566-net-mlx5e-prevent-entering-switchdev-mode-with-inconsistent-.patch
+Patch1567: 1567-net-mlx5-improve-qos-error-messages-with-actual-depth-values.patch
+Patch1568: 1568-net-mlx5e-remove-unused-mdev-param-from-rss-indir-init.patch
+Patch1569: 1569-net-mlx5e-introduce-mlx5e-rss-init-params.patch
+Patch1570: 1570-net-mlx5e-introduce-mlx5e-rss-params-for-rss-configuration.patch
+Patch1571: 1571-net-mlx5e-use-extack-in-set-rxfh-callback.patch
+Patch1572: 1572-net-mlx5-prevent-tunnel-mode-conflicts-between-fdb-and-nic-i.patch
+Patch1573: 1573-net-mlx5e-prevent-tunnel-reformat-when-tunnel-mode-not-allow.patch
+Patch1574: 1574-net-mlx5-fix-pre-2-40-binutils-assembler-error.patch
+Patch1575: 1575-net-mlx5e-return-1-instead-of-0-in-invalid-case-in-mlx5e-mpw.patch
+Patch1576: 1576-net-mlx5e-rx-fix-generating-skb-from-non-linear-xdp-buff-for.patch
+Patch1577: 1577-net-mlx5e-rx-fix-generating-skb-from-non-linear-xdp-buff-for.patch
+Patch1578: 1578-net-mlx5-add-pphcr-to-pcam-supported-registers-mask.patch
+Patch1579: 1579-net-mlx5-refactor-devcom-to-return-null-on-failure.patch
+Patch1580: 1580-net-mlx5-fix-ipsec-cleanup-over-mpv-device.patch
+Patch1581: 1581-net-mlx5-don-t-zero-user-count-when-destroying-fdb-tables.patch
+Patch1582: 1582-net-mlx5e-fix-return-value-in-case-of-module-eeprom-read-err.patch
+Patch1583: 1583-net-mlx5e-fix-missing-error-assignment-in-mlx5e-xfrm-add-sta.patch
+Patch1584: 1584-net-mlx5e-trim-the-length-of-the-num-doorbell-error.patch
+Patch1585: 1585-net-mlx5e-fix-maxrate-wraparound-in-threshold-between-units.patch
+Patch1586: 1586-net-mlx5e-fix-wraparound-in-rate-limiting-for-values-above-2.patch
+Patch1587: 1587-net-mlx5e-fix-potentially-misleading-debug-message.patch
+Patch1588: 1588-mlx5-fix-default-values-in-create-cq.patch
+Patch1589: 1589-net-mlx5-clean-up-only-new-irq-glue-on-request-irq-failure.patch
+Patch1590: 1590-net-mlx5e-fix-validation-logic-in-rate-limiting.patch
+Patch1591: 1591-rdma-mlx5-enable-data-direct-with-relaxed-ordering.patch
+Patch1592: 1592-rdma-mlx5-better-estimate-max-qp-wr-to-reflect-wqe-count.patch
+Patch1593: 1593-rdma-mlx5-fix-vport-loopback-forcing-for-mpv-device.patch
+Patch1594: 1594-rdma-mlx5-fix-page-size-bitmap-calculation-for-ksm-mode.patch
+Patch1595: 1595-rdma-use-pe-format-specifier-for-error-pointers.patch
+Patch1596: 1596-rdma-net-mlx5-query-vports-mac-address-from-device.patch
+Patch1597: 1597-net-mlx5-use-common-mlx5-same-hw-devs-function.patch
+Patch1598: 1598-net-mlx5-add-software-system-image-guid-infrastructure.patch
+Patch1599: 1599-net-mlx5-refactor-ptp-clock-devcom-pairing.patch
+Patch1600: 1600-net-mlx5-refactor-hca-cap-2-setting.patch
+Patch1601: 1601-net-mlx5-add-balance-id-support-for-lag-multiplane-groups.patch
+Patch1602: 1602-net-mlx5e-remove-redundant-tstamp-pointer-from-channel-struc.patch
+Patch1603: 1603-net-mlx5e-remove-unnecessary-tstamp-local-variable-in-mlx5i-.patch
+Patch1604: 1604-net-mlx5e-rename-hwstamp-functions-to-hwtstamp.patch
+Patch1605: 1605-net-mlx5e-rename-timestamp-fields-to-hwtstamp-config.patch
+Patch1606: 1606-net-mlx5e-convert-to-new-hwtstamp-get-set-interface.patch
+Patch1607: 1607-net-mlx5e-enhance-function-structures-for-self-loopback-prev.patch
+Patch1608: 1608-net-mlx5e-use-tir-api-in-mlx5e-modify-tirs-lb.patch
+Patch1609: 1609-net-mlx5e-allow-setting-self-loopback-prevention-bits-on-tir.patch
+Patch1610: 1610-net-mlx5-ipoib-set-self-loopback-prevention-in-tir-init.patch
+Patch1611: 1611-net-mlx5e-do-not-re-apply-tir-loopback-configuration-if-not-.patch
+Patch1612: 1612-net-mlx5e-pass-old-channels-as-argument-to-mlx5e-switch-priv.patch
+Patch1613: 1613-net-mlx5e-defer-channels-closure-to-reduce-interface-down-ti.patch
+Patch1614: 1614-pci-tph-expose-pcie-tph-get-st-table-loc.patch
+Patch1615: 1615-net-mlx5-add-direct-st-mode-support-for-rdma.patch
+Patch1616: 1616-net-mlx5-add-other-eswitch-hw-capabilities.patch
+Patch1617: 1617-net-mlx5-fs-add-other-eswitch-support-for-steering-tables.patch
+Patch1618: 1618-net-mlx5-fs-set-non-default-device-per-namespace.patch
+Patch1619: 1619-net-mlx5-mpfs-add-support-for-dynamic-enable-disable.patch
+Patch1620: 1620-net-mlx5-e-switch-support-eswitch-inactive-mode.patch
+Patch1621: 1621-net-mlx5-expose-definition-for-1600gbps-link-mode.patch
+Patch1622: 1622-mlx5-extract-grxrings-from-get-rxnfc.patch
+Patch1623: 1623-net-mlx5-refactor-eeprom-query-error-handling-to-return-stat.patch
+Patch1624: 1624-net-mlx5e-recover-sq-on-excessive-ptp-tx-timestamp-delta.patch
+Patch1625: 1625-net-mlx5-remove-redundant-bw-share-minimal-value-assignment.patch
+Patch1626: 1626-net-mlx5-abort-new-commands-if-all-command-slots-are-stalled.patch
+Patch1627: 1627-net-mlx5-use-eopnotsupp-instead-of-enotsupp.patch
+Patch1628: 1628-net-mlx5-initialize-events-outside-devlink-lock.patch
+Patch1629: 1629-net-mlx5-move-the-esw-mode-notifier-chain-outside-the-devlin.patch
+Patch1630: 1630-net-mlx5-move-the-vhca-event-notifier-outside-of-the-devlink.patch
+Patch1631: 1631-net-mlx5-move-the-sf-hw-table-notifier-outside-the-devlink-l.patch
+Patch1632: 1632-net-mlx5-move-the-sf-table-notifiers-outside-the-devlink-loc.patch
+Patch1633: 1633-net-mlx5-move-sf-dev-table-notifier-registration-outside-the.patch
+Patch1634: 1634-net-mlx5e-use-u64-instead-of-u64-in-ieee-setmaxrate.patch
+Patch1635: 1635-net-mlx5e-rename-upper-limit-mbps-to-upper-limit-100mbps.patch
+Patch1636: 1636-net-mlx5e-use-u8-max-instead-of-hard-coded-magic-number.patch
+Patch1637: 1637-net-mlx5e-use-standard-unit-definitions-for-bandwidth-conver.patch
+Patch1638: 1638-net-mlx5e-update-xdp-features-in-switch-channels.patch
+Patch1639: 1639-net-mlx5e-support-xdp-target-xmit-with-dummy-program.patch
+Patch1640: 1640-net-mlx5-make-enable-mpesw-idempotent.patch
+Patch1641: 1641-net-mlx5-fix-double-unregister-of-hca-ports-component.patch
+Patch1642: 1642-net-mlx5-fw-reset-clear-reset-requested-on-drain-fw-reset.patch
+Patch1643: 1643-net-mlx5-drain-firmware-reset-in-shutdown-callback.patch
+Patch1644: 1644-net-mlx5-fw-tracer-validate-format-string-parameters.patch
+Patch1645: 1645-net-mlx5-fw-tracer-handle-escaped-percent-properly.patch
+Patch1646: 1646-net-mlx5-serialize-firmware-reset-with-devlink.patch
+Patch1647: 1647-net-mlx5e-use-ip6-dst-lookup-instead-of-ipv6-dst-lookup-flow.patch
+Patch1648: 1648-net-mlx5e-trigger-neighbor-resolution-for-unresolved-destina.patch
+Patch1649: 1649-net-mlx5e-do-not-update-bql-of-old-txqs-during-channel-recon.patch
+Patch1650: 1650-net-mlx5-lag-multipath-give-priority-for-routes-with-smaller.patch
+Patch1651: 1651-net-mlx5e-fix-null-pointer-dereference-in-ioctl-module-eepro.patch
+Patch1652: 1652-net-mlx5e-don-t-print-error-message-due-to-invalid-module.patch
+Patch1653: 1653-net-mlx5e-fix-crash-on-profile-change-rollback-failure.patch
+Patch1654: 1654-net-mlx5e-don-t-store-mlx5e-priv-in-mlx5e-dev-devlink-priv.patch
+Patch1655: 1655-net-mlx5e-pass-netdev-to-mlx5e-destroy-netdev-instead-of-pri.patch
+Patch1656: 1656-net-mlx5e-restore-destroying-state-bit-after-profile-cleanup.patch
+Patch1657: 1657-net-mlx5-fix-memory-leak-in-esw-acl-ingress-lgcy-setup.patch
+Patch1658: 1658-net-mlx5-fix-unbinding-uplink-netdev-in-switchdev-mode.patch
+Patch1659: 1659-net-mlx5e-tc-delete-flows-only-for-existing-peers.patch
+Patch1660: 1660-net-mlx5e-account-for-netdev-stats-in-ndo-get-stats64.patch
+Patch1661: 1661-net-mlx5-fix-return-type-mismatch-in-mlx5-esw-vport-vhca-id.patch
+Patch1662: 1662-net-mlx5-fs-fix-inverted-cap-check-in-tx-flow-table-root-dis.patch
+Patch1663: 1663-net-mlx5-fix-vhca-id-access-call-trace-use-before-alloc.patch
+Patch1664: 1664-net-mlx5e-skip-esn-replay-window-setup-for-ipsec-crypto-offl.patch
+Patch1665: 1665-rdma-mlx5-change-default-device-for-lag-slaves-in-rdma-trans.patch
+Patch1666: 1666-rdma-mlx5-add-other-eswitch-support-for-devx-destruction.patch
+Patch1667: 1667-rdma-mlx5-refactor-get-prio-function.patch
+Patch1668: 1668-rdma-mlx5-add-other-eswitch-support-to-userspace-tables.patch
+Patch1669: 1669-ib-mlx5-reduce-imr-ksm-size-when-5-level-paging-is-enabled.patch
+Patch1670: 1670-net-mlx5e-shampo-fix-header-mapping-for-64k-pages.patch
+Patch1671: 1671-net-mlx5e-shampo-fix-skb-size-check-for-64k-pages.patch
+Patch1672: 1672-net-mlx5e-shampo-fix-header-formulas-for-higher-mtus-and-64k.patch
+Patch1673: 1673-net-mlx5-qos-restrict-rtnl-area-to-avoid-a-lock-cycle.patch
+Patch1674: 1674-net-mlx5-fix-peer-miss-rules-host-disabled-checks.patch
+Patch1675: 1675-net-mlx5e-rx-fix-xdp-multi-buf-frag-counting-for-legacy-rq.patch
+Patch1676: 1676-net-mlx5-fix-crash-when-moving-to-switchdev-mode.patch
+Patch1677: 1677-net-mlx5-fix-hca-caps-leak-on-notifier-init-failure.patch
+Patch1678: 1678-net-mlx5e-rx-fix-xdp-multi-buf-frag-counting-for-striding-rq.patch
+Patch1679: 1679-iavf-fix-vlan-filter-lost-on-add-delete-race.patch
+Patch1680: 1680-iavf-rename-iavf-vlan-is-new-to-iavf-vlan-adding.patch
+Patch1681: 1681-iavf-stop-removing-vlan-filters-from-pf-on-interface-down.patch
+Patch1682: 1682-iavf-wait-for-pf-confirmation-before-removing-vlan-filters.patch
+Patch1683: 1683-iavf-add-virtchnl-op-add-vlan-to-success-completion-handler.patch
+Patch1684: 1684-netfilter-skip-recording-stale-or-retransmitted-init.patch
+Patch1685: 1685-sctp-discard-stale-init-after-handshake-completion.patch
+Patch1686: 1686-rdma-vmw-pvrdma-fix-double-free-on-pvrdma-alloc-ucontext-err.patch
+Patch1687: 1687-sched-fair-skip-sched-balance-running-cmpxchg-when-balance-i.patch
+Patch1688: 1688-sched-fair-have-sd-serialize-affect-newidle-balancing.patch
+Patch1689: 1689-powerpc-64-force-inlining-of-prevent-user-access-and-set-kua.patch
+Patch1690: 1690-compiler-gcc-h-remove-ancient-workaround-for-gcc-pr-58670.patch
+Patch1691: 1691-work-around-gcc-bugs-with-asm-goto-with-outputs.patch
+Patch1692: 1692-init-kconfig-fix-cc-has-asm-goto-tied-output-test-with-dash.patch
+Patch1693: 1693-update-workarounds-for-gcc-asm-goto-issue.patch
+Patch1694: 1694-init-kconfig-remove-config-gcc-asm-goto-output-workaround.patch
+Patch1695: 1695-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2145,6 +2529,390 @@ ApplyPatch 1308-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.pat
 ApplyPatch 1309-scsi-qla2xxx-completely-fix-fcport-double-free.patch
 ApplyPatch 1310-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
 ApplyPatch 1311-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
+ApplyPatch 1312-kvm-arm64-vgic-its-drop-translation-cache-ref-only-for-eras.patch
+ApplyPatch 1313-netfilter-flowtable-strictly-check-for-maximum-number-of-act.patch
+ApplyPatch 1314-drm-amd-display-do-not-skip-unrelated-mode-changes-in-dsc-va.patch
+ApplyPatch 1315-ipv6-icmp-clear-skb2-cb-in-ip6-err-gen-icmpv6-unreach.patch
+ApplyPatch 1316-alsa-aloop-fix-peer-runtime-uaf-during-format-change-stop.patch
+ApplyPatch 1317-rdma-iwcm-fix-workqueue-list-corruption-by-removing-work-lis.patch
+ApplyPatch 1318-binder-use-cred-instead-of-task-for-selinux-checks.patch
+ApplyPatch 1319-locks-fix-toctou-race-when-granting-write-lease.patch
+ApplyPatch 1320-fs-use-a-helper-for-opening-kernel-internal-files.patch
+ApplyPatch 1321-fs-move-kmem-cache-zalloc-into-alloc-empty-file-helpers.patch
+ApplyPatch 1322-fs-use-backing-file-container-for-internal-files-with-fake-f.patch
+ApplyPatch 1323-ovl-enable-fsnotify-events-on-underlying-real-files.patch
+ApplyPatch 1324-fs-move-cleanup-from-init-file-into-its-callers.patch
+ApplyPatch 1325-lsm-constify-the-file-parameter-in-security-binder-transfer-.patch
+ApplyPatch 1326-cachefiles-use-kiocb-start-end-write-helpers.patch
+ApplyPatch 1327-fs-fix-kernel-doc-warnings.patch
+ApplyPatch 1328-fs-rename-mnt-want-drop-write-helpers.patch
+ApplyPatch 1329-fs-get-mnt-writers-count-for-an-open-backing-file-s-real-pat.patch
+ApplyPatch 1330-fs-create-helper-file-user-path-for-user-displayed-mapped-fi.patch
+ApplyPatch 1331-fs-store-real-path-instead-of-fake-path-in-backing-file-f-pa.patch
+ApplyPatch 1332-fs-prepare-for-stackable-filesystems-backing-file-helpers.patch
+ApplyPatch 1333-fs-factor-out-backing-file-read-write-iter-helpers.patch
+ApplyPatch 1334-fs-factor-out-backing-file-splice-read-write-helpers.patch
+ApplyPatch 1335-fs-factor-out-backing-file-mmap-helper.patch
+ApplyPatch 1336-lsm-add-helper-for-blob-allocations.patch
+ApplyPatch 1337-ovl-fix-nested-backing-file-paths.patch
+ApplyPatch 1338-fs-constify-file-ptr-in-backing-file-accessor-helpers.patch
+ApplyPatch 1339-ovl-remove-unneeded-non-const-conversion.patch
+ApplyPatch 1340-ovl-remove-redundant-iocb-dio-caller-comp-clearing.patch
+ApplyPatch 1341-perf-core-fix-mmap-event-path-names-with-backing-files.patch
+ApplyPatch 1342-fs-prepare-for-adding-lsm-blob-to-backing-file.patch
+ApplyPatch 1343-lsm-add-backing-file-lsm-hooks.patch
+ApplyPatch 1344-selinux-fix-overlayfs-mmap-and-mprotect-access-checks.patch
+ApplyPatch 1345-selinux-rhel-only-hotfix-for-execmem-regression.patch
+ApplyPatch 1346-net-mlx5-hws-fix-matcher-action-template-attach.patch
+ApplyPatch 1347-net-mlx5-hws-remove-unused-element-array.patch
+ApplyPatch 1348-net-mlx5-hws-make-pool-single-resource.patch
+ApplyPatch 1349-net-mlx5-hws-refactor-pool-implementation.patch
+ApplyPatch 1350-net-mlx5-hws-cleanup-after-pool-refactoring.patch
+ApplyPatch 1351-net-mlx5-hws-add-fullness-tracking-to-pool.patch
+ApplyPatch 1352-net-mlx5-hws-fix-pool-size-optimization.patch
+ApplyPatch 1353-net-mlx5-hws-implement-action-ste-pool.patch
+ApplyPatch 1354-net-mlx5-hws-use-the-new-action-ste-pool.patch
+ApplyPatch 1355-net-mlx5-hws-cleanup-matcher-action-ste-table.patch
+ApplyPatch 1356-net-mlx5-hws-free-unused-action-ste-tables.patch
+ApplyPatch 1357-net-mlx5-hws-export-action-ste-tables-to-debugfs.patch
+ApplyPatch 1358-net-mlx5e-ethtool-fix-formatting-of-ptp-rq0-csum-complete-ta.patch
+ApplyPatch 1359-net-mlx5-fix-spelling-mistakes-in-mlx5-core-dbg-message-and-.patch
+ApplyPatch 1360-net-mlx5-hws-fix-ip-version-decision.patch
+ApplyPatch 1361-net-mlx5-hws-harden-ip-version-definer-checks.patch
+ApplyPatch 1362-net-mlx5-hws-disallow-matcher-ip-version-mixing.patch
+ApplyPatch 1363-rdma-mlx5-fix-error-flow-upon-firmware-failure-for-rq-destru.patch
+ApplyPatch 1364-net-mlx5-support-software-tx-timestamp.patch
+ApplyPatch 1365-net-mlx5-hws-expose-function-mlx5hws-table-ft-set-next-ft-in.patch
+ApplyPatch 1366-net-mlx5-hws-add-definer-function-to-get-field-name-str.patch
+ApplyPatch 1367-net-mlx5-hws-expose-polling-function-in-header-file.patch
+ApplyPatch 1368-net-mlx5-hws-introduce-isolated-matchers.patch
+ApplyPatch 1369-net-mlx5-hws-support-complex-matchers.patch
+ApplyPatch 1370-net-mlx5-hws-force-rehash-when-rule-insertion-failed.patch
+ApplyPatch 1371-net-mlx5-hws-fix-counting-of-rules-in-the-matcher.patch
+ApplyPatch 1372-net-mlx5-hws-fix-redundant-extension-of-action-templates.patch
+ApplyPatch 1373-net-mlx5-hws-rework-rehash-loop.patch
+ApplyPatch 1374-net-mlx5-hws-dump-bad-completion-details.patch
+ApplyPatch 1375-net-mlx5-use-to-delayed-work.patch
+ApplyPatch 1376-net-mlx5-sws-fix-reformat-id-error-handling.patch
+ApplyPatch 1377-net-mlx5-hws-register-reformat-actions-with-fw.patch
+ApplyPatch 1378-net-mlx5-hws-fix-typo-nope-to-nop.patch
+ApplyPatch 1379-net-mlx5-hws-handle-modify-header-actions-dependency.patch
+ApplyPatch 1380-net-mlx5-core-add-error-handling-inmlx5-query-nic-vport-qkey.patch
+ApplyPatch 1381-net-mlx5e-allow-setting-mac-address-of-representors.patch
+ApplyPatch 1382-net-mlx5-add-error-handling-in-mlx5-query-nic-vport-node-gui.patch
+ApplyPatch 1383-net-mlx5-hws-fix-an-error-code-in-mlx5hws-bwc-rule-create-co.patch
+ApplyPatch 1384-net-mlx5-ensure-fw-pages-are-always-allocated-on-same-numa.patch
+ApplyPatch 1385-net-mlx5-fix-return-value-when-searching-for-existing-flow-g.patch
+ApplyPatch 1386-net-mlx5-hws-init-mutex-on-the-correct-path.patch
+ApplyPatch 1387-net-mlx5-hws-fix-missing-ip-version-handling-in-definer.patch
+ApplyPatch 1388-net-mlx5-hws-make-sure-the-uplink-is-the-last-destination.patch
+ApplyPatch 1389-net-mlx5e-fix-leak-of-geneve-tlv-option-object.patch
+ApplyPatch 1390-net-mlx5-hws-add-error-checking-to-hws-bwc-rule-complex-hash.patch
+ApplyPatch 1391-net-mlx5e-fix-race-between-dim-disable-and-net-dim.patch
+ApplyPatch 1392-net-mlx5e-add-new-prio-for-promiscuous-mode.patch
+ApplyPatch 1393-net-mlx5-correctly-set-gso-size-when-lro-is-used.patch
+ApplyPatch 1394-net-mlx5-fix-memory-leak-in-cmd-exec.patch
+ApplyPatch 1395-net-mlx5-e-switch-fix-peer-miss-rules-to-use-peer-eswitch.patch
+ApplyPatch 1396-rdma-mlx5-convert-timeouts-to-secs-to-jiffies.patch
+ApplyPatch 1397-rdma-mlx5-remove-the-redundant-mlx5-ib-stage-uar-stage.patch
+ApplyPatch 1398-rdma-mlx5-add-support-for-200gbps-per-lane-speeds.patch
+ApplyPatch 1399-rdma-mlx5-avoid-flexible-array-warning.patch
+ApplyPatch 1400-rdma-mlx5-initialize-obj-event-obj-sub-list-before-xa-insert.patch
+ApplyPatch 1401-rdma-mlx5-fix-hw-counters-query-for-non-representor-devices.patch
+ApplyPatch 1402-rdma-mlx5-fix-cc-counters-query-for-mpv.patch
+ApplyPatch 1403-rdma-mlx5-fix-vport-loopback-for-mpv-device.patch
+ApplyPatch 1404-net-mlx5-expose-serial-numbers-in-devlink-info.patch
+ApplyPatch 1405-net-mlx5e-shampo-reorganize-mlx5-rq-shampo-alloc.patch
+ApplyPatch 1406-net-mlx5e-shampo-remove-redundant-params.patch
+ApplyPatch 1407-net-mlx5e-shampo-improve-hw-gro-capability-checking.patch
+ApplyPatch 1408-net-mlx5e-shampo-separate-pool-for-headers.patch
+ApplyPatch 1409-net-mlx5e-implement-queue-mgmt-ops-and-single-channel-swap.patch
+ApplyPatch 1410-net-mlx5e-support-ethtool-tcp-data-split-settings.patch
+ApplyPatch 1411-net-mlx5-fs-add-multiple-prios-to-rdma-transport-steering-do.patch
+ApplyPatch 1412-net-mlx5-small-refactor-for-general-object-capabilities.patch
+ApplyPatch 1413-net-mlx5-add-ifc-bits-for-pcie-congestion-event-object.patch
+ApplyPatch 1414-rdma-mlx5-allocate-ib-device-with-net-namespace-supplied-fro.patch
+ApplyPatch 1415-net-mlx5e-fix-error-handling-in-rq-memory-model-registration.patch
+ApplyPatch 1416-net-mlx5-fs-fix-rdma-transport-init-cleanup-flow.patch
+ApplyPatch 1417-net-mlx5-check-device-memory-pointer-before-usage.patch
+ApplyPatch 1418-net-mlx5-add-no-op-implementation-for-setting-tc-bw-on-rate-.patch
+ApplyPatch 1419-net-mlx5-add-support-for-setting-tc-bw-on-nodes.patch
+ApplyPatch 1420-net-mlx5-add-traffic-class-scheduling-support-for-vport-qos.patch
+ApplyPatch 1421-net-mlx5-manage-tc-arbiter-nodes-and-implement-full-support-.patch
+ApplyPatch 1422-net-mlx5-hws-remove-unused-create-dest-array-parameter.patch
+ApplyPatch 1423-net-mlx5-hws-remove-incorrect-comment.patch
+ApplyPatch 1424-net-mlx5-hws-export-rule-skip-logic.patch
+ApplyPatch 1425-net-mlx5-hws-refactor-rule-skip-logic.patch
+ApplyPatch 1426-net-mlx5-hws-create-stes-directly-from-matcher.patch
+ApplyPatch 1427-net-mlx5-hws-decouple-matcher-rx-and-tx-sizes.patch
+ApplyPatch 1428-net-mlx5-hws-track-matcher-sizes-individually.patch
+ApplyPatch 1429-net-mlx5-hws-rearrange-to-prevent-forward-declaration.patch
+ApplyPatch 1430-net-mlx5-hws-shrink-empty-matchers.patch
+ApplyPatch 1431-net-mlx5-add-hws-as-secondary-steering-mode.patch
+ApplyPatch 1432-net-mlx5-fix-spelling-mistake-disabliing-disabling.patch
+ApplyPatch 1433-eth-mlx5-migrate-to-the-rxfh-context-ops.patch
+ApplyPatch 1434-net-mlx5e-remove-unused-vlan-insertion-logic-in-tx-path.patch
+ApplyPatch 1435-net-mlx5e-ct-extract-a-memcmp-from-a-spinlock-section.patch
+ApplyPatch 1436-net-mlx5e-replace-recursive-vlan-push-handling-with-an-itera.patch
+ApplyPatch 1437-net-mlx5-warn-when-write-combining-is-not-supported.patch
+ApplyPatch 1438-net-mlx5e-rx-remove-unnecessary-rqt-redirects.patch
+ApplyPatch 1439-net-mlx5-expose-hca-capability-bits-for-mkey-max-page-size.patch
+ApplyPatch 1440-rdma-mlx5-fix-umr-modifying-of-mkey-page-size.patch
+ApplyPatch 1441-net-mlx5-expose-disciplined-fr-counter-through-hca-capabilit.patch
+ApplyPatch 1442-net-mlx5-ifc-updates-for-disabled-host-pf.patch
+ApplyPatch 1443-net-mlx5e-create-destroy-pcie-congestion-event-object.patch
+ApplyPatch 1444-net-mlx5e-add-device-pcie-congestion-ethtool-stats.patch
+ApplyPatch 1445-net-mlx5-fix-an-is-err-vs-null-bug-in-esw-qos-move-node.patch
+ApplyPatch 1446-net-mlx5-hws-enable-ipsec-hardware-offload-in-legacy-mode.patch
+ApplyPatch 1447-net-mlx5e-fix-kdoc-warning-on-eswitch-h.patch
+ApplyPatch 1448-net-mlx5e-properly-access-rcu-protected-qdisc-sleeping-varia.patch
+ApplyPatch 1449-net-mlx5-add-ifc-bits-to-support-rss-for-ipsec-offload.patch
+ApplyPatch 1450-net-mlx5-add-ifc-bits-and-enums-for-buf-ownership.patch
+ApplyPatch 1451-net-mlx5-expose-cable-length-field-in-pfcc-register.patch
+ApplyPatch 1452-net-mlx5e-shampo-cleanup-reservation-size-formula.patch
+ApplyPatch 1453-net-mlx5e-shampo-remove-mlx5e-shampo-get-log-hd-entry-size.patch
+ApplyPatch 1454-net-mlx5e-remove-duplicate-mkey-from-shampo-header.patch
+ApplyPatch 1455-pci-tph-expose-pcie-tph-get-st-table-size.patch
+ApplyPatch 1456-net-mlx5-expose-ifc-bits-for-tph.patch
+ApplyPatch 1457-net-mlx5-add-support-for-device-steering-tag.patch
+ApplyPatch 1458-net-mlx5-fix-build-wframe-larger-than-warnings.patch
+ApplyPatch 1459-net-fix-typos.patch
+ApplyPatch 1460-net-mlx5e-clear-read-only-port-buffer-size-in-pbmc-before-up.patch
+ApplyPatch 1461-net-mlx5e-remove-skb-secpath-if-xfrm-state-is-not-found.patch
+ApplyPatch 1462-net-mlx5e-fix-potential-deadlock-by-deferring-rx-timeout-rec.patch
+ApplyPatch 1463-net-mlx5e-support-routed-networks-during-ipsec-macs-initiali.patch
+ApplyPatch 1464-net-mlx5e-expose-tis-via-devlink-tx-reporter-diagnose.patch
+ApplyPatch 1465-net-mlx5-correctly-set-gso-segs-when-lro-is-used.patch
+ApplyPatch 1466-net-mlx5-hws-fix-bad-parameter-in-cq-creation.patch
+ApplyPatch 1467-net-mlx5-hws-fix-simple-rules-rehash-error-flow.patch
+ApplyPatch 1468-net-mlx5-hws-fix-complex-rules-rehash-error-flow.patch
+ApplyPatch 1469-net-mlx5-hws-prevent-rehash-from-filling-up-the-queues.patch
+ApplyPatch 1470-net-mlx5-hws-don-t-rehash-on-every-kind-of-insertion-failure.patch
+ApplyPatch 1471-net-mlx5-hws-fix-table-creation-uid.patch
+ApplyPatch 1472-net-mlx5-ct-use-the-correct-counter-offset.patch
+ApplyPatch 1473-net-mlx5-base-ecvf-devlink-port-attrs-from-0.patch
+ApplyPatch 1474-net-mlx5-remove-default-qos-group-and-attach-vports-directly.patch
+ApplyPatch 1475-net-mlx5e-preserve-tc-bw-during-parent-changes.patch
+ApplyPatch 1476-net-mlx5-destroy-vport-qos-element-when-no-configuration-rem.patch
+ApplyPatch 1477-net-mlx5-fix-qos-reference-leak-in-vport-enable-error-path.patch
+ApplyPatch 1478-net-mlx5-restore-missing-scheduling-node-cleanup-on-vport-en.patch
+ApplyPatch 1479-net-mlx5e-query-fw-for-buffer-ownership.patch
+ApplyPatch 1480-net-mlx5e-preserve-shared-buffer-capacity-during-headroom-up.patch
+ApplyPatch 1481-net-mlx5-hws-fix-memory-leak-in-hws-pool-buddy-init-error-pa.patch
+ApplyPatch 1482-net-mlx5-hws-fix-memory-leak-in-hws-action-get-shared-stc-ni.patch
+ApplyPatch 1483-net-mlx5-hws-fix-uninitialized-variables-in-mlx5hws-pat-calc.patch
+ApplyPatch 1484-net-mlx5-hws-fix-pattern-destruction-in-mlx5hws-pat-get-patt.patch
+ApplyPatch 1485-net-mlx5-reload-auxiliary-drivers-on-fw-activate.patch
+ApplyPatch 1486-net-mlx5-fix-lockdep-assertion-on-sync-reset-unload-event.patch
+ApplyPatch 1487-net-mlx5-nack-sync-reset-when-sfs-are-present.patch
+ApplyPatch 1488-net-mlx5-prevent-flow-steering-mode-changes-in-switchdev-mod.patch
+ApplyPatch 1489-net-mlx5e-set-local-xoff-after-fw-update.patch
+ApplyPatch 1490-net-mlx5e-harden-uplink-netdev-access-against-device-unbind.patch
+ApplyPatch 1491-net-mlx5e-add-a-miss-level-for-ipsec-crypto-offload.patch
+ApplyPatch 1492-net-mlx5-hws-ignore-flow-level-for-multi-dest-table.patch
+ApplyPatch 1493-net-mlx5e-fix-missing-fec-rs-stats-for-rs-544-514-interleave.patch
+ApplyPatch 1494-rdma-mlx5-support-driver-apis-pre-destroy-cq-and-post-destro.patch
+ApplyPatch 1495-rdma-mlx5-add-multiple-priorities-support-to-rdma-transport-.patch
+ApplyPatch 1496-rdma-mlx5-check-cap-net-raw-in-user-namespace-for-flow-creat.patch
+ApplyPatch 1497-rdma-mlx5-check-cap-net-raw-in-user-namespace-for-anchor-cre.patch
+ApplyPatch 1498-rdma-mlx5-check-cap-net-raw-in-user-namespace-for-devx-creat.patch
+ApplyPatch 1499-rdma-mlx5-align-mkc-page-size-capability-check-to-prm.patch
+ApplyPatch 1500-rdma-mlx5-optimize-dmabuf-mkey-page-size.patch
+ApplyPatch 1501-rdma-mlx5-remove-redundant-check-on-err-on-return-expression.patch
+ApplyPatch 1502-rdma-mlx5-fix-returned-type-from-mlx5r-umr-zap-mkey.patch
+ApplyPatch 1503-rdma-mlx5-fix-incorrect-mkey-masking.patch
+ApplyPatch 1504-rdma-mlx5-add-dmah-object-support.patch
+ApplyPatch 1505-rdma-mlx5-add-dmah-support-for-reg-user-mr-reg-user-dmabuf-m.patch
+ApplyPatch 1506-rdma-mlx5-refactor-optional-counters-steering-code.patch
+ApplyPatch 1507-ib-mlx5-fix-obj-type-mismatch-for-srq-event-subscriptions.patch
+ApplyPatch 1508-net-mlx5-don-t-use-pk-through-tracepoints.patch
+ApplyPatch 1509-net-mlx5-mlx5-ifc-add-hardware-definitions-needed-for-adjace.patch
+ApplyPatch 1510-net-mlx5-e-switch-cache-vport-vhca-id-on-first-cap-query.patch
+ApplyPatch 1511-net-mlx5-e-switch-set-query-hca-cap-via-vhca-id.patch
+ApplyPatch 1512-rdma-net-mlx5-export-mlx5-vport-get-vhca-id.patch
+ApplyPatch 1513-net-mlx5-query-to-see-if-host-pf-is-disabled.patch
+ApplyPatch 1514-net-mlx5-support-disabling-host-pfs.patch
+ApplyPatch 1515-net-mlx5e-set-default-burst-period-for-tx-and-rx-reporters.patch
+ApplyPatch 1516-eth-mlx5-remove-kconfig-co-dependency-with-vxlan.patch
+ApplyPatch 1517-net-mlx5-fs-convert-vport-acls-root-namespaces-to-xarray.patch
+ApplyPatch 1518-net-mlx5-e-switch-move-vport-acls-root-namespaces-creation-t.patch
+ApplyPatch 1519-net-mlx5-e-switch-add-support-for-adjacent-functions-vports-.patch
+ApplyPatch 1520-net-mlx5-e-switch-create-acls-root-namespace-for-adjacent-vp.patch
+ApplyPatch 1521-net-mlx5-e-switch-register-representors-for-adjacent-vports.patch
+ApplyPatch 1522-net-mlx5-e-switch-set-representor-attributes-for-adjacent-vf.patch
+ApplyPatch 1523-net-mlx5-dr-hws-use-the-cached-vhca-id-for-this-device.patch
+ApplyPatch 1524-net-mlx5-add-psp-capabilities-structures-and-bits.patch
+ApplyPatch 1525-net-mlx5-extract-mtctr-register-read-logic-into-helper-funct.patch
+ApplyPatch 1526-net-mlx5-support-getcyclesx-and-getcrosscycles.patch
+ApplyPatch 1527-net-mlx5-add-rs-fec-histogram-infrastructure.patch
+ApplyPatch 1528-net-mlx5-implement-cqe-compress-type-via-devlink-params.patch
+ApplyPatch 1529-net-mlx5-implement-devlink-enable-sriov-parameter.patch
+ApplyPatch 1530-net-mlx5-implement-devlink-total-vfs-parameter.patch
+ApplyPatch 1531-net-mlx5e-make-pcie-congestion-event-thresholds-configurable.patch
+ApplyPatch 1532-net-mlx5e-add-stale-counter-for-pcie-congestion-events.patch
+ApplyPatch 1533-net-mlx5-fix-typo-in-pci-irq-c-comment.patch
+ApplyPatch 1534-net-mlx5-refactor-devcom-to-use-match-attributes.patch
+ApplyPatch 1535-net-mlx5-lag-move-devcom-registration-to-lag-layer.patch
+ApplyPatch 1536-net-mlx5-add-net-namespace-support-to-devcom.patch
+ApplyPatch 1537-net-mlx5-lag-add-net-namespace-support.patch
+ApplyPatch 1538-net-mlx5-remove-vlan-insertion-fields-from-wqe-ether-segment.patch
+ApplyPatch 1539-net-mlx5-refactor-macsec-wqe-metadata-shifts.patch
+ApplyPatch 1540-net-mlx5e-prevent-wqe-metadata-conflicts-between-timestampin.patch
+ApplyPatch 1541-net-mlx5-fix-typo-of-mlx5-eq-doorbel-offset.patch
+ApplyPatch 1542-net-mlx5-remove-unused-offset-field-from-mlx5-sq-bfreg.patch
+ApplyPatch 1543-net-mlx5e-remove-unused-xsk-param-of-mlx5e-build-xdpsq-param.patch
+ApplyPatch 1544-net-mlx5-store-the-global-doorbell-in-mlx5-priv.patch
+ApplyPatch 1545-net-mlx5e-prepare-for-using-multiple-tx-doorbells.patch
+ApplyPatch 1546-net-mlx5e-prepare-for-using-different-cq-doorbells.patch
+ApplyPatch 1547-net-mlx5e-use-multiple-tx-doorbells.patch
+ApplyPatch 1548-net-mlx5e-use-multiple-cq-doorbells.patch
+ApplyPatch 1549-net-mlx5e-use-the-num-doorbells-devlink-param.patch
+ApplyPatch 1550-net-mlx5e-use-unsigned-for-mlx5e-get-max-num-channels.patch
+ApplyPatch 1551-net-mlx5-add-uar-access-and-odp-page-fault-counters.patch
+ApplyPatch 1552-net-mlx5-change-ttc-rules-to-match-on-undecrypted-esp-packet.patch
+ApplyPatch 1553-net-mlx5e-recirculate-decrypted-packets-into-ttc-table.patch
+ApplyPatch 1554-net-mlx5e-add-flow-groups-for-the-packets-decrypted-by-crypt.patch
+ApplyPatch 1555-net-mlx5e-add-flow-rules-for-the-decrypted-esp-packets.patch
+ApplyPatch 1556-net-mlx5-remove-dead-code-from-total-vfs-setter.patch
+ApplyPatch 1557-net-mlx5-use-pe-format-specifier-for-error-pointers.patch
+ApplyPatch 1558-net-mlx5-expose-uar-access-and-odp-page-fault-counters.patch
+ApplyPatch 1559-net-mlx5-add-ifc-bit-for-tir-sq-order-capability.patch
+ApplyPatch 1560-net-mlx5-ifc-add-balance-id-and-lag-per-mp-group-bits.patch
+ApplyPatch 1561-net-mlx5-stop-polling-for-command-response-if-interface-goes.patch
+ApplyPatch 1562-net-mlx5-pagealloc-fix-reclaim-race-during-command-interface.patch
+ApplyPatch 1563-net-mlx5-fw-reset-add-reset-timeout-work.patch
+ApplyPatch 1564-net-mlx5-improve-write-combining-test-reliability-for-arm64-.patch
+ApplyPatch 1565-net-mlx5-hws-generalize-complex-matchers.patch
+ApplyPatch 1566-net-mlx5e-prevent-entering-switchdev-mode-with-inconsistent-.patch
+ApplyPatch 1567-net-mlx5-improve-qos-error-messages-with-actual-depth-values.patch
+ApplyPatch 1568-net-mlx5e-remove-unused-mdev-param-from-rss-indir-init.patch
+ApplyPatch 1569-net-mlx5e-introduce-mlx5e-rss-init-params.patch
+ApplyPatch 1570-net-mlx5e-introduce-mlx5e-rss-params-for-rss-configuration.patch
+ApplyPatch 1571-net-mlx5e-use-extack-in-set-rxfh-callback.patch
+ApplyPatch 1572-net-mlx5-prevent-tunnel-mode-conflicts-between-fdb-and-nic-i.patch
+ApplyPatch 1573-net-mlx5e-prevent-tunnel-reformat-when-tunnel-mode-not-allow.patch
+ApplyPatch 1574-net-mlx5-fix-pre-2-40-binutils-assembler-error.patch
+ApplyPatch 1575-net-mlx5e-return-1-instead-of-0-in-invalid-case-in-mlx5e-mpw.patch
+ApplyPatch 1576-net-mlx5e-rx-fix-generating-skb-from-non-linear-xdp-buff-for.patch
+ApplyPatch 1577-net-mlx5e-rx-fix-generating-skb-from-non-linear-xdp-buff-for.patch
+ApplyPatch 1578-net-mlx5-add-pphcr-to-pcam-supported-registers-mask.patch
+ApplyPatch 1579-net-mlx5-refactor-devcom-to-return-null-on-failure.patch
+ApplyPatch 1580-net-mlx5-fix-ipsec-cleanup-over-mpv-device.patch
+ApplyPatch 1581-net-mlx5-don-t-zero-user-count-when-destroying-fdb-tables.patch
+ApplyPatch 1582-net-mlx5e-fix-return-value-in-case-of-module-eeprom-read-err.patch
+ApplyPatch 1583-net-mlx5e-fix-missing-error-assignment-in-mlx5e-xfrm-add-sta.patch
+ApplyPatch 1584-net-mlx5e-trim-the-length-of-the-num-doorbell-error.patch
+ApplyPatch 1585-net-mlx5e-fix-maxrate-wraparound-in-threshold-between-units.patch
+ApplyPatch 1586-net-mlx5e-fix-wraparound-in-rate-limiting-for-values-above-2.patch
+ApplyPatch 1587-net-mlx5e-fix-potentially-misleading-debug-message.patch
+ApplyPatch 1588-mlx5-fix-default-values-in-create-cq.patch
+ApplyPatch 1589-net-mlx5-clean-up-only-new-irq-glue-on-request-irq-failure.patch
+ApplyPatch 1590-net-mlx5e-fix-validation-logic-in-rate-limiting.patch
+ApplyPatch 1591-rdma-mlx5-enable-data-direct-with-relaxed-ordering.patch
+ApplyPatch 1592-rdma-mlx5-better-estimate-max-qp-wr-to-reflect-wqe-count.patch
+ApplyPatch 1593-rdma-mlx5-fix-vport-loopback-forcing-for-mpv-device.patch
+ApplyPatch 1594-rdma-mlx5-fix-page-size-bitmap-calculation-for-ksm-mode.patch
+ApplyPatch 1595-rdma-use-pe-format-specifier-for-error-pointers.patch
+ApplyPatch 1596-rdma-net-mlx5-query-vports-mac-address-from-device.patch
+ApplyPatch 1597-net-mlx5-use-common-mlx5-same-hw-devs-function.patch
+ApplyPatch 1598-net-mlx5-add-software-system-image-guid-infrastructure.patch
+ApplyPatch 1599-net-mlx5-refactor-ptp-clock-devcom-pairing.patch
+ApplyPatch 1600-net-mlx5-refactor-hca-cap-2-setting.patch
+ApplyPatch 1601-net-mlx5-add-balance-id-support-for-lag-multiplane-groups.patch
+ApplyPatch 1602-net-mlx5e-remove-redundant-tstamp-pointer-from-channel-struc.patch
+ApplyPatch 1603-net-mlx5e-remove-unnecessary-tstamp-local-variable-in-mlx5i-.patch
+ApplyPatch 1604-net-mlx5e-rename-hwstamp-functions-to-hwtstamp.patch
+ApplyPatch 1605-net-mlx5e-rename-timestamp-fields-to-hwtstamp-config.patch
+ApplyPatch 1606-net-mlx5e-convert-to-new-hwtstamp-get-set-interface.patch
+ApplyPatch 1607-net-mlx5e-enhance-function-structures-for-self-loopback-prev.patch
+ApplyPatch 1608-net-mlx5e-use-tir-api-in-mlx5e-modify-tirs-lb.patch
+ApplyPatch 1609-net-mlx5e-allow-setting-self-loopback-prevention-bits-on-tir.patch
+ApplyPatch 1610-net-mlx5-ipoib-set-self-loopback-prevention-in-tir-init.patch
+ApplyPatch 1611-net-mlx5e-do-not-re-apply-tir-loopback-configuration-if-not-.patch
+ApplyPatch 1612-net-mlx5e-pass-old-channels-as-argument-to-mlx5e-switch-priv.patch
+ApplyPatch 1613-net-mlx5e-defer-channels-closure-to-reduce-interface-down-ti.patch
+ApplyPatch 1614-pci-tph-expose-pcie-tph-get-st-table-loc.patch
+ApplyPatch 1615-net-mlx5-add-direct-st-mode-support-for-rdma.patch
+ApplyPatch 1616-net-mlx5-add-other-eswitch-hw-capabilities.patch
+ApplyPatch 1617-net-mlx5-fs-add-other-eswitch-support-for-steering-tables.patch
+ApplyPatch 1618-net-mlx5-fs-set-non-default-device-per-namespace.patch
+ApplyPatch 1619-net-mlx5-mpfs-add-support-for-dynamic-enable-disable.patch
+ApplyPatch 1620-net-mlx5-e-switch-support-eswitch-inactive-mode.patch
+ApplyPatch 1621-net-mlx5-expose-definition-for-1600gbps-link-mode.patch
+ApplyPatch 1622-mlx5-extract-grxrings-from-get-rxnfc.patch
+ApplyPatch 1623-net-mlx5-refactor-eeprom-query-error-handling-to-return-stat.patch
+ApplyPatch 1624-net-mlx5e-recover-sq-on-excessive-ptp-tx-timestamp-delta.patch
+ApplyPatch 1625-net-mlx5-remove-redundant-bw-share-minimal-value-assignment.patch
+ApplyPatch 1626-net-mlx5-abort-new-commands-if-all-command-slots-are-stalled.patch
+ApplyPatch 1627-net-mlx5-use-eopnotsupp-instead-of-enotsupp.patch
+ApplyPatch 1628-net-mlx5-initialize-events-outside-devlink-lock.patch
+ApplyPatch 1629-net-mlx5-move-the-esw-mode-notifier-chain-outside-the-devlin.patch
+ApplyPatch 1630-net-mlx5-move-the-vhca-event-notifier-outside-of-the-devlink.patch
+ApplyPatch 1631-net-mlx5-move-the-sf-hw-table-notifier-outside-the-devlink-l.patch
+ApplyPatch 1632-net-mlx5-move-the-sf-table-notifiers-outside-the-devlink-loc.patch
+ApplyPatch 1633-net-mlx5-move-sf-dev-table-notifier-registration-outside-the.patch
+ApplyPatch 1634-net-mlx5e-use-u64-instead-of-u64-in-ieee-setmaxrate.patch
+ApplyPatch 1635-net-mlx5e-rename-upper-limit-mbps-to-upper-limit-100mbps.patch
+ApplyPatch 1636-net-mlx5e-use-u8-max-instead-of-hard-coded-magic-number.patch
+ApplyPatch 1637-net-mlx5e-use-standard-unit-definitions-for-bandwidth-conver.patch
+ApplyPatch 1638-net-mlx5e-update-xdp-features-in-switch-channels.patch
+ApplyPatch 1639-net-mlx5e-support-xdp-target-xmit-with-dummy-program.patch
+ApplyPatch 1640-net-mlx5-make-enable-mpesw-idempotent.patch
+ApplyPatch 1641-net-mlx5-fix-double-unregister-of-hca-ports-component.patch
+ApplyPatch 1642-net-mlx5-fw-reset-clear-reset-requested-on-drain-fw-reset.patch
+ApplyPatch 1643-net-mlx5-drain-firmware-reset-in-shutdown-callback.patch
+ApplyPatch 1644-net-mlx5-fw-tracer-validate-format-string-parameters.patch
+ApplyPatch 1645-net-mlx5-fw-tracer-handle-escaped-percent-properly.patch
+ApplyPatch 1646-net-mlx5-serialize-firmware-reset-with-devlink.patch
+ApplyPatch 1647-net-mlx5e-use-ip6-dst-lookup-instead-of-ipv6-dst-lookup-flow.patch
+ApplyPatch 1648-net-mlx5e-trigger-neighbor-resolution-for-unresolved-destina.patch
+ApplyPatch 1649-net-mlx5e-do-not-update-bql-of-old-txqs-during-channel-recon.patch
+ApplyPatch 1650-net-mlx5-lag-multipath-give-priority-for-routes-with-smaller.patch
+ApplyPatch 1651-net-mlx5e-fix-null-pointer-dereference-in-ioctl-module-eepro.patch
+ApplyPatch 1652-net-mlx5e-don-t-print-error-message-due-to-invalid-module.patch
+ApplyPatch 1653-net-mlx5e-fix-crash-on-profile-change-rollback-failure.patch
+ApplyPatch 1654-net-mlx5e-don-t-store-mlx5e-priv-in-mlx5e-dev-devlink-priv.patch
+ApplyPatch 1655-net-mlx5e-pass-netdev-to-mlx5e-destroy-netdev-instead-of-pri.patch
+ApplyPatch 1656-net-mlx5e-restore-destroying-state-bit-after-profile-cleanup.patch
+ApplyPatch 1657-net-mlx5-fix-memory-leak-in-esw-acl-ingress-lgcy-setup.patch
+ApplyPatch 1658-net-mlx5-fix-unbinding-uplink-netdev-in-switchdev-mode.patch
+ApplyPatch 1659-net-mlx5e-tc-delete-flows-only-for-existing-peers.patch
+ApplyPatch 1660-net-mlx5e-account-for-netdev-stats-in-ndo-get-stats64.patch
+ApplyPatch 1661-net-mlx5-fix-return-type-mismatch-in-mlx5-esw-vport-vhca-id.patch
+ApplyPatch 1662-net-mlx5-fs-fix-inverted-cap-check-in-tx-flow-table-root-dis.patch
+ApplyPatch 1663-net-mlx5-fix-vhca-id-access-call-trace-use-before-alloc.patch
+ApplyPatch 1664-net-mlx5e-skip-esn-replay-window-setup-for-ipsec-crypto-offl.patch
+ApplyPatch 1665-rdma-mlx5-change-default-device-for-lag-slaves-in-rdma-trans.patch
+ApplyPatch 1666-rdma-mlx5-add-other-eswitch-support-for-devx-destruction.patch
+ApplyPatch 1667-rdma-mlx5-refactor-get-prio-function.patch
+ApplyPatch 1668-rdma-mlx5-add-other-eswitch-support-to-userspace-tables.patch
+ApplyPatch 1669-ib-mlx5-reduce-imr-ksm-size-when-5-level-paging-is-enabled.patch
+ApplyPatch 1670-net-mlx5e-shampo-fix-header-mapping-for-64k-pages.patch
+ApplyPatch 1671-net-mlx5e-shampo-fix-skb-size-check-for-64k-pages.patch
+ApplyPatch 1672-net-mlx5e-shampo-fix-header-formulas-for-higher-mtus-and-64k.patch
+ApplyPatch 1673-net-mlx5-qos-restrict-rtnl-area-to-avoid-a-lock-cycle.patch
+ApplyPatch 1674-net-mlx5-fix-peer-miss-rules-host-disabled-checks.patch
+ApplyPatch 1675-net-mlx5e-rx-fix-xdp-multi-buf-frag-counting-for-legacy-rq.patch
+ApplyPatch 1676-net-mlx5-fix-crash-when-moving-to-switchdev-mode.patch
+ApplyPatch 1677-net-mlx5-fix-hca-caps-leak-on-notifier-init-failure.patch
+ApplyPatch 1678-net-mlx5e-rx-fix-xdp-multi-buf-frag-counting-for-striding-rq.patch
+ApplyPatch 1679-iavf-fix-vlan-filter-lost-on-add-delete-race.patch
+ApplyPatch 1680-iavf-rename-iavf-vlan-is-new-to-iavf-vlan-adding.patch
+ApplyPatch 1681-iavf-stop-removing-vlan-filters-from-pf-on-interface-down.patch
+ApplyPatch 1682-iavf-wait-for-pf-confirmation-before-removing-vlan-filters.patch
+ApplyPatch 1683-iavf-add-virtchnl-op-add-vlan-to-success-completion-handler.patch
+ApplyPatch 1684-netfilter-skip-recording-stale-or-retransmitted-init.patch
+ApplyPatch 1685-sctp-discard-stale-init-after-handshake-completion.patch
+ApplyPatch 1686-rdma-vmw-pvrdma-fix-double-free-on-pvrdma-alloc-ucontext-err.patch
+ApplyPatch 1687-sched-fair-skip-sched-balance-running-cmpxchg-when-balance-i.patch
+ApplyPatch 1688-sched-fair-have-sd-serialize-affect-newidle-balancing.patch
+ApplyPatch 1689-powerpc-64-force-inlining-of-prevent-user-access-and-set-kua.patch
+ApplyPatch 1690-compiler-gcc-h-remove-ancient-workaround-for-gcc-pr-58670.patch
+ApplyPatch 1691-work-around-gcc-bugs-with-asm-goto-with-outputs.patch
+ApplyPatch 1692-init-kconfig-fix-cc-has-asm-goto-tied-output-test-with-dash.patch
+ApplyPatch 1693-update-workarounds-for-gcc-asm-goto-issue.patch
+ApplyPatch 1694-init-kconfig-remove-config-gcc-asm-goto-output-workaround.patch
+ApplyPatch 1695-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4219,6 +4987,401 @@ fi
 #
 #
 %changelog
+* Mon Jun 29 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.19.1
+- Recreate RHEL 5.14.0-687.19.1 from CentOS Stream 9 and upstream stable backports (1313-1695)
+- Retain AlmaLinux ahead-of-RHEL fix for CVE-2026-46316 (1312)
+- RHEL changelog for 687.18.1..687.19.1 follows:
+
+* Thu Jun 25 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.19.1.el9_8]
+- RDMA/mlx5: Fix error path fall-through in mlx5_ib_dev_res_srq_init() (CKI Backport Bot) [RHEL-179994] {CVE-2026-46176}
+- init/Kconfig: remove CONFIG_GCC_ASM_GOTO_OUTPUT_WORKAROUND (Waiman Long) [RHEL-183183]
+- update workarounds for gcc "asm goto" issue (Waiman Long) [RHEL-183183]
+- init/Kconfig: fix CC_HAS_ASM_GOTO_TIED_OUTPUT test with dash (Waiman Long) [RHEL-183183]
+- work around gcc bugs with 'asm goto' with outputs (Waiman Long) [RHEL-183183]
+- compiler-gcc.h: remove ancient workaround for gcc PR 58670 (Waiman Long) [RHEL-183183]
+- powerpc/64: Force inlining of prevent_user_access() and set_kuap() (Waiman Long) [RHEL-183183]
+- sched/fair: Have SD_SERIALIZE affect newidle balancing (CKI Backport Bot) [RHEL-182776]
+- sched/fair: Skip sched_balance_running cmpxchg when balance is not due (CKI Backport Bot) [RHEL-182776]
+- RDMA/vmw_pvrdma: Fix double free on pvrdma_alloc_ucontext() error path (CKI Backport Bot) [RHEL-179955] {CVE-2026-46189}
+- sctp: discard stale INIT after handshake completion (CKI Backport Bot) [RHEL-178273]
+- netfilter: skip recording stale or retransmitted INIT (CKI Backport Bot) [RHEL-178273]
+- iavf: add VIRTCHNL_OP_ADD_VLAN to success completion handler (CKI Backport Bot) [RHEL-172993]
+- iavf: wait for PF confirmation before removing VLAN filters (CKI Backport Bot) [RHEL-172993]
+- iavf: stop removing VLAN filters from PF on interface down (CKI Backport Bot) [RHEL-172993]
+- iavf: rename IAVF_VLAN_IS_NEW to IAVF_VLAN_ADDING (CKI Backport Bot) [RHEL-172993]
+- iavf: fix VLAN filter lost on add/delete race (CKI Backport Bot) [RHEL-172993]
+
+* Tue Jun 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.18.1.el9_8]
+- net/mlx5e: RX, Fix XDP multi-buf frag counting for striding RQ (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix HCA caps leak on notifier init failure (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix crash when moving to switchdev mode (Kamal Heib) [RHEL-169057]
+- net/mlx5e: RX, Fix XDP multi-buf frag counting for legacy RQ (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix peer miss rules host disabled checks (Kamal Heib) [RHEL-169057]
+- net/mlx5: qos: Restrict RTNL area to avoid a lock cycle (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO, Fix header formulas for higher MTUs and 64K pages (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO, Fix skb size check for 64K pages (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO, Fix header mapping for 64K pages (Kamal Heib) [RHEL-169057]
+- IB/mlx5: Reduce IMR KSM size when 5-level paging is enabled (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Add other eswitch support to userspace tables (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Refactor _get_prio() function (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Add other_eswitch support for devx destruction (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Change default device for LAG slaves in RDMA TRANSPORT namespaces (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Skip ESN replay window setup for IPsec crypto offload (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix vhca_id access call trace use before alloc (Kamal Heib) [RHEL-169057]
+- net/mlx5: fs, Fix inverted cap check in tx flow table root disconnect (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix return type mismatch in mlx5_esw_vport_vhca_id() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Account for netdev stats in ndo_get_stats64 (Kamal Heib) [RHEL-169057]
+- net/mlx5e: TC, delete flows only for existing peers (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix Unbinding uplink-netdev in switchdev mode (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix memory leak in esw_acl_ingress_lgcy_setup() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Restore destroying state bit after profile cleanup (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Pass netdev to mlx5e_destroy_netdev instead of priv (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Don't store mlx5e_priv in mlx5e_dev devlink priv (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix crash on profile change rollback failure (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Don't print error message due to invalid module (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix NULL pointer dereference in ioctl module EEPROM query (Kamal Heib) [RHEL-169057]
+- net/mlx5: Lag, multipath, give priority for routes with smaller network prefix (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Do not update BQL of old txqs during channel reconfiguration (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Trigger neighbor resolution for unresolved destinations (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use ip6_dst_lookup instead of ipv6_dst_lookup_flow for MAC init (Kamal Heib) [RHEL-169057]
+- net/mlx5: Serialize firmware reset with devlink (Kamal Heib) [RHEL-169057]
+- net/mlx5: fw_tracer, Handle escaped percent properly (Kamal Heib) [RHEL-169057]
+- net/mlx5: fw_tracer, Validate format string parameters (Kamal Heib) [RHEL-169057]
+- net/mlx5: Drain firmware reset in shutdown callback (Kamal Heib) [RHEL-169057]
+- net/mlx5: fw reset, clear reset requested on drain_fw_reset (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix double unregister of HCA_PORTS component (Kamal Heib) [RHEL-169057]
+- net/mlx5: make enable_mpesw idempotent (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Support XDP target xmit with dummy program (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Update XDP features in switch channels (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use standard unit definitions for bandwidth conversion (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use U8_MAX instead of hard coded magic number (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Rename upper_limit_mbps to upper_limit_100mbps (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use u64 instead of __u64 in ieee_setmaxrate (Kamal Heib) [RHEL-169057]
+- net/mlx5: Move SF dev table notifier registration outside the PF devlink lock (Kamal Heib) [RHEL-169057]
+- net/mlx5: Move the SF table notifiers outside the devlink lock (Kamal Heib) [RHEL-169057]
+- net/mlx5: Move the SF HW table notifier outside the devlink lock (Kamal Heib) [RHEL-169057]
+- net/mlx5: Move the vhca event notifier outside of the devlink lock (Kamal Heib) [RHEL-169057]
+- net/mlx5: Move the esw mode notifier chain outside the devlink lock (Kamal Heib) [RHEL-169057]
+- net/mlx5: Initialize events outside devlink lock (Kamal Heib) [RHEL-169057]
+- net/mlx5: Use EOPNOTSUPP instead of ENOTSUPP (Kamal Heib) [RHEL-169057]
+- net/mlx5: Abort new commands if all command slots are stalled (Kamal Heib) [RHEL-169057]
+- net/mlx5: Remove redundant bw_share minimal value assignment (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Recover SQ on excessive PTP TX timestamp delta (Kamal Heib) [RHEL-169057]
+- net/mlx5: Refactor EEPROM query error handling to return status separately (Kamal Heib) [RHEL-169057]
+- mlx5: extract GRXRINGS from .get_rxnfc (Kamal Heib) [RHEL-169057]
+- net/mlx5: Expose definition for 1600Gbps link mode (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, support eswitch inactive mode (Kamal Heib) [RHEL-169057]
+- net/mlx5: MPFS, add support for dynamic enable/disable (Kamal Heib) [RHEL-169057]
+- net/mlx5: fs, set non default device per namespace (Kamal Heib) [RHEL-169057]
+- net/mlx5: fs, Add other_eswitch support for steering tables (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add OTHER_ESWITCH HW capabilities (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add direct ST mode support for RDMA (Kamal Heib) [RHEL-169057]
+- PCI/TPH: Expose pcie_tph_get_st_table_loc() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Defer channels closure to reduce interface down time (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Pass old channels as argument to mlx5e_switch_priv_channels (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Do not re-apply TIR loopback configuration if not necessary (Kamal Heib) [RHEL-169057]
+- net/mlx5: IPoIB, set self loopback prevention in TIR init (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Allow setting self loopback prevention bits on TIR init (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use TIR API in mlx5e_modify_tirs_lb() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Enhance function structures for self loopback prevention application (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Convert to new hwtstamp_get/set interface (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Rename timestamp fields to hwtstamp_config (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Rename hwstamp functions to hwtstamp (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Remove unnecessary tstamp local variable in mlx5i_complete_rx_cqe (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Remove redundant tstamp pointer from channel structures (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add balance ID support for LAG multiplane groups (Kamal Heib) [RHEL-169057]
+- net/mlx5: Refactor HCA cap 2 setting (Kamal Heib) [RHEL-169057]
+- net/mlx5: Refactor PTP clock devcom pairing (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add software system image GUID infrastructure (Kamal Heib) [RHEL-169057]
+- net/mlx5: Use common mlx5_same_hw_devs function (Kamal Heib) [RHEL-169057]
+- {rdma,net}/mlx5: Query vports mac address from device (Kamal Heib) [RHEL-169057]
+- RDMA: Use %pe format specifier for error pointers (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix page size bitmap calculation for KSM mode (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix vport loopback forcing for MPV device (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Better estimate max_qp_wr to reflect WQE count (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Enable Data-Direct with Relaxed Ordering (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix validation logic in rate limiting (Kamal Heib) [RHEL-169057]
+- net/mlx5: Clean up only new IRQ glue on request_irq() failure (Kamal Heib) [RHEL-169057]
+- mlx5: Fix default values in create CQ (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix potentially misleading debug message (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix maxrate wraparound in threshold between units (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Trim the length of the num_doorbell error (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix missing error assignment in mlx5e_xfrm_add_state() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix return value in case of module EEPROM read error (Kamal Heib) [RHEL-169057]
+- net/mlx5: Don't zero user_count when destroying FDB tables (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix IPsec cleanup over MPV device (Kamal Heib) [RHEL-169057]
+- net/mlx5: Refactor devcom to return NULL on failure (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add PPHCR to PCAM supported registers mask (Kamal Heib) [RHEL-169057]
+- net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for striding RQ (Kamal Heib) [RHEL-169057]
+- net/mlx5e: RX, Fix generating skb from non-linear xdp_buff for legacy RQ (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Return 1 instead of 0 in invalid case in mlx5e_mpwrq_umr_entry_size() (Kamal Heib) [RHEL-169057]
+- net/mlx5: fix pre-2.40 binutils assembler error (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Prevent tunnel reformat when tunnel mode not allowed (Kamal Heib) [RHEL-169057]
+- net/mlx5: Prevent tunnel mode conflicts between FDB and NIC IPsec tables (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use extack in set rxfh callback (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Introduce mlx5e_rss_params for RSS configuration (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Introduce mlx5e_rss_init_params (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Remove unused mdev param from RSS indir init (Kamal Heib) [RHEL-169057]
+- net/mlx5: Improve QoS error messages with actual depth values (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Prevent entering switchdev mode with inconsistent netns (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Generalize complex matchers (Kamal Heib) [RHEL-169057]
+- net/mlx5: Improve write-combining test reliability for ARM64 Grace CPUs (Kamal Heib) [RHEL-169057]
+- net/mlx5: fw reset, add reset timeout work (Kamal Heib) [RHEL-169057]
+- net/mlx5: pagealloc: Fix reclaim race during command interface teardown (Kamal Heib) [RHEL-169057]
+- net/mlx5: Stop polling for command response if interface goes down (Kamal Heib) [RHEL-169057]
+- net/mlx5: IFC add balance ID and LAG per MP group bits (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add IFC bit for TIR/SQ order capability (Kamal Heib) [RHEL-169057]
+- net/mlx5: Expose uar access and odp page fault counters (Kamal Heib) [RHEL-169057]
+- net/mlx5: Use %pe format specifier for error pointers (Kamal Heib) [RHEL-169057]
+- net/mlx5: Remove dead code from total_vfs setter (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Add flow rules for the decrypted ESP packets (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Add flow groups for the packets decrypted by crypto offload (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Recirculate decrypted packets into TTC table (Kamal Heib) [RHEL-169057]
+- net/mlx5: Change TTC rules to match on undecrypted ESP packets (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add uar access and odp page fault counters (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use unsigned for mlx5e_get_max_num_channels (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use the 'num_doorbells' devlink param (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use multiple CQ doorbells (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Use multiple TX doorbells (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Prepare for using different CQ doorbells (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Prepare for using multiple TX doorbells (Kamal Heib) [RHEL-169057]
+- net/mlx5: Store the global doorbell in mlx5_priv (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Remove unused 'xsk' param of mlx5e_build_xdpsq_param (Kamal Heib) [RHEL-169057]
+- net/mlx5: Remove unused 'offset' field from mlx5_sq_bfreg (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix typo of MLX5_EQ_DOORBEL_OFFSET (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Prevent WQE metadata conflicts between timestamping and offloads (Kamal Heib) [RHEL-169057]
+- net/mlx5: Refactor MACsec WQE metadata shifts (Kamal Heib) [RHEL-169057]
+- net/mlx5: Remove VLAN insertion fields from WQE Ether segment (Kamal Heib) [RHEL-169057]
+- net/mlx5: Lag, add net namespace support (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add net namespace support to devcom (Kamal Heib) [RHEL-169057]
+- net/mlx5: Lag, move devcom registration to LAG layer (Kamal Heib) [RHEL-169057]
+- net/mlx5: Refactor devcom to use match attributes (Kamal Heib) [RHEL-169057]
+- net/mlx5: fix typo in pci_irq.c comment (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Add stale counter for PCIe congestion events (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Make PCIe congestion event thresholds configurable (Kamal Heib) [RHEL-169057]
+- net/mlx5: Implement devlink total_vfs parameter (Kamal Heib) [RHEL-169057]
+- net/mlx5: Implement devlink enable_sriov parameter (Kamal Heib) [RHEL-169057]
+- net/mlx5: Implement cqe_compress_type via devlink params (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add RS FEC histogram infrastructure (Kamal Heib) [RHEL-169057]
+- net/mlx5: Support getcyclesx and getcrosscycles (Kamal Heib) [RHEL-169057]
+- net/mlx5: Extract MTCTR register read logic into helper function (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add PSP capabilities structures and bits (Kamal Heib) [RHEL-169057]
+- net/mlx5: {DR,HWS}, Use the cached vhca_id for this device (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-switch, Set representor attributes for adjacent VFs (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, Register representors for adjacent vports (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, Create acls root namespace for adjacent vports (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, Add support for adjacent functions vports discovery (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, Move vport acls root namespaces creation to eswitch (Kamal Heib) [RHEL-169057]
+- net/mlx5: FS, Convert vport acls root namespaces to xarray (Kamal Heib) [RHEL-169057]
+- eth: mlx5: remove Kconfig co-dependency with VXLAN (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Set default burst period for TX and RX reporters (Kamal Heib) [RHEL-169057]
+- net/mlx5: Support disabling host PFs (Kamal Heib) [RHEL-169057]
+- net/mlx5: Query to see if host PF is disabled (Kamal Heib) [RHEL-169057]
+- {rdma,net}/mlx5: export mlx5_vport_get_vhca_id (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, Set/Query hca cap via vhca id (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, Cache vport vhca id on first cap query (Kamal Heib) [RHEL-169057]
+- net/mlx5: mlx5_ifc, Add hardware definitions needed for adjacent vports (Kamal Heib) [RHEL-169057]
+- net/mlx5: Don't use %pK through tracepoints (Kamal Heib) [RHEL-169057]
+- IB/mlx5: Fix obj_type mismatch for SRQ event subscriptions (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Refactor optional counters steering code (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Add DMAH support for reg_user_mr/reg_user_dmabuf_mr (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Add DMAH object support (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix incorrect MKEY masking (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix returned type from _mlx5r_umr_zap_mkey() (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: remove redundant check on err on return expression (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Optimize DMABUF mkey page size (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Align mkc page size capability check to PRM (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Check CAP_NET_RAW in user namespace for devx create (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Check CAP_NET_RAW in user namespace for anchor create (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Check CAP_NET_RAW in user namespace for flow create (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Add multiple priorities support to RDMA TRANSPORT userspace tables (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Support driver APIs pre_destroy_cq and post_destroy_cq (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix missing FEC RS stats for RS_544_514_INTERLEAVED_QUAD (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, ignore flow level for multi-dest table (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Add a miss level for ipsec crypto offload (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Harden uplink netdev access against device unbind (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Set local Xoff after FW update (Kamal Heib) [RHEL-169057]
+- net/mlx5: Prevent flow steering mode changes in switchdev mode (Kamal Heib) [RHEL-169057]
+- net/mlx5: Nack sync reset when SFs are present (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix lockdep assertion on sync reset unload event (Kamal Heib) [RHEL-169057]
+- net/mlx5: Reload auxiliary drivers on fw_activate (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix pattern destruction in mlx5hws_pat_get_pattern error path (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix uninitialized variables in mlx5hws_pat_calc_nop error flow (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix memory leak in hws_action_get_shared_stc_nic error flow (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix memory leak in hws_pool_buddy_init error path (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Preserve shared buffer capacity during headroom updates (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Query FW for buffer ownership (Kamal Heib) [RHEL-169057]
+- net/mlx5: Restore missing scheduling node cleanup on vport enable failure (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix QoS reference leak in vport enable error path (Kamal Heib) [RHEL-169057]
+- net/mlx5: Destroy vport QoS element when no configuration remains (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Preserve tc-bw during parent changes (Kamal Heib) [RHEL-169057]
+- net/mlx5: Remove default QoS group and attach vports directly to root TSAR (Kamal Heib) [RHEL-169057]
+- net/mlx5: Base ECVF devlink port attrs from 0 (Kamal Heib) [RHEL-169057]
+- net/mlx5: CT: Use the correct counter offset (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix table creation UID (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, don't rehash on every kind of insertion failure (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, prevent rehash from filling up the queues (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, fix complex rules rehash error flow (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, fix simple rules rehash error flow (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, fix bad parameter in CQ creation (Kamal Heib) [RHEL-169057]
+- net/mlx5: Correctly set gso_segs when LRO is used (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Expose TIS via devlink tx reporter diagnose (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Support routed networks during IPsec MACs initialization (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix potential deadlock by deferring RX timeout recovery (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Remove skb secpath if xfrm state is not found (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Clear Read-Only port buffer size in PBMC before update (Kamal Heib) [RHEL-169057]
+- net: Fix typos (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix build -Wframe-larger-than warnings (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add support for device steering tag (Kamal Heib) [RHEL-169057]
+- net/mlx5: Expose IFC bits for TPH (Kamal Heib) [RHEL-169057]
+- PCI/TPH: Expose pcie_tph_get_st_table_size() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Remove duplicate mkey from SHAMPO header (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO, Remove mlx5e_shampo_get_log_hd_entry_size() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO, Cleanup reservation size formula (Kamal Heib) [RHEL-169057]
+- net/mlx5: Expose cable_length field in PFCC register (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add IFC bits and enums for buf_ownership (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add IFC bits to support RSS for IPSec offload (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Properly access RCU protected qdisc_sleeping variable (Kamal Heib) [RHEL-169057]
+- net/mlx5e: fix kdoc warning on eswitch.h (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Enable IPSec hardware offload in legacy mode (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix an IS_ERR() vs NULL bug in esw_qos_move_node() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Add device PCIe congestion ethtool stats (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Create/destroy PCIe Congestion Event object (Kamal Heib) [RHEL-169057]
+- net/mlx5: IFC updates for disabled host PF (Kamal Heib) [RHEL-169057]
+- net/mlx5: Expose disciplined_fr_counter through HCA capabilities in mlx5_ifc (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix UMR modifying of mkey page size (Kamal Heib) [RHEL-169057]
+- net/mlx5: Expose HCA capability bits for mkey max page size (Kamal Heib) [RHEL-169057]
+- net/mlx5e: RX, Remove unnecessary RQT redirects (Kamal Heib) [RHEL-169057]
+- net/mlx5: Warn when write combining is not supported (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Replace recursive VLAN push handling with an iterative loop (Kamal Heib) [RHEL-169057]
+- net/mlx5e: CT: extract a memcmp from a spinlock section (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Remove unused VLAN insertion logic in TX path (Kamal Heib) [RHEL-169057]
+- eth: mlx5: migrate to the *_rxfh_context ops (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix spelling mistake "disabliing" -> "disabling" (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add HWS as secondary steering mode (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Shrink empty matchers (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Rearrange to prevent forward declaration (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Track matcher sizes individually (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Decouple matcher RX and TX sizes (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Create STEs directly from matcher (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Refactor rule skip logic (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Export rule skip logic (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, remove incorrect comment (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, remove unused create_dest_array parameter (Kamal Heib) [RHEL-169057]
+- net/mlx5: Manage TC arbiter nodes and implement full support for tc-bw (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add traffic class scheduling support for vport QoS (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add support for setting tc-bw on nodes (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add no-op implementation for setting tc-bw on rate objects (Kamal Heib) [RHEL-169057]
+- net/mlx5: Check device memory pointer before usage (Kamal Heib) [RHEL-169057]
+- net/mlx5: fs, fix RDMA TRANSPORT init cleanup flow (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix error handling in RQ memory model registration (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Allocate IB device with net namespace supplied from core dev (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add IFC bits for PCIe Congestion Event object (Kamal Heib) [RHEL-169057]
+- net/mlx5: Small refactor for general object capabilities (Kamal Heib) [RHEL-169057]
+- net/mlx5: fs, add multiple prios to RDMA TRANSPORT steering domain (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Support ethtool tcp-data-split settings (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Implement queue mgmt ops and single channel swap (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO: Separate pool for headers (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO: Improve hw gro capability checking (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO: Remove redundant params (Kamal Heib) [RHEL-169057]
+- net/mlx5e: SHAMPO: Reorganize mlx5_rq_shampo_alloc (Kamal Heib) [RHEL-169057]
+- net/mlx5: Expose serial numbers in devlink info (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix vport loopback for MPV device (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix CC counters query for MPV (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix HW counters query for non-representor devices (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Initialize obj_event->obj_sub_list before xa_insert (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Avoid flexible array warning (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Add support for 200Gbps per lane speeds (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Remove the redundant MLX5_IB_STAGE_UAR stage (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: convert timeouts to secs_to_jiffies() (Kamal Heib) [RHEL-169057]
+- net/mlx5: E-Switch, Fix peer miss rules to use peer eswitch (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix memory leak in cmd_exec() (Kamal Heib) [RHEL-169057]
+- net/mlx5: Correctly set gso_size when LRO is used (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Add new prio for promiscuous mode (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix race between DIM disable and net_dim() (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Add error checking to hws_bwc_rule_complex_hash_node_get() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Fix leak of Geneve TLV option object (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, make sure the uplink is the last destination (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, fix missing ip_version handling in definer (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Init mutex on the correct path (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix return value when searching for existing flow group (Kamal Heib) [RHEL-169057]
+- net/mlx5: Ensure fw pages are always allocated on same NUMA (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix an error code in mlx5hws_bwc_rule_create_complex() (Kamal Heib) [RHEL-169057]
+- net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid() (Kamal Heib) [RHEL-169057]
+- net/mlx5e: Allow setting MAC address of representors (Kamal Heib) [RHEL-169057]
+- net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr() (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, handle modify header actions dependency (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, fix typo - 'nope' to 'nop' (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, register reformat actions with fw (Kamal Heib) [RHEL-169057]
+- net/mlx5: SWS, fix reformat id error handling (Kamal Heib) [RHEL-169057]
+- net/mlx5: Use to_delayed_work() (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, dump bad completion details (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, rework rehash loop (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, fix redundant extension of action templates (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, fix counting of rules in the matcher (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, force rehash when rule insertion failed (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, support complex matchers (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, introduce isolated matchers (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, expose polling function in header file (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, add definer function to get field name str (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, expose function mlx5hws_table_ft_set_next_ft in header (Kamal Heib) [RHEL-169057]
+- net/mlx5: support software TX timestamp (Kamal Heib) [RHEL-169057]
+- RDMA/mlx5: Fix error flow upon firmware failure for RQ destruction (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Disallow matcher IP version mixing (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Harden IP version definer checks (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix IP version decision (Kamal Heib) [RHEL-169057]
+- net/mlx5: Fix spelling mistakes in mlx5_core_dbg message and comments (Kamal Heib) [RHEL-169057]
+- net/mlx5e: ethtool: Fix formatting of ptp_rq0_csum_complete_tail_slow (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Export action STE tables to debugfs (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Free unused action STE tables (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Cleanup matcher action STE table (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Use the new action STE pool (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Implement action STE pool (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix pool size optimization (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Add fullness tracking to pool (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Cleanup after pool refactoring (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Refactor pool implementation (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Make pool single resource (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Remove unused element array (Kamal Heib) [RHEL-169057]
+- net/mlx5: HWS, Fix matcher action template attach (Kamal Heib) [RHEL-169057]
+- selinux: RHEL-only hotfix for execmem regression (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- selinux: fix overlayfs mmap() and mprotect() access checks (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- lsm: add backing_file LSM hooks (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: prepare for adding LSM blob to backing_file (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- perf/core: Fix MMAP event path names with backing files (Ondrej Mosnacek) [RHEL-179444]
+- ovl: remove redundant IOCB_DIO_CALLER_COMP clearing (Ondrej Mosnacek) [RHEL-179444]
+- ovl: remove unneeded non-const conversion (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: constify file ptr in backing_file accessor helpers (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- ovl: Fix nested backing file paths (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- lsm: add helper for blob allocations (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: factor out backing_file_mmap() helper (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: factor out backing_file_splice_{read,write}() helpers (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: factor out backing_file_{read,write}_iter() helpers (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: prepare for stackable filesystems backing file helpers (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: store real path instead of fake path in backing file f_path (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: create helper file_user_path() for user displayed mapped file path (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: get mnt_writers count for an open backing file's real path (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: rename __mnt_{want,drop}_write*() helpers (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: Fix kernel-doc warnings (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- cachefiles: use kiocb_{start,end}_write() helpers (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- lsm: constify the 'file' parameter in security_binder_transfer_file() (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: move cleanup from init_file() into its callers (Ondrej Mosnacek) [RHEL-179444]
+- ovl: enable fsnotify events on underlying real files (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: use backing_file container for internal files with "fake" f_path (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: move kmem_cache_zalloc() into alloc_empty_file*() helpers (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- fs: use a helper for opening kernel internal files (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- locks: fix TOCTOU race when granting write lease (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- binder: use cred instead of task for selinux checks (Ondrej Mosnacek) [RHEL-179444] {CVE-2026-46054}
+- RDMA/iwcm: Fix workqueue list corruption by removing work_list (CKI Backport Bot) [RHEL-179664] {CVE-2026-45898}
+- ALSA: aloop: Fix peer runtime UAF during format-change stop (CKI Backport Bot) [RHEL-179310] {CVE-2026-46090}
+- ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach() (Guillaume Nault) [RHEL-172670] {CVE-2026-43038}
+- drm/amd/display: Do not skip unrelated mode changes in DSC validation (CKI Backport Bot) [RHEL-178836] {CVE-2026-31488}
+- netfilter: flowtable: strictly check for maximum number of actions (CKI Backport Bot) [RHEL-176927] {CVE-2026-43329}
+
+* Tue Jun 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.17.1
+- Add fix for CVE-2026-46316 (KVM arm64 vgic-its translation-cache use-after-free) ahead of RHEL (1312)
+
 * Mon Jun 22 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.17.1
 - Recreate RHEL 5.14.0-687.17.1 from CentOS Stream 9 and upstream stable backports (1285-1311)
 - RHEL changelog for 687.16.1..687.17.1 follows:
