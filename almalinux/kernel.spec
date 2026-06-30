@@ -21,6 +21,17 @@
 %global signkernel 0
 %endif
 
+# RHEL/CentOS/Fedora specific .SBAT entries
+%if 0%{?centos}
+%global sbat_suffix centos
+%else
+%if 0%{?fedora}
+%global sbat_suffix fedora
+%else
+%global sbat_suffix rhel
+%endif
+%endif
+
 # Sign modules on all arches
 %global signmodules 1
 
@@ -38,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.137.1.el8_10
+%define pkgrelease 553.139.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.137.1%{?dist}
+%define specrelease 553.139.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -457,6 +468,7 @@ Source17: mod-blacklist.sh
 Source18: mod-sign.sh
 Source19: mod-extra.list
 Source80: parallel_xz.sh
+Source85: kernel.sbat.template
 Source90: filter-x86_64.sh
 Source93: filter-aarch64.sh
 Source96: filter-ppc64le.sh
@@ -1151,6 +1163,9 @@ pathfix.py -i %{__python3} -p -n \
 
 %define make make %{?cross_opts} HOSTCFLAGS="%{?build_hostcflags}" HOSTLDFLAGS="%{?build_hostldflags}"
 
+# SBAT data
+sed -e s,@KVER,%{KVERREL}, -e s,@SBAT_SUFFIX,%{sbat_suffix}, %{SOURCE85} > kernel.sbat
+
 # only deal with configs if we are going to build for the arch
 %ifnarch %nobuildarches
 
@@ -1193,6 +1208,7 @@ cat secureboot.pem >> ../certs/rhel.pem
 %endif
 for i in *.config; do
   sed -i 's@CONFIG_SYSTEM_TRUSTED_KEYS=""@CONFIG_SYSTEM_TRUSTED_KEYS="certs/rhel.pem"@' $i
+  sed -i 's@CONFIG_EFI_SBAT_FILE=""@CONFIG_EFI_SBAT_FILE="kernel.sbat"@' $i
 done
 %endif
 %endif
@@ -2713,7 +2729,7 @@ fi
 #
 #
 %changelog
-* Mon Jun 22 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.137.1
+* Tue Jun 30 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.139.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2724,9 +2740,24 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Jun 22 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.137.1
+* Tue Jun 30 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.139.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Jun 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.139.1.el8_10]
+- NFS: improve "Server wrote zero bytes" error (Olga Kornievskaia) [RHEL-147665]
+
+* Wed Jun 24 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.138.1.el8_10]
+- redhat: Temporary stop adding 'kernel' component to SBAT (Thomas Huth) [RHEL-182788]
+- redhat: Switch to implicit enablement of CONFIG_EFI_SBAT_FILE (Thomas Huth) [RHEL-182788]
+- redhat: Add SBAT information to Linux kernel (Thomas Huth) [RHEL-182788]
+- x86/boot: Handle relative CONFIG_EFI_SBAT_FILE file paths (Thomas Huth) [RHEL-182788]
+- x86/efi: Implement support for embedding SBAT data for x86 (Thomas Huth) [RHEL-182788]
+- redhat: Add Kconfig switch for embedding SBAT section (Thomas Huth) [RHEL-182788]
+- gfs2: Fix use-after-free in iomap inline data write path (Andrew Price) [RHEL-179596] {CVE-2026-45984}
+- gfs2: Add metapath_dibh helper (Andrew Price) [RHEL-179596] {CVE-2026-45984}
+- RDMA/vmw_pvrdma: Fix double free on pvrdma_alloc_ucontext() error path (CKI Backport Bot) [RHEL-179963] {CVE-2026-46189}
+- scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count() (CKI Backport Bot) [RHEL-165556] {CVE-2026-23216}
 
 * Fri Jun 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.137.1.el8_10]
 - selinux: RHEL-only hotfix for execmem regression (Ondrej Mosnacek) [RHEL-179435] {CVE-2026-46054}
