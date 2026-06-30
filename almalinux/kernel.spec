@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.19.1
+%define pkgrelease 687.20.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.19.1%{?buildid}%{?dist}
+%define specrelease 687.20.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1573,6 +1573,20 @@ Patch1692: 1692-init-kconfig-fix-cc-has-asm-goto-tied-output-test-with-dash.patc
 Patch1693: 1693-update-workarounds-for-gcc-asm-goto-issue.patch
 Patch1694: 1694-init-kconfig-remove-config-gcc-asm-goto-output-workaround.patch
 Patch1695: 1695-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
+Patch1696: 1696-net-atm-fix-crash-due-to-unvalidated-vcc-pointer-in-sigd-sen.patch
+Patch1697: 1697-scsi-qla2xxx-add-support-to-report-mpi-fw-state.patch
+Patch1698: 1698-crypto-tegra-use-api-helpers-to-setup-fallback-request.patch
+Patch1699: 1699-crypto-tegra-remove-the-use-of-dev-err-probe.patch
+Patch1700: 1700-crypto-tegra-use-int-type-to-store-negative-error-codes.patch
+Patch1701: 1701-crypto-tegra-add-missing-crypto-alg-async.patch
+Patch1702: 1702-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patch
+Patch1703: 1703-crypto-tegra-fix-dma-free-coherent-size-error.patch
+Patch1704: 1704-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
+Patch1705: 1705-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
+Patch1706: 1706-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.patch
+Patch1707: 1707-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
+Patch1708: 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
+Patch1709: 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2913,6 +2927,20 @@ ApplyPatch 1692-init-kconfig-fix-cc-has-asm-goto-tied-output-test-with-dash.patc
 ApplyPatch 1693-update-workarounds-for-gcc-asm-goto-issue.patch
 ApplyPatch 1694-init-kconfig-remove-config-gcc-asm-goto-output-workaround.patch
 ApplyPatch 1695-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
+ApplyPatch 1696-net-atm-fix-crash-due-to-unvalidated-vcc-pointer-in-sigd-sen.patch
+ApplyPatch 1697-scsi-qla2xxx-add-support-to-report-mpi-fw-state.patch
+ApplyPatch 1698-crypto-tegra-use-api-helpers-to-setup-fallback-request.patch
+ApplyPatch 1699-crypto-tegra-remove-the-use-of-dev-err-probe.patch
+ApplyPatch 1700-crypto-tegra-use-int-type-to-store-negative-error-codes.patch
+ApplyPatch 1701-crypto-tegra-add-missing-crypto-alg-async.patch
+ApplyPatch 1702-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patch
+ApplyPatch 1703-crypto-tegra-fix-dma-free-coherent-size-error.patch
+ApplyPatch 1704-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
+ApplyPatch 1705-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
+ApplyPatch 1706-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.patch
+ApplyPatch 1707-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
+ApplyPatch 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
+ApplyPatch 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -4987,6 +5015,27 @@ fi
 #
 #
 %changelog
+* Tue Jun 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.20.1
+- Recreate RHEL 5.14.0-687.20.1 from CentOS Stream 9 and upstream stable backports (1696-1709)
+- Retain AlmaLinux ahead-of-RHEL fix for CVE-2026-46316 (1312)
+- RHEL changelog for 687.19.1..687.20.1 follows:
+
+* Mon Jun 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.20.1.el9_8]
+- crypto: krb5 - filter out async aead implementations at alloc (CKI Backport Bot) [RHEL-182540]
+- crypto: krb5enc - fix async decrypt skipping hash verification (CKI Backport Bot) [RHEL-182540]
+- crypto: krb5enc - fix sleepable flag handling in encrypt dispatch (CKI Backport Bot) [RHEL-182540]
+- crypto: testmgr - allow authenc(hmac(sha{256,384}),cts(cbc(aes))) in FIPS mode (CKI Backport Bot) [RHEL-182540]
+- tcp: fix potential race in tcp_v6_syn_recv_sock() (Paolo Abeni) [RHEL-174243] {CVE-2026-43198}
+- crypto: tegra - Return ENOMEM when input buffer allocation fails for ccm (Vladislav Dronov) [RHEL-182760]
+- crypto: tegra - Fix dma_free_coherent size error (Vladislav Dronov) [RHEL-182760]
+- crypto: tegra - Don't touch bo refcount in host1x bo pin/unpin (Vladislav Dronov) [RHEL-182760]
+- crypto: tegra - Add missing CRYPTO_ALG_ASYNC (Vladislav Dronov) [RHEL-182760] {CVE-2026-31739}
+- crypto: tegra - Use int type to store negative error codes (Vladislav Dronov) [RHEL-182760]
+- crypto: tegra - Remove the use of dev_err_probe() (Vladislav Dronov) [RHEL-182760]
+- crypto: tegra - use API helpers to setup fallback request (Vladislav Dronov) [RHEL-182760]
+- scsi: qla2xxx: Add support to report MPI FW state (Ewan D. Milne) [RHEL-181886]
+- net: atm: fix crash due to unvalidated vcc pointer in sigd_send() (CKI Backport Bot) [RHEL-167051] {CVE-2026-31411}
+
 * Mon Jun 29 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.19.1
 - Recreate RHEL 5.14.0-687.19.1 from CentOS Stream 9 and upstream stable backports (1313-1695)
 - Retain AlmaLinux ahead-of-RHEL fix for CVE-2026-46316 (1312)
