@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.28.1
+%define pkgrelease 211.29.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.28.1%{?buildid}%{?dist}
+%define specrelease 211.29.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1418,6 +1418,21 @@ Patch1380: 1380-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.pat
 Patch1381: 1381-scsi-qla2xxx-completely-fix-fcport-double-free.patch
 Patch1382: 1382-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
 Patch1383: 1383-selinux-rhel-only-hotfix-for-execmem-regression.patch
+Patch1384: 1384-ipv4-account-for-fraggap-on-the-paged-allocation-path.patch
+Patch1385: 1385-ipv6-account-for-fraggap-on-the-paged-allocation-path.patch
+Patch1386: 1386-alsa-usb-audio-add-sanity-check-for-oob-writes-at-silencing.patch
+Patch1387: 1387-alsa-aloop-fix-peer-runtime-uaf-during-format-change-stop.patch
+Patch1388: 1388-rdma-vmw-pvrdma-fix-double-free-on-pvrdma-alloc-ucontext-err.patch
+Patch1389: 1389-scsi-qla2xxx-add-support-to-report-mpi-fw-state.patch
+Patch1390: 1390-crypto-tegra-remove-unneeded-crypto-engine-stop-call.patch
+Patch1391: 1391-crypto-tegra-use-api-helpers-to-setup-fallback-request.patch
+Patch1392: 1392-crypto-tegra-remove-the-use-of-dev-err-probe.patch
+Patch1393: 1393-crypto-tegra-use-int-type-to-store-negative-error-codes.patch
+Patch1394: 1394-crypto-tegra-add-missing-crypto-alg-async.patch
+Patch1395: 1395-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patch
+Patch1396: 1396-crypto-tegra-fix-dma-free-coherent-size-error.patch
+Patch1397: 1397-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
+Patch1398: 1398-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2558,6 +2573,21 @@ ApplyPatch 1380-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.pat
 ApplyPatch 1381-scsi-qla2xxx-completely-fix-fcport-double-free.patch
 ApplyPatch 1382-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
 ApplyPatch 1383-selinux-rhel-only-hotfix-for-execmem-regression.patch
+ApplyPatch 1384-ipv4-account-for-fraggap-on-the-paged-allocation-path.patch
+ApplyPatch 1385-ipv6-account-for-fraggap-on-the-paged-allocation-path.patch
+ApplyPatch 1386-alsa-usb-audio-add-sanity-check-for-oob-writes-at-silencing.patch
+ApplyPatch 1387-alsa-aloop-fix-peer-runtime-uaf-during-format-change-stop.patch
+ApplyPatch 1388-rdma-vmw-pvrdma-fix-double-free-on-pvrdma-alloc-ucontext-err.patch
+ApplyPatch 1389-scsi-qla2xxx-add-support-to-report-mpi-fw-state.patch
+ApplyPatch 1390-crypto-tegra-remove-unneeded-crypto-engine-stop-call.patch
+ApplyPatch 1391-crypto-tegra-use-api-helpers-to-setup-fallback-request.patch
+ApplyPatch 1392-crypto-tegra-remove-the-use-of-dev-err-probe.patch
+ApplyPatch 1393-crypto-tegra-use-int-type-to-store-negative-error-codes.patch
+ApplyPatch 1394-crypto-tegra-add-missing-crypto-alg-async.patch
+ApplyPatch 1395-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patch
+ApplyPatch 1396-crypto-tegra-fix-dma-free-coherent-size-error.patch
+ApplyPatch 1397-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
+ApplyPatch 1398-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5062,6 +5092,31 @@ fi\
 #
 #
 %changelog
+* Wed Jul 01 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.29.1
+- Recreate RHEL 6.12.0-211.29.1 from CentOS Stream 10 and upstream stable backports (1386-1398)
+- Retain AlmaLinux ahead-of-RHEL fixes: CVE-2026-46316 (1374), ipv4/ipv6 fraggap (1384-1385)
+- RHEL changelog for 211.29.1 follows:
+
+* Mon Jun 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.29.1.el10_2]
+- RDMA/mlx5: Fix error path fall-through in mlx5_ib_dev_res_srq_init() (CKI Backport Bot) [RHEL-180001] {CVE-2026-46176}
+- crypto: tegra - Return ENOMEM when input buffer allocation fails for ccm (Vladislav Dronov) [RHEL-182759]
+- crypto: tegra - Fix dma_free_coherent size error (Vladislav Dronov) [RHEL-182759]
+- crypto: tegra - Don't touch bo refcount in host1x bo pin/unpin (Vladislav Dronov) [RHEL-182759]
+- crypto: tegra - Add missing CRYPTO_ALG_ASYNC (Vladislav Dronov) [RHEL-182759] {CVE-2026-31739}
+- crypto: tegra - Use int type to store negative error codes (Vladislav Dronov) [RHEL-182759]
+- crypto: tegra - Remove the use of dev_err_probe() (Vladislav Dronov) [RHEL-182759]
+- crypto: tegra - use API helpers to setup fallback request (Vladislav Dronov) [RHEL-182759]
+- crypto: tegra - remove unneeded crypto_engine_stop() call (Vladislav Dronov) [RHEL-182759]
+- scsi: qla2xxx: Add support to report MPI FW state (Ewan D. Milne) [RHEL-181887]
+- RDMA/vmw_pvrdma: Fix double free on pvrdma_alloc_ucontext() error path (CKI Backport Bot) [RHEL-179965] {CVE-2026-46189}
+- ALSA: aloop: Fix peer runtime UAF during format-change stop (CKI Backport Bot) [RHEL-179317] {CVE-2026-46090}
+- ALSA: usb-audio: Add sanity check for OOB writes at silencing (CKI Backport Bot) [RHEL-173937] {CVE-2026-43279}
+
+* Tue Jun 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.28.2
+- Add upstream ipv4/ipv6 fraggap paged-allocation fixes (1384-1385)
+  eca856950f7c ipv4: account for fraggap on the paged allocation path
+  736b380e28d0 ipv6: account for fraggap on the paged allocation path
+
 * Fri Jun 26 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.28.1
 - Recreate RHEL 6.12.0-211.28.1 from CentOS Stream 10 and upstream stable backports (1375-1383)
 - Retain AlmaLinux ahead-of-RHEL fix for CVE-2026-46316 (1374)
