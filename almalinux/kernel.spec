@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.29.1
+%define pkgrelease 211.30.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.29.1%{?buildid}%{?dist}
+%define specrelease 211.30.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1433,6 +1433,22 @@ Patch1395: 1395-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patc
 Patch1396: 1396-crypto-tegra-fix-dma-free-coherent-size-error.patch
 Patch1397: 1397-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
 Patch1398: 1398-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
+Patch1399: 1399-rxrpc-fix-potential-uaf-after-skb-unshare-failure.patch
+Patch1400: 1400-rxrpc-fix-rxrpc-input-call-event-to-only-unshare-data-packet.patch
+Patch1401: 1401-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
+Patch1402: 1402-netfilter-nft-inner-fix-ipv6-inner-thoff-desync.patch
+Patch1403: 1403-asoc-sdca-fix-null-pointer-dereference-in-sdca-dev-unregiste.patch
+Patch1404: 1404-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.patch
+Patch1405: 1405-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
+Patch1406: 1406-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
+Patch1407: 1407-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
+Patch1408: 1408-arm64-cputype-add-c1-pro-definitions.patch
+Patch1409: 1409-arm64-cputype-add-c1-premium-definitions.patch
+Patch1410: 1410-arm64-cputype-add-c1-ultra-definitions.patch
+Patch1411: 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
+Patch1412: 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
+Patch1413: 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
+Patch1414: 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2588,6 +2604,22 @@ ApplyPatch 1395-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patc
 ApplyPatch 1396-crypto-tegra-fix-dma-free-coherent-size-error.patch
 ApplyPatch 1397-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
 ApplyPatch 1398-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
+ApplyPatch 1399-rxrpc-fix-potential-uaf-after-skb-unshare-failure.patch
+ApplyPatch 1400-rxrpc-fix-rxrpc-input-call-event-to-only-unshare-data-packet.patch
+ApplyPatch 1401-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
+ApplyPatch 1402-netfilter-nft-inner-fix-ipv6-inner-thoff-desync.patch
+ApplyPatch 1403-asoc-sdca-fix-null-pointer-dereference-in-sdca-dev-unregiste.patch
+ApplyPatch 1404-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.patch
+ApplyPatch 1405-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
+ApplyPatch 1406-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
+ApplyPatch 1407-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
+ApplyPatch 1408-arm64-cputype-add-c1-pro-definitions.patch
+ApplyPatch 1409-arm64-cputype-add-c1-premium-definitions.patch
+ApplyPatch 1410-arm64-cputype-add-c1-ultra-definitions.patch
+ApplyPatch 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
+ApplyPatch 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
+ApplyPatch 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
+ApplyPatch 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5092,6 +5124,36 @@ fi\
 #
 #
 %changelog
+* Fri Jul 03 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.1
+- Recreate RHEL 6.12.0-211.30.1 from CentOS Stream 10 and upstream stable backports (1399-1414)
+- RHEL 6.12.0-211.30.1 now also carries the vgic-its (CVE-2026-46316) and ipv4/ipv6
+  fraggap fixes AlmaLinux shipped ahead; the AlmaLinux patches (1374, 1384-1385) are
+  retained and RHEL's duplicate copies omitted
+- CONFIG_ARM64_ERRATUM_4118414 enabled for aarch64 (CVE-2025-10263)
+- RHEL changelog for 211.30.1 follows:
+
+* Wed Jul 01 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.30.1.el10_2]
+- ipv6: account for fraggap on the paged allocation path (Sabrina Dubroca) [RHEL-191349]
+- ipv4: account for fraggap on the paged allocation path (Sabrina Dubroca) [RHEL-191349]
+- fs/smb/client: fix out-of-bounds read in cifs_sanitize_prepath (CKI Backport Bot) [RHEL-189491] {CVE-2026-43112}
+- Enable workaround for ARM64 ERRATUM 4118414 (Mark Salter) [RHEL-183592] {CVE-2025-10263}
+- arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU (Mark Salter) [RHEL-183592] {CVE-2025-10263}
+- arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU (Mark Salter) [RHEL-183592] {CVE-2025-10263}
+- arm64: errata: Mitigate TLBI errata on various Arm CPUs (Mark Salter) [RHEL-183592] {CVE-2025-10263}
+- arm64: cputype: Add C1-Ultra definitions (Mark Salter) [RHEL-183592] {CVE-2025-10263}
+- arm64: cputype: Add C1-Premium definitions (Mark Salter) [RHEL-183592] {CVE-2025-10263}
+- arm64: cputype: Add C1-Pro definitions (Mark Salter) [RHEL-183592] {CVE-2025-10263}
+- crypto: krb5 - filter out async aead implementations at alloc (CKI Backport Bot) [RHEL-182537]
+- crypto: krb5enc - fix async decrypt skipping hash verification (CKI Backport Bot) [RHEL-182537]
+- crypto: krb5enc - fix sleepable flag handling in encrypt dispatch (CKI Backport Bot) [RHEL-182537]
+- crypto: testmgr - allow authenc(hmac(sha{256,384}),cts(cbc(aes))) in FIPS mode (CKI Backport Bot) [RHEL-182537]
+- ASoC: SDCA: fix NULL pointer dereference in sdca_dev_unregister_functions (CKI Backport Bot) [RHEL-185110]
+- KVM: arm64: vgic-its: Drop the translation cache reference only for the erased entry (CKI Backport Bot) [RHEL-183965] {CVE-2026-46316}
+- netfilter: nft_inner: Fix IPv6 inner_thoff desync (CKI Backport Bot) [RHEL-181936] {CVE-2026-46244}
+- drm/gem: Fix inconsistent plane dimension calculation in drm_gem_fb_init_with_funcs() (CKI Backport Bot) [RHEL-179912] {CVE-2026-46209}
+- rxrpc: Fix rxrpc_input_call_event() to only unshare DATA packets (CKI Backport Bot) [RHEL-179566] {CVE-2026-45998}
+- rxrpc: Fix potential UAF after skb_unshare() failure (CKI Backport Bot) [RHEL-179566] {CVE-2026-45998}
+
 * Wed Jul 01 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.29.1
 - Recreate RHEL 6.12.0-211.29.1 from CentOS Stream 10 and upstream stable backports (1386-1398)
 - Retain AlmaLinux ahead-of-RHEL fixes: CVE-2026-46316 (1374), ipv4/ipv6 fraggap (1384-1385)
