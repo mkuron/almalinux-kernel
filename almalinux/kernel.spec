@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.140.1.el8_10
+%define pkgrelease 553.141.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.140.1%{?dist}
+%define specrelease 553.141.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2729,7 +2729,7 @@ fi
 #
 #
 %changelog
-* Tue Jul 07 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.140.1
+* Tue Jul 07 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.141.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2740,9 +2740,12 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Jul 07 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.140.1
+* Tue Jul 07 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.141.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Jul 06 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.141.1.el8_10]
+- fs/smb/client: fix out-of-bounds read in cifs_sanitize_prepath (CKI Backport Bot) [RHEL-189506] {CVE-2026-43112}
 
 * Thu Jul 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.140.1.el8_10]
 - Enable workaround for ARM64 ERRATUM 4118414 (Mark Salter) [RHEL-183619] {CVE-2025-10263}
