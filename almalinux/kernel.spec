@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.20.1
+%define pkgrelease 687.22.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.20.1%{?buildid}%{?dist}
+%define specrelease 687.22.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1587,6 +1587,31 @@ Patch1706: 1706-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.pat
 Patch1707: 1707-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
 Patch1708: 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
 Patch1709: 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
+Patch1710: 1710-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+Patch1711: 1711-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+Patch1712: 1712-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
+Patch1713: 1713-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
+Patch1714: 1714-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sc.patch
+Patch1715: 1715-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
+Patch1716: 1716-procfs-fix-missing-rcu-protection-when-reading-real-parent-i.patch
+Patch1717: 1717-netfilter-nft-inner-fix-ipv6-inner-thoff-desync.patch
+Patch1719: 1719-arm64-cputype-add-c1-pro-definitions.patch
+Patch1720: 1720-arm64-cputype-add-c1-premium-definitions.patch
+Patch1721: 1721-arm64-cputype-add-c1-ultra-definitions.patch
+Patch1722: 1722-arm64-cputype-add-neoverse-v3ae-definitions.patch
+Patch1723: 1723-arm64-errata-apply-workarounds-for-neoverse-v3ae.patch
+Patch1724: 1724-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
+Patch1725: 1725-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
+Patch1726: 1726-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
+Patch1727: 1727-arm64-cputype-add-nvidia-olympus-definitions.patch
+Patch1728: 1728-clean-up-documentation-mess-left-by-previous-backport.patch
+Patch1729: 1729-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepat.patch
+Patch1730: 1730-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
+Patch1731: 1731-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
+Patch1732: 1732-net-gro-don-t-merge-zcopy-skbs.patch
+Patch1733: 1733-xfrm-defensively-unhash-xfrm-state-lists-in-xfrm-state-delet.patch
+Patch1734: 1734-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
+Patch1735: 1735-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2941,6 +2966,31 @@ ApplyPatch 1706-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.pat
 ApplyPatch 1707-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
 ApplyPatch 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
 ApplyPatch 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
+ApplyPatch 1710-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+ApplyPatch 1711-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+ApplyPatch 1712-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
+ApplyPatch 1713-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
+ApplyPatch 1714-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sc.patch
+ApplyPatch 1715-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
+ApplyPatch 1716-procfs-fix-missing-rcu-protection-when-reading-real-parent-i.patch
+ApplyPatch 1717-netfilter-nft-inner-fix-ipv6-inner-thoff-desync.patch
+ApplyPatch 1719-arm64-cputype-add-c1-pro-definitions.patch
+ApplyPatch 1720-arm64-cputype-add-c1-premium-definitions.patch
+ApplyPatch 1721-arm64-cputype-add-c1-ultra-definitions.patch
+ApplyPatch 1722-arm64-cputype-add-neoverse-v3ae-definitions.patch
+ApplyPatch 1723-arm64-errata-apply-workarounds-for-neoverse-v3ae.patch
+ApplyPatch 1724-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
+ApplyPatch 1725-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
+ApplyPatch 1726-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
+ApplyPatch 1727-arm64-cputype-add-nvidia-olympus-definitions.patch
+ApplyPatch 1728-clean-up-documentation-mess-left-by-previous-backport.patch
+ApplyPatch 1729-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepat.patch
+ApplyPatch 1730-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
+ApplyPatch 1731-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
+ApplyPatch 1732-net-gro-don-t-merge-zcopy-skbs.patch
+ApplyPatch 1733-xfrm-defensively-unhash-xfrm-state-lists-in-xfrm-state-delet.patch
+ApplyPatch 1734-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
+ApplyPatch 1735-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5015,6 +5065,51 @@ fi
 #
 #
 %changelog
+* Mon Jul 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.22.1
+- Recreate RHEL 5.14.0-687.22.1 from CentOS Stream 9 and upstream stable backports (1713-1735)
+- Retain AlmaLinux ahead-of-RHEL fixes: KVM x86 shadow paging (1710-1711), eventpoll
+  ep_remove use-after-free CVE-2026-46242 (1712)
+- RHEL 5.14.0-687.21.1 now also carries the vgic-its fix (CVE-2026-46316); the AlmaLinux
+  ahead-patch (1312) is retained and RHEL's duplicate copy omitted
+- CONFIG_ARM64_ERRATUM_4118414 enabled for aarch64 (CVE-2025-10263)
+- RHEL changelog for 687.21.1..687.22.1 follows:
+
+* Mon Jul 06 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.22.1.el9_8]
+- smb/client: fix out-of-bounds read in smb2_compound_op() (Paulo Alcantara) [RHEL-180041] {CVE-2026-46155}
+- smb: client: fix off-by-8 bounds check in check_wsl_eas() (Paulo Alcantara) [RHEL-180041]
+- xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete (Sabrina Dubroca) [RHEL-180176] {CVE-2026-46116}
+- net: gro: don't merge zcopy skbs (Sabrina Dubroca) [RHEL-177878] {CVE-2026-46323}
+- net/mana: Null service_wq on setup error to prevent double destroy (CKI Backport Bot) [RHEL-180271] {CVE-2026-43276}
+- net: mana: Fix double destroy_workqueue on service rescan PCI path (CKI Backport Bot) [RHEL-180271] {CVE-2026-43276}
+
+* Thu Jul 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.21.1.el9_8]
+- fs/smb/client: fix out-of-bounds read in cifs_sanitize_prepath (CKI Backport Bot) [RHEL-189503] {CVE-2026-43112}
+- Enable workaround for ARM64 ERRATUM 4118414 (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: cputype: Add NVIDIA Olympus definitions (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: errata: Mitigate TLBI errata on various Arm CPUs (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: errata: Apply workarounds for Neoverse-V3AE (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: cputype: Add Neoverse-V3AE definitions (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: cputype: Add C1-Ultra definitions (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: cputype: Add C1-Premium definitions (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- arm64: cputype: Add C1-Pro definitions (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- Clean up documentation mess left by previous backport (Mark Salter) [RHEL-183625] {CVE-2025-10263}
+- KVM: arm64: vgic-its: Drop the translation cache reference only for the erased entry (CKI Backport Bot) [RHEL-183969] {CVE-2026-46316}
+- netfilter: nft_inner: Fix IPv6 inner_thoff desync (CKI Backport Bot) [RHEL-181929] {CVE-2026-46244}
+- procfs: fix missing RCU protection when reading real_parent in do_task_stat() (CKI Backport Bot) [RHEL-181907] {CVE-2026-46259}
+- drm/gem: Fix inconsistent plane dimension calculation in drm_gem_fb_init_with_funcs() (CKI Backport Bot) [RHEL-179909] {CVE-2026-46209}
+- sctp: revalidate list cursor after sctp_sendmsg_to_asoc() in SCTP_SENDALL (CKI Backport Bot) [RHEL-179865] {CVE-2026-46227}
+- nouveau/gsp: drop WARN_ON in ACPI probes (Lyude Paul) [RHEL-160966]
+
+* Mon Jul 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.20.3
+- Fix CVE-2026-46242: eventpoll ep_remove struct eventpoll / struct file
+  use-after-free, adapted from upstream a6dc643c6931 ahead of RHEL (1712)
+
+* Thu Jul 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.20.2
+- Fix KVM x86 shadow paging use-after-free due to unexpected GFN ahead of RHEL (1710)
+- Fix KVM x86 shadow paging use-after-free due to unexpected role ahead of RHEL (1711)
+
 * Tue Jun 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.20.1
 - Recreate RHEL 5.14.0-687.20.1 from CentOS Stream 9 and upstream stable backports (1696-1709)
 - Retain AlmaLinux ahead-of-RHEL fix for CVE-2026-46316 (1312)
