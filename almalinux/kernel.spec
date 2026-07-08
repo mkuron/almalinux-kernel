@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.22.1
+%define pkgrelease 687.23.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.22.1%{?buildid}%{?dist}
+%define specrelease 687.23.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1589,7 +1589,6 @@ Patch1708: 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patc
 Patch1709: 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
 Patch1710: 1710-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
 Patch1711: 1711-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
-Patch1712: 1712-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
 Patch1713: 1713-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
 Patch1714: 1714-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sc.patch
 Patch1715: 1715-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
@@ -1612,6 +1611,23 @@ Patch1732: 1732-net-gro-don-t-merge-zcopy-skbs.patch
 Patch1733: 1733-xfrm-defensively-unhash-xfrm-state-lists-in-xfrm-state-delet.patch
 Patch1734: 1734-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
 Patch1735: 1735-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
+Patch1739: 1739-tg3-fix-race-for-querying-speed-duplex.patch
+Patch1740: 1740-netfilter-bridge-make-ebt-snat-arp-rewrite-writable.patch
+Patch1741: 1741-epoll-annotate-racy-check.patch
+Patch1742: 1742-eventpoll-defer-struct-eventpoll-free-to-rcu-grace-period.patch
+Patch1743: 1743-eventpoll-use-hlist-is-singular-node-in-ep-remove.patch
+Patch1744: 1744-eventpoll-split-ep-remove.patch
+Patch1745: 1745-eventpoll-kill-ep-remove.patch
+Patch1746: 1746-eventpoll-rename-ep-remove-safe-back-to-ep-remove.patch
+Patch1747: 1747-eventpoll-move-epi-fget-up.patch
+Patch1748: 1748-eventpoll-drop-vestigial-prefix-from-ep-remove-file-epi.patch
+Patch1749: 1749-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
+Patch1750: 1750-eventpoll-move-f-lock-acquisition-into-ep-remove-file.patch
+Patch1751: 1751-eventpoll-refresh-eventpoll-release-fast-path-comment.patch
+Patch1752: 1752-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
+Patch1753: 1753-eventpoll-drop-vestigial-epi-dying-flag.patch
+Patch1754: 1754-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
+Patch1755: 1755-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2968,7 +2984,6 @@ ApplyPatch 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patc
 ApplyPatch 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
 ApplyPatch 1710-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
 ApplyPatch 1711-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
-ApplyPatch 1712-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
 ApplyPatch 1713-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
 ApplyPatch 1714-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sc.patch
 ApplyPatch 1715-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
@@ -2991,6 +3006,23 @@ ApplyPatch 1732-net-gro-don-t-merge-zcopy-skbs.patch
 ApplyPatch 1733-xfrm-defensively-unhash-xfrm-state-lists-in-xfrm-state-delet.patch
 ApplyPatch 1734-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
 ApplyPatch 1735-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
+ApplyPatch 1739-tg3-fix-race-for-querying-speed-duplex.patch
+ApplyPatch 1740-netfilter-bridge-make-ebt-snat-arp-rewrite-writable.patch
+ApplyPatch 1741-epoll-annotate-racy-check.patch
+ApplyPatch 1742-eventpoll-defer-struct-eventpoll-free-to-rcu-grace-period.patch
+ApplyPatch 1743-eventpoll-use-hlist-is-singular-node-in-ep-remove.patch
+ApplyPatch 1744-eventpoll-split-ep-remove.patch
+ApplyPatch 1745-eventpoll-kill-ep-remove.patch
+ApplyPatch 1746-eventpoll-rename-ep-remove-safe-back-to-ep-remove.patch
+ApplyPatch 1747-eventpoll-move-epi-fget-up.patch
+ApplyPatch 1748-eventpoll-drop-vestigial-prefix-from-ep-remove-file-epi.patch
+ApplyPatch 1749-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
+ApplyPatch 1750-eventpoll-move-f-lock-acquisition-into-ep-remove-file.patch
+ApplyPatch 1751-eventpoll-refresh-eventpoll-release-fast-path-comment.patch
+ApplyPatch 1752-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
+ApplyPatch 1753-eventpoll-drop-vestigial-epi-dying-flag.patch
+ApplyPatch 1754-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
+ApplyPatch 1755-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5065,6 +5097,38 @@ fi
 #
 #
 %changelog
+* Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.23.1
+- Recreate RHEL 5.14.0-687.23.1 from CentOS Stream and upstream stable backports (1739-1755)
+- The AlmaLinux ahead-of-RHEL eventpoll CVE-2026-46242 fix (1712) is superseded by
+  RHEL's eventpoll series carrying the same fix and is dropped
+- Temporarily drop the rtmutex remove_waiter() fixes (1736, 1738)
+- RHEL changelog for 687.23.1 follows:
+
+* Mon Jul 06 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.23.1.el9_8]
+- eventpoll: refresh epi_fget() / ep_remove_file() comments (Ian Kent) [RHEL-180773]
+- eventpoll: Fix integer overflow in ep_loop_check_proc() (Ian Kent) [RHEL-180773]
+- eventpoll: drop vestigial epi->dying flag (Ian Kent) [RHEL-180773]
+- eventpoll: drop dead bool return from ep_remove_epi() (Ian Kent) [RHEL-180773]
+- eventpoll: refresh eventpoll_release() fast-path comment (Ian Kent) [RHEL-180773]
+- eventpoll: move f_lock acquisition into ep_remove_file() (Ian Kent) [RHEL-180773]
+- eventpoll: fix ep_remove struct eventpoll / struct file UAF (Ian Kent) [RHEL-180773] {CVE-2026-46242}
+- eventpoll: drop vestigial __ prefix from ep_remove_{file,epi}() (Ian Kent) [RHEL-180773]
+- eventpoll: move epi_fget() up (Ian Kent) [RHEL-180773]
+- eventpoll: rename ep_remove_safe() back to ep_remove() (Ian Kent) [RHEL-180773]
+- eventpoll: kill __ep_remove() (Ian Kent) [RHEL-180773]
+- eventpoll: split __ep_remove() (Ian Kent) [RHEL-180773]
+- eventpoll: use hlist_is_singular_node() in __ep_remove() (Ian Kent) [RHEL-180773]
+- eventpoll: defer struct eventpoll free to RCU grace period (Ian Kent) [RHEL-173830] {CVE-2026-43074}
+- epoll: annotate racy check (Ian Kent) [RHEL-180773]
+- netfilter: bridge: make ebt_snat ARP rewrite writable (CKI Backport Bot) [RHEL-182344]
+- tg3: Fix race for querying speed/duplex (CKI Backport Bot) [RHEL-182768]
+
+* Tue Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.22.2
+- Fix rtmutex self-deadlock NULL pointer dereference in remove_waiter() ahead of
+  RHEL, upstream 3bfdc63936dd + 40a25d59e85b (1736, 1738); the futex_requeue guard
+  74e144274af3 was dropped, reverted upstream by 39def6d250d3 (the NULL deref is
+  fully handled by 40a25d59e85b)
+
 * Mon Jul 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.22.1
 - Recreate RHEL 5.14.0-687.22.1 from CentOS Stream 9 and upstream stable backports (1713-1735)
 - Retain AlmaLinux ahead-of-RHEL fixes: KVM x86 shadow paging (1710-1711), eventpoll
