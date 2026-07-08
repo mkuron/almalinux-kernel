@@ -49,10 +49,11 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.141.1.el8_10
+%define pkgrelease 553.141.2.el8_10
+%define tarfile_release 553.141.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.141.1%{?dist}
+%define specrelease 553.141.2%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -446,7 +447,7 @@ BuildRequires: xmlto
 BuildRequires: asciidoc
 %endif
 
-Source0: linux-%{specversion}-%{pkgrelease}.tar.xz
+Source0: linux-%{specversion}-%{tarfile_release}.tar.xz
 
 Source9: x509.genkey
 
@@ -550,6 +551,10 @@ Patch2005: 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+Patch1100: 1100-kvm-x86-fix-shadow-paging-use-after-free.patch
+Patch1101: 1101-kvm-x86-mmu-ensure-hugepage-is-in-by-slot.patch
+Patch1102: 1102-rtmutex-use-waiter-task-in-remove-waiter.patch
+Patch1104: 1104-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1108,9 +1113,9 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n %{name}-%{specversion}-%{pkgrelease} -c
-cp -v %{SOURCE9000} linux-%{specversion}-%{pkgrelease}/certs/rhel.pem
-mv linux-%{specversion}-%{pkgrelease} linux-%{KVERREL}
+%setup -q -n %{name}-%{specversion}-%{tarfile_release} -c
+cp -v %{SOURCE9000} linux-%{specversion}-%{tarfile_release}/certs/rhel.pem
+mv linux-%{specversion}-%{tarfile_release} linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 
@@ -1127,6 +1132,10 @@ ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+ApplyPatch 1100-kvm-x86-fix-shadow-paging-use-after-free.patch
+ApplyPatch 1101-kvm-x86-mmu-ensure-hugepage-is-in-by-slot.patch
+ApplyPatch 1102-rtmutex-use-waiter-task-in-remove-waiter.patch
+ApplyPatch 1104-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -2729,6 +2738,11 @@ fi
 #
 #
 %changelog
+* Wed Jul 08 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.141.2
+- Re-add AlmaLinux ahead-of-RHEL security fixes dropped by the 553.141.1 re-import:
+  KVM x86 shadow-paging use-after-free CVE-2026-46113 (1100-1101), and rtmutex
+  self-deadlock NULL deref in remove_waiter() upstream 3bfdc63936dd + 40a25d59e85b (1102, 1104)
+
 * Tue Jul 07 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.141.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
