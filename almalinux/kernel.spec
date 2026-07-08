@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.30.1
+%define pkgrelease 211.31.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.30.1%{?buildid}%{?dist}
+%define specrelease 211.31.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1449,6 +1449,32 @@ Patch1411: 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
 Patch1412: 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
 Patch1413: 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
 Patch1414: 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
+Patch1415: 1415-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+Patch1416: 1416-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+Patch1421: 1421-net-page-pool-avoid-false-positive-warning-if-napi-was-never.patch
+Patch1422: 1422-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
+Patch1423: 1423-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
+Patch1424: 1424-net-ipv6-ioam6-prevent-schema-length-wraparound-in-trace-fil.patch
+Patch1425: 1425-procfs-fix-missing-rcu-protection-when-reading-real-parent-i.patch
+Patch1426: 1426-tg3-fix-race-for-querying-speed-duplex.patch
+Patch1427: 1427-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
+Patch1428: 1428-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
+Patch1429: 1429-epoll-annotate-racy-check.patch
+Patch1430: 1430-eventpoll-defer-struct-eventpoll-free-to-rcu-grace-period.patch
+Patch1431: 1431-eventpoll-use-hlist-is-singular-node-in-ep-remove.patch
+Patch1432: 1432-eventpoll-split-ep-remove.patch
+Patch1433: 1433-eventpoll-kill-ep-remove.patch
+Patch1434: 1434-eventpoll-rename-ep-remove-safe-back-to-ep-remove.patch
+Patch1435: 1435-eventpoll-move-epi-fget-up.patch
+Patch1436: 1436-eventpoll-drop-vestigial-prefix-from-ep-remove-file-epi.patch
+Patch1437: 1437-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
+Patch1438: 1438-eventpoll-move-f-lock-acquisition-into-ep-remove-file.patch
+Patch1439: 1439-eventpoll-refresh-eventpoll-release-fast-path-comment.patch
+Patch1440: 1440-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
+Patch1441: 1441-eventpoll-fix-semi-unbounded-recursion.patch
+Patch1442: 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
+Patch1443: 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
+Patch1444: 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2620,6 +2646,32 @@ ApplyPatch 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
 ApplyPatch 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
 ApplyPatch 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
 ApplyPatch 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
+ApplyPatch 1415-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+ApplyPatch 1416-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+ApplyPatch 1421-net-page-pool-avoid-false-positive-warning-if-napi-was-never.patch
+ApplyPatch 1422-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
+ApplyPatch 1423-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
+ApplyPatch 1424-net-ipv6-ioam6-prevent-schema-length-wraparound-in-trace-fil.patch
+ApplyPatch 1425-procfs-fix-missing-rcu-protection-when-reading-real-parent-i.patch
+ApplyPatch 1426-tg3-fix-race-for-querying-speed-duplex.patch
+ApplyPatch 1427-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
+ApplyPatch 1428-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
+ApplyPatch 1429-epoll-annotate-racy-check.patch
+ApplyPatch 1430-eventpoll-defer-struct-eventpoll-free-to-rcu-grace-period.patch
+ApplyPatch 1431-eventpoll-use-hlist-is-singular-node-in-ep-remove.patch
+ApplyPatch 1432-eventpoll-split-ep-remove.patch
+ApplyPatch 1433-eventpoll-kill-ep-remove.patch
+ApplyPatch 1434-eventpoll-rename-ep-remove-safe-back-to-ep-remove.patch
+ApplyPatch 1435-eventpoll-move-epi-fget-up.patch
+ApplyPatch 1436-eventpoll-drop-vestigial-prefix-from-ep-remove-file-epi.patch
+ApplyPatch 1437-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
+ApplyPatch 1438-eventpoll-move-f-lock-acquisition-into-ep-remove-file.patch
+ApplyPatch 1439-eventpoll-refresh-eventpoll-release-fast-path-comment.patch
+ApplyPatch 1440-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
+ApplyPatch 1441-eventpoll-fix-semi-unbounded-recursion.patch
+ApplyPatch 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
+ApplyPatch 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
+ApplyPatch 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5124,6 +5176,53 @@ fi\
 #
 #
 %changelog
+* Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.31.1
+- Recreate RHEL 6.12.0-211.31.1 from CentOS Stream 10 and upstream stable backports (1421-1444)
+- The AlmaLinux ahead-of-RHEL eventpoll CVE-2026-46242 fix (1417) is superseded by
+  RHEL's eventpoll series carrying the same fix and is dropped
+- Temporarily drop the rtmutex remove_waiter() fixes (1418, 1420)
+- RHEL changelog for 211.31.1 follows:
+
+* Mon Jul 06 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.31.1.el10_2]
+- eventpoll: refresh epi_fget() / ep_remove_file() comments (Ian Kent) [RHEL-180776]
+- eventpoll: Fix integer overflow in ep_loop_check_proc() (Ian Kent) [RHEL-180776]
+- eventpoll: drop vestigial epi->dying flag (Ian Kent) [RHEL-180776]
+- eventpoll: Fix semi-unbounded recursion (Ian Kent) [RHEL-180776] {CVE-2025-38614}
+- eventpoll: drop dead bool return from ep_remove_epi() (Ian Kent) [RHEL-180776]
+- eventpoll: refresh eventpoll_release() fast-path comment (Ian Kent) [RHEL-180776]
+- eventpoll: move f_lock acquisition into ep_remove_file() (Ian Kent) [RHEL-180776]
+- eventpoll: fix ep_remove struct eventpoll / struct file UAF (Ian Kent) [RHEL-180776] {CVE-2026-46242}
+- eventpoll: drop vestigial __ prefix from ep_remove_{file,epi}() (Ian Kent) [RHEL-180776]
+- eventpoll: move epi_fget() up (Ian Kent) [RHEL-180776]
+- eventpoll: rename ep_remove_safe() back to ep_remove() (Ian Kent) [RHEL-180776]
+- eventpoll: kill __ep_remove() (Ian Kent) [RHEL-180776]
+- eventpoll: split __ep_remove() (Ian Kent) [RHEL-180776]
+- eventpoll: use hlist_is_singular_node() in __ep_remove() (Ian Kent) [RHEL-180776]
+- eventpoll: defer struct eventpoll free to RCU grace period (Ian Kent) [RHEL-173832] {CVE-2026-43074}
+- epoll: annotate racy check (Ian Kent) [RHEL-180776]
+- smb/client: fix out-of-bounds read in smb2_compound_op() (Paulo Alcantara) [RHEL-180048] {CVE-2026-46155}
+- smb: client: fix off-by-8 bounds check in check_wsl_eas() (Paulo Alcantara) [RHEL-180048]
+- tg3: Fix race for querying speed/duplex (CKI Backport Bot) [RHEL-182770]
+- procfs: fix missing RCU protection when reading real_parent in do_task_stat() (CKI Backport Bot) [RHEL-181902] {CVE-2026-46259}
+- net/ipv6: ioam6: prevent schema length wraparound in trace fill (Antoine Tenart) [RHEL-174786] {CVE-2026-43341}
+- net/mana: Null service_wq on setup error to prevent double destroy (CKI Backport Bot) [RHEL-180277] {CVE-2026-43276}
+- net: mana: Fix double destroy_workqueue on service rescan PCI path (CKI Backport Bot) [RHEL-180277] {CVE-2026-43276}
+- net: page_pool: avoid false positive warning if NAPI was never added (Ivan Vecera) [RHEL-162140]
+
+* Tue Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.4
+- Fix rtmutex self-deadlock NULL pointer dereference in remove_waiter() ahead of
+  RHEL, upstream 3bfdc63936dd + 40a25d59e85b (1418, 1420); the futex_requeue guard
+  74e144274af3 was dropped, reverted upstream by 39def6d250d3 (the NULL deref is
+  fully handled by 40a25d59e85b)
+
+* Mon Jul 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.3
+- Fix CVE-2026-46242: eventpoll ep_remove struct eventpoll / struct file
+  use-after-free, adapted from upstream a6dc643c6931 ahead of RHEL (1417)
+
+* Fri Jul 03 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.2
+- Fix KVM x86 shadow paging use-after-free due to unexpected GFN ahead of RHEL (1415)
+- Fix KVM x86 shadow paging use-after-free due to unexpected role ahead of RHEL (1416)
+
 * Fri Jul 03 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.1
 - Recreate RHEL 6.12.0-211.30.1 from CentOS Stream 10 and upstream stable backports (1399-1414)
 - RHEL 6.12.0-211.30.1 now also carries the vgic-its (CVE-2026-46316) and ipv4/ipv6
