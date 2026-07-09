@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.31.1
+%define pkgrelease 211.32.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.31.1%{?buildid}%{?dist}
+%define specrelease 211.32.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1449,8 +1449,6 @@ Patch1411: 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
 Patch1412: 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
 Patch1413: 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
 Patch1414: 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
-Patch1415: 1415-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
-Patch1416: 1416-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 Patch1421: 1421-net-page-pool-avoid-false-positive-warning-if-napi-was-never.patch
 Patch1422: 1422-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
 Patch1423: 1423-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
@@ -1475,6 +1473,12 @@ Patch1441: 1441-eventpoll-fix-semi-unbounded-recursion.patch
 Patch1442: 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
 Patch1443: 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 Patch1444: 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
+Patch1445: 1445-rtmutex-use-waiter-task-in-remove-waiter.patch
+Patch1446: 1446-rtmutex-skip-remove-waiter-when-not-enqueued.patch
+Patch1447: 1447-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sctp-sendall.patch
+Patch1448: 1448-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
+Patch1449: 1449-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+Patch1450: 1450-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2646,8 +2650,6 @@ ApplyPatch 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
 ApplyPatch 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
 ApplyPatch 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
 ApplyPatch 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
-ApplyPatch 1415-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
-ApplyPatch 1416-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 ApplyPatch 1421-net-page-pool-avoid-false-positive-warning-if-napi-was-never.patch
 ApplyPatch 1422-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
 ApplyPatch 1423-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
@@ -2672,6 +2674,12 @@ ApplyPatch 1441-eventpoll-fix-semi-unbounded-recursion.patch
 ApplyPatch 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
 ApplyPatch 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 ApplyPatch 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
+ApplyPatch 1445-rtmutex-use-waiter-task-in-remove-waiter.patch
+ApplyPatch 1446-rtmutex-skip-remove-waiter-when-not-enqueued.patch
+ApplyPatch 1447-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sctp-sendall.patch
+ApplyPatch 1448-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
+ApplyPatch 1449-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+ApplyPatch 1450-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5176,6 +5184,22 @@ fi\
 #
 #
 %changelog
+* Thu Jul 09 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.32.1
+- Recreate RHEL 6.12.0-211.32.1 from upstream stable backports (1447-1450)
+- The AlmaLinux ahead-of-RHEL KVM x86 shadow paging fixes (1415, 1416) are
+  superseded by RHEL's copies and dropped
+- RHEL changelog for 211.32.1 follows:
+
+* Tue Jul 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.32.1.el10_2]
+- KVM: x86: Fix shadow paging use-after-free due to unexpected role (Paolo Bonzini) [RHEL-192407] {CVE-2026-53359}
+- KVM: x86: Fix shadow paging use-after-free due to unexpected GFN (CKI Backport Bot) [RHEL-186698] {CVE-2026-46113}
+- net/sched: ets: Always remove class from active list before deleting in ets_qdisc_change (CKI Backport Bot) [RHEL-183007] {CVE-2025-71066}
+- sctp: revalidate list cursor after sctp_sendmsg_to_asoc() in SCTP_SENDALL (CKI Backport Bot) [RHEL-179854] {CVE-2026-46227}
+
+* Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.31.2
+- Bring back the rtmutex self-deadlock NULL pointer dereference fixes in
+  remove_waiter() ahead of RHEL, upstream 3bfdc63936dd + 40a25d59e85b (1445, 1446)
+
 * Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.31.1
 - Recreate RHEL 6.12.0-211.31.1 from CentOS Stream 10 and upstream stable backports (1421-1444)
 - The AlmaLinux ahead-of-RHEL eventpoll CVE-2026-46242 fix (1417) is superseded by
