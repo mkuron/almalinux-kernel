@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.23.1
+%define pkgrelease 687.24.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.23.1%{?buildid}%{?dist}
+%define specrelease 687.24.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1587,8 +1587,6 @@ Patch1706: 1706-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.pat
 Patch1707: 1707-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
 Patch1708: 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
 Patch1709: 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
-Patch1710: 1710-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
-Patch1711: 1711-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 Patch1713: 1713-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
 Patch1714: 1714-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sc.patch
 Patch1715: 1715-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
@@ -1628,6 +1626,11 @@ Patch1752: 1752-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
 Patch1753: 1753-eventpoll-drop-vestigial-epi-dying-flag.patch
 Patch1754: 1754-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 Patch1755: 1755-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
+Patch1756: 1756-rtmutex-use-waiter-task-in-remove-waiter.patch
+Patch1757: 1757-rtmutex-skip-remove-waiter-when-not-enqueued.patch
+Patch1758: 1758-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
+Patch1759: 1759-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+Patch1760: 1760-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2982,8 +2985,6 @@ ApplyPatch 1706-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.pat
 ApplyPatch 1707-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
 ApplyPatch 1708-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
 ApplyPatch 1709-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
-ApplyPatch 1710-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
-ApplyPatch 1711-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 ApplyPatch 1713-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
 ApplyPatch 1714-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sc.patch
 ApplyPatch 1715-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
@@ -3023,6 +3024,11 @@ ApplyPatch 1752-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
 ApplyPatch 1753-eventpoll-drop-vestigial-epi-dying-flag.patch
 ApplyPatch 1754-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 ApplyPatch 1755-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
+ApplyPatch 1756-rtmutex-use-waiter-task-in-remove-waiter.patch
+ApplyPatch 1757-rtmutex-skip-remove-waiter-when-not-enqueued.patch
+ApplyPatch 1758-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
+ApplyPatch 1759-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
+ApplyPatch 1760-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5097,6 +5103,21 @@ fi
 #
 #
 %changelog
+* Thu Jul 09 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.24.1
+- Recreate RHEL 5.14.0-687.24.1 from upstream stable backports (1758-1760)
+- The AlmaLinux ahead-of-RHEL KVM x86 shadow paging fixes (1710, 1711) are
+  superseded by RHEL's copies and dropped
+- RHEL changelog for 687.24.1 follows:
+
+* Tue Jul 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.24.1.el9_8]
+- KVM: x86: Fix shadow paging use-after-free due to unexpected role (Paolo Bonzini) [RHEL-192400] {CVE-2026-53359}
+- KVM: x86: Fix shadow paging use-after-free due to unexpected GFN (CKI Backport Bot) [RHEL-186702] {CVE-2026-46113}
+- net/sched: ets: Always remove class from active list before deleting in ets_qdisc_change (CKI Backport Bot) [RHEL-183004] {CVE-2025-71066}
+
+* Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.23.2
+- Bring back the rtmutex self-deadlock NULL pointer dereference fixes in
+  remove_waiter() ahead of RHEL, upstream 3bfdc63936dd + 40a25d59e85b (1756, 1757)
+
 * Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.23.1
 - Recreate RHEL 5.14.0-687.23.1 from CentOS Stream and upstream stable backports (1739-1755)
 - The AlmaLinux ahead-of-RHEL eventpoll CVE-2026-46242 fix (1712) is superseded by
