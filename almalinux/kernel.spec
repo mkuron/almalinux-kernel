@@ -49,11 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.141.2.el8_10
-%define tarfile_release 553.141.1.el8_10
+%define pkgrelease 553.143.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.141.2%{?dist}
+%define specrelease 553.143.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -447,7 +446,7 @@ BuildRequires: xmlto
 BuildRequires: asciidoc
 %endif
 
-Source0: linux-%{specversion}-%{tarfile_release}.tar.xz
+Source0: linux-%{specversion}-%{pkgrelease}.tar.xz
 
 Source9: x509.genkey
 
@@ -551,10 +550,6 @@ Patch2005: 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-Patch1100: 1100-kvm-x86-fix-shadow-paging-use-after-free.patch
-Patch1101: 1101-kvm-x86-mmu-ensure-hugepage-is-in-by-slot.patch
-Patch1102: 1102-rtmutex-use-waiter-task-in-remove-waiter.patch
-Patch1104: 1104-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1113,9 +1108,9 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n %{name}-%{specversion}-%{tarfile_release} -c
-cp -v %{SOURCE9000} linux-%{specversion}-%{tarfile_release}/certs/rhel.pem
-mv linux-%{specversion}-%{tarfile_release} linux-%{KVERREL}
+%setup -q -n %{name}-%{specversion}-%{pkgrelease} -c
+cp -v %{SOURCE9000} linux-%{specversion}-%{pkgrelease}/certs/rhel.pem
+mv linux-%{specversion}-%{pkgrelease} linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 
@@ -1132,10 +1127,6 @@ ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-ApplyPatch 1100-kvm-x86-fix-shadow-paging-use-after-free.patch
-ApplyPatch 1101-kvm-x86-mmu-ensure-hugepage-is-in-by-slot.patch
-ApplyPatch 1102-rtmutex-use-waiter-task-in-remove-waiter.patch
-ApplyPatch 1104-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -2738,12 +2729,7 @@ fi
 #
 #
 %changelog
-* Wed Jul 08 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.141.2
-- Re-add AlmaLinux ahead-of-RHEL security fixes dropped by the 553.141.1 re-import:
-  KVM x86 shadow-paging use-after-free CVE-2026-46113 (1100-1101), and rtmutex
-  self-deadlock NULL deref in remove_waiter() upstream 3bfdc63936dd + 40a25d59e85b (1102, 1104)
-
-* Tue Jul 07 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.141.1
+* Fri Jul 10 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.143.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2754,9 +2740,30 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Jul 07 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.141.1
+* Fri Jul 10 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.143.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Jul 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.143.1.el8_10]
+- locking/rtmutex: Skip remove_waiter() when waiter is not enqueued (Phil Auld) [RHEL-193334] {CVE-2026-53166}
+- rtmutex: Use waiter::task instead of current in remove_waiter() (Phil Auld) [RHEL-193143] {CVE-2026-43499}
+
+* Thu Jul 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.142.1.el8_10]
+- KVM: x86: Fix shadow paging use-after-free due to unexpected role (Paolo Bonzini) [RHEL-192411] {CVE-2026-53359}
+- KVM: x86: Fix shadow paging use-after-free due to unexpected GFN (Aidan Wallace) [RHEL-186618] {CVE-2026-46113}
+- KVM: x86/mmu: pull call to drop_large_spte() into __link_shadow_page() (Paolo Bonzini) [RHEL-186618]
+- KVM: x86/mmu: Always pass 0 for @quadrant when gptes are 8 bytes (Aidan Wallace) [RHEL-186618]
+- KVM: x86/mmu: Derive shadow MMU page role from parent (Aidan Wallace) [RHEL-186618]
+- KVM: x86/mmu: Stop passing "direct" to mmu_alloc_root() (Aidan Wallace) [RHEL-186618]
+- KVM: x86/mmu: Use a bool for direct (Aidan Wallace) [RHEL-186618]
+- netfilter: bridge: make ebt_snat ARP rewrite writable (CKI Backport Bot) [RHEL-182341]
+- net/sched: ets: Always remove class from active list before deleting in ets_qdisc_change (CKI Backport Bot) [RHEL-182996] {CVE-2025-71066}
+- iommu/vt-d: track SVA mm for kernel page table flush notification (Jerry Snitselaar) [RHEL-150534] {CVE-2025-71089}
+- iommu/amd: track SVA mm for kernel page table flush notification (Jerry Snitselaar) [RHEL-150534] {CVE-2025-71089}
+- x86/mm: flush IOMMU before freeing kernel page table pages (Jerry Snitselaar) [RHEL-150534] {CVE-2025-71089}
+- iommu/sva: add kernel page table IOTLB flush notification (Jerry Snitselaar) [RHEL-150534] {CVE-2025-71089}
+- iommu/vt-d: Fix incorrect cache invalidation for mm notification (Jerry Snitselaar) [RHEL-150534] {CVE-2025-71089}
+- net: atm: fix crash due to unvalidated vcc pointer in sigd_send() (CKI Backport Bot) [RHEL-167045] {CVE-2026-31411}
 
 * Mon Jul 06 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.141.1.el8_10]
 - fs/smb/client: fix out-of-bounds read in cifs_sanitize_prepath (CKI Backport Bot) [RHEL-189506] {CVE-2026-43112}
