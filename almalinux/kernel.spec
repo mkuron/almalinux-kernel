@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.24.1
+%define pkgrelease 687.25.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.24.1%{?buildid}%{?dist}
+%define specrelease 687.25.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1626,11 +1626,18 @@ Patch1752: 1752-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
 Patch1753: 1753-eventpoll-drop-vestigial-epi-dying-flag.patch
 Patch1754: 1754-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 Patch1755: 1755-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
-Patch1756: 1756-rtmutex-use-waiter-task-in-remove-waiter.patch
-Patch1757: 1757-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 Patch1758: 1758-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
 Patch1759: 1759-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
 Patch1760: 1760-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+Patch1761: 1761-crypto-ccp-copy-iv-using-skcipher-ivsize.patch
+Patch1762: 1762-net-fix-memory-leak-in-skb-segment-list-for-gro-packets.patch
+Patch1763: 1763-kallsyms-clean-up-modname-and-modbuildid-initialization.patch
+Patch1764: 1764-kallsyms-bpf-rename-bpf-address-lookup.patch
+Patch1765: 1765-net-bridge-use-a-stable-fdb-dst-snapshot-in-rcu-readers.patch
+Patch1766: 1766-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patch
+Patch1767: 1767-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
+Patch1768: 1768-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
+Patch1769: 1769-futex-requeue-revert-prevent-null-pointer-dereference.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -3024,11 +3031,18 @@ ApplyPatch 1752-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
 ApplyPatch 1753-eventpoll-drop-vestigial-epi-dying-flag.patch
 ApplyPatch 1754-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 ApplyPatch 1755-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
-ApplyPatch 1756-rtmutex-use-waiter-task-in-remove-waiter.patch
-ApplyPatch 1757-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 ApplyPatch 1758-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
 ApplyPatch 1759-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
 ApplyPatch 1760-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+ApplyPatch 1761-crypto-ccp-copy-iv-using-skcipher-ivsize.patch
+ApplyPatch 1762-net-fix-memory-leak-in-skb-segment-list-for-gro-packets.patch
+ApplyPatch 1763-kallsyms-clean-up-modname-and-modbuildid-initialization.patch
+ApplyPatch 1764-kallsyms-bpf-rename-bpf-address-lookup.patch
+ApplyPatch 1765-net-bridge-use-a-stable-fdb-dst-snapshot-in-rcu-readers.patch
+ApplyPatch 1766-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patch
+ApplyPatch 1767-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
+ApplyPatch 1768-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
+ApplyPatch 1769-futex-requeue-revert-prevent-null-pointer-dereference.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5103,6 +5117,23 @@ fi
 #
 #
 %changelog
+* Mon Jul 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.25.1
+- Recreate RHEL 5.14.0-687.25.1 from CentOS Stream 9 and upstream stable backports (1761-1769)
+- The AlmaLinux ahead-of-RHEL rtmutex remove_waiter() fixes for CVE-2026-43499
+  (1756, 1757) are superseded by RHEL's copies and dropped
+- RHEL changelog for 687.25.1 follows:
+
+* Thu Jul 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.25.1.el9_8]
+- futex/requeue: Revert "Prevent NULL pointer dereference in remove_waiter() on self-deadlock"" (Phil Auld) [RHEL-193245] {CVE-2026-53166}
+- locking/rtmutex: Skip remove_waiter() when waiter is not enqueued (Phil Auld) [RHEL-193245] {CVE-2026-53166}
+- futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock (Phil Auld) [RHEL-193151] {CVE-2026-43499}
+- rtmutex: Use waiter::task instead of current in remove_waiter() (Phil Auld) [RHEL-193151] {CVE-2026-43499}
+- net: bridge: use a stable FDB dst snapshot in RCU readers (Mohammad Heib) [RHEL-179330] {CVE-2026-46086}
+- kallsyms/bpf: rename __bpf_address_lookup() to bpf_address_lookup() (Anubhav Shelat) [RHEL-183236]
+- kallsyms: clean up modname and modbuildid initialization in kallsyms_lookup_buildid() (Anubhav Shelat) [RHEL-183236]
+- net: fix memory leak in skb_segment_list for GRO packets (CKI Backport Bot) [RHEL-189959] {CVE-2026-22979}
+- crypto: ccp - copy IV using skcipher ivsize (CKI Backport Bot) [RHEL-188459] {CVE-2026-53016}
+
 * Thu Jul 09 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.24.1
 - Recreate RHEL 5.14.0-687.24.1 from upstream stable backports (1758-1760)
 - The AlmaLinux ahead-of-RHEL KVM x86 shadow paging fixes (1710, 1711) are
