@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.32.1
+%define pkgrelease 211.33.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.32.1%{?buildid}%{?dist}
+%define specrelease 211.33.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1473,12 +1473,15 @@ Patch1441: 1441-eventpoll-fix-semi-unbounded-recursion.patch
 Patch1442: 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
 Patch1443: 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 Patch1444: 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
-Patch1445: 1445-rtmutex-use-waiter-task-in-remove-waiter.patch
-Patch1446: 1446-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 Patch1447: 1447-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sctp-sendall.patch
 Patch1448: 1448-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
 Patch1449: 1449-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
 Patch1450: 1450-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+Patch1451: 1451-md-bitmap-fix-gpf-in-write-page-caused-by-resize-race.patch
+Patch1452: 1452-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patch
+Patch1453: 1453-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
+Patch1454: 1454-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
+Patch1455: 1455-futex-requeue-revert-prevent-null-pointer-dereference.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2674,12 +2677,15 @@ ApplyPatch 1441-eventpoll-fix-semi-unbounded-recursion.patch
 ApplyPatch 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
 ApplyPatch 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
 ApplyPatch 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
-ApplyPatch 1445-rtmutex-use-waiter-task-in-remove-waiter.patch
-ApplyPatch 1446-rtmutex-skip-remove-waiter-when-not-enqueued.patch
 ApplyPatch 1447-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sctp-sendall.patch
 ApplyPatch 1448-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
 ApplyPatch 1449-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
 ApplyPatch 1450-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
+ApplyPatch 1451-md-bitmap-fix-gpf-in-write-page-caused-by-resize-race.patch
+ApplyPatch 1452-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patch
+ApplyPatch 1453-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
+ApplyPatch 1454-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
+ApplyPatch 1455-futex-requeue-revert-prevent-null-pointer-dereference.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5184,6 +5190,19 @@ fi\
 #
 #
 %changelog
+* Mon Jul 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.33.1
+- Recreate RHEL 6.12.0-211.33.1 from CentOS Stream 10 and upstream stable backports (1451-1455)
+- The AlmaLinux ahead-of-RHEL rtmutex remove_waiter() fixes for CVE-2026-43499
+  (1445, 1446) are superseded by RHEL's copies and dropped
+- RHEL changelog for 211.33.1 follows:
+
+* Thu Jul 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.33.1.el10_2]
+- futex/requeue: Revert "Prevent NULL pointer dereference in remove_waiter() on self-deadlock"" (CKI Backport Bot) [RHEL-193250] {CVE-2026-53166}
+- futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock (CKI Backport Bot) [RHEL-193250] {CVE-2026-43499}
+- locking/rtmutex: Skip remove_waiter() when waiter is not enqueued (CKI Backport Bot) [RHEL-193153] {CVE-2026-43499}
+- rtmutex: Use waiter::task instead of current in remove_waiter() (CKI Backport Bot) [RHEL-193153] {CVE-2026-43499}
+- md/bitmap: fix GPF in write_page caused by resize race (Nigel Croxon) [RHEL-174092] {CVE-2026-43163}
+
 * Thu Jul 09 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.32.1
 - Recreate RHEL 6.12.0-211.32.1 from upstream stable backports (1447-1450)
 - The AlmaLinux ahead-of-RHEL KVM x86 shadow paging fixes (1415, 1416) are
