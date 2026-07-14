@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.25.1
+%define pkgrelease 687.26.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.5.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.25.1%{?buildid}%{?dist}
+%define specrelease 687.26.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.5.1.el9_8
 
@@ -1638,6 +1638,7 @@ Patch1766: 1766-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patc
 Patch1767: 1767-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
 Patch1768: 1768-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
 Patch1769: 1769-futex-requeue-revert-prevent-null-pointer-dereference.patch
+Patch1770: 1770-xfs-resample-the-data-fork-mapping-after-cycling-ilock.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -3043,6 +3044,7 @@ ApplyPatch 1766-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patc
 ApplyPatch 1767-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
 ApplyPatch 1768-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
 ApplyPatch 1769-futex-requeue-revert-prevent-null-pointer-dereference.patch
+ApplyPatch 1770-xfs-resample-the-data-fork-mapping-after-cycling-ilock.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5117,6 +5119,13 @@ fi
 #
 #
 %changelog
+* Tue Jul 14 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.26.1
+- Recreate RHEL 5.14.0-687.26.1 from CentOS Stream 9 backports (1770)
+- RHEL changelog for 687.26.1 follows:
+
+* Mon Jul 13 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.26.1.el9_8]
+- xfs: resample the data fork mapping after cycling ILOCK (Carlos Maiolino) [RHEL-193937]
+
 * Mon Jul 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.25.1
 - Recreate RHEL 5.14.0-687.25.1 from CentOS Stream 9 and upstream stable backports (1761-1769)
 - The AlmaLinux ahead-of-RHEL rtmutex remove_waiter() fixes for CVE-2026-43499
