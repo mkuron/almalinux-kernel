@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.143.1.el8_10
+%define pkgrelease 553.144.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.143.1%{?dist}
+%define specrelease 553.144.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2729,7 +2729,7 @@ fi
 #
 #
 %changelog
-* Fri Jul 10 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.143.1
+* Tue Jul 14 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.144.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2740,9 +2740,14 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Fri Jul 10 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.143.1
+* Tue Jul 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.144.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Jul 13 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.144.1.el8_10]
+- xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete (Sabrina Dubroca) [RHEL-180170] {CVE-2026-46116}
+- xfs: resample the data fork mapping after cycling ILOCK (Carlos Maiolino) [RHEL-193938]
+- net: bridge: use a stable FDB dst snapshot in RCU readers (Mohammad Heib) [RHEL-179325] {CVE-2026-46086}
 
 * Thu Jul 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.143.1.el8_10]
 - locking/rtmutex: Skip remove_waiter() when waiter is not enqueued (Phil Auld) [RHEL-193334] {CVE-2026-53166}
