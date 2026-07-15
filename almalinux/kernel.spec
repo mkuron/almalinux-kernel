@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.33.1
+%define pkgrelease 211.34.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.7.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.33.1%{?buildid}%{?dist}
+%define specrelease 211.34.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.7.1.el10_2
 
@@ -1482,6 +1482,9 @@ Patch1452: 1452-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patc
 Patch1453: 1453-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
 Patch1454: 1454-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
 Patch1455: 1455-futex-requeue-revert-prevent-null-pointer-dereference.patch
+Patch1456: 1456-xfrm-esp-restore-combined-single-frag-length-gate.patch
+Patch1457: 1457-xfs-resample-the-data-fork-mapping-after-cycling-ilock.patch
+Patch1458: 1458-crypto-ccp-copy-iv-using-skcipher-ivsize.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2686,6 +2689,9 @@ ApplyPatch 1452-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patc
 ApplyPatch 1453-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
 ApplyPatch 1454-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
 ApplyPatch 1455-futex-requeue-revert-prevent-null-pointer-dereference.patch
+ApplyPatch 1456-xfrm-esp-restore-combined-single-frag-length-gate.patch
+ApplyPatch 1457-xfs-resample-the-data-fork-mapping-after-cycling-ilock.patch
+ApplyPatch 1458-crypto-ccp-copy-iv-using-skcipher-ivsize.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -5190,6 +5196,15 @@ fi\
 #
 #
 %changelog
+* Wed Jul 15 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.34.1
+- Recreate RHEL 6.12.0-211.34.1 from CentOS Stream 10 and upstream stable backports (1456-1458)
+- RHEL changelog for 211.34.1 follows:
+
+* Mon Jul 13 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.34.1.el10_2]
+- crypto: ccp - copy IV using skcipher ivsize (CKI Backport Bot) [RHEL-188463] {CVE-2026-53016}
+- xfs: resample the data fork mapping after cycling ILOCK (Carlos Maiolino) [RHEL-193945]
+- xfrm: esp: restore combined single-frag length gate (CKI Backport Bot) [RHEL-178326]
+
 * Mon Jul 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.33.1
 - Recreate RHEL 6.12.0-211.33.1 from CentOS Stream 10 and upstream stable backports (1451-1455)
 - The AlmaLinux ahead-of-RHEL rtmutex remove_waiter() fixes for CVE-2026-43499
