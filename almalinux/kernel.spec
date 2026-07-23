@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.34.1
+%define pkgrelease 211.37.1
 %define kversion 6
-%define tarfile_release 6.12.0-211.7.1.el10_2
+%define tarfile_release 6.12.0-211.37.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.34.1%{?buildid}%{?dist}
+%define specrelease 211.37.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-211.7.1.el10_2
+%define kabiversion 6.12.0-211.37.1.el10_2
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1138,353 +1138,7 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
-Patch1105: 1105-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 
-Patch1106: 1106-net-sched-make-cake-enqueue-return-net-xmit-cn-when-past-buf.patch
-Patch1107: 1107-net-sched-sch-cake-fix-incorrect-qlen-reduction-in-cake-drop.patch
-Patch1108: 1108-rdma-bnxt-re-support-extended-stats-for-thor2-vf.patch
-Patch1109: 1109-rdma-bnxt-re-fix-size-of-uverbs-copy-to-in-bnxt-re-method-ge.patch
-Patch1110: 1110-rdma-bnxt-re-support-2g-message-size.patch
-Patch1111: 1111-rdma-bnxt-re-use-macro-instead-of-hard-coded-value.patch
-Patch1112: 1112-rdma-bnxt-re-fix-incorrect-display-of-inactivity-cp-in-debug.patch
-Patch1113: 1113-rdma-bnxt-re-fix-missing-error-handling-for-tx-queue.patch
-Patch1114: 1114-rdma-bnxt-re-fix-return-code-of-bnxt-re-configure-cc.patch
-Patch1115: 1115-rdma-bnxt-re-convert-timeouts-to-secs-to-jiffies.patch
-Patch1116: 1116-net-openvswitch-avoid-releasing-netdev-before-teardown-compl.patch
-Patch1117: 1117-ionic-fix-persistent-mac-address-override-on-pf.patch
-Patch1118: 1118-net-hv-netvsc-reject-rss-hash-key-programming-without-rx-ind.patch
-Patch1119: 1119-scsi-qla2xxx-fix-improper-freeing-of-purex-item.patch
-Patch1120: 1120-smb-client-fix-krb5-mount-with-username-option.patch
-Patch1121: 1121-alsa-hda-tas2781-ignore-reset-check-for-spi-device.patch
-Patch1122: 1122-i40e-drop-udp-tunnel-get-rx-info-call-from-i40e-open.patch
-Patch1123: 1123-ice-drop-udp-tunnel-get-rx-info-call-from-ndo-open.patch
-Patch1124: 1124-x86-boot-handle-relative-config-efi-sbat-file-file-paths.patch
-Patch1125: 1125-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs.patch
-Patch1126: 1126-asoc-sdca-tidy-up-some-memory-allocations.patch
-Patch1127: 1127-asoc-sdca-handle-config-pm-sleep-not-being-set.patch
-Patch1128: 1128-asoc-sdca-update-counting-of-su-ge-dapm-routes.patch
-Patch1129: 1129-asoc-add-snd-soc-lookup-component-by-name-helper.patch
-Patch1130: 1130-asoc-soc-sdw-utils-partial-match-the-codec-name.patch
-Patch1131: 1131-asoc-soc-sdw-utils-remove-index-from-sdca-codec-name.patch
-Patch1132: 1132-kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creatin.patch
-Patch1133: 1133-kvm-x86-mmu-only-warn-in-direct-mmus-when-overwriting-shadow.patch
-Patch1134: 1134-nfsd-fix-heap-overflow-in-nfsv4-0-lock-replay-cache.patch
-Patch1135: 1135-net-af-can-do-not-leave-a-dangling-sk-pointer-in-can-create.patch
-Patch1136: 1136-crypto-asymmetric-keys-prevent-overflow-in-asymmetric-key-ge.patch
-Patch1137: 1137-drm-i915-dsc-add-helper-to-enable-the-dsc-configuration-for-.patch
-Patch1138: 1138-drm-i915-dp-ensure-the-fec-state-stays-disabled-for-uhbr-lin.patch
-Patch1139: 1139-drm-i915-dp-export-helper-to-determine-if-fec-on-non-uhbr-li.patch
-Patch1140: 1140-drm-i915-dp-mst-reuse-the-dp-sst-helper-function-to-compute-.patch
-Patch1141: 1141-drm-i915-dp-mst-track-dsc-enabled-status-on-the-mst-link.patch
-Patch1142: 1142-drm-i915-dp-mst-recompute-all-mst-link-crtcs-if-dsc-gets-ena.patch
-Patch1143: 1143-drm-i915-dp-fix-panel-replay-when-dsc-is-enabled.patch
-Patch1144: 1144-bluetooth-sco-fix-use-after-free-in-sco-recv-frame-due-to-mi.patch
-Patch1145: 1145-scsi-storvsc-handle-persistent-reserve-in-truncation-for-hyp.patch
-Patch1146: 1146-crypto-af-alg-fix-null-pointer-dereference-in-scatterwalk.patch
-Patch1147: 1147-crypto-algif-aead-revert-to-operating-out-of-place.patch
-Patch1148: 1148-crypto-af-alg-limit-rx-sg-extraction-by-receive-buffer-budge.patch
-Patch1149: 1149-crypto-af-alg-fix-page-reassignment-overflow-in-af-alg-pull-.patch
-Patch1150: 1150-crypto-authencesn-reject-too-short-aad-assoclen-8-to-match-e.patch
-Patch1151: 1151-crypto-authencesn-do-not-place-hiseq-at-end-of-dst-for-out-o.patch
-Patch1152: 1152-crypto-authencesn-fix-src-offset-when-decrypting-in-place.patch
-Patch1153: 1153-crypto-authencesn-reject-short-ahash-digests-during-instance.patch
-Patch1154: 1154-crypto-algif-aead-fix-minimum-rx-size-check-for-decryption.patch
-Patch1155: 1155-crypto-algif-aead-snapshot-iv-for-async-aead-requests.patch
-Patch1156: 1156-xfrm-esp-avoid-in-place-decrypt-on-shared-skb-frags.patch
-Patch1157: 1157-usbip-validate-number-of-packets-in-usbip-pack-ret-submit.patch
-Patch1158: 1158-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
-Patch1159: 1159-ptrace-slightly-saner-get-dumpable-logic.patch
-Patch1160: 1160-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
-Patch1161: 1161-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
-Patch1162: 1162-netfilter-nf-tables-release-flowtable-after-rcu-grace-period.patch
-Patch1163: 1163-can-j1939-j1939-session-new-fix-skb-reference-counting.patch
-Patch1164: 1164-ima-don-t-clear-ima-digsig-flag-when-setting-or-removing-non.patch
-Patch1165: 1165-netfilter-nf-conntrack-h323-check-for-zero-length-in-decodeq.patch
-Patch1166: 1166-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-12.patch
-Patch1167: 1167-revert-scsi-lpfc-add-capability-to-register-platform-name-id.patch
-Patch1168: 1168-revert-scsi-lpfc-allow-support-for-bb-credit-recovery-in-poi.patch
-Patch1169: 1169-revert-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-drop.patch
-Patch1170: 1170-revert-scsi-lpfc-modify-kref-handling-for-fabric-controller-.patch
-Patch1171: 1171-revert-scsi-lpfc-fix-leaked-ndlp-krefs-when-in-point-to-poin.patch
-Patch1172: 1172-revert-scsi-lpfc-ensure-unregistration-of-rpis-for-received-.patch
-Patch1173: 1173-revert-scsi-lpfc-remove-redundant-null-ptr-assignment-in-lpf.patch
-Patch1174: 1174-revert-scsi-lpfc-revise-discovery-related-function-headers-a.patch
-Patch1175: 1175-revert-scsi-lpfc-update-various-npiv-diagnostic-log-messagin.patch
-Patch1176: 1176-revert-scsi-lpfc-copyright-updates-for-14-4-0-11-patches.patch
-Patch1177: 1177-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-11.patch
-Patch1178: 1178-revert-scsi-lpfc-convert-debugfs-directory-counts-from-atomi.patch
-Patch1179: 1179-revert-scsi-lpfc-clean-up-extraneous-phba-dentries.patch
-Patch1180: 1180-revert-scsi-lpfc-use-switch-case-statements-in-dif-debugfs-h.patch
-Patch1181: 1181-revert-scsi-lpfc-fix-memory-leak-when-nvmeio-trc-debugfs-ent.patch
-Patch1182: 1182-revert-scsi-lpfc-define-size-of-debugfs-entry-for-xri-rebala.patch
-Patch1183: 1183-revert-scsi-lpfc-ensure-plogi-acc-is-sent-prior-to-prli-in-p.patch
-Patch1184: 1184-revert-scsi-lpfc-check-return-status-of-lpfc-reset-flush-io-.patch
-Patch1185: 1185-revert-scsi-lpfc-decrement-ndlp-kref-after-fdisc-retries-exh.patch
-Patch1186: 1186-revert-scsi-lpfc-remove-ndlp-kref-decrement-clause-for-f-por.patch
-Patch1187: 1187-revert-scsi-lpfc-clean-up-allocated-queues-when-queue-setup-.patch
-Patch1188: 1188-revert-scsi-lpfc-abort-outstanding-els-wqes-regardless-of-if.patch
-Patch1189: 1189-revert-scsi-lpfc-remove-unused-member-variables-in-struct-lp.patch
-Patch1190: 1190-revert-scsi-lpfc-use-int-type-to-store-negative-error-codes.patch
-Patch1191: 1191-revert-scsi-lpfc-use-min-to-improve-code.patch
-Patch1192: 1192-revert-scsi-lpfc-fix-wrong-function-reference-in-a-comment.patch
-Patch1193: 1193-revert-lpfc-don-t-use-file-f-path-dentry-for-comparisons.patch
-Patch1194: 1194-revert-scsi-lpfc-copyright-updates-for-14-4-0-10-patches.patch
-Patch1195: 1195-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-10.patch
-Patch1196: 1196-revert-scsi-lpfc-modify-end-of-life-adapters-model-descripti.patch
-Patch1197: 1197-revert-scsi-lpfc-revise-cq-create-set-mailbox-bitfield-defin.patch
-Patch1198: 1198-revert-scsi-lpfc-move-clearing-of-hba-setup-flag-to-before-l.patch
-Patch1199: 1199-revert-scsi-lpfc-ensure-hba-setup-flag-is-used-only-for-sli4.patch
-Patch1200: 1200-revert-scsi-lpfc-relocate-clearing-initial-phba-flags-from-l.patch
-Patch1201: 1201-revert-scsi-lpfc-simplify-error-handling-for-failed-lpfc-get.patch
-Patch1202: 1202-revert-scsi-lpfc-early-return-out-of-fdmi-cmpl-for-locally-r.patch
-Patch1203: 1203-revert-scsi-lpfc-skip-rscn-processing-when-fc-unloading-flag.patch
-Patch1204: 1204-revert-scsi-lpfc-check-for-hdwq-null-ptr-when-cleaning-up-lp.patch
-Patch1205: 1205-revert-scsi-lpfc-update-debugfs-trace-ring-initialization-me.patch
-Patch1206: 1206-revert-scsi-lpfc-revise-logging-format-for-failed-ct-mib-req.patch
-Patch1207: 1207-scsi-lpfc-avoid-crashing-in-lpfc-nlp-get-rhel-only.patch
-Patch1208: 1208-drm-mgag200-fix-mgag200-bmc-stop-scanout.patch
-Patch1209: 1209-net-sched-act-csum-validate-nested-vlan-headers.patch
-Patch1210: 1210-netfilter-ip6t-eui64-reject-invalid-mac-header-for-all-packe.patch
-Patch1211: 1211-cifs-remove-unnecessary-tracing-after-put-tcon.patch
-Patch1212: 1212-cifs-make-default-value-of-retrans-as-zero.patch
-Patch1213: 1213-dpll-zl3073x-add-output-pin-frequency-helper.patch
-Patch1214: 1214-dpll-zl3073x-include-current-frequency-in-supported-frequenc.patch
-Patch1215: 1215-dpll-zl3073x-fix-ref-frequency-setting.patch
-Patch1216: 1216-dpll-zl3073x-fix-ref-phase-offset-comp-register-width-for-so.patch
-Patch1217: 1217-dpll-zl3073x-remove-redundant-cleanup-in-devm-dpll-init.patch
-Patch1218: 1218-io-uring-rsrc-reject-zero-length-fixed-buffer-import.patch
-Patch1219: 1219-netfilter-nf-conntrack-helper-pass-helper-to-expect-cleanup.patch
-Patch1220: 1220-hid-wacom-fix-out-of-bounds-read-in-wacom-intuos-bt-irq.patch
-Patch1221: 1221-redhat-configs-enable-config-aqtion-on-all-archs.patch
-Patch1222: 1222-wifi-brcmfmac-validate-bsscfg-indices-in-if-events.patch
-Patch1223: 1223-netfilter-ctnetlink-ensure-safe-access-to-master-conntrack.patch
-Patch1224: 1224-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.patch
-Patch1225: 1225-net-fix-rcu-tasks-stall-in-threaded-busypoll.patch
-Patch1226: 1226-ice-use-netif-get-num-default-rss-queues.patch
-Patch1227: 1227-ice-set-max-queues-in-alloc-etherdev-mqs.patch
-Patch1228: 1228-anon-inode-use-a-proper-mode-internally.patch
-Patch1229: 1229-pidfs-use-anon-inode-getattr.patch
-Patch1230: 1230-anon-inode-explicitly-block-setattr.patch
-Patch1231: 1231-pidfs-use-anon-inode-setattr.patch
-Patch1232: 1232-anon-inode-raise-sb-i-nodev-and-sb-i-noexec.patch
-Patch1233: 1233-fs-add-s-anon-inode.patch
-Patch1234: 1234-mm-thp-deny-thp-for-files-on-anonymous-inodes.patch
-Patch1235: 1235-dpaa2-switch-prevent-zero-size-ptr-dereference-when-num-ifs-.patch
-Patch1236: 1236-dpaa2-switch-validate-num-ifs-to-prevent-out-of-bounds-write.patch
-Patch1237: 1237-mm-page-alloc-clear-page-private-in-free-pages-prepare.patch
-Patch1238: 1238-redhat-kernel-spec-template-disable-objtool-werror-for-gcov-.patch
-Patch1239: 1239-dm-thin-fix-metadata-refcount-underflow.patch
-Patch1240: 1240-crypto-tegra-disable-softirqs-before-finalizing-request.patch
-Patch1241: 1241-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
-Patch1242: 1242-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
-Patch1243: 1243-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
-Patch1244: 1244-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
-Patch1245: 1245-proc-use-the-same-treatment-to-check-proc-lseek-as-ones-for-.patch
-Patch1246: 1246-proc-fix-missing-pde-set-flags-for-net-proc-files.patch
-Patch1247: 1247-proc-fix-type-confusion-in-pde-set-flags.patch
-Patch1248: 1248-nbd-defer-config-unlock-in-nbd-genl-connect.patch
-Patch1249: 1249-crypto-authenc-correctly-pass-einprogress-back-up-to-the-cal.patch
-Patch1250: 1250-dpll-zl3073x-detect-dpll-channel-count-from-chip-id-at-runti.patch
-Patch1251: 1251-dpll-zl3073x-add-die-temperature-reporting-for-supported-chi.patch
-Patch1252: 1252-dpll-zl3073x-use-struct-group-to-partition-states.patch
-Patch1253: 1253-dpll-zl3073x-add-zl3073x-ref-state-update-helper.patch
-Patch1254: 1254-dpll-zl3073x-introduce-zl3073x-chan-for-dpll-channel-state.patch
-Patch1255: 1255-dpll-zl3073x-add-dpll-channel-status-fields-to-zl3073x-chan.patch
-Patch1256: 1256-dpll-zl3073x-add-reference-priority-to-zl3073x-chan.patch
-Patch1257: 1257-dpll-zl3073x-drop-selected-and-simplify-connected-ref-getter.patch
-Patch1258: 1258-dpll-add-frequency-monitoring-to-netlink-spec.patch
-Patch1259: 1259-dpll-add-frequency-monitoring-callback-ops.patch
-Patch1260: 1260-dpll-zl3073x-implement-frequency-monitoring.patch
-Patch1261: 1261-dpll-zl3073x-clean-up-esync-get-set-and-use-zl3073x-out-is-n.patch
-Patch1262: 1262-dpll-zl3073x-use-field-modify-for-clear-and-set-patterns.patch
-Patch1263: 1263-dpll-zl3073x-add-ref-sync-and-output-clock-type-helpers.patch
-Patch1264: 1264-dpll-zl3073x-add-ref-sync-pair-support.patch
-Patch1265: 1265-smb-client-validate-the-whole-dacl-before-rewriting-it-in-ci.patch
-Patch1266: 1266-smb-client-require-a-full-nfs-mode-sid-before-reading-mode-b.patch
-Patch1267: 1267-smb-client-scope-end-of-dacl-to-cifs-debug2-use-in-parse-dac.patch
-Patch1268: 1268-smb-client-use-kzalloc-to-zero-initialize-security-descripto.patch
-Patch1269: 1269-smb-client-validate-dacloffset-before-building-dacl-pointers.patch
-Patch1270: 1270-dpll-add-pin-operational-state.patch
-Patch1271: 1271-dpll-zl3073x-implement-pin-operational-state-reporting.patch
-Patch1272: 1272-dpll-add-fractional-frequency-offset-to-pin-parent-device.patch
-Patch1273: 1273-dpll-zl3073x-report-ffo-as-dpll-vs-input-reference-offset.patch
-Patch1274: 1274-netfilter-flowtable-strictly-check-for-maximum-number-of-act.patch
-Patch1275: 1275-bluetooth-hci-add-initial-support-for-past.patch
-Patch1276: 1276-bluetooth-iso-add-support-to-bind-to-trigger-past.patch
-Patch1277: 1277-bluetooth-hci-add-support-for-ll-extended-feature-set.patch
-Patch1278: 1278-bluetooth-hci-conn-fix-using-conn-le-tx-rx-phy-as-supported-.patch
-Patch1279: 1279-bluetooth-l2cap-add-support-for-setting-bt-phy.patch
-Patch1280: 1280-bluetooth-hci-sync-hci-cmd-sync-queue-once-return-eexist-if-.patch
-Patch1281: 1281-bluetooth-hci-sync-fix-leaks-when-hci-cmd-sync-queue-once-fa.patch
-Patch1282: 1282-bluetooth-hci-sync-fix-uaf-in-le-read-features-complete.patch
-Patch1283: 1283-pnfs-fix-a-missing-wake-up-while-waiting-on-nfs-layout-drain.patch
-Patch1284: 1284-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
-Patch1285: 1285-sched-deadline-fix-dl-server-time-accounting.patch
-Patch1286: 1286-redhat-configs-automotive-disable-config-io-uring.patch
-Patch1287: 1287-rhel-kabi-dpll-adaptation.patch
-Patch1288: 1288-net-bonding-fix-use-after-free-in-bond-xmit-broadcast.patch
-Patch1289: 1289-s390-pci-avoid-deadlock-between-pci-error-recovery-and-mlx5-.patch
-Patch1290: 1290-ice-fix-stats-array-overflow-when-vf-requests-more-queues.patch
-Patch1291: 1291-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
-Patch1292: 1292-s390-dasd-move-quiesce-state-with-pprc-swap.patch
-Patch1293: 1293-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
-Patch1294: 1294-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
-Patch1295: 1295-can-raw-fix-ro-uniq-use-after-free-in-raw-rcv.patch
-Patch1296: 1296-erofs-add-gfp-noio-in-the-bio-completion-if-needed.patch
-Patch1297: 1297-alsa-6fire-fix-use-after-free-on-disconnect.patch
-Patch1298: 1298-ip6-tunnel-clear-skb2-cb-in-ip4ip6-err.patch
-Patch1299: 1299-ipv6-rpl-reserve-mac-len-headroom-when-recompressed-srh-grow.patch
-Patch1300: 1300-fs-constify-file-ptr-in-backing-file-accessor-helpers.patch
-Patch1301: 1301-lsm-split-the-notifier-code-out-into-lsm-notifier-c.patch
-Patch1302: 1302-lsm-split-the-init-code-out-into-lsm-init-c.patch
-Patch1303: 1303-lsm-consolidate-lsm-allowed-and-prepare-lsm-into-lsm-prepare.patch
-Patch1304: 1304-lsm-introduce-looping-macros-for-the-initialization-code.patch
-Patch1305: 1305-lsm-integrate-report-lsm-order-code-into-caller.patch
-Patch1306: 1306-lsm-integrate-lsm-early-cred-and-lsm-early-task-into-caller.patch
-Patch1307: 1307-lsm-rename-ordered-lsm-init-to-lsm-init-ordered.patch
-Patch1308: 1308-lsm-replace-the-name-field-with-a-pointer-to-the-lsm-id-stru.patch
-Patch1309: 1309-lsm-rename-the-lsm-order-variables-for-consistency.patch
-Patch1310: 1310-lsm-rework-lsm-active-cnt-and-lsm-idlist.patch
-Patch1311: 1311-lsm-get-rid-of-the-lsm-names-list-and-do-some-cleanup.patch
-Patch1312: 1312-lsm-rework-the-lsm-enable-disable-setter-getter-functions.patch
-Patch1313: 1313-lsm-rename-exists-ordered-lsm-to-lsm-order-exists.patch
-Patch1314: 1314-lsm-rename-rework-append-ordered-lsm-into-lsm-order-append.patch
-Patch1315: 1315-lsm-rename-rework-ordered-lsm-parse-to-lsm-order-parse.patch
-Patch1316: 1316-lsm-cleanup-the-lsm-blob-size-code.patch
-Patch1317: 1317-lsm-cleanup-initialize-lsm-and-rename-to-lsm-init-single.patch
-Patch1318: 1318-lsm-fold-lsm-init-ordered-into-security-init.patch
-Patch1319: 1319-lsm-add-tweak-function-header-comment-blocks-in-lsm-init-c.patch
-Patch1320: 1320-lsm-cleanup-the-debug-and-console-output-in-lsm-init-c.patch
-Patch1321: 1321-fs-prepare-for-adding-lsm-blob-to-backing-file.patch
-Patch1322: 1322-lsm-add-backing-file-lsm-hooks.patch
-Patch1323: 1323-selinux-fix-overlayfs-mmap-and-mprotect-access-checks.patch
-Patch1324: 1324-scripts-sorttable-fix-orc-sort-cmp-to-maintain-symmetry-and-.patch
-Patch1325: 1325-scripts-sorttable-remove-unused-macro-defines.patch
-Patch1326: 1326-scripts-sorttable-remove-unused-write-functions.patch
-Patch1327: 1327-scripts-sorttable-remove-unneeded-elf-rel.patch
-Patch1328: 1328-scripts-sorttable-have-the-orc-code-use-the-r-functions-to-r.patch
-Patch1329: 1329-scripts-sorttable-make-compare-extable-into-two-functions.patch
-Patch1330: 1330-scripts-sorttable-convert-elf-ehdr-to-union.patch
-Patch1331: 1331-scripts-sorttable-replace-elf-shdr-macro-with-a-union.patch
-Patch1332: 1332-scripts-sorttable-convert-elf-sym-macro-over-to-a-union.patch
-Patch1333: 1333-scripts-sorttable-add-helper-functions-for-elf-ehdr.patch
-Patch1334: 1334-scripts-sorttable-add-helper-functions-for-elf-shdr.patch
-Patch1335: 1335-scripts-sorttable-add-helper-functions-for-elf-sym.patch
-Patch1336: 1336-scripts-sorttable-use-uint64-t-for-mcount-sorting.patch
-Patch1337: 1337-scripts-sorttable-move-code-from-sorttable-h-into-sorttable-.patch
-Patch1338: 1338-scripts-sorttable-get-start-stop-mcount-loc-from-elf-file-di.patch
-Patch1339: 1339-scripts-sorttable-use-a-structure-of-function-pointers-for-e.patch
-Patch1340: 1340-arm64-scripts-sorttable-implement-sorting-mcount-loc-at-boot.patch
-Patch1341: 1341-scripts-sorttable-have-mcount-rela-sort-use-direct-values.patch
-Patch1342: 1342-scripts-sorttable-always-use-an-array-for-the-mcount-loc-sor.patch
-Patch1343: 1343-scripts-sorttable-zero-out-weak-functions-in-mcount-loc-tabl.patch
-Patch1344: 1344-ftrace-update-the-mcount-loc-check-of-skipped-entries.patch
-Patch1345: 1345-ftrace-have-ftrace-pages-output-reflect-freed-pages.patch
-Patch1346: 1346-ftrace-do-not-over-allocate-ftrace-memory.patch
-Patch1347: 1347-ftrace-test-mcount-loc-addr-before-calling-ftrace-call-addr.patch
-Patch1348: 1348-ftrace-check-against-is-kernel-text-instead-of-kaslr-offset.patch
-Patch1349: 1349-scripts-sorttable-use-normal-sort-if-theres-no-relocs-in-the.patch
-Patch1350: 1350-scripts-sorttable-allow-matches-to-functions-before-function.patch
-Patch1351: 1351-scripts-sorttable-fix-endianness-handling-in-build-time-mcou.patch
-Patch1352: 1352-s390-ap-expose-ap-bindings-complete-count-counter-via-sysfs.patch
-Patch1353: 1353-rxrpc-fix-rxgk-token-loading-to-check-bounds.patch
-Patch1354: 1354-xen-privcmd-fix-double-free-via-vma-splitting.patch
-Patch1355: 1355-bluetooth-hci-sync-fix-stack-buffer-overflow-in-hci-le-big-c.patch
-Patch1356: 1356-buffer-overflow-in-drivers-xen-sys-hypervisor-c.patch
-Patch1357: 1357-can-isotp-fix-tx-buf-use-after-free-in-isotp-sendmsg.patch
-Patch1358: 1358-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-dropped-dur.patch
-Patch1359: 1359-bluetooth-hci-event-fix-potential-uaf-in-ssp-passkey-handler.patch
-Patch1360: 1360-wifi-mac80211-use-safe-list-iteration-in-radar-detect-work.patch
-Patch1361: 1361-wifi-mac80211-drop-stray-static-from-fast-rx-rx-result.patch
-Patch1362: 1362-wifi-mac80211-remove-station-if-connection-prep-fails.patch
-Patch1363: 1363-bnxt-en-fix-rss-context-delete-logic.patch
-Patch1364: 1364-objtool-klp-fix-unexported-static-call-key-access-for-manual.patch
-Patch1365: 1365-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
-Patch1366: 1366-ibmveth-disable-gso-for-packets-with-small-mss.patch
-Patch1367: 1367-s390-mm-add-missing-secure-storage-access-fixups-for-donated.patch
-Patch1368: 1368-mptcp-fix-slab-use-after-free-in-inet-lookup-established.patch
-Patch1369: 1369-watchdog-wdat-wdt-fix-acpi-table-leak-in-probe-function.patch
-Patch1370: 1370-net-mana-fix-use-after-free-in-add-adev-error-path.patch
-Patch1371: 1371-crypto-caam-fix-overflow-on-long-hmac-keys.patch
-Patch1372: 1372-exit-prevent-preemption-of-oopsing-task-dead-task.patch
-Patch1373: 1373-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
-Patch1374: 1374-kvm-arm64-vgic-its-drop-translation-cache-ref-only-for-eras.patch
-Patch1375: 1375-ipv6-icmp-clear-skb2-cb-in-ip6-err-gen-icmpv6-unreach.patch
-Patch1376: 1376-rdma-mana-validate-rx-hash-key-len.patch
-Patch1377: 1377-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.patch
-Patch1378: 1378-rxrpc-fix-response-authenticator-parser-oob-read.patch
-Patch1379: 1379-rdma-iwcm-fix-workqueue-list-corruption-by-removing-work-lis.patch
-Patch1380: 1380-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.patch
-Patch1381: 1381-scsi-qla2xxx-completely-fix-fcport-double-free.patch
-Patch1382: 1382-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
-Patch1383: 1383-selinux-rhel-only-hotfix-for-execmem-regression.patch
-Patch1384: 1384-ipv4-account-for-fraggap-on-the-paged-allocation-path.patch
-Patch1385: 1385-ipv6-account-for-fraggap-on-the-paged-allocation-path.patch
-Patch1386: 1386-alsa-usb-audio-add-sanity-check-for-oob-writes-at-silencing.patch
-Patch1387: 1387-alsa-aloop-fix-peer-runtime-uaf-during-format-change-stop.patch
-Patch1388: 1388-rdma-vmw-pvrdma-fix-double-free-on-pvrdma-alloc-ucontext-err.patch
-Patch1389: 1389-scsi-qla2xxx-add-support-to-report-mpi-fw-state.patch
-Patch1390: 1390-crypto-tegra-remove-unneeded-crypto-engine-stop-call.patch
-Patch1391: 1391-crypto-tegra-use-api-helpers-to-setup-fallback-request.patch
-Patch1392: 1392-crypto-tegra-remove-the-use-of-dev-err-probe.patch
-Patch1393: 1393-crypto-tegra-use-int-type-to-store-negative-error-codes.patch
-Patch1394: 1394-crypto-tegra-add-missing-crypto-alg-async.patch
-Patch1395: 1395-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patch
-Patch1396: 1396-crypto-tegra-fix-dma-free-coherent-size-error.patch
-Patch1397: 1397-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
-Patch1398: 1398-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
-Patch1399: 1399-rxrpc-fix-potential-uaf-after-skb-unshare-failure.patch
-Patch1400: 1400-rxrpc-fix-rxrpc-input-call-event-to-only-unshare-data-packet.patch
-Patch1401: 1401-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
-Patch1402: 1402-netfilter-nft-inner-fix-ipv6-inner-thoff-desync.patch
-Patch1403: 1403-asoc-sdca-fix-null-pointer-dereference-in-sdca-dev-unregiste.patch
-Patch1404: 1404-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.patch
-Patch1405: 1405-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
-Patch1406: 1406-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
-Patch1407: 1407-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
-Patch1408: 1408-arm64-cputype-add-c1-pro-definitions.patch
-Patch1409: 1409-arm64-cputype-add-c1-premium-definitions.patch
-Patch1410: 1410-arm64-cputype-add-c1-ultra-definitions.patch
-Patch1411: 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
-Patch1412: 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
-Patch1413: 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
-Patch1414: 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
-Patch1421: 1421-net-page-pool-avoid-false-positive-warning-if-napi-was-never.patch
-Patch1422: 1422-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
-Patch1423: 1423-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
-Patch1424: 1424-net-ipv6-ioam6-prevent-schema-length-wraparound-in-trace-fil.patch
-Patch1425: 1425-procfs-fix-missing-rcu-protection-when-reading-real-parent-i.patch
-Patch1426: 1426-tg3-fix-race-for-querying-speed-duplex.patch
-Patch1427: 1427-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
-Patch1428: 1428-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
-Patch1429: 1429-epoll-annotate-racy-check.patch
-Patch1430: 1430-eventpoll-defer-struct-eventpoll-free-to-rcu-grace-period.patch
-Patch1431: 1431-eventpoll-use-hlist-is-singular-node-in-ep-remove.patch
-Patch1432: 1432-eventpoll-split-ep-remove.patch
-Patch1433: 1433-eventpoll-kill-ep-remove.patch
-Patch1434: 1434-eventpoll-rename-ep-remove-safe-back-to-ep-remove.patch
-Patch1435: 1435-eventpoll-move-epi-fget-up.patch
-Patch1436: 1436-eventpoll-drop-vestigial-prefix-from-ep-remove-file-epi.patch
-Patch1437: 1437-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
-Patch1438: 1438-eventpoll-move-f-lock-acquisition-into-ep-remove-file.patch
-Patch1439: 1439-eventpoll-refresh-eventpoll-release-fast-path-comment.patch
-Patch1440: 1440-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
-Patch1441: 1441-eventpoll-fix-semi-unbounded-recursion.patch
-Patch1442: 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
-Patch1443: 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
-Patch1444: 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
-Patch1447: 1447-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sctp-sendall.patch
-Patch1448: 1448-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
-Patch1449: 1449-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
-Patch1450: 1450-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
-Patch1451: 1451-md-bitmap-fix-gpf-in-write-page-caused-by-resize-race.patch
-Patch1452: 1452-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patch
-Patch1453: 1453-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
-Patch1454: 1454-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
-Patch1455: 1455-futex-requeue-revert-prevent-null-pointer-dereference.patch
-Patch1456: 1456-xfrm-esp-restore-combined-single-frag-length-gate.patch
-Patch1457: 1457-xfs-resample-the-data-fork-mapping-after-cycling-ilock.patch
-Patch1458: 1458-crypto-ccp-copy-iv-using-skcipher-ivsize.patch
 # END OF PATCH DEFINITIONS
 
 %description
@@ -2344,354 +1998,8 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
-ApplyPatch 1105-smb-client-reject-userspace-cifs.spnego-descriptions.patch
 
 %{log_msg "End of patch applications"}
-ApplyPatch 1106-net-sched-make-cake-enqueue-return-net-xmit-cn-when-past-buf.patch
-ApplyPatch 1107-net-sched-sch-cake-fix-incorrect-qlen-reduction-in-cake-drop.patch
-ApplyPatch 1108-rdma-bnxt-re-support-extended-stats-for-thor2-vf.patch
-ApplyPatch 1109-rdma-bnxt-re-fix-size-of-uverbs-copy-to-in-bnxt-re-method-ge.patch
-ApplyPatch 1110-rdma-bnxt-re-support-2g-message-size.patch
-ApplyPatch 1111-rdma-bnxt-re-use-macro-instead-of-hard-coded-value.patch
-ApplyPatch 1112-rdma-bnxt-re-fix-incorrect-display-of-inactivity-cp-in-debug.patch
-ApplyPatch 1113-rdma-bnxt-re-fix-missing-error-handling-for-tx-queue.patch
-ApplyPatch 1114-rdma-bnxt-re-fix-return-code-of-bnxt-re-configure-cc.patch
-ApplyPatch 1115-rdma-bnxt-re-convert-timeouts-to-secs-to-jiffies.patch
-ApplyPatch 1116-net-openvswitch-avoid-releasing-netdev-before-teardown-compl.patch
-ApplyPatch 1117-ionic-fix-persistent-mac-address-override-on-pf.patch
-ApplyPatch 1118-net-hv-netvsc-reject-rss-hash-key-programming-without-rx-ind.patch
-ApplyPatch 1119-scsi-qla2xxx-fix-improper-freeing-of-purex-item.patch
-ApplyPatch 1120-smb-client-fix-krb5-mount-with-username-option.patch
-ApplyPatch 1121-alsa-hda-tas2781-ignore-reset-check-for-spi-device.patch
-ApplyPatch 1122-i40e-drop-udp-tunnel-get-rx-info-call-from-i40e-open.patch
-ApplyPatch 1123-ice-drop-udp-tunnel-get-rx-info-call-from-ndo-open.patch
-ApplyPatch 1124-x86-boot-handle-relative-config-efi-sbat-file-file-paths.patch
-ApplyPatch 1125-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs.patch
-ApplyPatch 1126-asoc-sdca-tidy-up-some-memory-allocations.patch
-ApplyPatch 1127-asoc-sdca-handle-config-pm-sleep-not-being-set.patch
-ApplyPatch 1128-asoc-sdca-update-counting-of-su-ge-dapm-routes.patch
-ApplyPatch 1129-asoc-add-snd-soc-lookup-component-by-name-helper.patch
-ApplyPatch 1130-asoc-soc-sdw-utils-partial-match-the-codec-name.patch
-ApplyPatch 1131-asoc-soc-sdw-utils-remove-index-from-sdca-codec-name.patch
-ApplyPatch 1132-kvm-x86-mmu-drop-zap-existing-present-spte-even-when-creatin.patch
-ApplyPatch 1133-kvm-x86-mmu-only-warn-in-direct-mmus-when-overwriting-shadow.patch
-ApplyPatch 1134-nfsd-fix-heap-overflow-in-nfsv4-0-lock-replay-cache.patch
-ApplyPatch 1135-net-af-can-do-not-leave-a-dangling-sk-pointer-in-can-create.patch
-ApplyPatch 1136-crypto-asymmetric-keys-prevent-overflow-in-asymmetric-key-ge.patch
-ApplyPatch 1137-drm-i915-dsc-add-helper-to-enable-the-dsc-configuration-for-.patch
-ApplyPatch 1138-drm-i915-dp-ensure-the-fec-state-stays-disabled-for-uhbr-lin.patch
-ApplyPatch 1139-drm-i915-dp-export-helper-to-determine-if-fec-on-non-uhbr-li.patch
-ApplyPatch 1140-drm-i915-dp-mst-reuse-the-dp-sst-helper-function-to-compute-.patch
-ApplyPatch 1141-drm-i915-dp-mst-track-dsc-enabled-status-on-the-mst-link.patch
-ApplyPatch 1142-drm-i915-dp-mst-recompute-all-mst-link-crtcs-if-dsc-gets-ena.patch
-ApplyPatch 1143-drm-i915-dp-fix-panel-replay-when-dsc-is-enabled.patch
-ApplyPatch 1144-bluetooth-sco-fix-use-after-free-in-sco-recv-frame-due-to-mi.patch
-ApplyPatch 1145-scsi-storvsc-handle-persistent-reserve-in-truncation-for-hyp.patch
-ApplyPatch 1146-crypto-af-alg-fix-null-pointer-dereference-in-scatterwalk.patch
-ApplyPatch 1147-crypto-algif-aead-revert-to-operating-out-of-place.patch
-ApplyPatch 1148-crypto-af-alg-limit-rx-sg-extraction-by-receive-buffer-budge.patch
-ApplyPatch 1149-crypto-af-alg-fix-page-reassignment-overflow-in-af-alg-pull-.patch
-ApplyPatch 1150-crypto-authencesn-reject-too-short-aad-assoclen-8-to-match-e.patch
-ApplyPatch 1151-crypto-authencesn-do-not-place-hiseq-at-end-of-dst-for-out-o.patch
-ApplyPatch 1152-crypto-authencesn-fix-src-offset-when-decrypting-in-place.patch
-ApplyPatch 1153-crypto-authencesn-reject-short-ahash-digests-during-instance.patch
-ApplyPatch 1154-crypto-algif-aead-fix-minimum-rx-size-check-for-decryption.patch
-ApplyPatch 1155-crypto-algif-aead-snapshot-iv-for-async-aead-requests.patch
-ApplyPatch 1156-xfrm-esp-avoid-in-place-decrypt-on-shared-skb-frags.patch
-ApplyPatch 1157-usbip-validate-number-of-packets-in-usbip-pack-ret-submit.patch
-ApplyPatch 1158-rdma-umem-fix-double-dma-buf-unpin-in-failure-path.patch
-ApplyPatch 1159-ptrace-slightly-saner-get-dumpable-logic.patch
-ApplyPatch 1160-net-skbuff-preserve-shared-frag-marker-during-coalescing.patch
-ApplyPatch 1161-net-skbuff-propagate-shared-frag-marker-through-frag-transfe.patch
-ApplyPatch 1162-netfilter-nf-tables-release-flowtable-after-rcu-grace-period.patch
-ApplyPatch 1163-can-j1939-j1939-session-new-fix-skb-reference-counting.patch
-ApplyPatch 1164-ima-don-t-clear-ima-digsig-flag-when-setting-or-removing-non.patch
-ApplyPatch 1165-netfilter-nf-conntrack-h323-check-for-zero-length-in-decodeq.patch
-ApplyPatch 1166-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-12.patch
-ApplyPatch 1167-revert-scsi-lpfc-add-capability-to-register-platform-name-id.patch
-ApplyPatch 1168-revert-scsi-lpfc-allow-support-for-bb-credit-recovery-in-poi.patch
-ApplyPatch 1169-revert-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-drop.patch
-ApplyPatch 1170-revert-scsi-lpfc-modify-kref-handling-for-fabric-controller-.patch
-ApplyPatch 1171-revert-scsi-lpfc-fix-leaked-ndlp-krefs-when-in-point-to-poin.patch
-ApplyPatch 1172-revert-scsi-lpfc-ensure-unregistration-of-rpis-for-received-.patch
-ApplyPatch 1173-revert-scsi-lpfc-remove-redundant-null-ptr-assignment-in-lpf.patch
-ApplyPatch 1174-revert-scsi-lpfc-revise-discovery-related-function-headers-a.patch
-ApplyPatch 1175-revert-scsi-lpfc-update-various-npiv-diagnostic-log-messagin.patch
-ApplyPatch 1176-revert-scsi-lpfc-copyright-updates-for-14-4-0-11-patches.patch
-ApplyPatch 1177-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-11.patch
-ApplyPatch 1178-revert-scsi-lpfc-convert-debugfs-directory-counts-from-atomi.patch
-ApplyPatch 1179-revert-scsi-lpfc-clean-up-extraneous-phba-dentries.patch
-ApplyPatch 1180-revert-scsi-lpfc-use-switch-case-statements-in-dif-debugfs-h.patch
-ApplyPatch 1181-revert-scsi-lpfc-fix-memory-leak-when-nvmeio-trc-debugfs-ent.patch
-ApplyPatch 1182-revert-scsi-lpfc-define-size-of-debugfs-entry-for-xri-rebala.patch
-ApplyPatch 1183-revert-scsi-lpfc-ensure-plogi-acc-is-sent-prior-to-prli-in-p.patch
-ApplyPatch 1184-revert-scsi-lpfc-check-return-status-of-lpfc-reset-flush-io-.patch
-ApplyPatch 1185-revert-scsi-lpfc-decrement-ndlp-kref-after-fdisc-retries-exh.patch
-ApplyPatch 1186-revert-scsi-lpfc-remove-ndlp-kref-decrement-clause-for-f-por.patch
-ApplyPatch 1187-revert-scsi-lpfc-clean-up-allocated-queues-when-queue-setup-.patch
-ApplyPatch 1188-revert-scsi-lpfc-abort-outstanding-els-wqes-regardless-of-if.patch
-ApplyPatch 1189-revert-scsi-lpfc-remove-unused-member-variables-in-struct-lp.patch
-ApplyPatch 1190-revert-scsi-lpfc-use-int-type-to-store-negative-error-codes.patch
-ApplyPatch 1191-revert-scsi-lpfc-use-min-to-improve-code.patch
-ApplyPatch 1192-revert-scsi-lpfc-fix-wrong-function-reference-in-a-comment.patch
-ApplyPatch 1193-revert-lpfc-don-t-use-file-f-path-dentry-for-comparisons.patch
-ApplyPatch 1194-revert-scsi-lpfc-copyright-updates-for-14-4-0-10-patches.patch
-ApplyPatch 1195-revert-scsi-lpfc-update-lpfc-version-to-14-4-0-10.patch
-ApplyPatch 1196-revert-scsi-lpfc-modify-end-of-life-adapters-model-descripti.patch
-ApplyPatch 1197-revert-scsi-lpfc-revise-cq-create-set-mailbox-bitfield-defin.patch
-ApplyPatch 1198-revert-scsi-lpfc-move-clearing-of-hba-setup-flag-to-before-l.patch
-ApplyPatch 1199-revert-scsi-lpfc-ensure-hba-setup-flag-is-used-only-for-sli4.patch
-ApplyPatch 1200-revert-scsi-lpfc-relocate-clearing-initial-phba-flags-from-l.patch
-ApplyPatch 1201-revert-scsi-lpfc-simplify-error-handling-for-failed-lpfc-get.patch
-ApplyPatch 1202-revert-scsi-lpfc-early-return-out-of-fdmi-cmpl-for-locally-r.patch
-ApplyPatch 1203-revert-scsi-lpfc-skip-rscn-processing-when-fc-unloading-flag.patch
-ApplyPatch 1204-revert-scsi-lpfc-check-for-hdwq-null-ptr-when-cleaning-up-lp.patch
-ApplyPatch 1205-revert-scsi-lpfc-update-debugfs-trace-ring-initialization-me.patch
-ApplyPatch 1206-revert-scsi-lpfc-revise-logging-format-for-failed-ct-mib-req.patch
-ApplyPatch 1207-scsi-lpfc-avoid-crashing-in-lpfc-nlp-get-rhel-only.patch
-ApplyPatch 1208-drm-mgag200-fix-mgag200-bmc-stop-scanout.patch
-ApplyPatch 1209-net-sched-act-csum-validate-nested-vlan-headers.patch
-ApplyPatch 1210-netfilter-ip6t-eui64-reject-invalid-mac-header-for-all-packe.patch
-ApplyPatch 1211-cifs-remove-unnecessary-tracing-after-put-tcon.patch
-ApplyPatch 1212-cifs-make-default-value-of-retrans-as-zero.patch
-ApplyPatch 1213-dpll-zl3073x-add-output-pin-frequency-helper.patch
-ApplyPatch 1214-dpll-zl3073x-include-current-frequency-in-supported-frequenc.patch
-ApplyPatch 1215-dpll-zl3073x-fix-ref-frequency-setting.patch
-ApplyPatch 1216-dpll-zl3073x-fix-ref-phase-offset-comp-register-width-for-so.patch
-ApplyPatch 1217-dpll-zl3073x-remove-redundant-cleanup-in-devm-dpll-init.patch
-ApplyPatch 1218-io-uring-rsrc-reject-zero-length-fixed-buffer-import.patch
-ApplyPatch 1219-netfilter-nf-conntrack-helper-pass-helper-to-expect-cleanup.patch
-ApplyPatch 1220-hid-wacom-fix-out-of-bounds-read-in-wacom-intuos-bt-irq.patch
-ApplyPatch 1221-redhat-configs-enable-config-aqtion-on-all-archs.patch
-ApplyPatch 1222-wifi-brcmfmac-validate-bsscfg-indices-in-if-events.patch
-ApplyPatch 1223-netfilter-ctnetlink-ensure-safe-access-to-master-conntrack.patch
-ApplyPatch 1224-netfilter-xt-tcpmss-check-remaining-length-before-reading-op.patch
-ApplyPatch 1225-net-fix-rcu-tasks-stall-in-threaded-busypoll.patch
-ApplyPatch 1226-ice-use-netif-get-num-default-rss-queues.patch
-ApplyPatch 1227-ice-set-max-queues-in-alloc-etherdev-mqs.patch
-ApplyPatch 1228-anon-inode-use-a-proper-mode-internally.patch
-ApplyPatch 1229-pidfs-use-anon-inode-getattr.patch
-ApplyPatch 1230-anon-inode-explicitly-block-setattr.patch
-ApplyPatch 1231-pidfs-use-anon-inode-setattr.patch
-ApplyPatch 1232-anon-inode-raise-sb-i-nodev-and-sb-i-noexec.patch
-ApplyPatch 1233-fs-add-s-anon-inode.patch
-ApplyPatch 1234-mm-thp-deny-thp-for-files-on-anonymous-inodes.patch
-ApplyPatch 1235-dpaa2-switch-prevent-zero-size-ptr-dereference-when-num-ifs-.patch
-ApplyPatch 1236-dpaa2-switch-validate-num-ifs-to-prevent-out-of-bounds-write.patch
-ApplyPatch 1237-mm-page-alloc-clear-page-private-in-free-pages-prepare.patch
-ApplyPatch 1238-redhat-kernel-spec-template-disable-objtool-werror-for-gcov-.patch
-ApplyPatch 1239-dm-thin-fix-metadata-refcount-underflow.patch
-ApplyPatch 1240-crypto-tegra-disable-softirqs-before-finalizing-request.patch
-ApplyPatch 1241-bluetooth-mgmt-validate-ltk-enc-size-on-load.patch
-ApplyPatch 1242-bluetooth-sco-fix-race-conditions-in-sco-sock-connect.patch
-ApplyPatch 1243-xfs-delete-attr-leaf-freemap-entries-when-empty.patch
-ApplyPatch 1244-xfs-fix-freemap-adjustments-when-adding-xattrs-to-leaf-block.patch
-ApplyPatch 1245-proc-use-the-same-treatment-to-check-proc-lseek-as-ones-for-.patch
-ApplyPatch 1246-proc-fix-missing-pde-set-flags-for-net-proc-files.patch
-ApplyPatch 1247-proc-fix-type-confusion-in-pde-set-flags.patch
-ApplyPatch 1248-nbd-defer-config-unlock-in-nbd-genl-connect.patch
-ApplyPatch 1249-crypto-authenc-correctly-pass-einprogress-back-up-to-the-cal.patch
-ApplyPatch 1250-dpll-zl3073x-detect-dpll-channel-count-from-chip-id-at-runti.patch
-ApplyPatch 1251-dpll-zl3073x-add-die-temperature-reporting-for-supported-chi.patch
-ApplyPatch 1252-dpll-zl3073x-use-struct-group-to-partition-states.patch
-ApplyPatch 1253-dpll-zl3073x-add-zl3073x-ref-state-update-helper.patch
-ApplyPatch 1254-dpll-zl3073x-introduce-zl3073x-chan-for-dpll-channel-state.patch
-ApplyPatch 1255-dpll-zl3073x-add-dpll-channel-status-fields-to-zl3073x-chan.patch
-ApplyPatch 1256-dpll-zl3073x-add-reference-priority-to-zl3073x-chan.patch
-ApplyPatch 1257-dpll-zl3073x-drop-selected-and-simplify-connected-ref-getter.patch
-ApplyPatch 1258-dpll-add-frequency-monitoring-to-netlink-spec.patch
-ApplyPatch 1259-dpll-add-frequency-monitoring-callback-ops.patch
-ApplyPatch 1260-dpll-zl3073x-implement-frequency-monitoring.patch
-ApplyPatch 1261-dpll-zl3073x-clean-up-esync-get-set-and-use-zl3073x-out-is-n.patch
-ApplyPatch 1262-dpll-zl3073x-use-field-modify-for-clear-and-set-patterns.patch
-ApplyPatch 1263-dpll-zl3073x-add-ref-sync-and-output-clock-type-helpers.patch
-ApplyPatch 1264-dpll-zl3073x-add-ref-sync-pair-support.patch
-ApplyPatch 1265-smb-client-validate-the-whole-dacl-before-rewriting-it-in-ci.patch
-ApplyPatch 1266-smb-client-require-a-full-nfs-mode-sid-before-reading-mode-b.patch
-ApplyPatch 1267-smb-client-scope-end-of-dacl-to-cifs-debug2-use-in-parse-dac.patch
-ApplyPatch 1268-smb-client-use-kzalloc-to-zero-initialize-security-descripto.patch
-ApplyPatch 1269-smb-client-validate-dacloffset-before-building-dacl-pointers.patch
-ApplyPatch 1270-dpll-add-pin-operational-state.patch
-ApplyPatch 1271-dpll-zl3073x-implement-pin-operational-state-reporting.patch
-ApplyPatch 1272-dpll-add-fractional-frequency-offset-to-pin-parent-device.patch
-ApplyPatch 1273-dpll-zl3073x-report-ffo-as-dpll-vs-input-reference-offset.patch
-ApplyPatch 1274-netfilter-flowtable-strictly-check-for-maximum-number-of-act.patch
-ApplyPatch 1275-bluetooth-hci-add-initial-support-for-past.patch
-ApplyPatch 1276-bluetooth-iso-add-support-to-bind-to-trigger-past.patch
-ApplyPatch 1277-bluetooth-hci-add-support-for-ll-extended-feature-set.patch
-ApplyPatch 1278-bluetooth-hci-conn-fix-using-conn-le-tx-rx-phy-as-supported-.patch
-ApplyPatch 1279-bluetooth-l2cap-add-support-for-setting-bt-phy.patch
-ApplyPatch 1280-bluetooth-hci-sync-hci-cmd-sync-queue-once-return-eexist-if-.patch
-ApplyPatch 1281-bluetooth-hci-sync-fix-leaks-when-hci-cmd-sync-queue-once-fa.patch
-ApplyPatch 1282-bluetooth-hci-sync-fix-uaf-in-le-read-features-complete.patch
-ApplyPatch 1283-pnfs-fix-a-missing-wake-up-while-waiting-on-nfs-layout-drain.patch
-ApplyPatch 1284-smb-client-fix-oob-reads-parsing-symlink-error-response.patch
-ApplyPatch 1285-sched-deadline-fix-dl-server-time-accounting.patch
-ApplyPatch 1286-redhat-configs-automotive-disable-config-io-uring.patch
-ApplyPatch 1287-rhel-kabi-dpll-adaptation.patch
-ApplyPatch 1288-net-bonding-fix-use-after-free-in-bond-xmit-broadcast.patch
-ApplyPatch 1289-s390-pci-avoid-deadlock-between-pci-error-recovery-and-mlx5-.patch
-ApplyPatch 1290-ice-fix-stats-array-overflow-when-vf-requests-more-queues.patch
-ApplyPatch 1291-s390-dasd-fix-gendisk-parent-after-copy-pair-swap.patch
-ApplyPatch 1292-s390-dasd-move-quiesce-state-with-pprc-swap.patch
-ApplyPatch 1293-s390-dasd-copy-detected-format-information-to-secondary-devi.patch
-ApplyPatch 1294-nouveau-gsp-drop-warn-on-in-acpi-probes.patch
-ApplyPatch 1295-can-raw-fix-ro-uniq-use-after-free-in-raw-rcv.patch
-ApplyPatch 1296-erofs-add-gfp-noio-in-the-bio-completion-if-needed.patch
-ApplyPatch 1297-alsa-6fire-fix-use-after-free-on-disconnect.patch
-ApplyPatch 1298-ip6-tunnel-clear-skb2-cb-in-ip4ip6-err.patch
-ApplyPatch 1299-ipv6-rpl-reserve-mac-len-headroom-when-recompressed-srh-grow.patch
-ApplyPatch 1300-fs-constify-file-ptr-in-backing-file-accessor-helpers.patch
-ApplyPatch 1301-lsm-split-the-notifier-code-out-into-lsm-notifier-c.patch
-ApplyPatch 1302-lsm-split-the-init-code-out-into-lsm-init-c.patch
-ApplyPatch 1303-lsm-consolidate-lsm-allowed-and-prepare-lsm-into-lsm-prepare.patch
-ApplyPatch 1304-lsm-introduce-looping-macros-for-the-initialization-code.patch
-ApplyPatch 1305-lsm-integrate-report-lsm-order-code-into-caller.patch
-ApplyPatch 1306-lsm-integrate-lsm-early-cred-and-lsm-early-task-into-caller.patch
-ApplyPatch 1307-lsm-rename-ordered-lsm-init-to-lsm-init-ordered.patch
-ApplyPatch 1308-lsm-replace-the-name-field-with-a-pointer-to-the-lsm-id-stru.patch
-ApplyPatch 1309-lsm-rename-the-lsm-order-variables-for-consistency.patch
-ApplyPatch 1310-lsm-rework-lsm-active-cnt-and-lsm-idlist.patch
-ApplyPatch 1311-lsm-get-rid-of-the-lsm-names-list-and-do-some-cleanup.patch
-ApplyPatch 1312-lsm-rework-the-lsm-enable-disable-setter-getter-functions.patch
-ApplyPatch 1313-lsm-rename-exists-ordered-lsm-to-lsm-order-exists.patch
-ApplyPatch 1314-lsm-rename-rework-append-ordered-lsm-into-lsm-order-append.patch
-ApplyPatch 1315-lsm-rename-rework-ordered-lsm-parse-to-lsm-order-parse.patch
-ApplyPatch 1316-lsm-cleanup-the-lsm-blob-size-code.patch
-ApplyPatch 1317-lsm-cleanup-initialize-lsm-and-rename-to-lsm-init-single.patch
-ApplyPatch 1318-lsm-fold-lsm-init-ordered-into-security-init.patch
-ApplyPatch 1319-lsm-add-tweak-function-header-comment-blocks-in-lsm-init-c.patch
-ApplyPatch 1320-lsm-cleanup-the-debug-and-console-output-in-lsm-init-c.patch
-ApplyPatch 1321-fs-prepare-for-adding-lsm-blob-to-backing-file.patch
-ApplyPatch 1322-lsm-add-backing-file-lsm-hooks.patch
-ApplyPatch 1323-selinux-fix-overlayfs-mmap-and-mprotect-access-checks.patch
-ApplyPatch 1324-scripts-sorttable-fix-orc-sort-cmp-to-maintain-symmetry-and-.patch
-ApplyPatch 1325-scripts-sorttable-remove-unused-macro-defines.patch
-ApplyPatch 1326-scripts-sorttable-remove-unused-write-functions.patch
-ApplyPatch 1327-scripts-sorttable-remove-unneeded-elf-rel.patch
-ApplyPatch 1328-scripts-sorttable-have-the-orc-code-use-the-r-functions-to-r.patch
-ApplyPatch 1329-scripts-sorttable-make-compare-extable-into-two-functions.patch
-ApplyPatch 1330-scripts-sorttable-convert-elf-ehdr-to-union.patch
-ApplyPatch 1331-scripts-sorttable-replace-elf-shdr-macro-with-a-union.patch
-ApplyPatch 1332-scripts-sorttable-convert-elf-sym-macro-over-to-a-union.patch
-ApplyPatch 1333-scripts-sorttable-add-helper-functions-for-elf-ehdr.patch
-ApplyPatch 1334-scripts-sorttable-add-helper-functions-for-elf-shdr.patch
-ApplyPatch 1335-scripts-sorttable-add-helper-functions-for-elf-sym.patch
-ApplyPatch 1336-scripts-sorttable-use-uint64-t-for-mcount-sorting.patch
-ApplyPatch 1337-scripts-sorttable-move-code-from-sorttable-h-into-sorttable-.patch
-ApplyPatch 1338-scripts-sorttable-get-start-stop-mcount-loc-from-elf-file-di.patch
-ApplyPatch 1339-scripts-sorttable-use-a-structure-of-function-pointers-for-e.patch
-ApplyPatch 1340-arm64-scripts-sorttable-implement-sorting-mcount-loc-at-boot.patch
-ApplyPatch 1341-scripts-sorttable-have-mcount-rela-sort-use-direct-values.patch
-ApplyPatch 1342-scripts-sorttable-always-use-an-array-for-the-mcount-loc-sor.patch
-ApplyPatch 1343-scripts-sorttable-zero-out-weak-functions-in-mcount-loc-tabl.patch
-ApplyPatch 1344-ftrace-update-the-mcount-loc-check-of-skipped-entries.patch
-ApplyPatch 1345-ftrace-have-ftrace-pages-output-reflect-freed-pages.patch
-ApplyPatch 1346-ftrace-do-not-over-allocate-ftrace-memory.patch
-ApplyPatch 1347-ftrace-test-mcount-loc-addr-before-calling-ftrace-call-addr.patch
-ApplyPatch 1348-ftrace-check-against-is-kernel-text-instead-of-kaslr-offset.patch
-ApplyPatch 1349-scripts-sorttable-use-normal-sort-if-theres-no-relocs-in-the.patch
-ApplyPatch 1350-scripts-sorttable-allow-matches-to-functions-before-function.patch
-ApplyPatch 1351-scripts-sorttable-fix-endianness-handling-in-build-time-mcou.patch
-ApplyPatch 1352-s390-ap-expose-ap-bindings-complete-count-counter-via-sysfs.patch
-ApplyPatch 1353-rxrpc-fix-rxgk-token-loading-to-check-bounds.patch
-ApplyPatch 1354-xen-privcmd-fix-double-free-via-vma-splitting.patch
-ApplyPatch 1355-bluetooth-hci-sync-fix-stack-buffer-overflow-in-hci-le-big-c.patch
-ApplyPatch 1356-buffer-overflow-in-drivers-xen-sys-hypervisor-c.patch
-ApplyPatch 1357-can-isotp-fix-tx-buf-use-after-free-in-isotp-sendmsg.patch
-ApplyPatch 1358-scsi-lpfc-fix-reusing-an-ndlp-that-is-marked-nlp-dropped-dur.patch
-ApplyPatch 1359-bluetooth-hci-event-fix-potential-uaf-in-ssp-passkey-handler.patch
-ApplyPatch 1360-wifi-mac80211-use-safe-list-iteration-in-radar-detect-work.patch
-ApplyPatch 1361-wifi-mac80211-drop-stray-static-from-fast-rx-rx-result.patch
-ApplyPatch 1362-wifi-mac80211-remove-station-if-connection-prep-fails.patch
-ApplyPatch 1363-bnxt-en-fix-rss-context-delete-logic.patch
-ApplyPatch 1364-objtool-klp-fix-unexported-static-call-key-access-for-manual.patch
-ApplyPatch 1365-rbd-eliminate-a-race-in-lock-dwork-draining-on-unmap.patch
-ApplyPatch 1366-ibmveth-disable-gso-for-packets-with-small-mss.patch
-ApplyPatch 1367-s390-mm-add-missing-secure-storage-access-fixups-for-donated.patch
-ApplyPatch 1368-mptcp-fix-slab-use-after-free-in-inet-lookup-established.patch
-ApplyPatch 1369-watchdog-wdat-wdt-fix-acpi-table-leak-in-probe-function.patch
-ApplyPatch 1370-net-mana-fix-use-after-free-in-add-adev-error-path.patch
-ApplyPatch 1371-crypto-caam-fix-overflow-on-long-hmac-keys.patch
-ApplyPatch 1372-exit-prevent-preemption-of-oopsing-task-dead-task.patch
-ApplyPatch 1373-net-sched-fix-pedit-partial-cow-leading-to-page-cache-corrup.patch
-ApplyPatch 1374-kvm-arm64-vgic-its-drop-translation-cache-ref-only-for-eras.patch
-ApplyPatch 1375-ipv6-icmp-clear-skb2-cb-in-ip6-err-gen-icmpv6-unreach.patch
-ApplyPatch 1376-rdma-mana-validate-rx-hash-key-len.patch
-ApplyPatch 1377-nvmet-tcp-fix-race-between-icreq-handling-and-queue-teardown.patch
-ApplyPatch 1378-rxrpc-fix-response-authenticator-parser-oob-read.patch
-ApplyPatch 1379-rdma-iwcm-fix-workqueue-list-corruption-by-removing-work-lis.patch
-ApplyPatch 1380-rdma-mana-remove-user-triggerable-warn-on-in-mana-ib-create-.patch
-ApplyPatch 1381-scsi-qla2xxx-completely-fix-fcport-double-free.patch
-ApplyPatch 1382-tcp-fix-potential-race-in-tcp-v6-syn-recv-sock.patch
-ApplyPatch 1383-selinux-rhel-only-hotfix-for-execmem-regression.patch
-ApplyPatch 1384-ipv4-account-for-fraggap-on-the-paged-allocation-path.patch
-ApplyPatch 1385-ipv6-account-for-fraggap-on-the-paged-allocation-path.patch
-ApplyPatch 1386-alsa-usb-audio-add-sanity-check-for-oob-writes-at-silencing.patch
-ApplyPatch 1387-alsa-aloop-fix-peer-runtime-uaf-during-format-change-stop.patch
-ApplyPatch 1388-rdma-vmw-pvrdma-fix-double-free-on-pvrdma-alloc-ucontext-err.patch
-ApplyPatch 1389-scsi-qla2xxx-add-support-to-report-mpi-fw-state.patch
-ApplyPatch 1390-crypto-tegra-remove-unneeded-crypto-engine-stop-call.patch
-ApplyPatch 1391-crypto-tegra-use-api-helpers-to-setup-fallback-request.patch
-ApplyPatch 1392-crypto-tegra-remove-the-use-of-dev-err-probe.patch
-ApplyPatch 1393-crypto-tegra-use-int-type-to-store-negative-error-codes.patch
-ApplyPatch 1394-crypto-tegra-add-missing-crypto-alg-async.patch
-ApplyPatch 1395-crypto-tegra-don-t-touch-bo-refcount-in-host1x-bo-pin-unpin.patch
-ApplyPatch 1396-crypto-tegra-fix-dma-free-coherent-size-error.patch
-ApplyPatch 1397-crypto-tegra-return-enomem-when-input-buffer-allocation-fail.patch
-ApplyPatch 1398-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq.patch
-ApplyPatch 1399-rxrpc-fix-potential-uaf-after-skb-unshare-failure.patch
-ApplyPatch 1400-rxrpc-fix-rxrpc-input-call-event-to-only-unshare-data-packet.patch
-ApplyPatch 1401-drm-gem-fix-inconsistent-plane-dimension-calculation-in-drm.patch
-ApplyPatch 1402-netfilter-nft-inner-fix-ipv6-inner-thoff-desync.patch
-ApplyPatch 1403-asoc-sdca-fix-null-pointer-dereference-in-sdca-dev-unregiste.patch
-ApplyPatch 1404-crypto-testmgr-allow-authenc-hmac-sha-256-384-cts-cbc-aes-in.patch
-ApplyPatch 1405-crypto-krb5enc-fix-sleepable-flag-handling-in-encrypt-dispat.patch
-ApplyPatch 1406-crypto-krb5enc-fix-async-decrypt-skipping-hash-verification.patch
-ApplyPatch 1407-crypto-krb5-filter-out-async-aead-implementations-at-alloc.patch
-ApplyPatch 1408-arm64-cputype-add-c1-pro-definitions.patch
-ApplyPatch 1409-arm64-cputype-add-c1-premium-definitions.patch
-ApplyPatch 1410-arm64-cputype-add-c1-ultra-definitions.patch
-ApplyPatch 1411-arm64-errata-mitigate-tlbi-errata-on-various-arm-cpus.patch
-ApplyPatch 1412-arm64-errata-mitigate-tlbi-errata-on-nvidia-olympus-cpu.patch
-ApplyPatch 1413-arm64-errata-mitigate-tlbi-errata-on-microsoft-azure-cobalt.patch
-ApplyPatch 1414-fs-smb-client-fix-out-of-bounds-read-in-cifs-sanitize-prepa.patch
-ApplyPatch 1421-net-page-pool-avoid-false-positive-warning-if-napi-was-never.patch
-ApplyPatch 1422-net-mana-fix-double-destroy-workqueue-on-service-rescan-pci.patch
-ApplyPatch 1423-net-mana-null-service-wq-on-setup-error-to-prevent-double-de.patch
-ApplyPatch 1424-net-ipv6-ioam6-prevent-schema-length-wraparound-in-trace-fil.patch
-ApplyPatch 1425-procfs-fix-missing-rcu-protection-when-reading-real-parent-i.patch
-ApplyPatch 1426-tg3-fix-race-for-querying-speed-duplex.patch
-ApplyPatch 1427-smb-client-fix-off-by-8-bounds-check-in-check-wsl-eas.patch
-ApplyPatch 1428-smb-client-fix-out-of-bounds-read-in-smb2-compound-op.patch
-ApplyPatch 1429-epoll-annotate-racy-check.patch
-ApplyPatch 1430-eventpoll-defer-struct-eventpoll-free-to-rcu-grace-period.patch
-ApplyPatch 1431-eventpoll-use-hlist-is-singular-node-in-ep-remove.patch
-ApplyPatch 1432-eventpoll-split-ep-remove.patch
-ApplyPatch 1433-eventpoll-kill-ep-remove.patch
-ApplyPatch 1434-eventpoll-rename-ep-remove-safe-back-to-ep-remove.patch
-ApplyPatch 1435-eventpoll-move-epi-fget-up.patch
-ApplyPatch 1436-eventpoll-drop-vestigial-prefix-from-ep-remove-file-epi.patch
-ApplyPatch 1437-eventpoll-fix-ep-remove-struct-eventpoll-struct-file-uaf.patch
-ApplyPatch 1438-eventpoll-move-f-lock-acquisition-into-ep-remove-file.patch
-ApplyPatch 1439-eventpoll-refresh-eventpoll-release-fast-path-comment.patch
-ApplyPatch 1440-eventpoll-drop-dead-bool-return-from-ep-remove-epi.patch
-ApplyPatch 1441-eventpoll-fix-semi-unbounded-recursion.patch
-ApplyPatch 1442-eventpoll-drop-vestigial-epi-dying-flag.patch
-ApplyPatch 1443-eventpoll-fix-integer-overflow-in-ep-loop-check-proc.patch
-ApplyPatch 1444-eventpoll-refresh-epi-fget-ep-remove-file-comments.patch
-ApplyPatch 1447-sctp-revalidate-list-cursor-after-sctp-sendmsg-to-asoc-in-sctp-sendall.patch
-ApplyPatch 1448-net-sched-ets-always-remove-class-from-active-list-before-deleting.patch
-ApplyPatch 1449-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-gfn.patch
-ApplyPatch 1450-kvm-x86-fix-shadow-paging-use-after-free-due-to-unexpected-role.patch
-ApplyPatch 1451-md-bitmap-fix-gpf-in-write-page-caused-by-resize-race.patch
-ApplyPatch 1452-rtmutex-use-waiter-task-instead-of-current-in-remove-waiter.patch
-ApplyPatch 1453-locking-rtmutex-skip-remove-waiter-when-waiter-is-not-enqueued.patch
-ApplyPatch 1454-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter.patch
-ApplyPatch 1455-futex-requeue-revert-prevent-null-pointer-dereference.patch
-ApplyPatch 1456-xfrm-esp-restore-combined-single-frag-length-gate.patch
-ApplyPatch 1457-xfs-resample-the-data-fork-mapping-after-cycling-ilock.patch
-ApplyPatch 1458-crypto-ccp-copy-iv-using-skcipher-ivsize.patch
 # END OF PATCH APPLICATIONS
 
 # Any further pre-build tree manipulations happen here.
@@ -2795,6 +2103,13 @@ do
   done
   rm -f $i.tmp
 done
+%if %{with_gcov}
+%{log_msg "Disabling CONFIG_OBJTOOL_WERROR for gcov build"}
+for i in %{all_configs}
+do
+  sed -i "s|CONFIG_OBJTOOL_WERROR=y|# CONFIG_OBJTOOL_WERROR is not set|g" $i
+done
+%endif
 %endif
 
 %if %{signkernel}%{signmodules}
@@ -5196,20 +4511,95 @@ fi\
 #
 #
 %changelog
-* Wed Jul 15 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.34.1
-- Recreate RHEL 6.12.0-211.34.1 from CentOS Stream 10 and upstream stable backports (1456-1458)
-- RHEL changelog for 211.34.1 follows:
+* Thu Jul 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.37.1
+- Debrand for AlmaLinux OS
+- Use AlmaLinux OS secure boot cert
 
-* Mon Jul 13 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.34.1.el10_2]
+* Thu Jul 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.37.1
+- Enable Btrfs support for all kernel variants
+
+* Thu Jul 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.37.1
+- hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
+- mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
+- megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
+- qla2xxx: bring back deprecated PCI ids #CFHack #CFHack2024
+- qla4xxx: bring back deprecated PCI ids
+- be2iscsi: bring back deprecated PCI ids
+- kernel/rh_messages.h: enable all disabled pci devices by moving to
+  unmaintained
+
+* Tue Jul 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.37.1.el10_2]
+- can: bcm: defer rx_op deallocation to workqueue to fix thrtimer UAF (CKI Backport Bot) [RHEL-212681]
+- fanotify: fix false positive on permission events (CKI Backport Bot) [RHEL-180076] {CVE-2026-46150}
+
+* Mon Jul 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.36.1.el10_2]
+- ice: fix double-free of tx_buf skb (Jakub Ramaseuski) [RHEL-191324 RHEL-192200] {CVE-2026-53009}
+- ice: fix double free in ice_sf_eth_activate() error path (Jakub Ramaseuski) [RHEL-191324] {CVE-2026-46162}
+- ice: update PCS latency settings for E825 10G/25Gb modes (Jakub Ramaseuski) [RHEL-191324]
+- ice: fix 'adjust' timer programming for E830 devices (Jakub Ramaseuski) [RHEL-191324]
+- ice: use bitmap_empty() in ice_vf_has_no_qs_ena (Jakub Ramaseuski) [RHEL-191324]
+- ice: use bitmap_weighted_xor() in ice_find_free_recp_res_idx() (Jakub Ramaseuski) [RHEL-191324]
+- ice: Make name member of struct ice_cgu_pin_desc const (Jakub Ramaseuski) [RHEL-191324]
+- ice: fix PTP timestamping broken by SyncE code on E825C (Jakub Ramaseuski) [RHEL-191324]
+- ice: ptp: don't WARN when controlling PF is unavailable (Jakub Ramaseuski) [RHEL-191324] {CVE-2026-43346}
+- ice: use ice_update_eth_stats() for representor stats (Jakub Ramaseuski) [RHEL-191324]
+- ice: fix inverted ready check for VF representors (Jakub Ramaseuski) [RHEL-191324]
+- drivers: net: ice: fix devlink parameters get without irdma (Jakub Ramaseuski) [RHEL-191324]
+- ice: fix rxq info registering in mbuf packets (Jakub Ramaseuski) [RHEL-191324]
+- ice: fix retry for AQ command 0x06EE (Jakub Ramaseuski) [RHEL-191324]
+- ice: reintroduce retry mechanism for indirect AQ (Jakub Ramaseuski) [RHEL-191324]
+- ice: fix adding AQ LLDP filter for VF (Jakub Ramaseuski) [RHEL-191324]
+- ice: recap the VSI and QoS info after rebuild (Jakub Ramaseuski) [RHEL-191324]
+- ice: fix missing TX timestamps interrupts on E825 devices (Jakub Ramaseuski) [RHEL-191324]
+- ice: stop counting UDP csum mismatch as rx_errors (Jakub Ramaseuski) [RHEL-191324]
+- ice: reshuffle and group Rx and Tx queue fields by cachelines (Jakub Ramaseuski) [RHEL-191324]
+- ice: convert all ring stats to u64_stats_t (Jakub Ramaseuski) [RHEL-191324]
+- ice: shorten ring stat names and add accessors (Jakub Ramaseuski) [RHEL-191324]
+- ice: use u64_stats API to access pkts/bytes in dim sample (Jakub Ramaseuski) [RHEL-191324]
+- ice: remove ice_q_stats struct and use struct_group (Jakub Ramaseuski) [RHEL-191324]
+- ice: pass pointer to ice_fetch_u64_stats_per_ring (Jakub Ramaseuski) [RHEL-191324]
+- ice: unify PHY FW loading status handler for E800 devices (Jakub Ramaseuski) [RHEL-191324]
+- ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues (Jakub Ramaseuski) [RHEL-191324] {CVE-2026-23166}
+- bitmap: introduce bitmap_weighted_xor() (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: add test_zero_nbits() (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: exclude nbits == 0 cases from bitmap test (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: test bitmap_weight() for more (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: add bitmap_weight_from() (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: align test_bitmap output (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: switch test to scnprintf("%%*pbl") (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: Add test for out-of-boundary modifications for scatter & gather (Jakub Ramaseuski) [RHEL-191324]
+- cpumask: Introduce cpumask_weighted_or() (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: Align documentation between bitmap_gather() and bitmap_scatter() (Jakub Ramaseuski) [RHEL-191324]
+- bitmap: remove _check_eq_u32_array (Jakub Ramaseuski) [RHEL-191324]
+- include: update references to include/asm-<arch> (Jakub Ramaseuski) [RHEL-191324]
+- KEYS: trusted: Fix a memory leak in tpm2_load_cmd (CKI Backport Bot) [RHEL-189604] {CVE-2025-71147}
+- crypto: af_alg - zero initialize memory allocated via sock_kmalloc (CKI Backport Bot) [RHEL-189576] {CVE-2025-71113}
+- drm/xe: Fix error cleanup in xe_exec_queue_create_ioctl() (CKI Backport Bot) [RHEL-188644] {CVE-2026-52976}
+- xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete (Sabrina Dubroca) [RHEL-180167] {CVE-2026-46116}
+
+* Thu Jul 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.35.1.el10_2]
+- drm/xe/dma-buf: fix UAF with retry loop (Karol Herbst) [RHEL-192232] {CVE-2026-52950}
+- drm/xe/dma-buf: handle empty bo and UAF races (Karol Herbst) [RHEL-192232]
+- drm/xe: Fix bo leak in xe_dma_buf_init_obj() on allocation failure (Karol Herbst) [RHEL-192232]
+- drm/xe: Fix dma-buf attachment leak in xe_gem_prime_import() (Karol Herbst) [RHEL-192232]
+- nfsd: cancel async COPY operations when admin revokes filesystem state (Olga Kornievskaia) [RHEL-173103]
+- nfsd: use correct loop termination in nfsd4_revoke_states() (Olga Kornievskaia) [RHEL-173103]
+- nfsd: check that server is running in unlock_filesystem (Olga Kornievskaia) [RHEL-173103]
+- drm/gem: Try to fix change_handle ioctl, attempt 4 (Jocelyn Falempe) [RHEL-179887]
+- drm/gem: fix race between change_handle and handle_delete (Jocelyn Falempe) [RHEL-179887]
+- drm: Replace old pointer to new idr (Jocelyn Falempe) [RHEL-179887]
+- drm: Set old handle to NULL before prime swap in change_handle (Jocelyn Falempe) [RHEL-179887] {CVE-2026-46215}
+- drm: Do not allow userspace to trigger kernel warnings in drm_gem_change_handle_ioctl() (Jocelyn Falempe) [RHEL-179887]
+- cxl/port: Fix use after free of parent_port in cxl_detach_ep() (Myron Stowe) [RHEL-180697] {CVE-2026-31530}
+- flex_proportions: make fprop_new_period() hardirq safe (CKI Backport Bot) [RHEL-189658] {CVE-2026-23168}
+- Bluetooth: l2cap: Add missing chan lock in l2cap_ecred_reconf_rsp (CKI Backport Bot) [RHEL-188331] {CVE-2026-53071}
+- redhat/configs: disable CONFIG_PT_RECLAIM (Luiz Capitulino) [RHEL-186311]
+- libperf build: Always place libperf includes first (Michael Petlan) [RHEL-183975]
+
+* Tue Jul 14 2026 Jan Stancek <jstancek@redhat.com> [6.12.0-211.34.1.el10_2]
 - crypto: ccp - copy IV using skcipher ivsize (CKI Backport Bot) [RHEL-188463] {CVE-2026-53016}
 - xfs: resample the data fork mapping after cycling ILOCK (Carlos Maiolino) [RHEL-193945]
 - xfrm: esp: restore combined single-frag length gate (CKI Backport Bot) [RHEL-178326]
-
-* Mon Jul 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.33.1
-- Recreate RHEL 6.12.0-211.33.1 from CentOS Stream 10 and upstream stable backports (1451-1455)
-- The AlmaLinux ahead-of-RHEL rtmutex remove_waiter() fixes for CVE-2026-43499
-  (1445, 1446) are superseded by RHEL's copies and dropped
-- RHEL changelog for 211.33.1 follows:
 
 * Thu Jul 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.33.1.el10_2]
 - futex/requeue: Revert "Prevent NULL pointer dereference in remove_waiter() on self-deadlock"" (CKI Backport Bot) [RHEL-193250] {CVE-2026-53166}
@@ -5218,28 +4608,11 @@ fi\
 - rtmutex: Use waiter::task instead of current in remove_waiter() (CKI Backport Bot) [RHEL-193153] {CVE-2026-43499}
 - md/bitmap: fix GPF in write_page caused by resize race (Nigel Croxon) [RHEL-174092] {CVE-2026-43163}
 
-* Thu Jul 09 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.32.1
-- Recreate RHEL 6.12.0-211.32.1 from upstream stable backports (1447-1450)
-- The AlmaLinux ahead-of-RHEL KVM x86 shadow paging fixes (1415, 1416) are
-  superseded by RHEL's copies and dropped
-- RHEL changelog for 211.32.1 follows:
-
 * Tue Jul 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.32.1.el10_2]
 - KVM: x86: Fix shadow paging use-after-free due to unexpected role (Paolo Bonzini) [RHEL-192407] {CVE-2026-53359}
 - KVM: x86: Fix shadow paging use-after-free due to unexpected GFN (CKI Backport Bot) [RHEL-186698] {CVE-2026-46113}
 - net/sched: ets: Always remove class from active list before deleting in ets_qdisc_change (CKI Backport Bot) [RHEL-183007] {CVE-2025-71066}
 - sctp: revalidate list cursor after sctp_sendmsg_to_asoc() in SCTP_SENDALL (CKI Backport Bot) [RHEL-179854] {CVE-2026-46227}
-
-* Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.31.2
-- Bring back the rtmutex self-deadlock NULL pointer dereference fixes in
-  remove_waiter() ahead of RHEL, upstream 3bfdc63936dd + 40a25d59e85b (1445, 1446)
-
-* Wed Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.31.1
-- Recreate RHEL 6.12.0-211.31.1 from CentOS Stream 10 and upstream stable backports (1421-1444)
-- The AlmaLinux ahead-of-RHEL eventpoll CVE-2026-46242 fix (1417) is superseded by
-  RHEL's eventpoll series carrying the same fix and is dropped
-- Temporarily drop the rtmutex remove_waiter() fixes (1418, 1420)
-- RHEL changelog for 211.31.1 follows:
 
 * Mon Jul 06 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.31.1.el10_2]
 - eventpoll: refresh epi_fget() / ep_remove_file() comments (Ian Kent) [RHEL-180776]
@@ -5267,28 +4640,6 @@ fi\
 - net: mana: Fix double destroy_workqueue on service rescan PCI path (CKI Backport Bot) [RHEL-180277] {CVE-2026-43276}
 - net: page_pool: avoid false positive warning if NAPI was never added (Ivan Vecera) [RHEL-162140]
 
-* Tue Jul 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.4
-- Fix rtmutex self-deadlock NULL pointer dereference in remove_waiter() ahead of
-  RHEL, upstream 3bfdc63936dd + 40a25d59e85b (1418, 1420); the futex_requeue guard
-  74e144274af3 was dropped, reverted upstream by 39def6d250d3 (the NULL deref is
-  fully handled by 40a25d59e85b)
-
-* Mon Jul 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.3
-- Fix CVE-2026-46242: eventpoll ep_remove struct eventpoll / struct file
-  use-after-free, adapted from upstream a6dc643c6931 ahead of RHEL (1417)
-
-* Fri Jul 03 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.2
-- Fix KVM x86 shadow paging use-after-free due to unexpected GFN ahead of RHEL (1415)
-- Fix KVM x86 shadow paging use-after-free due to unexpected role ahead of RHEL (1416)
-
-* Fri Jul 03 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.30.1
-- Recreate RHEL 6.12.0-211.30.1 from CentOS Stream 10 and upstream stable backports (1399-1414)
-- RHEL 6.12.0-211.30.1 now also carries the vgic-its (CVE-2026-46316) and ipv4/ipv6
-  fraggap fixes AlmaLinux shipped ahead; the AlmaLinux patches (1374, 1384-1385) are
-  retained and RHEL's duplicate copies omitted
-- CONFIG_ARM64_ERRATUM_4118414 enabled for aarch64 (CVE-2025-10263)
-- RHEL changelog for 211.30.1 follows:
-
 * Wed Jul 01 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.30.1.el10_2]
 - ipv6: account for fraggap on the paged allocation path (Sabrina Dubroca) [RHEL-191349]
 - ipv4: account for fraggap on the paged allocation path (Sabrina Dubroca) [RHEL-191349]
@@ -5311,11 +4662,6 @@ fi\
 - rxrpc: Fix rxrpc_input_call_event() to only unshare DATA packets (CKI Backport Bot) [RHEL-179566] {CVE-2026-45998}
 - rxrpc: Fix potential UAF after skb_unshare() failure (CKI Backport Bot) [RHEL-179566] {CVE-2026-45998}
 
-* Wed Jul 01 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.29.1
-- Recreate RHEL 6.12.0-211.29.1 from CentOS Stream 10 and upstream stable backports (1386-1398)
-- Retain AlmaLinux ahead-of-RHEL fixes: CVE-2026-46316 (1374), ipv4/ipv6 fraggap (1384-1385)
-- RHEL changelog for 211.29.1 follows:
-
 * Mon Jun 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.29.1.el10_2]
 - RDMA/mlx5: Fix error path fall-through in mlx5_ib_dev_res_srq_init() (CKI Backport Bot) [RHEL-180001] {CVE-2026-46176}
 - crypto: tegra - Return ENOMEM when input buffer allocation fails for ccm (Vladislav Dronov) [RHEL-182759]
@@ -5331,16 +4677,6 @@ fi\
 - ALSA: aloop: Fix peer runtime UAF during format-change stop (CKI Backport Bot) [RHEL-179317] {CVE-2026-46090}
 - ALSA: usb-audio: Add sanity check for OOB writes at silencing (CKI Backport Bot) [RHEL-173937] {CVE-2026-43279}
 
-* Tue Jun 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.28.2
-- Add upstream ipv4/ipv6 fraggap paged-allocation fixes (1384-1385)
-  eca856950f7c ipv4: account for fraggap on the paged allocation path
-  736b380e28d0 ipv6: account for fraggap on the paged allocation path
-
-* Fri Jun 26 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.28.1
-- Recreate RHEL 6.12.0-211.28.1 from CentOS Stream 10 and upstream stable backports (1375-1383)
-- Retain AlmaLinux ahead-of-RHEL fix for CVE-2026-46316 (1374)
-- RHEL changelog for 211.27.1..211.28.1 follows:
-
 * Thu Jun 25 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.28.1.el10_2]
 - selinux: RHEL-only hotfix for execmem regression (Ondrej Mosnacek) [RHEL-185117]
 - tcp: fix potential race in tcp_v6_syn_recv_sock() (Paolo Abeni) [RHEL-174242] {CVE-2026-43198}
@@ -5353,14 +4689,6 @@ fi\
 - nvmet-tcp: fix race between ICReq handling and queue teardown (CKI Backport Bot) [RHEL-180106] {CVE-2026-46135}
 - RDMA/mana: Validate rx_hash_key_len (CKI Backport Bot) [RHEL-180090] {CVE-2026-46145}
 - ipv6: icmp: clear skb2->cb[] in ip6_err_gen_icmpv6_unreach() (Guillaume Nault) [RHEL-172675] {CVE-2026-43038}
-
-* Tue Jun 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.26.1
-- Add fix for CVE-2026-46316 (KVM arm64 vgic-its translation-cache use-after-free) ahead of RHEL (1374)
-
-* Mon Jun 22 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.26.1
-- Recreate RHEL 6.12.0-211.26.1 from CentOS Stream 10 and upstream stable backports (1352-1373)
-- Enable watchdog pretimeout panic functionality for x86 via kernel config (RHEL-182299)
-- RHEL changelog for 211.23.1..211.26.1 follows:
 
 * Thu Jun 18 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.26.1.el10_2]
 - net/sched: fix pedit partial COW leading to page cache corruption (Ivan Vecera) [RHEL-177380] {CVE-2026-46331}
@@ -5394,11 +4722,8 @@ fi\
 * Thu Jun 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.23.1.el10_2]
 - s390/ap: Expose ap_bindings_complete_count counter via sysfs (Mircea Dragan) [RHEL-166047]
 
-* Wed Jun 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.22.1
-- Recreate RHEL 6.12.0-211.22.1 from CentOS Stream 10 and upstream stable backports (1288-1352)
-- RHEL changelog for 211.21.1..211.22.1 follows:
-
 * Wed Jun 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.22.1.el10_2]
+- redhat: Fix rebuild changelog generation for automotive (Oleksii Baranov)
 - scripts/sorttable: Fix endianness handling in build-time mcount sort (Jerome Marchand) [RHEL-180932]
 - scripts/sorttable: Allow matches to functions before function entry (Jerome Marchand) [RHEL-180932]
 - scripts/sorttable: Use normal sort if theres no relocs in the mcount section (Jerome Marchand) [RHEL-180932]
@@ -5466,11 +4791,6 @@ fi\
 - s390/pci: Avoid deadlock between PCI error recovery and mlx5 crdump (Mircea Dragan) [RHEL-166855]
 - net: bonding: fix use-after-free in bond_xmit_broadcast() (CKI Backport Bot) [RHEL-168073] {CVE-2026-31419}
 
-* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.20.1
-- Recreate RHEL 6.12.0-211.20.1 from CentOS Stream 10 and upstream stable backports (1245-1287)
-- smb cifs.spnego now shipped by RHEL too; existing ahead-fix 1105 is identical (RHEL's redundant copy omitted)
-- RHEL changelog for 211.19.1..211.20.1 follows:
-
 * Tue Jun 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.20.1.el10_2]
 - smb: client: reject userspace cifs.spnego descriptions (Paulo Alcantara) [RHEL-178932] {CVE-2026-46243}
 - redhat/configs: automotive: disable CONFIG_IO_URING (Brian Masney) [RHEL-179469]
@@ -5517,10 +4837,6 @@ fi\
 - proc: fix type confusion in pde_set_flags() (Abhi Das) [RHEL-163345] {CVE-2025-38653}
 - proc: fix missing pde_set_flags() for net proc files (Abhi Das) [RHEL-163345] {CVE-2025-38653}
 - proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al (CKI Backport Bot) [RHEL-163345] {CVE-2025-38653}
-
-* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.18.1
-- Recreate RHEL 6.12.0-211.18.1 from CentOS Stream 10 and upstream stable backports (1162-1244)
-- RHEL changelog for 211.17.1..211.18.1 follows:
 
 * Thu May 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.18.1.el10_2]
 - xfs: fix freemap adjustments when adding xattrs to leaf blocks (CKI Backport Bot) [RHEL-174051] {CVE-2026-43158}
@@ -5609,12 +4925,6 @@ fi\
 - can: j1939: j1939_session_new(): fix skb reference counting (CKI Backport Bot) [RHEL-162260] {CVE-2024-56645}
 - netfilter: nf_tables: release flowtable after rcu grace period on error (CKI Backport Bot) [RHEL-160469] {CVE-2026-23392}
 
-* Sun Jun 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.16.1
-- Recreate RHEL 6.12.0-211.16.1 from CentOS Stream 10 and upstream stable backports (1106-1161)
-- Drop 211.7.x security-ahead patches superseded by the RHEL backports (1100-1104: crypto authencesn/algif, xfrm-esp, rxrpc, net-skbuff fragnesia, ptrace)
-- Keep the smb cifs.spnego ahead-fix (1105)
-- RHEL changelog for 211.8.1..211.16.1 follows:
-
 * Mon May 18 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.16.1.el10_2]
 - net: skbuff: propagate shared-frag marker through frag-transfer helpers (Sabrina Dubroca) [RHEL-176053] {CVE-2026-46300}
 - net: skbuff: preserve shared-frag marker during coalescing (Sabrina Dubroca) [RHEL-176053] {CVE-2026-46300}
@@ -5688,59 +4998,6 @@ fi\
 - RDMA/bnxt_re: Support extended stats for Thor2 VF (CKI Backport Bot) [RHEL-155971]
 - net/sched: sch_cake: Fix incorrect qlen reduction in cake_drop (Davide Caratti) [RHEL-150456] {CVE-2025-39766}
 - net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit (Davide Caratti) [RHEL-150456] {CVE-2025-39766}
-
-* Thu May 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.7.4
-- net: skbuff: propagate shared-frag marker through frag-transfer helpers
-  (refresh to upstream v5: now also covers skb_segment() and
-  tcp_clone_payload(); CVE-2026-46300 "Fragnesia")
-- smb: client: reject userspace cifs.spnego descriptions (upstream commit
-  3da1fdf4efbc)
-
-* Tue May 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.7.3
-- xfrm: esp: avoid in-place decrypt on shared skb frags (CVE-2026-43284)
-- rxrpc: linearize incoming DATA packet when it has paged frags (CVE-2026-43500)
-- net: skbuff: propagate shared-frag marker through frag-transfer helpers
-  (CVE-2026-46300 "Fragnesia")
-- ptrace: require CAP_SYS_PTRACE on mm-less tasks (CVE-2026-46333, kABI-safe
-  replacement for upstream 31e62c2ebbfd, Qualys Security Advisory)
-
-* Thu Apr 30 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.7.1
-- Debrand for AlmaLinux OS
-- Use AlmaLinux OS secure boot cert
-
-* Thu Apr 30 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.7.1
-- Enable Btrfs support for all kernel variants
-
-* Thu Apr 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.7.1
-- crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
-- crypto: scatterwalk - Backport memcpy_sglist()
-- crypto: algif_aead - use memcpy_sglist() instead of null skcipher
-- crypto: algif_aead - Revert to operating out-of-place
-- crypto: algif_aead - snapshot IV for async AEAD requests
-- crypto: authenc - use memcpy_sglist() instead of null skcipher
-- crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption
-- crypto: authencesn - Fix src offset when decrypting in-place
-- crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
-- hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
-- mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
-- megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
-- qla2xxx: bring back deprecated PCI ids #CFHack #CFHack2024
-- qla4xxx: bring back deprecated PCI ids
-- be2iscsi: bring back deprecated PCI ids
-- kernel/rh_messages.h: enable all disabled pci devices by moving to
-  unmaintained
-
-* Tue Apr 14 2026 Andrew Lukoshko <alukoshko@almalinux.org> [6.12.0-211.7.1.el10_2]
-- Set version to 6.12.0-211.7.1.el10_2 (Andrew Lukoshko)
-- kabi: enable check-kabi (Čestmír Kalina)
-- kabi: add symbols to stablelist (Čestmír Kalina)
-- Merge tag 'kernel-6.12.0-211.7.1.el10_2' into main (Scott Weaver)
-- Merge tag 'kernel-6.12.0-211.6.1.el10_2' into main (Scott Weaver)
-- Merge tag 'kernel-6.12.0-211.5.1.el10_2' into main (Scott Weaver)
-- Merge tag 'kernel-6.12.0-211.4.1.el10_2' into main (Scott Weaver)
-- Merge tag 'kernel-6.12.0-211.3.1.el10_2' into main (Scott Weaver)
-- Merge tag 'kernel-6.12.0-211.2.1.el10_2' into main (Scott Weaver)
-- Merge tag 'kernel-6.12.0-211.1.1.el10_2' into main (Scott Weaver)
 
 * Wed Apr 01 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.7.1.el10_2]
 - kabi: enable check-kabi (Čestmír Kalina) [RHEL-153673]
