@@ -4730,8 +4730,8 @@ static int ice_cfg_netdev(struct ice_vsi *vsi)
 	struct net_device *netdev;
 	u8 mac_addr[ETH_ALEN];
 
-	netdev = alloc_etherdev_mqs(sizeof(*np), vsi->alloc_txq,
-				    vsi->alloc_rxq);
+	netdev = alloc_etherdev_mqs(sizeof(*np), ice_get_max_txq(vsi->back),
+				    ice_get_max_rxq(vsi->back));
 	if (!netdev)
 		return -ENOMEM;
 
@@ -5338,6 +5338,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
 		dev_err(dev, "ice_init_hw failed: %d\n", err);
 		return err;
 	}
+
+	ice_init_dev_hw(pf);
 
 	adapter = ice_adapter_get(pdev);
 	if (IS_ERR(adapter)) {
