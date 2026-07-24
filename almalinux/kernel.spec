@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.146.1.el8_10
+%define pkgrelease 553.147.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.146.1%{?dist}
+%define specrelease 553.147.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2729,7 +2729,7 @@ fi
 #
 #
 %changelog
-* Tue Jul 21 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.146.1
+* Fri Jul 24 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.147.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2740,9 +2740,33 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Jul 21 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.146.1
+* Fri Jul 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.147.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Jul 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.147.1.el8_10]
+- KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level (Aidan Wallace) [RHEL-213341] {CVE-2026-63807}
+- KVM: nVMX: Hide shadow VMCS right after VMCLEAR (Aidan Wallace) [RHEL-213341]
+- KVM: x86: Check for invalid/obsolete root *after* making MMU pages available (Aidan Wallace) [RHEL-213341]
+- KVM: nVMX: Put vmcs12 pages if nested VM-Enter fails due to invalid guest state (Aidan Wallace) [RHEL-213341]
+- KVM: nVMX: Add helper to put (unmap) vmcs12 pages (Aidan Wallace) [RHEL-213341]
+- KVM: nVMX: Use kvm_vcpu_map() to get/pin vmcs12's APIC-access page (Aidan Wallace) [RHEL-213341]
+- KVM: x86: Don't (re)check L1 intercepts when completing userspace I/O (Aidan Wallace) [RHEL-211228] {CVE-2025-40026}
+- KVM: x86: wean in-kernel PIO from vcpu->arch.pio* (Aidan Wallace) [RHEL-211228]
+- KVM: x86: move all vcpu->arch.pio* setup in emulator_pio_in_out() (Aidan Wallace) [RHEL-211228]
+- KVM: x86: drop PIO from unregistered devices (Aidan Wallace) [RHEL-211228]
+- KVM: x86: inline kernel_pio into its sole caller (Aidan Wallace) [RHEL-211228]
+- serial: 8250_mid: Disable DMA for selected platforms (Mark Salter) [RHEL-190191]
+- tipc: fix double-free in tipc_buf_append() (CKI Backport Bot) [RHEL-192178] {CVE-2026-52993}
+- xfrm: esp: restore combined single-frag length gate (CKI Backport Bot) [RHEL-178324]
+- dm log: fix out-of-bounds write due to region_count overflow (CKI Backport Bot) [RHEL-188543] {CVE-2026-53059}
+- xfs: Use xarray to track SB UUIDs instead of plain array. (Lukas Herbolt) [RHEL-127174]
+- selftests: kvm: try getting XFD and XSAVE state out of sync (Paolo Bonzini) [RHEL-166738]
+- selftests: kvm: replace numbering of sync points with actions (Paolo Bonzini) [RHEL-166738]
+- x86/fpu: Clear XSTATE_BV[i] in guest XSAVE state whenever XFD[i]=1 (Paolo Bonzini) [RHEL-166738]
+- mount: Retest MNT_LOCKED in do_umount (Ian Kent) [RHEL-152655]
+- mount: Don't allow copying MNT_UNBINDABLE|MNT_LOCKED mounts (Ian Kent) [RHEL-152655]
+- mount: Prevent MNT_DETACH from disconnecting locked mounts (Ian Kent) [RHEL-152655]
 
 * Mon Jul 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.146.1.el8_10]
 - RDMA/mana: Remove user triggerable WARN_ON() in mana_ib_create_qp_rss() (Gaurav Goklani) [RHEL-180153] {CVE-2026-46117}
