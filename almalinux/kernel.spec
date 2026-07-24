@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.37.1
+%define pkgrelease 211.38.1
 %define kversion 6
-%define tarfile_release 6.12.0-211.37.1.el10_2
+%define tarfile_release 6.12.0-211.38.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.37.1%{?buildid}%{?dist}
+%define specrelease 211.38.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-211.37.1.el10_2
+%define kabiversion 6.12.0-211.38.1.el10_2
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4511,14 +4511,14 @@ fi\
 #
 #
 %changelog
-* Thu Jul 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.37.1
+* Fri Jul 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.38.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Thu Jul 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.37.1
+* Fri Jul 24 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.38.1
 - Enable Btrfs support for all kernel variants
 
-* Thu Jul 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.37.1
+* Fri Jul 24 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.38.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4527,6 +4527,9 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Jul 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.38.1.el10_2]
+- net: gro: don't merge zcopy skbs (CKI Backport Bot) [RHEL-177856] {CVE-2026-46323}
 
 * Tue Jul 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.37.1.el10_2]
 - can: bcm: defer rx_op deallocation to workqueue to fix thrtimer UAF (CKI Backport Bot) [RHEL-212681]
