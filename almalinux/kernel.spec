@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.147.1.el8_10
+%define pkgrelease 553.148.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.147.1%{?dist}
+%define specrelease 553.148.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2729,7 +2729,7 @@ fi
 #
 #
 %changelog
-* Fri Jul 24 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.147.1
+* Tue Jul 28 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.148.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2740,9 +2740,12 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Fri Jul 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.147.1
+* Tue Jul 28 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.148.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Jul 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.148.1.el8_10]
+- ipv6: fix possible UAF in icmpv6_rcv() (CKI Backport Bot) [RHEL-192211] {CVE-2026-53006}
 
 * Thu Jul 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.147.1.el8_10]
 - KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level (Aidan Wallace) [RHEL-213341] {CVE-2026-63807}
