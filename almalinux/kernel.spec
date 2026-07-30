@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.38.1
+%define pkgrelease 211.39.1
 %define kversion 6
-%define tarfile_release 6.12.0-211.38.1.el10_2
+%define tarfile_release 6.12.0-211.39.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.38.1%{?buildid}%{?dist}
+%define specrelease 211.39.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-211.38.1.el10_2
+%define kabiversion 6.12.0-211.39.1.el10_2
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1138,6 +1138,8 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
+Patch2011: 2011-gve-Update-QPL-page-registration-logic.patch
+Patch2012: 2012-gve-Enable-reading-max-ring-size-in-DQO-QPL-mode.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1998,6 +2000,8 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
+ApplyPatch 2011-gve-Update-QPL-page-registration-logic.patch
+ApplyPatch 2012-gve-Enable-reading-max-ring-size-in-DQO-QPL-mode.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4511,14 +4515,14 @@ fi\
 #
 #
 %changelog
-* Fri Jul 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.38.1
+* Thu Jul 30 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.39.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Jul 24 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.38.1
+* Thu Jul 30 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.39.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Jul 24 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.38.1
+* Thu Jul 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.39.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4527,6 +4531,25 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+- gve: update QPL page registration logic to honor max_registered_pages
+  (backport from upstream)
+- gve: enable reading max ring size from the device in DQO-QPL mode (backport
+  from upstream)
+
+* Thu Jul 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.39.1.el10_2]
+- futex: Drop CLONE_THREAD requirement for private default hash alloc (Audra Mitchell) [RHEL-193518] {CVE-2026-52973}
+- net: ipv6: fix NOREF dst use in seg6 and rpl lwtunnels (Antoine Tenart) [RHEL-179299] {CVE-2026-46099}
+- scsi: core: Wake up the error handler when final completions race against each other (CKI Backport Bot) [RHEL-189651] {CVE-2026-23110}
+- dm log: fix out-of-bounds write due to region_count overflow (CKI Backport Bot) [RHEL-188547] {CVE-2026-53059}
+- rtnetlink: add missing netlink_ns_capable() check for peer netns (Guillaume Nault) [RHEL-172537] {CVE-2026-31692}
+- rtnetlink: Try the outer netns attribute in rtnl_get_peer_net(). (Guillaume Nault) [RHEL-172537] {CVE-2026-31692}
+- rtnetlink: fix double call of rtnl_link_get_net_ifla() (Guillaume Nault) [RHEL-172537] {CVE-2026-31692}
+- netkit: Set IFLA_NETKIT_PEER_INFO to netkit_link_ops.peer_type. (Guillaume Nault) [RHEL-172537] {CVE-2026-31692}
+- vxcan: Set VXCAN_INFO_PEER to vxcan_link_ops.peer_type. (Guillaume Nault) [RHEL-172537] {CVE-2026-31692}
+- veth: Set VETH_INFO_PEER to veth_link_ops.peer_type. (Guillaume Nault) [RHEL-172537] {CVE-2026-31692}
+- rtnetlink: Add peer_type in struct rtnl_link_ops. (Guillaume Nault) [RHEL-172537] {CVE-2026-31692}
+- fs/notify: call exportfs_encode_fid with s_umount (Jay Shin) [RHEL-169188] {CVE-2025-40237}
+- fs: relax assertions on failure to encode file handles (Jay Shin) [RHEL-169188]
 
 * Wed Jul 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.38.1.el10_2]
 - net: gro: don't merge zcopy skbs (CKI Backport Bot) [RHEL-177856] {CVE-2026-46323}
