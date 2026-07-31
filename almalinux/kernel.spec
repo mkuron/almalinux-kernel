@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.148.1.el8_10
+%define pkgrelease 553.150.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.148.1%{?dist}
+%define specrelease 553.150.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2729,7 +2729,7 @@ fi
 #
 #
 %changelog
-* Tue Jul 28 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.148.1
+* Fri Jul 31 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.150.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2740,9 +2740,26 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Jul 28 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.148.1
+* Fri Jul 31 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.150.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Jul 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.150.1.el8_10]
+- net/sched: cls_api: Handle TC_ACT_CONSUMED in tcf_qevent_handle (CKI Backport Bot) [RHEL-213300] {CVE-2026-64530}
+- netfilter: ctnetlink: ensure safe access to master conntrack (Florian Westphal) [RHEL-173877] {CVE-2026-43116}
+
+* Tue Jul 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.149.1.el8_10]
+- rtnetlink: add missing netlink_ns_capable() check for peer netns (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- rtnetlink: Try the outer netns attribute in rtnl_get_peer_net(). (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- rtnetlink: fix double call of rtnl_link_get_net_ifla() (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- vxcan: Set VXCAN_INFO_PEER to vxcan_link_ops.peer_type. (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- veth: Set VETH_INFO_PEER to veth_link_ops.peer_type. (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- rtnetlink: Add peer_type in struct rtnl_link_ops. (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- net: validate veth and vxcan peer ifindexes (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- rtnl: move rtnl_newlink_create() (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- rtnl: split __rtnl_newlink() into two functions (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- rtnl: allocate more attr tables on the heap (Guillaume Nault) [RHEL-172526] {CVE-2026-31692}
+- fanotify: fix false positive on permission events (Miklos Szeredi) [RHEL-180075] {CVE-2026-46150}
 
 * Mon Jul 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.148.1.el8_10]
 - ipv6: fix possible UAF in icmpv6_rcv() (CKI Backport Bot) [RHEL-192211] {CVE-2026-53006}
