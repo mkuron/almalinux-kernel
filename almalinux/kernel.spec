@@ -176,15 +176,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.31.1
+%define pkgrelease 687.33.1
 %define kversion 5
-%define tarfile_release 5.14.0-687.31.1.el9_8
+%define tarfile_release 5.14.0-687.33.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.31.1%{?buildid}%{?dist}
+%define specrelease 687.33.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-687.31.1.el9_8
+%define kabiversion 5.14.0-687.33.1.el9_8
 
 #
 # End of genspec.sh variables
@@ -3795,7 +3795,7 @@ fi
 #
 #
 %changelog
-* Sat Aug 01 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.31.1
+* Wed Aug 05 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.33.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3807,11 +3807,18 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Sat Aug 01 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.31.1
+* Wed Aug 05 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.33.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Wed Jul 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.33.1.el9_8]
+- net/sched: cls_api: Handle TC_ACT_CONSUMED in tcf_qevent_handle (CKI Backport Bot) [RHEL-213299] {CVE-2026-64530}
+- ipc: limit next_id allocation to the valid ID range (Rafael Aquini) [RHEL-188214] {CVE-2026-52923}
+
+* Tue Jul 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.32.1.el9_8]
+- tipc: fix double-free in tipc_buf_append() (CKI Backport Bot) [RHEL-192184] {CVE-2026-52993}
 
 * Mon Jul 27 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.31.1.el9_8]
 - blk-mq: reinsert cached request to the list (CKI Backport Bot) [RHEL-213163] {CVE-2026-64017}
