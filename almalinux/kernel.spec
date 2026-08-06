@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.42.1
+%define pkgrelease 211.43.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.42.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.42.1%{?buildid}%{?dist}
+%define specrelease 211.43.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.42.1.el10_2
 
@@ -1128,6 +1128,33 @@ Patch1: patch-%{patchversion}-redhat.patch
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
 
+# Backports for 6.12.0-211.43.1.el10_2
+Patch1100: 1100-net-wwan-t7xx-add-delay-between-md-and-sap-suspend.patch
+Patch1101: 1101-timers-fix-null-function-pointer-race-in-timer-shutdown-sync.patch
+Patch1102: 1102-procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
+Patch1103: 1103-procfs-fix-possible-double-mmput-in-do-procmap-query.patch
+Patch1104: 1104-drm-i915-alpm-alpm-disable-fixes.patch
+Patch1105: 1105-drm-i915-psr-don-t-enable-panel-replay-on-sink-if-globally-disabled.patch
+Patch1106: 1106-drm-i915-psr-block-dc-states-on-vblank-enable-when-panel-replay-supported.patch
+Patch1107: 1107-drm-i915-psr-use-dc-off-wake-reference-to-block-dc6-on-vblank-enable.patch
+Patch1108: 1108-dpll-export-dpll-pin-change-ntf-for-use-under-dpll-lock.patch
+Patch1109: 1109-dpll-prevent-duplicate-registrations.patch
+Patch1110: 1110-dpll-zl3073x-use-named-initializers-for-struct-i2c-device-id.patch
+Patch1111: 1111-dpll-zl3073x-fix-memory-leak-on-pin-registration-failure.patch
+Patch1112: 1112-dpll-change-dpll-netdev-pin-handle-size-to-assume-dpll-a-pin-id-will-be-used.patch
+Patch1113: 1113-dpll-export-dpll-device-change-ntf-for-use-under-dpll-lock.patch
+Patch1114: 1114-dpll-zl3073x-use-dpll-device-change-ntf-and-remove-change-work.patch
+Patch1115: 1115-dpll-zl3073x-make-frequency-monitor-a-per-device-attribute.patch
+Patch1116: 1116-dpll-add-generic-dpll-type.patch
+Patch1117: 1117-dpll-allow-registering-fw-identified-pin-with-a-different-dpll.patch
+Patch1118: 1118-dpll-fix-stale-iteration-in-dpll-pin-on-pin-unregister.patch
+Patch1119: 1119-dpll-send-delete-notification-before-unregister-in-on-pin-rollback.patch
+Patch1120: 1120-dpll-emit-per-dpll-delete-notifications-in-dpll-pin-on-pin-unregister.patch
+Patch1121: 1121-dpll-guard-sync-pair-removal-on-full-pin-unregister.patch
+Patch1122: 1122-dpll-balance-create-delete-notifications-in-dpll-pin-un-register.patch
+Patch1123: 1123-dpll-extend-pin-notifier-with-notification-source-id.patch
+Patch1124: 1124-dpll-allow-fwnode-pins-to-attempt-state-change-without-capability-bit.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1140,6 +1167,7 @@ Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
 Patch2011: 2011-gve-Update-QPL-page-registration-logic.patch
 Patch2012: 2012-gve-Enable-reading-max-ring-size-in-DQO-QPL-mode.patch
+Patch2013: 2013-CVE-2026-64561-KVM-x86-Check-for-invalid-obsolete-root.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1567,8 +1595,8 @@ This package provides less commonly used kernel modules for the %{?2:%{2} }kerne
 %package %{?1:%{1}-}modules\
 Summary: kernel modules to match the %{?2:%{2}-}core kernel\
 Provides: %{name}%{?1:-%{1}}-modules-%{_target_cpu} = %{specrpmversion}-%{release}\
-Provides: %{name}-modules-%{_target_cpu} = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
-Provides: %{name}-modules = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
+Provides: %{name}%{?1:-%{1}}-modules-%{_target_cpu} = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
+Provides: %{name}%{?1:-%{1}}-modules = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
 Provides: installonlypkg(kernel-module)\
 Provides: %{name}%{?1:-%{1}}-modules-uname-r = %{KVERREL}%{uname_suffix %{?1}}\
 Requires: %{name}-uname-r = %{KVERREL}%{uname_suffix %{?1}}\
@@ -1590,8 +1618,8 @@ This package provides commonly used kernel modules for the %{?2:%{2}-}core kerne
 %package %{?1:%{1}-}modules-core\
 Summary: Core kernel modules to match the %{?2:%{2}-}core kernel\
 Provides: %{name}%{?1:-%{1}}-modules-core-%{_target_cpu} = %{specrpmversion}-%{release}\
-Provides: %{name}-modules-core-%{_target_cpu} = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
-Provides: %{name}-modules-core = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
+Provides: %{name}%{?1:-%{1}}-modules-core-%{_target_cpu} = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
+Provides: %{name}%{?1:-%{1}}-modules-core = %{specrpmversion}-%{release}%{uname_suffix %{?1}}\
 Provides: installonlypkg(kernel-module)\
 Provides: %{name}%{?1:-%{1}}-modules-core-uname-r = %{KVERREL}%{uname_suffix %{?1}}\
 Requires: %{name}-uname-r = %{KVERREL}%{uname_suffix %{?1}}\
@@ -1990,6 +2018,33 @@ ApplyOptionalPatch patch-%{patchversion}-redhat.patch
 
 ApplyOptionalPatch linux-kernel-test.patch
 
+# Applying backports for 6.12.0-211.43.1.el10_2
+ApplyPatch 1100-net-wwan-t7xx-add-delay-between-md-and-sap-suspend.patch
+ApplyPatch 1101-timers-fix-null-function-pointer-race-in-timer-shutdown-sync.patch
+ApplyPatch 1102-procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
+ApplyPatch 1103-procfs-fix-possible-double-mmput-in-do-procmap-query.patch
+ApplyPatch 1104-drm-i915-alpm-alpm-disable-fixes.patch
+ApplyPatch 1105-drm-i915-psr-don-t-enable-panel-replay-on-sink-if-globally-disabled.patch
+ApplyPatch 1106-drm-i915-psr-block-dc-states-on-vblank-enable-when-panel-replay-supported.patch
+ApplyPatch 1107-drm-i915-psr-use-dc-off-wake-reference-to-block-dc6-on-vblank-enable.patch
+ApplyPatch 1108-dpll-export-dpll-pin-change-ntf-for-use-under-dpll-lock.patch
+ApplyPatch 1109-dpll-prevent-duplicate-registrations.patch
+ApplyPatch 1110-dpll-zl3073x-use-named-initializers-for-struct-i2c-device-id.patch
+ApplyPatch 1111-dpll-zl3073x-fix-memory-leak-on-pin-registration-failure.patch
+ApplyPatch 1112-dpll-change-dpll-netdev-pin-handle-size-to-assume-dpll-a-pin-id-will-be-used.patch
+ApplyPatch 1113-dpll-export-dpll-device-change-ntf-for-use-under-dpll-lock.patch
+ApplyPatch 1114-dpll-zl3073x-use-dpll-device-change-ntf-and-remove-change-work.patch
+ApplyPatch 1115-dpll-zl3073x-make-frequency-monitor-a-per-device-attribute.patch
+ApplyPatch 1116-dpll-add-generic-dpll-type.patch
+ApplyPatch 1117-dpll-allow-registering-fw-identified-pin-with-a-different-dpll.patch
+ApplyPatch 1118-dpll-fix-stale-iteration-in-dpll-pin-on-pin-unregister.patch
+ApplyPatch 1119-dpll-send-delete-notification-before-unregister-in-on-pin-rollback.patch
+ApplyPatch 1120-dpll-emit-per-dpll-delete-notifications-in-dpll-pin-on-pin-unregister.patch
+ApplyPatch 1121-dpll-guard-sync-pair-removal-on-full-pin-unregister.patch
+ApplyPatch 1122-dpll-balance-create-delete-notifications-in-dpll-pin-un-register.patch
+ApplyPatch 1123-dpll-extend-pin-notifier-with-notification-source-id.patch
+ApplyPatch 1124-dpll-allow-fwnode-pins-to-attempt-state-change-without-capability-bit.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2002,6 +2057,7 @@ ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
 ApplyPatch 2011-gve-Update-QPL-page-registration-logic.patch
 ApplyPatch 2012-gve-Enable-reading-max-ring-size-in-DQO-QPL-mode.patch
+ApplyPatch 2013-CVE-2026-64561-KVM-x86-Check-for-invalid-obsolete-root.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4515,14 +4571,16 @@ fi\
 #
 #
 %changelog
-* Wed Aug 05 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.42.1
+* Thu Aug 06 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.43.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Aug 05 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.42.1
+* Thu Aug 06 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.43.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Aug 05 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.42.1
+* Thu Aug 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.43.1
+- KVM: x86: check for invalid/obsolete root after making MMU pages available
+  {CVE-2026-64561}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4535,6 +4593,34 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Mon Aug 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.43.1.el10_2]
+- redhat/kernel.spec: make module and modules-core provides use variant (Jan Stancek) [RHEL-213965]
+- dpll: allow fwnode pins to attempt state change without capability bit (Jakub Ramaseuski) [RHEL-211011]
+- dpll: extend pin notifier with notification source ID (Jakub Ramaseuski) [RHEL-211011]
+- dpll: balance create/delete notifications in __dpll_pin_(un)register (Jakub Ramaseuski) [RHEL-211011]
+- dpll: guard sync-pair removal on full pin unregister (Jakub Ramaseuski) [RHEL-211011]
+- dpll: emit per-dpll delete notifications in dpll_pin_on_pin_unregister() (Jakub Ramaseuski) [RHEL-211011]
+- dpll: send delete notification before unregister in on-pin rollback (Jakub Ramaseuski) [RHEL-211011]
+- dpll: fix stale iteration in dpll_pin_on_pin_unregister() (Jakub Ramaseuski) [RHEL-211011]
+- dpll: allow registering FW-identified pin with a different DPLL (Jakub Ramaseuski) [RHEL-211011]
+- dpll: add generic DPLL type (Jakub Ramaseuski) [RHEL-211011]
+- dpll: zl3073x: make frequency monitor a per-device attribute (Jakub Ramaseuski) [RHEL-211011]
+- dpll: zl3073x: use __dpll_device_change_ntf() and remove change_work (Jakub Ramaseuski) [RHEL-211011]
+- dpll: export __dpll_device_change_ntf() for use under dpll_lock (Jakub Ramaseuski) [RHEL-211011]
+- dpll: change dpll_netdev_pin_handle_size() to assume DPLL_A_PIN_ID will be used (Jakub Ramaseuski) [RHEL-211011]
+- dpll: zl3073x: fix memory leak on pin registration failure (Jakub Ramaseuski) [RHEL-211011]
+- dpll: zl3073x: Use named initializers for struct i2c_device_id (Jakub Ramaseuski) [RHEL-211011]
+- dpll: Prevent duplicate registrations (Jakub Ramaseuski) [RHEL-211011]
+- dpll: export __dpll_pin_change_ntf() for use under dpll_lock (Jakub Ramaseuski) [RHEL-211011]
+- drm/i915/psr: Use DC_OFF wake reference to block DC6 on vblank enable (Anusha Srivatsa) [RHEL-172832]
+- drm/i915/psr: Block DC states on vblank enable when Panel Replay supported (Anusha Srivatsa) [RHEL-172832]
+- drm/i915/psr: Don't enable Panel Replay on sink if globally disabled (Anusha Srivatsa) [RHEL-172832]
+- drm/i915/alpm: ALPM disable fixes (Anusha Srivatsa) [RHEL-172832]
+- procfs: fix possible double mmput() in do_procmap_query() (Rafael Aquini) [RHEL-189665] {CVE-2026-23199}
+- procfs: avoid fetching build ID while holding VMA lock (Rafael Aquini) [RHEL-189665] {CVE-2026-23199}
+- timers: Fix NULL function pointer race in timer_shutdown_sync() (CKI Backport Bot) [RHEL-189563] {CVE-2025-68214}
+- net: wwan: t7xx: Add delay between MD and SAP suspend (CKI Backport Bot) [RHEL-184266]
 
 * Wed Jul 29 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.42.1.el10_2]
 - net/sched: cls_api: Handle TC_ACT_CONSUMED in tcf_qevent_handle (CKI Backport Bot) [RHEL-214082] {CVE-2026-64530}
