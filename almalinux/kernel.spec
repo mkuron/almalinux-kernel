@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.43.1
+%define pkgrelease 211.44.1
 %define kversion 6
-%define tarfile_release 6.12.0-211.42.1.el10_2
+%define tarfile_release 6.12.0-211.44.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.43.1%{?buildid}%{?dist}
+%define specrelease 211.44.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-211.42.1.el10_2
+%define kabiversion 6.12.0-211.44.1.el10_2
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1128,33 +1128,6 @@ Patch1: patch-%{patchversion}-redhat.patch
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
 
-# Backports for 6.12.0-211.43.1.el10_2
-Patch1100: 1100-net-wwan-t7xx-add-delay-between-md-and-sap-suspend.patch
-Patch1101: 1101-timers-fix-null-function-pointer-race-in-timer-shutdown-sync.patch
-Patch1102: 1102-procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
-Patch1103: 1103-procfs-fix-possible-double-mmput-in-do-procmap-query.patch
-Patch1104: 1104-drm-i915-alpm-alpm-disable-fixes.patch
-Patch1105: 1105-drm-i915-psr-don-t-enable-panel-replay-on-sink-if-globally-disabled.patch
-Patch1106: 1106-drm-i915-psr-block-dc-states-on-vblank-enable-when-panel-replay-supported.patch
-Patch1107: 1107-drm-i915-psr-use-dc-off-wake-reference-to-block-dc6-on-vblank-enable.patch
-Patch1108: 1108-dpll-export-dpll-pin-change-ntf-for-use-under-dpll-lock.patch
-Patch1109: 1109-dpll-prevent-duplicate-registrations.patch
-Patch1110: 1110-dpll-zl3073x-use-named-initializers-for-struct-i2c-device-id.patch
-Patch1111: 1111-dpll-zl3073x-fix-memory-leak-on-pin-registration-failure.patch
-Patch1112: 1112-dpll-change-dpll-netdev-pin-handle-size-to-assume-dpll-a-pin-id-will-be-used.patch
-Patch1113: 1113-dpll-export-dpll-device-change-ntf-for-use-under-dpll-lock.patch
-Patch1114: 1114-dpll-zl3073x-use-dpll-device-change-ntf-and-remove-change-work.patch
-Patch1115: 1115-dpll-zl3073x-make-frequency-monitor-a-per-device-attribute.patch
-Patch1116: 1116-dpll-add-generic-dpll-type.patch
-Patch1117: 1117-dpll-allow-registering-fw-identified-pin-with-a-different-dpll.patch
-Patch1118: 1118-dpll-fix-stale-iteration-in-dpll-pin-on-pin-unregister.patch
-Patch1119: 1119-dpll-send-delete-notification-before-unregister-in-on-pin-rollback.patch
-Patch1120: 1120-dpll-emit-per-dpll-delete-notifications-in-dpll-pin-on-pin-unregister.patch
-Patch1121: 1121-dpll-guard-sync-pair-removal-on-full-pin-unregister.patch
-Patch1122: 1122-dpll-balance-create-delete-notifications-in-dpll-pin-un-register.patch
-Patch1123: 1123-dpll-extend-pin-notifier-with-notification-source-id.patch
-Patch1124: 1124-dpll-allow-fwnode-pins-to-attempt-state-change-without-capability-bit.patch
-
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2017,33 +1990,6 @@ ApplyOptionalPatch patch-%{patchversion}-redhat.patch
 %endif
 
 ApplyOptionalPatch linux-kernel-test.patch
-
-# Applying backports for 6.12.0-211.43.1.el10_2
-ApplyPatch 1100-net-wwan-t7xx-add-delay-between-md-and-sap-suspend.patch
-ApplyPatch 1101-timers-fix-null-function-pointer-race-in-timer-shutdown-sync.patch
-ApplyPatch 1102-procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
-ApplyPatch 1103-procfs-fix-possible-double-mmput-in-do-procmap-query.patch
-ApplyPatch 1104-drm-i915-alpm-alpm-disable-fixes.patch
-ApplyPatch 1105-drm-i915-psr-don-t-enable-panel-replay-on-sink-if-globally-disabled.patch
-ApplyPatch 1106-drm-i915-psr-block-dc-states-on-vblank-enable-when-panel-replay-supported.patch
-ApplyPatch 1107-drm-i915-psr-use-dc-off-wake-reference-to-block-dc6-on-vblank-enable.patch
-ApplyPatch 1108-dpll-export-dpll-pin-change-ntf-for-use-under-dpll-lock.patch
-ApplyPatch 1109-dpll-prevent-duplicate-registrations.patch
-ApplyPatch 1110-dpll-zl3073x-use-named-initializers-for-struct-i2c-device-id.patch
-ApplyPatch 1111-dpll-zl3073x-fix-memory-leak-on-pin-registration-failure.patch
-ApplyPatch 1112-dpll-change-dpll-netdev-pin-handle-size-to-assume-dpll-a-pin-id-will-be-used.patch
-ApplyPatch 1113-dpll-export-dpll-device-change-ntf-for-use-under-dpll-lock.patch
-ApplyPatch 1114-dpll-zl3073x-use-dpll-device-change-ntf-and-remove-change-work.patch
-ApplyPatch 1115-dpll-zl3073x-make-frequency-monitor-a-per-device-attribute.patch
-ApplyPatch 1116-dpll-add-generic-dpll-type.patch
-ApplyPatch 1117-dpll-allow-registering-fw-identified-pin-with-a-different-dpll.patch
-ApplyPatch 1118-dpll-fix-stale-iteration-in-dpll-pin-on-pin-unregister.patch
-ApplyPatch 1119-dpll-send-delete-notification-before-unregister-in-on-pin-rollback.patch
-ApplyPatch 1120-dpll-emit-per-dpll-delete-notifications-in-dpll-pin-on-pin-unregister.patch
-ApplyPatch 1121-dpll-guard-sync-pair-removal-on-full-pin-unregister.patch
-ApplyPatch 1122-dpll-balance-create-delete-notifications-in-dpll-pin-un-register.patch
-ApplyPatch 1123-dpll-extend-pin-notifier-with-notification-source-id.patch
-ApplyPatch 1124-dpll-allow-fwnode-pins-to-attempt-state-change-without-capability-bit.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -4571,14 +4517,14 @@ fi\
 #
 #
 %changelog
-* Thu Aug 06 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.43.1
+* Mon Aug 10 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.44.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Thu Aug 06 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.43.1
+* Mon Aug 10 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.44.1
 - Enable Btrfs support for all kernel variants
 
-* Thu Aug 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.43.1
+* Mon Aug 10 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.44.1
 - KVM: x86: check for invalid/obsolete root after making MMU pages available
   {CVE-2026-64561}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4593,6 +4539,49 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Tue Aug 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.44.1.el10_2]
+- ice: remove redundant checks from PTP init (Jakub Ramaseuski) [RHEL-193134]
+- ice: implement E825 TX ref clock control and TXC hardware sync status (Jakub Ramaseuski) [RHEL-193134]
+- ice: add Tx reference clock index handling to AN restart command (Jakub Ramaseuski) [RHEL-193134]
+- ice: implement CPI support for E825C (Jakub Ramaseuski) [RHEL-193134]
+- ice: introduce TXC DPLL device and TX ref clock pin framework for E825 (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix missing priority callbacks for U.FL DPLL pins (Jakub Ramaseuski) [RHEL-193134]
+- ice: restore PTP Rx timestamp config after ethtool set-channels (Jakub Ramaseuski) [RHEL-193134]
+- ice: ptp: use primary NAC semaphore on E825 (Jakub Ramaseuski) [RHEL-193134]
+- ice: ptp: serialize E825 PHY timer start with PTP lock (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix setting promisc mode while adding VID filter (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix VF queue configuration with low MTU values (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix locking around wait_event_interruptible_locked_irq (Jakub Ramaseuski) [RHEL-193134]
+- ice: dpll: Fix compilation warning (Jakub Ramaseuski) [RHEL-193134]
+- ice: mention fw_activate action along with devlink reload (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix locking in ice_dcb_rebuild() (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix setting RSS VSI hash for E830 (Jakub Ramaseuski) [RHEL-193134]
+- ice: add dpll peer notification for paired SMA and U.FL pins (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix missing dpll notifications for SW pins (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix SMA and U.FL pin state changes affecting paired pin (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix missing SMA pin initialization in DPLL subsystem (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix infinite recursion in ice_cfg_tx_topo via ice_init_dev_hw (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix NULL pointer dereference in ice_reset_all_vfs() (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix ice_ptp_read_tx_hwtstamp_status_eth56g (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix ready bitmap check for non-E822 devices (Jakub Ramaseuski) [RHEL-193134]
+- ice: perform PHY soft reset for E825C ports at initialization (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix timestamp interrupt configuration for E825C (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix potential NULL pointer deref in error path of ice_set_ringparam() (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix race condition in TX timestamp ring cleanup (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix ICE_AQ_LINK_SPEED_M for 200G (Jakub Ramaseuski) [RHEL-193134]
+- ice: fix PHY config on media change with link-down-on-close (Jakub Ramaseuski) [RHEL-193134]
+- ice: Fix memory leak in ice_set_ringparam() (Jakub Ramaseuski) [RHEL-193134]
+- ice: dpll: fix misplaced header macros (Jakub Ramaseuski) [RHEL-193134]
+- ice: dpll: fix rclk pin state get for E810 (Jakub Ramaseuski) [RHEL-193134]
+- Revert "ice: dpll: fix rclk pin state get and misplaced header macros" (Jakub Ramaseuski) [RHEL-193134]
+- octeon_ep_vf: add NULL check for napi_build_skb() (CKI Backport Bot) [RHEL-186345]
+- octeon_ep_vf: introduce octep_vf_oq_next_idx() helper (CKI Backport Bot) [RHEL-186345]
+- octeon_ep_vf: avoid compiler and IQ/OQ reordering (CKI Backport Bot) [RHEL-186345]
+- octeon_ep_vf: Relocate counter updates before NAPI (CKI Backport Bot) [RHEL-186345]
+- octeon_ep_vf: ensure dbell BADDR updation (CKI Backport Bot) [RHEL-186345]
+- net: octeon_ep_vf: fix free_irq dev_id mismatch in IRQ rollback (CKI Backport Bot) [RHEL-186345]
+- ipv6: ioam: fix heap buffer overflow in __ioam6_fill_trace_data() (CKI Backport Bot) [RHEL-174197] {CVE-2026-43186}
 
 * Mon Aug 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.43.1.el10_2]
 - redhat/kernel.spec: make module and modules-core provides use variant (Jan Stancek) [RHEL-213965]
