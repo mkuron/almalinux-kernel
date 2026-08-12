@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.154.1.el8_10
+%define pkgrelease 553.155.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.154.1%{?dist}
+%define specrelease 553.155.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2803,7 +2803,7 @@ fi
 #
 #
 %changelog
-* Mon Aug 10 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.154.1
+* Wed Aug 12 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.155.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2814,9 +2814,13 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Aug 10 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.154.1
+* Wed Aug 12 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.155.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Aug 12 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.155.1.el8_10]
+- udf: fix partition descriptor append bookkeeping (Ravi Singh) [RHEL-179571] {CVE-2026-45991}
+- ice: fix double-free of tx_buf skb (Michal Schmidt) [RHEL-192193] {CVE-2026-53009}
 
 * Mon Aug 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.154.1.el8_10]
 - iio: event: Fix event FIFO reset race (CKI Backport Bot) [RHEL-223364] {CVE-2026-64496}
