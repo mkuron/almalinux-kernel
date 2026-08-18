@@ -176,15 +176,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.38.1
+%define pkgrelease 687.39.1
 %define kversion 5
-%define tarfile_release 5.14.0-687.38.1.el9_8
+%define tarfile_release 5.14.0-687.39.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.38.1%{?buildid}%{?dist}
+%define specrelease 687.39.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-687.38.1.el9_8
+%define kabiversion 5.14.0-687.39.1.el9_8
 
 #
 # End of genspec.sh variables
@@ -3795,7 +3795,7 @@ fi
 #
 #
 %changelog
-* Wed Aug 12 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.38.1
+* Tue Aug 18 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.39.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3807,11 +3807,18 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Aug 12 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.38.1
+* Tue Aug 18 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.39.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Wed Aug 12 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.39.1.el9_8]
+- x86/mm: Add missing saved dirty bit to page protection change mask (Luiz Capitulino) [RHEL-220787]
+- net/sched: act_api: use RCU with deferred freeing for action lifecycle (CKI Backport Bot) [RHEL-218181] {CVE-2026-53264}
+- KVM: SVM: make svm_flush_tlb_gva do a full asid flush if NPT enabled (Paolo Bonzini) [RHEL-214434]
+- KVM: x86: hyper-v: Validate all GVAs during PV TLB flush (Paolo Bonzini) [RHEL-214434]
+- accel/ivpu: Fix signed integer truncation in IPC receive (CKI Backport Bot) [RHEL-192081] {CVE-2026-53202}
 
 * Mon Aug 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.38.1.el9_8]
 - cifs: fix time_last_write stamp placement in setattr/truncate paths (Paulo Alcantara) [RHEL-192999]
