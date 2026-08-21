@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.47.1
+%define pkgrelease 211.49.1
 %define kversion 6
-%define tarfile_release 6.12.0-211.46.1.el10_2
+%define tarfile_release 6.12.0-211.49.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.47.1%{?buildid}%{?dist}
+%define specrelease 211.49.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-211.46.1.el10_2
+%define kabiversion 6.12.0-211.49.1.el10_2
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -1128,95 +1128,6 @@ Patch1: patch-%{patchversion}-redhat.patch
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
 
-# Backports for 6.12.0-211.47.1.el10_2
-Patch1100: 1100-netfilter-nft-set-pipapo-split-gc-into-unlink-and-reclaim-phase.patch
-Patch1101: 1101-netfilter-nf-tables-always-walk-all-pending-catchall-elements.patch
-Patch1102: 1102-netfilter-nft-set-hash-fix-get-operation-on-big-endian.patch
-Patch1103: 1103-netfilter-nf-conntrack-h323-fix-oob-read-in-decode-choice.patch
-Patch1104: 1104-netfilter-nf-tables-unconditionally-bump-set-nelems-before-insertion.patch
-Patch1105: 1105-netfilter-nft-set-pipapo-fix-stack-out-of-bounds-read-in-pipapo-drop.patch
-Patch1106: 1106-netfilter-nfnetlink-queue-fix-entry-leak-in-bridge-verdict-error-path.patch
-Patch1107: 1107-netfilter-ctnetlink-fix-use-after-free-in-ctnetlink-dump-exp-ct.patch
-Patch1108: 1108-netfilter-conntrack-add-missing-netlink-policy-validations.patch
-Patch1109: 1109-netfilter-nf-conntrack-sip-fix-content-length-u32-truncation-in-sip-help-tcp.patch
-Patch1110: 1110-netfilter-nf-conntrack-h323-fix-oob-read-in-decode-int-cons-case.patch
-Patch1111: 1111-nf-tables-nft-dynset-fix-possible-stateful-expression-memleak-in-error-path.patch
-Patch1112: 1112-netfilter-nft-set-pipapo-avx2-don-t-return-non-matching-entry-on-expiry.patch
-Patch1113: 1113-netfilter-nfnetlink-log-fix-uninitialized-padding-leak-in-nfula-payload.patch
-Patch1114: 1114-netfilter-nf-conntrack-expect-honor-expectation-helper-field.patch
-Patch1115: 1115-netfilter-nf-conntrack-expect-use-expect-helper.patch
-Patch1116: 1116-netfilter-nf-conntrack-expect-store-netns-and-zone-in-expectation.patch
-Patch1117: 1117-netfilter-ip6t-rt-reject-oversized-addrnr-in-rt-mt6-check.patch
-Patch1118: 1118-netfilter-ctnetlink-use-netlink-policy-range-checks.patch
-Patch1119: 1119-netfilter-nfnetlink-log-account-for-netlink-header-size.patch
-Patch1120: 1120-netfilter-x-tables-ensure-names-are-nul-terminated.patch
-Patch1121: 1121-netfilter-ipset-use-nla-strcmp-for-ipset-attr-name-attr.patch
-Patch1122: 1122-netfilter-ctnetlink-zero-expect-nat-fields-when-cta-expect-nat-absent.patch
-Patch1123: 1123-netfilter-ctnetlink-ignore-explicit-helper-on-new-expectations.patch
-Patch1124: 1124-netfilter-x-tables-restrict-xt-check-match-xt-check-target-extensions-for-nfprot.patch
-Patch1125: 1125-netfilter-nf-tables-reject-immediate-nf-queue-verdict.patch
-Patch1126: 1126-netfilter-nfnetlink-log-initialize-nfgenmsg-in-nlmsg-done-terminator.patch
-Patch1127: 1127-netfilter-xt-multiport-validate-range-encoding-in-checkentry.patch
-Patch1128: 1128-netfilter-nft-ct-fix-use-after-free-in-timeout-object-destroy.patch
-Patch1129: 1129-netfilter-nft-osf-restrict-it-to-ipv4.patch
-Patch1130: 1130-nfnetlink-osf-validate-individual-option-lengths-in-fingerprints.patch
-Patch1131: 1131-netfilter-nfnetlink-osf-fix-divide-by-zero-in-osf-wss-modulo.patch
-Patch1132: 1132-netfilter-conntrack-remove-sprintf-usage.patch
-Patch1133: 1133-netfilter-nat-use-kfree-rcu-to-release-ops.patch
-Patch1134: 1134-netfilter-nfnetlink-osf-fix-out-of-bounds-read-on-option-matching.patch
-Patch1135: 1135-netfilter-nfnetlink-osf-fix-potential-null-dereference-in-ttl-check.patch
-Patch1136: 1136-netfilter-nf-tables-use-list-del-rcu-for-netlink-hooks.patch
-Patch1137: 1137-rculist-add-list-splice-rcu-for-private-lists.patch
-Patch1138: 1138-netfilter-nf-tables-join-hook-list-via-splice-list-rcu-in-commit-phase.patch
-Patch1139: 1139-netfilter-nf-tables-add-hook-transactions-for-device-deletions.patch
-Patch1140: 1140-netfilter-xt-policy-fix-strict-mode-inbound-policy-matching.patch
-Patch1141: 1141-netfilter-nf-conntrack-sip-don-t-use-simple-strtoul.patch
-Patch1142: 1142-netfilter-replace-skb-try-make-writable-by-skb-ensure-writable.patch
-Patch1143: 1143-netfilter-nft-fwd-netdev-add-device-and-headroom-validate-with-neigh-forwarding.patch
-Patch1144: 1144-netfilter-nft-fwd-netdev-use-recursion-counter-in-neigh-egress-path.patch
-Patch1145: 1145-netfilter-xtables-restrict-several-matches-to-inet-family.patch
-Patch1146: 1146-netfilter-x-tables-add-check-hooks-to-matches-and-targets.patch
-Patch1147: 1147-netfilter-nft-compat-run-xt-check-hooks-match-target-from-validate.patch
-Patch1148: 1148-netfilter-xt-ct-fix-usersize-for-v1-and-v2-revision.patch
-Patch1149: 1149-netfilter-nf-tables-fix-netdev-hook-allocation-memleak-with-dormant-tables.patch
-Patch1150: 1150-netfilter-nf-conntrack-expect-restore-helper-propagation-via-expectation.patch
-Patch1151: 1151-netfilter-ctnetlink-check-tuple-and-mask-in-expectations-created-via-nfqueue.patch
-Patch1152: 1152-netfilter-nf-conntrack-sip-get-helper-before-allocating-expectation.patch
-Patch1153: 1153-netfilter-nft-ct-fix-missing-expect-put-in-obj-eval.patch
-Patch1154: 1154-netfilter-nf-conntrack-helper-fix-possible-null-deref-during-error-log.patch
-Patch1155: 1155-netfilter-ip6t-hbh-reject-oversized-option-lists.patch
-Patch1156: 1156-netfilter-br-netfilter-reallocate-headroom-if-necessary-in-neigh-hh-bridge.patch
-Patch1157: 1157-netfilter-nf-queue-hold-bridge-skb-dev-while-queued.patch
-Patch1158: 1158-netfilter-conntrack-tcp-do-not-force-close-on-invalid-seq-rst-without-direction-.patch
-Patch1159: 1159-netfilter-synproxy-refresh-tcphdr-after-skb-ensure-writable.patch
-Patch1160: 1160-netfilter-nf-conntrack-gre-fix-gre-keymap-list-corruption.patch
-Patch1161: 1161-netfilter-disable-payload-mangling-in-userns.patch
-Patch1162: 1162-netfilter-synproxy-add-mutex-to-guard-hook-reference-counting.patch
-Patch1163: 1163-netfilter-conntrack-irc-fix-possible-out-of-bounds-read.patch
-Patch1164: 1164-netfilter-nft-tunnel-fix-use-after-free-on-object-destroy.patch
-Patch1165: 1165-netfilter-nft-ct-bail-out-on-template-ct-in-get-eval.patch
-Patch1166: 1166-netfilter-revalidate-bridge-ports.patch
-Patch1167: 1167-netfilter-nf-conntrack-destroy-stale-expectfn-expectations-on-unregister.patch
-Patch1168: 1168-netfilter-nf-log-validate-mac-header-was-set-before-dumping-it.patch
-Patch1169: 1169-netfilter-nft-exthdr-fix-register-tracking-for-f-present-flag.patch
-Patch1170: 1170-netfilter-nft-fib-fix-stale-stack-leak-via-the-oifname-register.patch
-Patch1171: 1171-netfilter-nf-dup-netdev-add-nf-dev-xmit-recursion-helpers-and-use-them.patch
-Patch1172: 1172-netfilter-ctnetlink-use-nf-ct-exp-net-in-expectation-dump.patch
-Patch1173: 1173-selftests-netfilter-nft-concat-range-sh-add-check-for-double-create-bug.patch
-Patch1174: 1174-selftests-netfilter-nft-concat-range-sh-add-check-for-overlap-detection-bug.patch
-Patch1175: 1175-selftests-netfilter-nft-concat-range-sh-add-check-for-flush-reload-bug.patch
-Patch1176: 1176-netfilter-nf-conntrack-expect-store-master-tuple-in-expectation.patch
-Patch1177: 1177-accel-ivpu-fix-signed-integer-truncation-in-ipc-receive.patch
-Patch1178: 1178-kvm-nvmx-put-vmcs12-pages-if-nested-vm-enter-fails-due-to-invalid-guest-state.patch
-Patch1179: 1179-kvm-x86-check-for-invalid-obsolete-root-after-making-mmu-pages-available.patch
-Patch1180: 1180-kvm-nvmx-hide-shadow-vmcs-right-after-vmclear.patch
-Patch1181: 1181-kvm-x86-mmu-ensure-hugepage-is-in-by-slot-before-checking-max-mapping-level.patch
-Patch1182: 1182-kvm-x86-hyper-v-validate-all-gvas-during-pv-tlb-flush.patch
-Patch1183: 1183-kvm-svm-make-svm-flush-tlb-gva-do-a-full-asid-flush-if-npt-enabled.patch
-Patch1184: 1184-net-sched-act-api-use-rcu-with-deferred-freeing-for-action-lifecycle.patch
-Patch1185: 1185-perf-aux-fix-page-uaf-in-map-range.patch
-Patch1186: 1186-scsi-target-iscsi-bound-iscsi-encode-text-output-appends-to-rsp-buf.patch
-
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2079,95 +1990,6 @@ ApplyOptionalPatch patch-%{patchversion}-redhat.patch
 %endif
 
 ApplyOptionalPatch linux-kernel-test.patch
-
-# Applying backports for 6.12.0-211.47.1.el10_2
-ApplyPatch 1100-netfilter-nft-set-pipapo-split-gc-into-unlink-and-reclaim-phase.patch
-ApplyPatch 1101-netfilter-nf-tables-always-walk-all-pending-catchall-elements.patch
-ApplyPatch 1102-netfilter-nft-set-hash-fix-get-operation-on-big-endian.patch
-ApplyPatch 1103-netfilter-nf-conntrack-h323-fix-oob-read-in-decode-choice.patch
-ApplyPatch 1104-netfilter-nf-tables-unconditionally-bump-set-nelems-before-insertion.patch
-ApplyPatch 1105-netfilter-nft-set-pipapo-fix-stack-out-of-bounds-read-in-pipapo-drop.patch
-ApplyPatch 1106-netfilter-nfnetlink-queue-fix-entry-leak-in-bridge-verdict-error-path.patch
-ApplyPatch 1107-netfilter-ctnetlink-fix-use-after-free-in-ctnetlink-dump-exp-ct.patch
-ApplyPatch 1108-netfilter-conntrack-add-missing-netlink-policy-validations.patch
-ApplyPatch 1109-netfilter-nf-conntrack-sip-fix-content-length-u32-truncation-in-sip-help-tcp.patch
-ApplyPatch 1110-netfilter-nf-conntrack-h323-fix-oob-read-in-decode-int-cons-case.patch
-ApplyPatch 1111-nf-tables-nft-dynset-fix-possible-stateful-expression-memleak-in-error-path.patch
-ApplyPatch 1112-netfilter-nft-set-pipapo-avx2-don-t-return-non-matching-entry-on-expiry.patch
-ApplyPatch 1113-netfilter-nfnetlink-log-fix-uninitialized-padding-leak-in-nfula-payload.patch
-ApplyPatch 1114-netfilter-nf-conntrack-expect-honor-expectation-helper-field.patch
-ApplyPatch 1115-netfilter-nf-conntrack-expect-use-expect-helper.patch
-ApplyPatch 1116-netfilter-nf-conntrack-expect-store-netns-and-zone-in-expectation.patch
-ApplyPatch 1117-netfilter-ip6t-rt-reject-oversized-addrnr-in-rt-mt6-check.patch
-ApplyPatch 1118-netfilter-ctnetlink-use-netlink-policy-range-checks.patch
-ApplyPatch 1119-netfilter-nfnetlink-log-account-for-netlink-header-size.patch
-ApplyPatch 1120-netfilter-x-tables-ensure-names-are-nul-terminated.patch
-ApplyPatch 1121-netfilter-ipset-use-nla-strcmp-for-ipset-attr-name-attr.patch
-ApplyPatch 1122-netfilter-ctnetlink-zero-expect-nat-fields-when-cta-expect-nat-absent.patch
-ApplyPatch 1123-netfilter-ctnetlink-ignore-explicit-helper-on-new-expectations.patch
-ApplyPatch 1124-netfilter-x-tables-restrict-xt-check-match-xt-check-target-extensions-for-nfprot.patch
-ApplyPatch 1125-netfilter-nf-tables-reject-immediate-nf-queue-verdict.patch
-ApplyPatch 1126-netfilter-nfnetlink-log-initialize-nfgenmsg-in-nlmsg-done-terminator.patch
-ApplyPatch 1127-netfilter-xt-multiport-validate-range-encoding-in-checkentry.patch
-ApplyPatch 1128-netfilter-nft-ct-fix-use-after-free-in-timeout-object-destroy.patch
-ApplyPatch 1129-netfilter-nft-osf-restrict-it-to-ipv4.patch
-ApplyPatch 1130-nfnetlink-osf-validate-individual-option-lengths-in-fingerprints.patch
-ApplyPatch 1131-netfilter-nfnetlink-osf-fix-divide-by-zero-in-osf-wss-modulo.patch
-ApplyPatch 1132-netfilter-conntrack-remove-sprintf-usage.patch
-ApplyPatch 1133-netfilter-nat-use-kfree-rcu-to-release-ops.patch
-ApplyPatch 1134-netfilter-nfnetlink-osf-fix-out-of-bounds-read-on-option-matching.patch
-ApplyPatch 1135-netfilter-nfnetlink-osf-fix-potential-null-dereference-in-ttl-check.patch
-ApplyPatch 1136-netfilter-nf-tables-use-list-del-rcu-for-netlink-hooks.patch
-ApplyPatch 1137-rculist-add-list-splice-rcu-for-private-lists.patch
-ApplyPatch 1138-netfilter-nf-tables-join-hook-list-via-splice-list-rcu-in-commit-phase.patch
-ApplyPatch 1139-netfilter-nf-tables-add-hook-transactions-for-device-deletions.patch
-ApplyPatch 1140-netfilter-xt-policy-fix-strict-mode-inbound-policy-matching.patch
-ApplyPatch 1141-netfilter-nf-conntrack-sip-don-t-use-simple-strtoul.patch
-ApplyPatch 1142-netfilter-replace-skb-try-make-writable-by-skb-ensure-writable.patch
-ApplyPatch 1143-netfilter-nft-fwd-netdev-add-device-and-headroom-validate-with-neigh-forwarding.patch
-ApplyPatch 1144-netfilter-nft-fwd-netdev-use-recursion-counter-in-neigh-egress-path.patch
-ApplyPatch 1145-netfilter-xtables-restrict-several-matches-to-inet-family.patch
-ApplyPatch 1146-netfilter-x-tables-add-check-hooks-to-matches-and-targets.patch
-ApplyPatch 1147-netfilter-nft-compat-run-xt-check-hooks-match-target-from-validate.patch
-ApplyPatch 1148-netfilter-xt-ct-fix-usersize-for-v1-and-v2-revision.patch
-ApplyPatch 1149-netfilter-nf-tables-fix-netdev-hook-allocation-memleak-with-dormant-tables.patch
-ApplyPatch 1150-netfilter-nf-conntrack-expect-restore-helper-propagation-via-expectation.patch
-ApplyPatch 1151-netfilter-ctnetlink-check-tuple-and-mask-in-expectations-created-via-nfqueue.patch
-ApplyPatch 1152-netfilter-nf-conntrack-sip-get-helper-before-allocating-expectation.patch
-ApplyPatch 1153-netfilter-nft-ct-fix-missing-expect-put-in-obj-eval.patch
-ApplyPatch 1154-netfilter-nf-conntrack-helper-fix-possible-null-deref-during-error-log.patch
-ApplyPatch 1155-netfilter-ip6t-hbh-reject-oversized-option-lists.patch
-ApplyPatch 1156-netfilter-br-netfilter-reallocate-headroom-if-necessary-in-neigh-hh-bridge.patch
-ApplyPatch 1157-netfilter-nf-queue-hold-bridge-skb-dev-while-queued.patch
-ApplyPatch 1158-netfilter-conntrack-tcp-do-not-force-close-on-invalid-seq-rst-without-direction-.patch
-ApplyPatch 1159-netfilter-synproxy-refresh-tcphdr-after-skb-ensure-writable.patch
-ApplyPatch 1160-netfilter-nf-conntrack-gre-fix-gre-keymap-list-corruption.patch
-ApplyPatch 1161-netfilter-disable-payload-mangling-in-userns.patch
-ApplyPatch 1162-netfilter-synproxy-add-mutex-to-guard-hook-reference-counting.patch
-ApplyPatch 1163-netfilter-conntrack-irc-fix-possible-out-of-bounds-read.patch
-ApplyPatch 1164-netfilter-nft-tunnel-fix-use-after-free-on-object-destroy.patch
-ApplyPatch 1165-netfilter-nft-ct-bail-out-on-template-ct-in-get-eval.patch
-ApplyPatch 1166-netfilter-revalidate-bridge-ports.patch
-ApplyPatch 1167-netfilter-nf-conntrack-destroy-stale-expectfn-expectations-on-unregister.patch
-ApplyPatch 1168-netfilter-nf-log-validate-mac-header-was-set-before-dumping-it.patch
-ApplyPatch 1169-netfilter-nft-exthdr-fix-register-tracking-for-f-present-flag.patch
-ApplyPatch 1170-netfilter-nft-fib-fix-stale-stack-leak-via-the-oifname-register.patch
-ApplyPatch 1171-netfilter-nf-dup-netdev-add-nf-dev-xmit-recursion-helpers-and-use-them.patch
-ApplyPatch 1172-netfilter-ctnetlink-use-nf-ct-exp-net-in-expectation-dump.patch
-ApplyPatch 1173-selftests-netfilter-nft-concat-range-sh-add-check-for-double-create-bug.patch
-ApplyPatch 1174-selftests-netfilter-nft-concat-range-sh-add-check-for-overlap-detection-bug.patch
-ApplyPatch 1175-selftests-netfilter-nft-concat-range-sh-add-check-for-flush-reload-bug.patch
-ApplyPatch 1176-netfilter-nf-conntrack-expect-store-master-tuple-in-expectation.patch
-ApplyPatch 1177-accel-ivpu-fix-signed-integer-truncation-in-ipc-receive.patch
-ApplyPatch 1178-kvm-nvmx-put-vmcs12-pages-if-nested-vm-enter-fails-due-to-invalid-guest-state.patch
-ApplyPatch 1179-kvm-x86-check-for-invalid-obsolete-root-after-making-mmu-pages-available.patch
-ApplyPatch 1180-kvm-nvmx-hide-shadow-vmcs-right-after-vmclear.patch
-ApplyPatch 1181-kvm-x86-mmu-ensure-hugepage-is-in-by-slot-before-checking-max-mapping-level.patch
-ApplyPatch 1182-kvm-x86-hyper-v-validate-all-gvas-during-pv-tlb-flush.patch
-ApplyPatch 1183-kvm-svm-make-svm-flush-tlb-gva-do-a-full-asid-flush-if-npt-enabled.patch
-ApplyPatch 1184-net-sched-act-api-use-rcu-with-deferred-freeing-for-action-lifecycle.patch
-ApplyPatch 1185-perf-aux-fix-page-uaf-in-map-range.patch
-ApplyPatch 1186-scsi-target-iscsi-bound-iscsi-encode-text-output-appends-to-rsp-buf.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -4695,14 +4517,14 @@ fi\
 #
 #
 %changelog
-* Thu Aug 13 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.47.1
+* Fri Aug 21 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.49.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Thu Aug 13 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.47.1
+* Fri Aug 21 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.49.1
 - Enable Btrfs support for all kernel variants
 
-* Thu Aug 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.47.1
+* Fri Aug 21 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.49.1
 - af_unix: set gc_in_progress to true in unix_gc() {CVE-2026-53361}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4716,6 +4538,53 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Wed Aug 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.49.1.el10_2]
+- udf: fix partition descriptor append bookkeeping (CKI Backport Bot) [RHEL-179570] {CVE-2026-45991}
+- cifs: fix time_last_write stamp placement in setattr/truncate paths (Paulo Alcantara) [RHEL-235459]
+- cifs: consolidate time_last_write stamp into _cifsFileInfo_put() (Paulo Alcantara) [RHEL-235459]
+- cifs: fix cifsFileInfo leak on kmalloc failure in deferred close drain paths (Paulo Alcantara) [RHEL-235459]
+- cifs: prevent readdir from changing file size due to stale directory metadata (Paulo Alcantara) [RHEL-235459]
+- smb: client: fix dir separator in SMB1 UNIX mounts (Paulo Alcantara) [RHEL-235459]
+- smb: client: fix sbflags initialization (Paulo Alcantara) [RHEL-235459]
+- smb: client: use atomic_t for mnt_cifs_flags (Paulo Alcantara) [RHEL-235459]
+- smb: client: fix data corruption due to racy lease checks (Paulo Alcantara) [RHEL-235459]
+- crypto: pcrypt - Fix handling of MAY_BACKLOG requests (Ricardo Robaina) [RHEL-226717] {CVE-2026-43493}
+- smb: client: fix SMB1 TRANS2 multi-response truncation in SendReceive() (Paulo Alcantara) [RHEL-235812]
+- smb/client: handle overlapping allocated ranges in fallocate (CKI Backport Bot) [RHEL-236210] {CVE-2026-68388}
+- posix-cpu-timers: Prevent UAF caused by non-leader exec() race (Waiman Long) [RHEL-227850] {CVE-2026-64560}
+- posix-cpu-timers: Fix pid refcount leak in do_cpu_nanosleep() error path (Waiman Long) [RHEL-227850] {CVE-2026-64370}
+- exit: kill the pointless __exit_signal()->clear_tsk_thread_flag(TIF_SIGPENDING) (Waiman Long) [RHEL-227850]
+- exit: change the release_task() paths to call flush_sigqueue() lockless (Waiman Long) [RHEL-227850]
+- smb: client: fix double-free in SMB2_open() replay (CKI Backport Bot) [RHEL-234551] {CVE-2026-64382}
+- smb: client: mask server-provided mode to 07777 in modefromsid (CKI Backport Bot) [RHEL-234530] {CVE-2026-64379}
+- smb: client: fix query_info() replay double-free (CKI Backport Bot) [RHEL-234129] {CVE-2026-64386}
+- smb/client: fix out-of-bounds read in symlink_data() (CKI Backport Bot) [RHEL-229066] {CVE-2026-46185}
+- blk-mq: reinsert cached request to the list (CKI Backport Bot) [RHEL-213153] {CVE-2026-64017}
+- blk-mq: pop cached request if it is usable (CKI Backport Bot) [RHEL-213153] {CVE-2026-64017}
+
+* Mon Aug 17 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.48.1.el10_2]
+- scsi: target: iscsi: Fix CRC overread and double-free in iscsit_handle_text_cmd() (Maurizio Lombardi) [RHEL-213217] {CVE-2026-63888}
+- drm/i915: Fix potential UAF in TTM object purge (CKI Backport Bot) [RHEL-222740] {CVE-2026-63884}
+- drm/amd/display: Validate payload length and link_index in dc_process_dmub_aux_transfer_async (CKI Backport Bot) [RHEL-222567] {CVE-2026-64219}
+- drm/amd/display: Use krealloc_array() in dal_vector_reserve() (CKI Backport Bot) [RHEL-222667] {CVE-2026-53329}
+- drm/amdgpu: fix amdgpu_hmm_range_get_pages (Mika Penttilä) [RHEL-222625] {CVE-2026-63879}
+- drm/amdkfd: Fix out-of-bounds write in kfd_event_page_set() (CKI Backport Bot) [RHEL-221336] {CVE-2026-43206}
+- drm/i915/gem: Fix phys BO pread/pwrite with offset (CKI Backport Bot) [RHEL-222753] {CVE-2026-53356}
+- drm/amdkfd: Fix watch_id bounds checking in debug address watch v2 (CKI Backport Bot) [RHEL-222721] {CVE-2026-45878}
+- drm/amdkfd: Fix buffer overflow in SDMA queue checkpoint/restore on GFX11 (CKI Backport Bot) [RHEL-222701] {CVE-2026-53143}
+- drm/amd/display: Clamp VBIOS HDMI retimer register count to array size (CKI Backport Bot) [RHEL-222685] {CVE-2026-53136}
+- drm/amdgpu: zero-initialize GART table on allocation (CKI Backport Bot) [RHEL-222646] {CVE-2026-53374}
+- drm/amdgpu: Refactor amdgpu_gem_va_ioctl for Handling Last Fence Update and Timeline Management v7 (CKI Backport Bot) [RHEL-221380] {CVE-2026-43237}
+- drm/amdgpu: Refactor amdgpu_gem_va_ioctl for Handling Last Fence Update and Timeline Management v4 (CKI Backport Bot) [RHEL-221380] {CVE-2026-43237}
+- sched/psi: Create the psimon kthread outside of cgroup_mutex (CKI Backport Bot) [RHEL-232560] {CVE-2026-52991}
+- sched/psi: fix race between file release and pressure write (CKI Backport Bot) [RHEL-232560] {CVE-2026-52991}
+- scsi: target: Fix hexadecimal CHAP_I handling (CKI Backport Bot) [RHEL-231667] {CVE-2026-63886}
+- scsi: target: iscsi: Validate CHAP_R length before base64 decode (CKI Backport Bot) [RHEL-231667] {CVE-2026-63886}
+- memfd: deny writeable mappings when implying SEAL_WRITE (Luiz Capitulino) [RHEL-228531] {CVE-2026-63952}
+- mm/memfd: fix spelling in memfd_add_seals() (Luiz Capitulino) [RHEL-228531]
+- vhost: reset the vring metadata cache on vring reconfiguration (CKI Backport Bot) [RHEL-224545]
+- xfs: fix exchange-range reflink flag clearing issue with INO1_WRITTEN (Lukas Herbolt) [RHEL-223954]
 
 * Wed Aug 12 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.47.1.el10_2]
 - scsi: target: iscsi: Bound iscsi_encode_text_output() appends to rsp_buf (Maurizio Lombardi) [RHEL-213198] {CVE-2026-63887}
