@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.51.1
+%define pkgrelease 211.53.1
 %define kversion 6
-%define tarfile_release 6.12.0-211.51.1.el10_2
+%define tarfile_release 6.12.0-211.53.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.51.1%{?buildid}%{?dist}
+%define specrelease 211.53.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-211.51.1.el10_2
+%define kabiversion 6.12.0-211.53.1.el10_2
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4606,14 +4606,14 @@ fi\
 #
 #
 %changelog
-* Mon Sep 07 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.51.1
+* Fri Sep 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.53.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Mon Sep 07 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.51.1
+* Fri Sep 11 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.53.1
 - Enable Btrfs support for all kernel variants
 
-* Mon Sep 07 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.51.1
+* Fri Sep 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.53.1
 - af_unix: set gc_in_progress to true in unix_gc() {CVE-2026-53361}
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
@@ -4630,6 +4630,83 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Mon Sep 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.53.1.el10_2]
+- dm-verity: fix buffer overflow in FEC calculation (Benjamin Marzinski) [RHEL-244969] {CVE-2026-72098}
+- nvmet-rdma: handle inline data with a nonzero offset (CKI Backport Bot) [RHEL-244928] {CVE-2026-72129}
+- rtla/timerlat_top: Fix on-threshold actions firing on signal (Tomas Glozar) [RHEL-193027]
+- rtla/timerlat: Exit top main loop on any non-zero wait_retval (Tomas Glozar) [RHEL-193027]
+- wifi: mac80211: defer link RX stats percpu free to RCU (Jose Ignacio Tornos Martinez) [RHEL-237706] {CVE-2026-68409}
+- wifi: mt76: mt7925: drop TXRX_NOTIFY on non-mmio buses (Jose Ignacio Tornos Martinez) [RHEL-237681] {CVE-2026-68193}
+- wifi: mt76: mt7925: fix crash in reset link replay (Jose Ignacio Tornos Martinez) [RHEL-237527] {CVE-2026-68307}
+- wifi: iwlwifi: mld: validate sta_mask before ffs() in BA session handlers (Jose Ignacio Tornos Martinez) [RHEL-232015] {CVE-2026-64255}
+- wifi: mac80211: capture fast-RX rate before mesh reuses skb->cb (Jose Ignacio Tornos Martinez) [RHEL-231685] {CVE-2026-64117}
+- wifi: mac80211: fix missing RX bitrate update for mesh forwarding path (Jose Ignacio Tornos Martinez) [RHEL-231685] {CVE-2026-64117}
+- wifi: iwlwifi: mld: fix TSO segmentation explosion when AMSDU is disabled (Jose Ignacio Tornos Martinez) [RHEL-230977] {CVE-2026-64037}
+- wifi: nl80211: reject oversized EMA RNR lists (Jose Ignacio Tornos Martinez) [RHEL-230604] {CVE-2026-53182}
+- net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove (Jose Ignacio Tornos Martinez) [RHEL-229725] {CVE-2026-52947}
+- wifi: mac80211: fix multi-link element inheritance (Jose Ignacio Tornos Martinez) [RHEL-227617] {CVE-2026-64515}
+- wifi: mac80211: fix MLE defragmentation (Jose Ignacio Tornos Martinez) [RHEL-227617] {CVE-2026-64515}
+- Bluetooth: fix locking in hci_conn_request_evt() with HCI_PROTO_DEFER (CKI Backport Bot) [RHEL-232673] {CVE-2026-53072}
+- accel/qaic: Add overflow check to remap_pfn_range during mmap (CKI Backport Bot) [RHEL-232178] {CVE-2026-64051}
+- Bluetooth: HIDP: fix missing length checks in hidp_input_report() (CKI Backport Bot) [RHEL-231067] {CVE-2026-63947}
+- Bluetooth: virtio_bt: validate rx pkt_type header length (CKI Backport Bot) [RHEL-230949] {CVE-2026-46123}
+- Bluetooth: virtio_bt: clamp rx length before skb_put (CKI Backport Bot) [RHEL-230949] {CVE-2026-46123}
+- Bluetooth: hci_sync: reject oversized Broadcast Announcement prepend (CKI Backport Bot) [RHEL-230076] {CVE-2026-53209}
+- Bluetooth: hci_sync: fix UAF in hci_le_create_cis_sync (CKI Backport Bot) [RHEL-230013] {CVE-2026-63944}
+- Bluetooth: L2CAP: Fix possible crash on l2cap_ecred_conn_rsp (CKI Backport Bot) [RHEL-228750] {CVE-2026-63975}
+- Bluetooth: ISO: serialize iso_sock_clear_timer with socket lock (CKI Backport Bot) [RHEL-227911] {CVE-2026-63946}
+- Bluetooth: ISO: fix UAF in iso_recv_frame (CKI Backport Bot) [RHEL-227911] {CVE-2026-63946}
+- ixgbevf: fix use-after-free in VEPA multicast source pruning (CKI Backport Bot) [RHEL-227889] {CVE-2026-64113}
+- Bluetooth: SMP: force responder MITM requirements before building the pairing response (CKI Backport Bot) [RHEL-227532] {CVE-2026-43334}
+- vfio/pci: Check BAR resources before exporting a DMABUF (CKI Backport Bot) [RHEL-227133] {CVE-2026-64042}
+- security/keys: fix missed RCU read section on lookup (CKI Backport Bot) [RHEL-225690] {CVE-2026-64015}
+- Bluetooth: RFCOMM: validate skb length in MCC handlers (CKI Backport Bot) [RHEL-225653] {CVE-2026-53254}
+- Bluetooth: RFCOMM: hold listener socket in rfcomm_connect_ind() (CKI Backport Bot) [RHEL-225574] {CVE-2026-53256}
+- Bluetooth: serialize accept_q access (CKI Backport Bot) [RHEL-225552] {CVE-2026-52918}
+- xfrm: Don't clobber inner headers when already set (Ivan Vecera) [RHEL-188232] {CVE-2026-53091}
+- net: pull headers in qdisc_pkt_len_segs_init() (Ivan Vecera) [RHEL-188232] {CVE-2026-53091}
+- net: qdisc_pkt_len_segs_init() cleanup (Ivan Vecera) [RHEL-188232] {CVE-2026-53091}
+- net_sched: initialize qdisc_skb_cb(skb)->pkt_segs in qdisc_pkt_len_init() (Ivan Vecera) [RHEL-188232] {CVE-2026-53091}
+- net: init shinfo->gso_segs from qdisc_pkt_len_init() (Ivan Vecera) [RHEL-188232] {CVE-2026-53091}
+- net_sched: make room for (struct qdisc_skb_cb)->pkt_segs (Ivan Vecera) [RHEL-188232] {CVE-2026-53091}
+- net: account for encap headers in qdisc pkt len (Ivan Vecera) [RHEL-188232] {CVE-2026-53091}
+- vfio/pci: Clean up DMABUFs before disabling function (CKI Backport Bot) [RHEL-189549] {CVE-2026-53322}
+- KVM: nSVM: Always use vmcb01 in VMLOAD/VMSAVE emulation (CKI Backport Bot) [RHEL-189468] {CVE-2026-43133}
+
+* Thu Sep 03 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.52.1.el10_2]
+- fuse: fix race between interrupt and resend (Miklos Szeredi) [RHEL-218495] {CVE-2026-64265}
+- fuse: clear intr_entry in fuse_resend and fuse_remove_pending_req (Miklos Szeredi) [RHEL-218495] {CVE-2026-64265}
+- rhashtable: clear stale iter->p on table restart (CKI Backport Bot) [RHEL-248457] {CVE-2026-64563}
+- udp: Fix wildcard bind conflict check when using hash2 (Felix Maurer) [RHEL-218016] {CVE-2026-31503}
+- tcp: optimize inet_use_bhash2_on_bind() (Felix Maurer) [RHEL-218016]
+- tcp: call sk_data_ready() after listener migration (Felix Maurer) [RHEL-232246] {CVE-2026-46015}
+- flow_dissector: do not dissect PPPoE PFC frames (Felix Maurer) [RHEL-232629] {CVE-2026-46306}
+- inet: RAW sockets using IPPROTO_RAW MUST drop incoming ICMP (Felix Maurer) [RHEL-226125] {CVE-2026-46266}
+- ipv6: anycast: insert aca into global hash under idev->lock (Felix Maurer) [RHEL-230763] {CVE-2026-53259}
+- ipv6: mcast: Fix use-after-free when processing MLD queries (Felix Maurer) [RHEL-226073] {CVE-2026-53275}
+- ipv6: prevent possible UaF in addrconf_permanent_addr() (Felix Maurer) [RHEL-225606] {CVE-2026-43339}
+- net: guard timestamp cmsgs to real error queue skbs (Felix Maurer) [RHEL-225864] {CVE-2026-53223}
+- net: add pskb_may_pull() to skb_gro_receive_list() (Felix Maurer) [RHEL-229309] {CVE-2026-53235}
+- can: bcm: extend bcm_tx_lock usage for data and timer updates (Abhishek Rawal) [RHEL-216700] {CVE-2025-38004}
+- can: bcm: add locking when updating filter and timer values (Abhishek Rawal) [RHEL-216700] {CVE-2025-38004}
+- can: bcm: fix locking for bcm_op runtime updates (Abhishek Rawal) [RHEL-216700] {CVE-2025-38004}
+- can: bcm: add locking for bcm_op runtime updates (Abhishek Rawal) [RHEL-216700] {CVE-2025-38004}
+- smb: client: fix double-free in SMB2_close() replay (Paulo Alcantara) [RHEL-240056] {CVE-2026-64597}
+- selftests: nft_queue.sh: add a parallel stress test (Florian Westphal) [RHEL-132852]
+- selftests: netfilter: nft_queue.sh: avoid flakes on debug kernels (Florian Westphal) [RHEL-132852]
+- netfilter: nfnetlink_queue: make hash table per queue (Florian Westphal) [RHEL-132852] {CVE-2026-43084}
+- netfilter: nfnetlink_queue: optimize verdict lookup with hash table (Florian Westphal) [RHEL-132852]
+- netfilter: nfnetlink_queue: nfqnl_instance GFP_ATOMIC -> GFP_KERNEL_ACCOUNT allocation (Florian Westphal) [RHEL-132852]
+- ppp: require CAP_NET_ADMIN in target netns for unattached ioctls (Abhishek Rawal) [RHEL-228009] {CVE-2026-53075}
+- vxlan: do not reuse cached ip_hdr() value after skb_tunnel_check_pmtu() (Abhishek Rawal) [RHEL-231711] {CVE-2026-63993}
+- ipv6: sit: reload inner IPv6 header after GSO offloads (Abhishek Rawal) [RHEL-225920] {CVE-2026-53228}
+- ipv6: add NULL checks for idev in SRv6 paths (Abhishek Rawal) [RHEL-218012] {CVE-2026-23442}
+- nvmet-auth: validate reply message payload bounds against transfer length (CKI Backport Bot) [RHEL-234153] {CVE-2026-64319}
+- KVM: arm64: Bound used_lrs when flushing the pKVM hyp vCPU (CKI Backport Bot) [RHEL-234204] {CVE-2026-64287}
+- KVM: arm64: Take the SRCU lock for page table walks in fault injection and AT emulation (CKI Backport Bot) [RHEL-229347] {CVE-2026-53277}
+- ipv4: free net->ipv4.sysctl_local_reserved_ports after unregister_net_sysctl_table() (CKI Backport Bot) [RHEL-227269] {CVE-2026-64002}
+- io_uring/poll: fix signed comparison in io_poll_get_ownership() (CKI Backport Bot) [RHEL-227111] {CVE-2026-52933}
 
 * Tue Sep 01 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.51.1.el10_2]
 - net: ipv6: clear suppressed fib6 rule result (Jamie Bainbridge) [RHEL-246368] {CVE-2026-74581}
