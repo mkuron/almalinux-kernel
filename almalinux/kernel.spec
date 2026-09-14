@@ -176,15 +176,15 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.53.1
+%define pkgrelease 211.54.1
 %define kversion 6
-%define tarfile_release 6.12.0-211.53.1.el10_2
+%define tarfile_release 6.12.0-211.54.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.53.1%{?buildid}%{?dist}
+%define specrelease 211.54.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 6.12.0-211.53.1.el10_2
+%define kabiversion 6.12.0-211.54.1.el10_2
 
 # If this variable is set to 1, a bpf selftests build failure will cause a
 # fatal kernel package build error
@@ -4606,14 +4606,14 @@ fi\
 #
 #
 %changelog
-* Fri Sep 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.53.1
+* Mon Sep 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.54.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Sep 11 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.53.1
+* Mon Sep 14 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.54.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Sep 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.53.1
+* Mon Sep 14 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.54.1
 - af_unix: set gc_in_progress to true in unix_gc() {CVE-2026-53361}
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
@@ -4630,6 +4630,9 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Mon Sep 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.54.1.el10_2]
+- net: bridge: stop fast-leave after deleting a port group (CKI Backport Bot) [RHEL-246933] {CVE-2026-74480}
 
 * Mon Sep 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.53.1.el10_2]
 - dm-verity: fix buffer overflow in FEC calculation (Benjamin Marzinski) [RHEL-244969] {CVE-2026-72098}
