@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.167.1.el8_10
+%define pkgrelease 553.168.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.167.1%{?dist}
+%define specrelease 553.168.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2803,7 +2803,7 @@ fi
 #
 #
 %changelog
-* Thu Sep 24 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.167.1
+* Thu Sep 24 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.168.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2814,9 +2814,17 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Sep 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.167.1
+* Thu Sep 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.168.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Sep 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.168.1.el8_10]
+- pppoe: reload header pointer after dev_hard_header() (Guillaume Nault) [RHEL-237293] {CVE-2026-68121}
+- nvme-tcp: reject a read that transferred too few bytes (CKI Backport Bot) [RHEL-263345] {CVE-2026-89480}
+- nvme: rename and document nvme_end_request (CKI Backport Bot) [RHEL-263345] {CVE-2026-89480}
+- ipvs: do not propagate one-packet flag to synced conns (CKI Backport Bot) [RHEL-255839] {CVE-2026-80714}
+- netfilter: nf_queue: hold bridge skb->dev while queued (CKI Backport Bot) [RHEL-231233] {CVE-2026-52912}
+- drm/amdgpu: Fix fence put before wait in amdgpu_amdkfd_submit_ib (CKI Backport Bot) [RHEL-221269] {CVE-2026-31566}
 
 * Tue Sep 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.167.1.el8_10]
 - net: tun: bound receive headroom (CKI Backport Bot) [RHEL-264385] {CVE-2026-81000}
