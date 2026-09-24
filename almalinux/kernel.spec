@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.166.1.el8_10
+%define pkgrelease 553.167.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.166.1%{?dist}
+%define specrelease 553.167.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2803,7 +2803,7 @@ fi
 #
 #
 %changelog
-* Tue Sep 22 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.166.1
+* Thu Sep 24 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.167.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2814,9 +2814,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Sep 22 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.166.1
+* Thu Sep 24 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.167.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Tue Sep 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.167.1.el8_10]
+- net: tun: bound receive headroom (CKI Backport Bot) [RHEL-264385] {CVE-2026-81000}
+- xfrm: ah6: validate routing header segments_left (CKI Backport Bot) [RHEL-264314] {CVE-2026-80844}
+- scsi: qla2xxx: Bound rsp_info_len to avoid OOB sense-data read (CKI Backport Bot) [RHEL-262571] {CVE-2026-89846}
+- ASoC: SOF: ipc3-control: Validate size in snd_sof_update_control (CKI Backport Bot) [RHEL-243620] {CVE-2026-72261}
+- mac802154: llsec: add skb_cow_data() before in-place crypto (Abhishek Rawal) [RHEL-231030] {CVE-2026-63831}
+- sctp: don't free the ASCONF's own transport in DEL-IP processing (CKI Backport Bot) [RHEL-234282] {CVE-2026-64564}
+- drm/amdgpu: Fix use-after-free race in VM acquire (CKI Backport Bot) [RHEL-222381] {CVE-2026-43370}
+- sctp: prevent peer transport count overflow (Xin Long) [RHEL-216297]
 
 * Mon Sep 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.166.1.el8_10]
 - crypto: af_alg - Fix incorrect boolean values in af_alg_ctx (CKI Backport Bot) [RHEL-264205] {CVE-2025-39964}
