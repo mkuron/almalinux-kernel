@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.56.1
+%define pkgrelease 211.58.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.56.1%{?buildid}%{?dist}
+%define specrelease 211.58.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -928,20 +928,23 @@ Source13: redhatsecureboot501.cer
 %define signing_key_filename kernel-signing-s390.cer
 %endif
 
+# pesign cert name is auto-discovered during build from secureboot_key_0,
+# see pesign_name_0 shell variable
+#
 # Fedora/ELN pesign macro expects to see these cert file names, see:
 # https://github.com/rhboot/pesign/blob/main/src/pesign-rpmbuild-helper.in#L216
 %if 0%{?fedora}%{?eln}
-%define pesign_name_0 redhatsecureboot501
 %define secureboot_ca_0 %{SOURCE10}
 %define secureboot_key_0 %{SOURCE13}
+%define secureboot_key_uki_0 %{secureboot_key_0}
 %endif
 
 # RHEL/centos certs come from system-sb-certs
 %if 0%{?rhel} && !0%{?eln}
 %define secureboot_ca_0 %{_datadir}/pki/sb-certs/secureboot-ca-%{_arch}.cer
 %define secureboot_key_0 %{_datadir}/pki/sb-certs/secureboot-kernel-%{_arch}.cer
+%define secureboot_key_uki_0 %{_sysconfdir}/pki/sb-certs/secureboot-uki-virt-%{_arch}.cer
 
-%define pesign_name_0 almalinuxsecureboot0
 # rhel && !eln
 %endif
 
@@ -1136,6 +1139,30 @@ Patch1: patch-%{patchversion}-redhat.patch
 
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
+
+# Backports for 6.12.0-211.58.1.el10_2
+Patch1100: 1100-keys-pin-request-key-auth-payload-in-instantiate-paths.patch
+Patch1101: 1101-crypto-ccp-fix-a-crash-due-to-incorrect-cleanup-usage-of-kfree.patch
+Patch1102: 1102-dm-cache-policy-smq-fix-missing-locks-in-invalidating-cache-blocks.patch
+Patch1103: 1103-dm-cache-policy-smq-check-allocation-under-invalidate-lock.patch
+Patch1104: 1104-net-mlx5-fix-mcia-register-buffer-overflow-on-32-dword-reads.patch
+Patch1105: 1105-bluetooth-mgmt-hold-reference-for-hci-conn-in-mgmt-pending-cmds.patch
+Patch1106: 1106-iommu-vt-d-clear-present-bit-before-tearing-down-pasid-entry.patch
+Patch1107: 1107-iommu-vt-d-clear-present-bit-before-tearing-down-context-entry.patch
+Patch1108: 1108-iommu-vt-d-fix-race-condition-during-pasid-entry-replacement.patch
+Patch1109: 1109-iommu-vt-d-clear-present-bit-before-tearing-down-scalable-mode-context-entry.patch
+Patch1110: 1110-libceph-reject-monmaps-advertising-zero-monitors.patch
+Patch1111: 1111-bluetooth-rfcomm-fix-session-uaf-in-set-termios.patch
+Patch1112: 1112-libceph-amend-checking-to-fix-make-w-1-build-breakage.patch
+Patch1113: 1113-libceph-bound-pg-temp-upmap-upmap-items-length-to-ceph-pg-max-size.patch
+Patch1114: 1114-pwm-fsl-ftm-handle-clk-get-rate-returning-0.patch
+Patch1115: 1115-pwm-fsl-ftm-drop-driver-local-locking.patch
+Patch1116: 1116-pwm-add-the-s32g-support-in-the-freescale-ftm-driver.patch
+Patch1117: 1117-arm64-dts-s32g-add-pwm-support-for-s32g2-and-s32g3.patch
+Patch1118: 1118-mm-hugetlb-fix-list-corruption-in-allocate-file-region-entries.patch
+Patch1119: 1119-nvmet-tcp-check-init-failed-before-nvmet-req-uninit-in-digest-error-path.patch
+Patch1120: 1120-crypto-af-alg-disallow-concurrent-writes-in-af-alg-sendmsg.patch
+Patch1121: 1121-crypto-af-alg-fix-incorrect-boolean-values-in-af-alg-ctx.patch
 
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -2023,6 +2050,30 @@ ApplyOptionalPatch patch-%{patchversion}-redhat.patch
 
 ApplyOptionalPatch linux-kernel-test.patch
 
+# Applying backports for 6.12.0-211.58.1.el10_2
+ApplyPatch 1100-keys-pin-request-key-auth-payload-in-instantiate-paths.patch
+ApplyPatch 1101-crypto-ccp-fix-a-crash-due-to-incorrect-cleanup-usage-of-kfree.patch
+ApplyPatch 1102-dm-cache-policy-smq-fix-missing-locks-in-invalidating-cache-blocks.patch
+ApplyPatch 1103-dm-cache-policy-smq-check-allocation-under-invalidate-lock.patch
+ApplyPatch 1104-net-mlx5-fix-mcia-register-buffer-overflow-on-32-dword-reads.patch
+ApplyPatch 1105-bluetooth-mgmt-hold-reference-for-hci-conn-in-mgmt-pending-cmds.patch
+ApplyPatch 1106-iommu-vt-d-clear-present-bit-before-tearing-down-pasid-entry.patch
+ApplyPatch 1107-iommu-vt-d-clear-present-bit-before-tearing-down-context-entry.patch
+ApplyPatch 1108-iommu-vt-d-fix-race-condition-during-pasid-entry-replacement.patch
+ApplyPatch 1109-iommu-vt-d-clear-present-bit-before-tearing-down-scalable-mode-context-entry.patch
+ApplyPatch 1110-libceph-reject-monmaps-advertising-zero-monitors.patch
+ApplyPatch 1111-bluetooth-rfcomm-fix-session-uaf-in-set-termios.patch
+ApplyPatch 1112-libceph-amend-checking-to-fix-make-w-1-build-breakage.patch
+ApplyPatch 1113-libceph-bound-pg-temp-upmap-upmap-items-length-to-ceph-pg-max-size.patch
+ApplyPatch 1114-pwm-fsl-ftm-handle-clk-get-rate-returning-0.patch
+ApplyPatch 1115-pwm-fsl-ftm-drop-driver-local-locking.patch
+ApplyPatch 1116-pwm-add-the-s32g-support-in-the-freescale-ftm-driver.patch
+ApplyPatch 1117-arm64-dts-s32g-add-pwm-support-for-s32g2-and-s32g3.patch
+ApplyPatch 1118-mm-hugetlb-fix-list-corruption-in-allocate-file-region-entries.patch
+ApplyPatch 1119-nvmet-tcp-check-init-failed-before-nvmet-req-uninit-in-digest-error-path.patch
+ApplyPatch 1120-crypto-af-alg-disallow-concurrent-writes-in-af-alg-sendmsg.patch
+ApplyPatch 1121-crypto-af-alg-fix-incorrect-boolean-values-in-af-alg-ctx.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2441,13 +2492,45 @@ BuildKernel() {
 
     SignImage=$KernelImage
 
+    get_pesign_name() {
+        # If it's a symlink, resolve it to get the pesign cert name
+        # e.g. secureboot-kernel-x86_64.cer -> redhatsecureboot801.cer
+        if [ -L "$1" ]; then
+            basename "$(readlink "$1")" .cer
+            return
+        fi
+        local fname
+        fname=$(basename "$1")
+        # If it's a regular file with a generic name (secureboot-*),
+        # find a pesign-named cert with matching content in the same dir
+        # e.g. secureboot-kernel-x86_64.cer has same md5 as centossecureboot801.cer
+        # e.g. centos-sb-certs-10.0-23.el10.noarch.rpm doesn't have symlinks
+        if [[ "$fname" == secureboot-* ]]; then
+            local dir mysum match
+            dir=$(dirname "$1")
+            mysum=$(md5sum "$1" | awk '{print $1}')
+            match=$(md5sum "$dir"/*.cer 2>/dev/null \
+                | grep -v 'secureboot-' \
+                | awk -v s="$mysum" '$1 == s {print $2; exit}')
+            if [ -n "$match" ]; then
+                basename "$match" .cer
+                return
+            fi
+        fi
+        # Fallback: use the filename as-is
+        basename "$1" .cer
+    }
+
+    pesign_name_0=almalinuxsecureboot0
+    %{log_msg "kernel signing: secureboot_key_0=%{secureboot_key_0} pesign_name_0=$pesign_name_0"}
+
     %ifarch x86_64 aarch64
     %{log_msg "Sign kernel image"}
-    %pesign -s -i $SignImage -o vmlinuz.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n %{pesign_name_0}
+    %pesign -s -i $SignImage -o vmlinuz.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n $pesign_name_0
     %endif
     %ifarch s390x ppc64le
     if [ -x /usr/bin/rpm-sign ]; then
-	rpm-sign --key "%{pesign_name_0}" --lkmsign $SignImage --output vmlinuz.signed
+	rpm-sign --key "$pesign_name_0" --lkmsign $SignImage --output vmlinuz.signed
     elif [ "$DoModules" == "1" -a "%{signmodules}" == "1" ]; then
 	chmod +x scripts/sign-file
 	./scripts/sign-file -p sha256 certs/signing_key.pem certs/signing_key.x509 $SignImage vmlinuz.signed
@@ -2830,18 +2913,18 @@ BuildKernel() {
     cp System.map $RPM_BUILD_ROOT/.
 
     if [[ "$Variant" == "rt" || "$Variant" == "rt-debug" || "$Variant" == "rt-64k" || "$Variant" == "rt-64k-debug" || "$Variant" == "automotive" || "$Variant" == "automotive-debug" ]]; then
-	%{log_msg "Skipping efiuki build"}
+        %{log_msg "Skipping efiuki build"}
     else
 %if %{with_efiuki}
         %{log_msg "Setup the EFI UKI kernel"}
 
-	KernelUnifiedImageDir="$RPM_BUILD_ROOT/lib/modules/$KernelVer"
-    	KernelUnifiedImage="$KernelUnifiedImageDir/$InstallName-virt.efi"
-	KernelUnifiedInitrd="$KernelUnifiedImageDir/$InstallName-virt.img"
+        KernelUnifiedImageDir="$RPM_BUILD_ROOT/lib/modules/$KernelVer"
+        KernelUnifiedImage="$KernelUnifiedImageDir/$InstallName-virt.efi"
+        KernelUnifiedInitrd="$KernelUnifiedImageDir/$InstallName-virt.img"
 
-    	mkdir -p $KernelUnifiedImageDir
+        mkdir -p $KernelUnifiedImageDir
 
-    	dracut --conf=%{SOURCE86} \
+        dracut --conf=%{SOURCE86} \
            --confdir=$(mktemp -d) \
            --no-hostonly \
            --verbose \
@@ -2850,55 +2933,44 @@ BuildKernel() {
            --logfile=$(mktemp) \
            $KernelUnifiedInitrd
 
-       ukify build --linux $(realpath $KernelImage) --initrd $KernelUnifiedInitrd \
-          --sbat @uki.sbat --os-release @/etc/os-release --uname $KernelVer \
-          --cmdline 'console=tty0 console=ttyS0' --output $KernelUnifiedImage
+        ukify build --linux $(realpath $KernelImage) --initrd $KernelUnifiedInitrd \
+           --sbat @uki.sbat --os-release @/etc/os-release --uname $KernelVer \
+           --cmdline 'console=tty0 console=ttyS0' --output $KernelUnifiedImage
 
-       rm -f $KernelUnifiedInitrd
+        rm -f $KernelUnifiedInitrd
 
-  KernelAddonsDirOut="$KernelUnifiedImage.extra.d"
-  mkdir -p $KernelAddonsDirOut
-  python3 %{SOURCE151} %{SOURCE152} $KernelAddonsDirOut virt %{primary_target} %{_target_cpu} @uki-addons.sbat
+        KernelAddonsDirOut="$KernelUnifiedImage.extra.d"
+        mkdir -p $KernelAddonsDirOut
+        python3 %{SOURCE151} %{SOURCE152} $KernelAddonsDirOut virt %{primary_target} %{_target_cpu} @uki-addons.sbat
 
 %if %{signkernel}
-	%{log_msg "Sign the EFI UKI kernel"}
-%if 0%{?fedora}%{?eln}
-        %pesign -s -i $KernelUnifiedImage -o $KernelUnifiedImage.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n %{pesign_name_0}
-%else
-UKI_secureboot_name=%{pesign_name_0}
-UKI_secureboot_cert=%{_datadir}/pki/sb-certs/secureboot-uki-virt-%{_arch}.cer
-
-        %pesign -s -i $KernelUnifiedImage -o $KernelUnifiedImage.signed -a %{secureboot_ca_0} -c $UKI_secureboot_cert -n $UKI_secureboot_name
-        for addon in "$KernelAddonsDirOut"/*; do
-            %pesign -s -i $addon -o $addon.signed -a %{secureboot_ca_0} -c $UKI_secureboot_cert -n $UKI_secureboot_name
-            rm -f $addon
-            mv $addon.signed $addon
-        done
-# 0%{?fedora}%{?eln}
-%endif
+        %{log_msg "Sign the EFI UKI kernel"}
+        pesign_name_uki_0=almalinuxsecureboot0
+        %{log_msg "UKI signing: secureboot_key_uki_0=%{secureboot_key_uki_0} pesign_name_uki_0=$pesign_name_uki_0"}
+        %pesign -s -i $KernelUnifiedImage -o $KernelUnifiedImage.signed -a %{secureboot_ca_0} -c %{secureboot_key_uki_0} -n $pesign_name_uki_0
         if [ ! -s $KernelUnifiedImage.signed ]; then
             echo "pesigning failed"
             exit 1
         fi
         mv $KernelUnifiedImage.signed $KernelUnifiedImage
 
-      mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer
-      cp -a $UKI_secureboot_cert $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/secureboot-uki-%{_arch}.cer
-
-# signkernel
+        for addon in "$KernelAddonsDirOut"/*; do
+           %pesign -s -i $addon -o $addon.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n $pesign_name_0
+           rm -f $addon
+           mv $addon.signed $addon
+        done
 %endif
 
-    # hmac sign the UKI for FIPS
-    KernelUnifiedImageHMAC="$KernelUnifiedImageDir/.$InstallName-virt.efi.hmac"
-    %{log_msg "hmac sign the UKI for FIPS"}
-    %{log_msg "Creating hmac file: $KernelUnifiedImageHMAC"}
-    (cd $KernelUnifiedImageDir && sha512hmac $InstallName-virt.efi) > $KernelUnifiedImageHMAC;
+        # hmac sign the UKI for FIPS
+        KernelUnifiedImageHMAC="$KernelUnifiedImageDir/.$InstallName-virt.efi.hmac"
+        %{log_msg "hmac sign the UKI for FIPS"}
+        %{log_msg "Creating hmac file: $KernelUnifiedImageHMAC"}
+        (cd $KernelUnifiedImageDir && sha512hmac $InstallName-virt.efi) > $KernelUnifiedImageHMAC;
 
 # with_efiuki
 %endif
-	:  # in case of empty block
+        :  # in case of empty block
     fi # "$Variant" == "rt" || "$Variant" == "rt-debug" || "$Variant" == "automotive" || "$Variant" == "automotive-debug"
-
 
     #
     # Generate the modules files lists
@@ -4604,14 +4676,14 @@ fi\
 #
 #
 %changelog
-* Fri Sep 18 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.56.1
+* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.58.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Sep 18 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.56.1
+* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.58.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Sep 18 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.56.1
+* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.58.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -4627,6 +4699,38 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Mon Sep 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.58.1.el10_2]
+- crypto: af_alg - Fix incorrect boolean values in af_alg_ctx (CKI Backport Bot) [RHEL-264234] {CVE-2025-39964}
+- crypto: af_alg - Disallow concurrent writes in af_alg_sendmsg (CKI Backport Bot) [RHEL-264234] {CVE-2025-39964}
+
+* Mon Sep 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.57.1.el10_2]
+- nvmet-tcp: check INIT_FAILED before nvmet_req_uninit in digest error path (CKI Backport Bot) [RHEL-260452] {CVE-2026-64534}
+- mm/hugetlb: fix list corruption in allocate_file_region_entries() (Rafael Aquini) [RHEL-254491] {CVE-2026-74518}
+- redhat/configs: automotive: enable PWM_FSL_FTM as a module (Mattijs Korpershoek) [RHEL-255517]
+- arm64: dts: s32g: add PWM support for s32g2 and s32g3 (Mattijs Korpershoek) [RHEL-255517]
+- pwm: Add the S32G support in the Freescale FTM driver (Mattijs Korpershoek) [RHEL-255517]
+- pwm: fsl-ftm: Drop driver local locking (Mattijs Korpershoek) [RHEL-255517]
+- pwm: fsl-ftm: Handle clk_get_rate() returning 0 (Mattijs Korpershoek) [RHEL-255517]
+- libceph: bound pg_{temp,upmap,upmap_items} length to CEPH_PG_MAX_SIZE (CKI Backport Bot) [RHEL-237164] {CVE-2026-68159}
+- libceph: Amend checking to fix `make W=1` build breakage (CKI Backport Bot) [RHEL-237164] {CVE-2026-68159}
+- Bluetooth: RFCOMM: Fix session UAF in set_termios (CKI Backport Bot) [RHEL-241107] {CVE-2026-68188}
+- libceph: Reject monmaps advertising zero monitors (CKI Backport Bot) [RHEL-240892] {CVE-2026-68155}
+- redhat: look for secureboot-uki-virt in /etc (Jan Stancek) [RHEL-169478]
+- redhat/kernel.spec: derive pesign_name_0 from secureboot_key_0 (Jan Stancek) [RHEL-169478]
+- redhat/kernel.spec.template: Simplify uki-virt signing (Jan Stancek) [RHEL-169478]
+- redhat/kernel.spec.template: Fix indentation of uki-virt generation code (Jan Stancek) [RHEL-169478]
+- redhat: sign centos kernel and UKIs with 800 certs (Jan Stancek) [RHEL-169478]
+- iommu/vt-d: Clear Present bit before tearing down scalable-mode context entry (Eder Zulian) [RHEL-228471]
+- iommu/vt-d: Fix race condition during PASID entry replacement (Eder Zulian) [RHEL-228471] {CVE-2026-45945}
+- iommu/vt-d: Clear Present bit before tearing down context entry (Eder Zulian) [RHEL-228471] {CVE-2026-45944}
+- iommu/vt-d: Clear Present bit before tearing down PASID entry (Eder Zulian) [RHEL-228471] {CVE-2026-45894}
+- Bluetooth: mgmt: hold reference for hci_conn in mgmt_pending_cmds (CKI Backport Bot) [RHEL-236849] {CVE-2026-68391}
+- net/mlx5: Fix MCIA register buffer overflow on 32 dword reads (CKI Backport Bot) [RHEL-236786] {CVE-2026-68293}
+- dm cache policy smq: check allocation under invalidate lock (CKI Backport Bot) [RHEL-231825] {CVE-2026-53062}
+- dm cache policy smq: fix missing locks in invalidating cache blocks (CKI Backport Bot) [RHEL-231825] {CVE-2026-53062}
+- crypto: ccp - Fix a crash due to incorrect cleanup usage of kfree (CKI Backport Bot) [RHEL-230408] {CVE-2026-45959}
+- keys: Pin request_key_auth payload in instantiate paths (CKI Backport Bot) [RHEL-225496] {CVE-2026-63823}
 
 * Wed Sep 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.56.1.el10_2]
 - redhat/configs: automotive: enable SENSORS_INA2XX (Jared Kangas) [RHEL-255518]
