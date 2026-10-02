@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.58.1
+%define pkgrelease 211.59.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.58.1%{?buildid}%{?dist}
+%define specrelease 211.59.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1164,6 +1164,54 @@ Patch1119: 1119-nvmet-tcp-check-init-failed-before-nvmet-req-uninit-in-digest-er
 Patch1120: 1120-crypto-af-alg-disallow-concurrent-writes-in-af-alg-sendmsg.patch
 Patch1121: 1121-crypto-af-alg-fix-incorrect-boolean-values-in-af-alg-ctx.patch
 
+# Backports for 6.12.0-211.59.1.el10_2
+Patch1122: 1122-module-lds-codetag-force-0-sh-addr-for-sections.patch
+Patch1123: 1123-netfilter-bridge-make-ebt-snat-arp-rewrite-writable.patch
+Patch1124: 1124-sctp-prevent-peer-transport-count-overflow.patch
+Patch1125: 1125-mac802154-llsec-add-skb-cow-data-before-in-place-crypto.patch
+Patch1126: 1126-sctp-don-t-free-the-asconf-s-own-transport-in-del-ip-processing.patch
+Patch1127: 1127-alsa-timer-drain-a-slave-s-callback-before-its-master-detaches-it.patch
+Patch1128: 1128-bnxt-en-gate-tph-enablement-behind-bnxt-supports-queue-api-check.patch
+Patch1129: 1129-blk-cgroup-fix-uaf-in-blkcg-rstat-flush.patch
+Patch1130: 1130-block-don-t-overwrite-bip-vcnt-in-bio-integrity-copy-user.patch
+Patch1131: 1131-block-always-allocate-integrity-buffer-when-required.patch
+Patch1132: 1132-rhel-revert-block-only-zero-non-pi-metadata-tuples-in-bio-integrity-prep.patch
+Patch1133: 1133-smb-client-fix-double-free-in-smb2-flush-replay.patch
+Patch1134: 1134-selinux-check-connect-related-permissions-on-tcp-fast-open.patch
+Patch1135: 1135-gpio-pca953x-improve-interrupt-support.patch
+Patch1136: 1136-gpio-pca953x-log-an-error-when-failing-to-get-the-reset-gpio.patch
+Patch1137: 1137-gpio-pca953x-fix-irq-storm-on-system-wake-up.patch
+Patch1138: 1138-gpio-pca953x-fix-wrong-error-probe-return-value.patch
+Patch1139: 1139-gpio-pca953x-add-support-for-level-triggered-interrupts.patch
+Patch1140: 1140-gpio-pca953x-handle-short-interrupt-pulses-on-pcal-devices.patch
+Patch1141: 1141-gpio-pca953x-enable-latch-only-on-edge-triggered-inputs.patch
+Patch1142: 1142-gpio-pca953x-drop-bitmap-complement-where-feasible.patch
+Patch1143: 1143-gpio-pca953x-fix-pca953x-irq-bus-sync-unlock-regmap-lock.patch
+Patch1144: 1144-gpio-pca953x-fix-cache-only-and-irq-state-on-restore-context-failure.patch
+Patch1145: 1145-i2c-imx-mark-i2c-adapter-when-hardware-is-powered-down.patch
+Patch1146: 1146-i2c-imx-fix-slave-registration-race-and-error-handling.patch
+Patch1147: 1147-i2c-imx-cancel-hrtimer-before-clearing-slave-pointer.patch
+Patch1148: 1148-i2c-imx-fix-locked-bus-on-smbus-block-read-of-0-atomic.patch
+Patch1149: 1149-i2c-imx-fix-locked-bus-on-smbus-block-read-of-0-irq.patch
+Patch1150: 1150-mmc-sdhci-esdhc-imx-remove-unnecessary-mmc-card-wake-sdio-irq-check-for-tuning-s.patch
+Patch1151: 1151-mmc-sdhci-esdhc-imx-restore-dll-override-for-ddr-modes-on-resume.patch
+Patch1152: 1152-mmc-sdhci-esdhc-imx-fix-esdhc-change-pinstate-to-allow-default-state-restore.patch
+Patch1153: 1153-mmc-sdhci-esdhc-imx-restore-pinctrl-before-restoring-ios-timing-on-resume.patch
+Patch1154: 1154-mmc-sdhci-esdhc-imx-disable-irq-during-suspend-to-fix-unhandled-interrupt.patch
+Patch1155: 1155-mmc-sdhci-esdhc-imx-use-pm-runtime-resume-and-get-in-suspend.patch
+Patch1156: 1156-mmc-sdhci-esdhc-imx-make-non-fatal-errors-non-blocking-in-suspend.patch
+Patch1157: 1157-mmc-sdhci-esdhc-imx-fix-resume-error-handling.patch
+Patch1158: 1158-rtc-pcf85063-fix-incorrect-maximum-clock-rate-handling.patch
+Patch1159: 1159-usb-chipidea-core-allow-ci-irq-handler-handle-both-id-and-vbus-change.patch
+Patch1160: 1160-usb-chipidea-otg-not-wait-vbus-drop-if-use-role-switch.patch
+Patch1161: 1161-usb-chipidea-core-convert-ci-role-switch-to-local-variable.patch
+Patch1162: 1162-usb-chipidea-fix-usage-count-leak-when-autosuspend-delay-is-negative.patch
+Patch1163: 1163-watchdog-s32g-wdt-remove-incorrect-options-in-watchdog-info-struct.patch
+Patch1164: 1164-netfilter-nf-conntrack-sip-widen-nat-rewrite-delta-to-s32-in-sip-help-tcp.patch
+Patch1165: 1165-scsi-qla2xxx-bound-rsp-info-len-to-avoid-oob-sense-data-read.patch
+Patch1166: 1166-xfrm-ah6-validate-routing-header-segments-left.patch
+Patch1167: 1167-net-tun-bound-receive-headroom.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2073,6 +2121,54 @@ ApplyPatch 1118-mm-hugetlb-fix-list-corruption-in-allocate-file-region-entries.p
 ApplyPatch 1119-nvmet-tcp-check-init-failed-before-nvmet-req-uninit-in-digest-error-path.patch
 ApplyPatch 1120-crypto-af-alg-disallow-concurrent-writes-in-af-alg-sendmsg.patch
 ApplyPatch 1121-crypto-af-alg-fix-incorrect-boolean-values-in-af-alg-ctx.patch
+
+# Applying backports for 6.12.0-211.59.1.el10_2
+ApplyPatch 1122-module-lds-codetag-force-0-sh-addr-for-sections.patch
+ApplyPatch 1123-netfilter-bridge-make-ebt-snat-arp-rewrite-writable.patch
+ApplyPatch 1124-sctp-prevent-peer-transport-count-overflow.patch
+ApplyPatch 1125-mac802154-llsec-add-skb-cow-data-before-in-place-crypto.patch
+ApplyPatch 1126-sctp-don-t-free-the-asconf-s-own-transport-in-del-ip-processing.patch
+ApplyPatch 1127-alsa-timer-drain-a-slave-s-callback-before-its-master-detaches-it.patch
+ApplyPatch 1128-bnxt-en-gate-tph-enablement-behind-bnxt-supports-queue-api-check.patch
+ApplyPatch 1129-blk-cgroup-fix-uaf-in-blkcg-rstat-flush.patch
+ApplyPatch 1130-block-don-t-overwrite-bip-vcnt-in-bio-integrity-copy-user.patch
+ApplyPatch 1131-block-always-allocate-integrity-buffer-when-required.patch
+ApplyPatch 1132-rhel-revert-block-only-zero-non-pi-metadata-tuples-in-bio-integrity-prep.patch
+ApplyPatch 1133-smb-client-fix-double-free-in-smb2-flush-replay.patch
+ApplyPatch 1134-selinux-check-connect-related-permissions-on-tcp-fast-open.patch
+ApplyPatch 1135-gpio-pca953x-improve-interrupt-support.patch
+ApplyPatch 1136-gpio-pca953x-log-an-error-when-failing-to-get-the-reset-gpio.patch
+ApplyPatch 1137-gpio-pca953x-fix-irq-storm-on-system-wake-up.patch
+ApplyPatch 1138-gpio-pca953x-fix-wrong-error-probe-return-value.patch
+ApplyPatch 1139-gpio-pca953x-add-support-for-level-triggered-interrupts.patch
+ApplyPatch 1140-gpio-pca953x-handle-short-interrupt-pulses-on-pcal-devices.patch
+ApplyPatch 1141-gpio-pca953x-enable-latch-only-on-edge-triggered-inputs.patch
+ApplyPatch 1142-gpio-pca953x-drop-bitmap-complement-where-feasible.patch
+ApplyPatch 1143-gpio-pca953x-fix-pca953x-irq-bus-sync-unlock-regmap-lock.patch
+ApplyPatch 1144-gpio-pca953x-fix-cache-only-and-irq-state-on-restore-context-failure.patch
+ApplyPatch 1145-i2c-imx-mark-i2c-adapter-when-hardware-is-powered-down.patch
+ApplyPatch 1146-i2c-imx-fix-slave-registration-race-and-error-handling.patch
+ApplyPatch 1147-i2c-imx-cancel-hrtimer-before-clearing-slave-pointer.patch
+ApplyPatch 1148-i2c-imx-fix-locked-bus-on-smbus-block-read-of-0-atomic.patch
+ApplyPatch 1149-i2c-imx-fix-locked-bus-on-smbus-block-read-of-0-irq.patch
+ApplyPatch 1150-mmc-sdhci-esdhc-imx-remove-unnecessary-mmc-card-wake-sdio-irq-check-for-tuning-s.patch
+ApplyPatch 1151-mmc-sdhci-esdhc-imx-restore-dll-override-for-ddr-modes-on-resume.patch
+ApplyPatch 1152-mmc-sdhci-esdhc-imx-fix-esdhc-change-pinstate-to-allow-default-state-restore.patch
+ApplyPatch 1153-mmc-sdhci-esdhc-imx-restore-pinctrl-before-restoring-ios-timing-on-resume.patch
+ApplyPatch 1154-mmc-sdhci-esdhc-imx-disable-irq-during-suspend-to-fix-unhandled-interrupt.patch
+ApplyPatch 1155-mmc-sdhci-esdhc-imx-use-pm-runtime-resume-and-get-in-suspend.patch
+ApplyPatch 1156-mmc-sdhci-esdhc-imx-make-non-fatal-errors-non-blocking-in-suspend.patch
+ApplyPatch 1157-mmc-sdhci-esdhc-imx-fix-resume-error-handling.patch
+ApplyPatch 1158-rtc-pcf85063-fix-incorrect-maximum-clock-rate-handling.patch
+ApplyPatch 1159-usb-chipidea-core-allow-ci-irq-handler-handle-both-id-and-vbus-change.patch
+ApplyPatch 1160-usb-chipidea-otg-not-wait-vbus-drop-if-use-role-switch.patch
+ApplyPatch 1161-usb-chipidea-core-convert-ci-role-switch-to-local-variable.patch
+ApplyPatch 1162-usb-chipidea-fix-usage-count-leak-when-autosuspend-delay-is-negative.patch
+ApplyPatch 1163-watchdog-s32g-wdt-remove-incorrect-options-in-watchdog-info-struct.patch
+ApplyPatch 1164-netfilter-nf-conntrack-sip-widen-nat-rewrite-delta-to-s32-in-sip-help-tcp.patch
+ApplyPatch 1165-scsi-qla2xxx-bound-rsp-info-len-to-avoid-oob-sense-data-read.patch
+ApplyPatch 1166-xfrm-ah6-validate-routing-header-segments-left.patch
+ApplyPatch 1167-net-tun-bound-receive-headroom.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -4676,14 +4772,14 @@ fi\
 #
 #
 %changelog
-* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.58.1
+* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.59.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.58.1
+* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.59.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.58.1
+* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.59.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -4699,6 +4795,55 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Tue Sep 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.59.1.el10_2]
+- net: tun: bound receive headroom (CKI Backport Bot) [RHEL-264371] {CVE-2026-81000}
+- xfrm: ah6: validate routing header segments_left (CKI Backport Bot) [RHEL-264303] {CVE-2026-80844}
+- scsi: qla2xxx: Bound rsp_info_len to avoid OOB sense-data read (CKI Backport Bot) [RHEL-262556] {CVE-2026-89846}
+- netfilter: nf_conntrack_sip: widen NAT rewrite delta to s32 in sip_help_tcp() (CKI Backport Bot) [RHEL-260585] {CVE-2026-74569}
+- redhat/configs: automotive: debug: enable KASAN_INLINE (Jared Kangas) [RHEL-259788]
+- watchdog: s32g_wdt: remove incorrect options in watchdog_info struct (Jared Kangas) [RHEL-259788]
+- usb: chipidea: fix usage_count leak when autosuspend_delay is negative (Jared Kangas) [RHEL-259788]
+- usb: chipidea: core: convert ci_role_switch to local variable (Jared Kangas) [RHEL-259788]
+- usb: chipidea: otg: not wait vbus drop if use role_switch (Jared Kangas) [RHEL-259788]
+- usb: chipidea: core: allow ci_irq_handler() handle both ID and VBUS change (Jared Kangas) [RHEL-259788]
+- rtc: pcf85063: fix incorrect maximum clock rate handling (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: fix resume error handling (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: make non-fatal errors non-blocking in suspend (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: use pm_runtime_resume_and_get() in suspend (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: disable irq during suspend to fix unhandled interrupt (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: restore pinctrl before restoring ios timing on resume (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: fix esdhc_change_pinstate() to allow default state restore (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: restore DLL override for DDR modes on resume (Jared Kangas) [RHEL-259788]
+- mmc: sdhci-esdhc-imx: remove unnecessary mmc_card_wake_sdio_irq check for tuning save/restore (Jared Kangas) [RHEL-259788]
+- i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ) (Jared Kangas) [RHEL-259788]
+- i2c: imx: fix locked bus on SMBus block-read of 0 (atomic) (Jared Kangas) [RHEL-259788]
+- i2c: imx: Cancel hrtimer before clearing slave pointer (Jared Kangas) [RHEL-259788]
+- i2c: imx: Fix slave registration race and error handling (Jared Kangas) [RHEL-259788]
+- i2c: imx: mark I2C adapter when hardware is powered down (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: fix cache_only and IRQ state on restore_context() failure (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: fix pca953x_irq_bus_sync_unlock regmap lock (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: drop bitmap_complement() where feasible (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: enable latch only on edge-triggered inputs (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: handle short interrupt pulses on PCAL devices (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: Add support for level-triggered interrupts (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: fix wrong error probe return value (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: fix IRQ storm on system wake up (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: log an error when failing to get the reset GPIO (Jared Kangas) [RHEL-259788]
+- gpio: pca953x: Improve interrupt support (Jared Kangas) [RHEL-259788]
+- selinux: check connect-related permissions on TCP Fast Open (CKI Backport Bot) [RHEL-258024] {CVE-2026-72243}
+- smb: client: fix double-free in SMB2_flush() replay (CKI Backport Bot) [RHEL-253205] {CVE-2026-64383}
+- RHEL: revert "block: only zero non-PI metadata tuples in bio_integrity_prep" (Jeff Moyer) [RHEL-189638] {CVE-2026-23007}
+- block: always allocate integrity buffer when required (Jeff Moyer) [RHEL-189638]
+- block: don't overwrite bip_vcnt in bio_integrity_copy_user() (Jeff Moyer) [RHEL-232375] {CVE-2026-64053}
+- blk-cgroup: fix UAF in __blkcg_rstat_flush() (Jeff Moyer) [RHEL-230292] {CVE-2026-63802}
+- bnxt_en: Gate TPH enablement behind BNXT_SUPPORTS_QUEUE_API check (CKI Backport Bot) [RHEL-247283]
+- ALSA: timer: drain a slave's callback before its master detaches it (CKI Backport Bot) [RHEL-236084] {CVE-2026-68201}
+- sctp: don't free the ASCONF's own transport in DEL-IP processing (CKI Backport Bot) [RHEL-234288] {CVE-2026-64564}
+- mac802154: llsec: add skb_cow_data() before in-place crypto (CKI Backport Bot) [RHEL-231034] {CVE-2026-63831}
+- sctp: prevent peer transport count overflow (Xin Long) [RHEL-216247]
+- netfilter: bridge: make ebt_snat ARP rewrite writable (CKI Backport Bot) [RHEL-190036] {CVE-2026-53266}
+- module.lds,codetag: force 0 sh_addr for sections (Joe Lawrence) [RHEL-159298]
 
 * Mon Sep 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.58.1.el10_2]
 - crypto: af_alg - Fix incorrect boolean values in af_alg_ctx (CKI Backport Bot) [RHEL-264234] {CVE-2025-39964}
