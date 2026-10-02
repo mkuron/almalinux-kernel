@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.59.1
+%define pkgrelease 211.60.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.59.1%{?buildid}%{?dist}
+%define specrelease 211.60.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1212,6 +1212,40 @@ Patch1165: 1165-scsi-qla2xxx-bound-rsp-info-len-to-avoid-oob-sense-data-read.pat
 Patch1166: 1166-xfrm-ah6-validate-routing-header-segments-left.patch
 Patch1167: 1167-net-tun-bound-receive-headroom.patch
 
+# Backports for 6.12.0-211.60.1.el10_2
+Patch1168: 1168-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
+Patch1169: 1169-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
+Patch1170: 1170-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
+Patch1171: 1171-libceph-reset-sparse-read-state-in-osd-fault.patch
+Patch1172: 1172-libceph-fix-potential-use-after-free-in-have-mon-and-osd-map.patch
+Patch1173: 1173-accel-ivpu-add-buffer-overflow-check-in-ms-get-info-ioctl.patch
+Patch1174: 1174-powerpc-iommu-bypass-dma-apis-for-coherent-allocations-for-pre-mapped-memory.patch
+Patch1175: 1175-powerpc-powernv-iommu-iommu-incorrectly-bypass-dma-apis.patch
+Patch1176: 1176-drm-amdgpu-vcn4-prevent-oob-reads-when-parsing-dec-msg.patch
+Patch1177: 1177-drm-amdgpu-vcn4-avoid-overflow-on-msg-bound-check.patch
+Patch1178: 1178-fbcon-set-fb-display-i-mode-to-null-when-the-mode-is-released.patch
+Patch1179: 1179-drm-amdgpu-vcn4-prevent-oob-reads-when-parsing-ib.patch
+Patch1180: 1180-drm-amdgpu-vcn3-prevent-oob-reads-when-parsing-dec-msg.patch
+Patch1181: 1181-drm-amdgpu-vcn3-avoid-overflow-on-msg-bound-check.patch
+Patch1182: 1182-drm-amdgpu-vcn-fix-integer-overflow-in-dec-msg-buffer-count-check.patch
+Patch1183: 1183-drm-xe-eustall-fix-drm-dev-put-called-before-stream-disable-in-close.patch
+Patch1184: 1184-drm-xe-xe3-apply-wa-14024997852.patch
+Patch1185: 1185-drm-xe-rtp-refactor-oag-mmio-trigger-register-whitelisting.patch
+Patch1186: 1186-drm-xe-rtp-add-ring-force-to-nonpriv-deny-to-oa-whitelists.patch
+Patch1187: 1187-drm-amdgpu-fix-context-pstate-override-handling.patch
+Patch1188: 1188-drm-amdgpu-do-not-use-amdgpu-bo-gpu-offset-no-check-individually.patch
+Patch1189: 1189-drm-amdgpu-userq-fix-access-to-stale-wptr-mapping.patch
+Patch1190: 1190-drm-virtio-use-uninterruptible-resv-lock-for-plane-updates.patch
+Patch1191: 1191-drm-xe-hold-a-dma-buf-reference-for-imported-bos.patch
+Patch1192: 1192-drm-amdkfd-fix-32-bit-overflow-in-cwsr-total-size-calculation.patch
+Patch1193: 1193-drm-amdgpu-vce-fix-integer-overflow-in-image-size.patch
+Patch1194: 1194-ipvs-do-not-propagate-one-packet-flag-to-synced-conns.patch
+Patch1195: 1195-af-unix-don-t-check-sock-dead-in-unix-stream-read-skb.patch
+Patch1196: 1196-af-unix-don-t-use-skb-recv-datagram-in-unix-stream-read-skb.patch
+Patch1197: 1197-af-unix-drop-all-scm-attributes-for-sockmap.patch
+Patch1198: 1198-nvme-tcp-fix-host-memory-disclosure-on-r2t-for-a-read-command.patch
+Patch1199: 1199-pppoe-reload-header-pointer-after-dev-hard-header.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2169,6 +2203,40 @@ ApplyPatch 1164-netfilter-nf-conntrack-sip-widen-nat-rewrite-delta-to-s32-in-sip
 ApplyPatch 1165-scsi-qla2xxx-bound-rsp-info-len-to-avoid-oob-sense-data-read.patch
 ApplyPatch 1166-xfrm-ah6-validate-routing-header-segments-left.patch
 ApplyPatch 1167-net-tun-bound-receive-headroom.patch
+
+# Applying backports for 6.12.0-211.60.1.el10_2
+ApplyPatch 1168-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
+ApplyPatch 1169-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
+ApplyPatch 1170-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
+ApplyPatch 1171-libceph-reset-sparse-read-state-in-osd-fault.patch
+ApplyPatch 1172-libceph-fix-potential-use-after-free-in-have-mon-and-osd-map.patch
+ApplyPatch 1173-accel-ivpu-add-buffer-overflow-check-in-ms-get-info-ioctl.patch
+ApplyPatch 1174-powerpc-iommu-bypass-dma-apis-for-coherent-allocations-for-pre-mapped-memory.patch
+ApplyPatch 1175-powerpc-powernv-iommu-iommu-incorrectly-bypass-dma-apis.patch
+ApplyPatch 1176-drm-amdgpu-vcn4-prevent-oob-reads-when-parsing-dec-msg.patch
+ApplyPatch 1177-drm-amdgpu-vcn4-avoid-overflow-on-msg-bound-check.patch
+ApplyPatch 1178-fbcon-set-fb-display-i-mode-to-null-when-the-mode-is-released.patch
+ApplyPatch 1179-drm-amdgpu-vcn4-prevent-oob-reads-when-parsing-ib.patch
+ApplyPatch 1180-drm-amdgpu-vcn3-prevent-oob-reads-when-parsing-dec-msg.patch
+ApplyPatch 1181-drm-amdgpu-vcn3-avoid-overflow-on-msg-bound-check.patch
+ApplyPatch 1182-drm-amdgpu-vcn-fix-integer-overflow-in-dec-msg-buffer-count-check.patch
+ApplyPatch 1183-drm-xe-eustall-fix-drm-dev-put-called-before-stream-disable-in-close.patch
+ApplyPatch 1184-drm-xe-xe3-apply-wa-14024997852.patch
+ApplyPatch 1185-drm-xe-rtp-refactor-oag-mmio-trigger-register-whitelisting.patch
+ApplyPatch 1186-drm-xe-rtp-add-ring-force-to-nonpriv-deny-to-oa-whitelists.patch
+ApplyPatch 1187-drm-amdgpu-fix-context-pstate-override-handling.patch
+ApplyPatch 1188-drm-amdgpu-do-not-use-amdgpu-bo-gpu-offset-no-check-individually.patch
+ApplyPatch 1189-drm-amdgpu-userq-fix-access-to-stale-wptr-mapping.patch
+ApplyPatch 1190-drm-virtio-use-uninterruptible-resv-lock-for-plane-updates.patch
+ApplyPatch 1191-drm-xe-hold-a-dma-buf-reference-for-imported-bos.patch
+ApplyPatch 1192-drm-amdkfd-fix-32-bit-overflow-in-cwsr-total-size-calculation.patch
+ApplyPatch 1193-drm-amdgpu-vce-fix-integer-overflow-in-image-size.patch
+ApplyPatch 1194-ipvs-do-not-propagate-one-packet-flag-to-synced-conns.patch
+ApplyPatch 1195-af-unix-don-t-check-sock-dead-in-unix-stream-read-skb.patch
+ApplyPatch 1196-af-unix-don-t-use-skb-recv-datagram-in-unix-stream-read-skb.patch
+ApplyPatch 1197-af-unix-drop-all-scm-attributes-for-sockmap.patch
+ApplyPatch 1198-nvme-tcp-fix-host-memory-disclosure-on-r2t-for-a-read-command.patch
+ApplyPatch 1199-pppoe-reload-header-pointer-after-dev-hard-header.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -4772,14 +4840,14 @@ fi\
 #
 #
 %changelog
-* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.59.1
+* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.60.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.59.1
+* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.60.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.59.1
+* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.60.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -4795,6 +4863,40 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Wed Sep 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.60.1.el10_2]
+- pppoe: reload header pointer after dev_hard_header() (Guillaume Nault) [RHEL-242509] {CVE-2026-68121}
+- nvme-tcp: fix host memory disclosure on R2T for a read command (CKI Backport Bot) [RHEL-263403] {CVE-2026-89481}
+- af_unix: Drop all SCM attributes for SOCKMAP. (Davide Caratti) [RHEL-229262] {CVE-2026-53005}
+- af_unix: Don't use skb_recv_datagram() in unix_stream_read_skb(). (Davide Caratti) [RHEL-229262]
+- af_unix: Don't check SOCK_DEAD in unix_stream_read_skb(). (Davide Caratti) [RHEL-229262]
+- ipvs: do not propagate one-packet flag to synced conns (CKI Backport Bot) [RHEL-255860] {CVE-2026-80714}
+- drm/amdgpu/vce: fix integer overflow in image size (Mika Penttilä) [RHEL-257136] {CVE-2026-68108}
+- drm/amdkfd: fix 32-bit overflow in CWSR total size calculation (Mika Penttilä) [RHEL-237844] {CVE-2026-68257}
+- drm/xe: Hold a dma-buf reference for imported BOs (CKI Backport Bot) [RHEL-236300] {CVE-2026-68266}
+- drm/virtio: use uninterruptible resv lock for plane updates (CKI Backport Bot) [RHEL-229327] {CVE-2026-64098}
+- drm/amdgpu/userq: fix access to stale wptr mapping (Mika Penttilä) [RHEL-225409] {CVE-2026-46311}
+- drm/amdgpu: do not use amdgpu_bo_gpu_offset_no_check individually (Mika Penttilä) [RHEL-225409] {CVE-2026-46311}
+- drm/amdgpu: Fix context pstate override handling (CKI Backport Bot) [RHEL-236714] {CVE-2026-68273}
+- drm/xe/rtp: Add RING_FORCE_TO_NONPRIV_DENY to OA whitelists (CKI Backport Bot) [RHEL-237962] {CVE-2026-68267}
+- drm/xe/rtp: Refactor OAG MMIO trigger register whitelisting (CKI Backport Bot) [RHEL-237962] {CVE-2026-68267}
+- drm/xe/xe3: Apply wa_14024997852 (CKI Backport Bot) [RHEL-237962] {CVE-2026-68267}
+- drm/xe/eustall: Fix drm_dev_put called before stream disable in close (CKI Backport Bot) [RHEL-229371] {CVE-2026-53290}
+- drm/amdgpu/vcn: fix integer overflow in dec_msg buffer count check (Mika Penttilä) [RHEL-225316]
+- drm/amdgpu/vcn3: Avoid overflow on msg bound check (Mika Penttilä) [RHEL-225316] {CVE-2026-46230}
+- drm/amdgpu/vcn3: Prevent OOB reads when parsing dec msg (Mika Penttilä) [RHEL-225316] {CVE-2026-46230}
+- drm/amdgpu/vcn4: Prevent OOB reads when parsing IB (CKI Backport Bot) [RHEL-226047] {CVE-2026-46204}
+- fbcon: Set fb_display[i]->mode to NULL when the mode is released (Mika Penttilä) [RHEL-250108] {CVE-2025-40323}
+- drm/amdgpu/vcn4: Avoid overflow on msg bound check (Mika Penttilä) [RHEL-225444] {CVE-2026-46199}
+- drm/amdgpu/vcn4: Prevent OOB reads when parsing dec msg (Mika Penttilä) [RHEL-225444] {CVE-2026-46199}
+- powerpc/powernv/iommu: iommu incorrectly bypass DMA APIs (Jerry Snitselaar) [RHEL-252331]
+- powerpc/iommu: bypass DMA APIs for coherent allocations for pre-mapped memory (Jerry Snitselaar) [RHEL-252331]
+- accel/ivpu: Add buffer overflow check in MS get_info_ioctl (CKI Backport Bot) [RHEL-230647] {CVE-2026-53203}
+- libceph: fix potential use-after-free in have_mon_and_osd_map() (CKI Backport Bot) [RHEL-169081] {CVE-2025-68285}
+- libceph: reset sparse-read state in osd_fault() (CKI Backport Bot) [RHEL-169079] {CVE-2026-23136}
+- libceph: replace overzealous BUG_ON in osdmap_apply_incremental() (CKI Backport Bot) [RHEL-169072] {CVE-2026-22990}
+- libceph: prevent potential out-of-bounds reads in handle_auth_done() (CKI Backport Bot) [RHEL-169068] {CVE-2026-22984}
+- libceph: make decode_pool() more resilient against corrupted osdmaps (CKI Backport Bot) [RHEL-169064] {CVE-2025-71116}
 
 * Tue Sep 22 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.59.1.el10_2]
 - net: tun: bound receive headroom (CKI Backport Bot) [RHEL-264371] {CVE-2026-81000}
