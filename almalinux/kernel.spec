@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.60.1
+%define pkgrelease 211.61.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.60.1%{?buildid}%{?dist}
+%define specrelease 211.61.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1246,6 +1246,23 @@ Patch1197: 1197-af-unix-drop-all-scm-attributes-for-sockmap.patch
 Patch1198: 1198-nvme-tcp-fix-host-memory-disclosure-on-r2t-for-a-read-command.patch
 Patch1199: 1199-pppoe-reload-header-pointer-after-dev-hard-header.patch
 
+# Backports for 6.12.0-211.61.1.el10_2
+Patch1200: 1200-ext4-fix-e4b-bitmap-inconsistency-reports.patch
+Patch1201: 1201-kvm-nsvm-raise-ud-if-unhandled-vmmcall-isn-t-intercepted-by-l1.patch
+Patch1202: 1202-kvm-s390-limit-adapter-indicator-access-to-mapped-page.patch
+Patch1203: 1203-kvm-s390-selftests-add-irq-routing-address-offset-tests.patch
+Patch1204: 1204-vmxnet3-fix-bug-on-in-vmxnet3-get-hdr-len-for-geneve-packets.patch
+Patch1205: 1205-crypto-tegra-fix-rctx-cryptlen-calculation-in-tegra-gcm-do-one-req.patch
+Patch1206: 1206-crypto-testmgr-block-crypto-api-xxhash64-in-fips-mode.patch
+Patch1207: 1207-fhandle-fix-uaf-due-to-unlocked-mnt-ns-read-in-may-decode-fh.patch
+Patch1208: 1208-x86-mm-ident-map-fix-theoretical-virtual-address-overflow-to-zero.patch
+Patch1209: 1209-nvme-tcp-reject-a-read-that-transferred-too-few-bytes.patch
+Patch1210: 1210-kvm-arm64-reassign-nested-mmus-array-behind-mmu-lock.patch
+Patch1211: 1211-kvm-arm64-handle-negative-s1-walk-levels-in-vncr-tlb-size-evaluation.patch
+Patch1212: 1212-perf-core-fix-missing-read-event-generation-on-task-exit.patch
+Patch1213: 1213-perf-core-detach-event-groups-during-remove-on-exec.patch
+Patch1214: 1214-perf-reject-exited-events-as-group-leaders.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2237,6 +2254,23 @@ ApplyPatch 1196-af-unix-don-t-use-skb-recv-datagram-in-unix-stream-read-skb.patc
 ApplyPatch 1197-af-unix-drop-all-scm-attributes-for-sockmap.patch
 ApplyPatch 1198-nvme-tcp-fix-host-memory-disclosure-on-r2t-for-a-read-command.patch
 ApplyPatch 1199-pppoe-reload-header-pointer-after-dev-hard-header.patch
+
+# Applying backports for 6.12.0-211.61.1.el10_2
+ApplyPatch 1200-ext4-fix-e4b-bitmap-inconsistency-reports.patch
+ApplyPatch 1201-kvm-nsvm-raise-ud-if-unhandled-vmmcall-isn-t-intercepted-by-l1.patch
+ApplyPatch 1202-kvm-s390-limit-adapter-indicator-access-to-mapped-page.patch
+ApplyPatch 1203-kvm-s390-selftests-add-irq-routing-address-offset-tests.patch
+ApplyPatch 1204-vmxnet3-fix-bug-on-in-vmxnet3-get-hdr-len-for-geneve-packets.patch
+ApplyPatch 1205-crypto-tegra-fix-rctx-cryptlen-calculation-in-tegra-gcm-do-one-req.patch
+ApplyPatch 1206-crypto-testmgr-block-crypto-api-xxhash64-in-fips-mode.patch
+ApplyPatch 1207-fhandle-fix-uaf-due-to-unlocked-mnt-ns-read-in-may-decode-fh.patch
+ApplyPatch 1208-x86-mm-ident-map-fix-theoretical-virtual-address-overflow-to-zero.patch
+ApplyPatch 1209-nvme-tcp-reject-a-read-that-transferred-too-few-bytes.patch
+ApplyPatch 1210-kvm-arm64-reassign-nested-mmus-array-behind-mmu-lock.patch
+ApplyPatch 1211-kvm-arm64-handle-negative-s1-walk-levels-in-vncr-tlb-size-evaluation.patch
+ApplyPatch 1212-perf-core-fix-missing-read-event-generation-on-task-exit.patch
+ApplyPatch 1213-perf-core-detach-event-groups-during-remove-on-exec.patch
+ApplyPatch 1214-perf-reject-exited-events-as-group-leaders.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -4840,14 +4874,14 @@ fi\
 #
 #
 %changelog
-* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.60.1
+* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.61.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.60.1
+* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.61.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.60.1
+* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.61.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -4863,6 +4897,23 @@ fi\
   (backport from upstream)
 - gve: enable reading max ring size from the device in DQO-QPL mode (backport
   from upstream)
+
+* Mon Sep 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.61.1.el10_2]
+- perf: Reject exited events as group leaders (Anubhav Shelat) [RHEL-258812] {CVE-2026-74753}
+- perf/core: Detach event groups during remove_on_exec (Anubhav Shelat) [RHEL-250496] {CVE-2026-64556}
+- perf/core: Fix missing read event generation on task exit (Anubhav Shelat) [RHEL-250496]
+- KVM: arm64: Handle negative S1 walk levels in VNCR TLB size evaluation (Gavin Shan) [RHEL-261954] {CVE-2026-89775}
+- KVM: arm64: Reassign nested_mmus array behind mmu_lock (Gavin Shan) [RHEL-227043] {CVE-2026-46317}
+- nvme-tcp: reject a read that transferred too few bytes (CKI Backport Bot) [RHEL-263335] {CVE-2026-89480}
+- x86/mm/ident_map: Fix theoretical virtual address overflow to zero (Mark Langsdorf) [RHEL-260402]
+- fhandle: fix UAF due to unlocked ->mnt_ns read in may_decode_fh() (Abhi Das) [RHEL-231396] {CVE-2026-53341}
+- crypto: testmgr - block Crypto API xxhash64 in FIPS mode (Vladislav Dronov) [RHEL-254943]
+- crypto: tegra - fix rctx->cryptlen calculation in tegra_gcm_do_one_req() (CKI Backport Bot) [RHEL-254306] {CVE-2026-80522}
+- vmxnet3: fix BUG_ON in vmxnet3_get_hdr_len() for Geneve packets (CKI Backport Bot) [RHEL-252817] {CVE-2026-68299}
+- KVM: s390: selftests: Add IRQ routing address offset tests (Christoph Schlameuss) [RHEL-188661]
+- KVM: s390: Limit adapter indicator access to mapped page (Christoph Schlameuss) [RHEL-188661]
+- KVM: nSVM: Raise #UD if unhandled VMMCALL isn't intercepted by L1 (CKI Backport Bot) [RHEL-227378] {CVE-2026-46076}
+- ext4: fix e4b bitmap inconsistency reports (CKI Backport Bot) [RHEL-225949] {CVE-2026-45942}
 
 * Wed Sep 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.60.1.el10_2]
 - pppoe: reload header pointer after dev_hard_header() (Guillaume Nault) [RHEL-242509] {CVE-2026-68121}
