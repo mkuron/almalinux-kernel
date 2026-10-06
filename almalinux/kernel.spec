@@ -176,15 +176,15 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.53.1
+%define pkgrelease 687.54.1
 %define kversion 5
-%define tarfile_release 5.14.0-687.53.1.el9_8
+%define tarfile_release 5.14.0-687.54.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.53.1%{?buildid}%{?dist}
+%define specrelease 687.54.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
-%define kabiversion 5.14.0-687.53.1.el9_8
+%define kabiversion 5.14.0-687.54.1.el9_8
 
 #
 # End of genspec.sh variables
@@ -3893,7 +3893,7 @@ fi
 #
 #
 %changelog
-* Wed Sep 30 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.53.1
+* Tue Oct 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.54.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3905,11 +3905,30 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Sep 30 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.53.1
+* Tue Oct 06 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.54.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Wed Sep 30 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.54.1.el9_8]
+- Revert "mm/memcg: refactor try_charge_memcg retry logic to use for loop" (Audra Mitchell) [RHEL-269060]
+- futex: Prevent rcuwait use-after-free during requeue PI (Waiman Long) [RHEL-263481] {CVE-2026-90003}
+- futex: Fix might_sleep() warning in futex_pivot_pending() (Waiman Long) [RHEL-263481]
+- futex: Fix race on the initial mm->futex.phash.ref allocation (Waiman Long) [RHEL-263481] {CVE-2026-80775}
+- futex/pi: Reject cross-mm private futex owners (Waiman Long) [RHEL-263481] {CVE-2026-80778}
+- futex: Avoid private hash use-after-free on final put (Waiman Long) [RHEL-263481] {CVE-2026-80758}
+- futex: Fix race in futex_pivot_pending() during private hash resize (Waiman Long) [RHEL-263481] {CVE-2026-80776}
+- futex: Prevent robust futex exit race some more (Waiman Long) [RHEL-263481] {CVE-2026-74658}
+- futex: Optimize futex hash bucket access patterns (Waiman Long) [RHEL-263481]
+- compiler_types.h: add "auto" as a macro for "__auto_type" (Waiman Long) [RHEL-263481]
+- selftests: net: check jq command is supported (Guillaume Nault) [RHEL-169936]
+- selftests: rtnetlink: Fix do_test_address_proto() (Guillaume Nault) [RHEL-169936]
+- selftests: rtnetlink: Add an address proto test (Guillaume Nault) [RHEL-169936]
+- net: ipv4: Allow changing IPv4 address protocol (Guillaume Nault) [RHEL-169936]
+- net: Add new protocol attribute to IP addresses (Guillaume Nault) [RHEL-169936]
+- RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send (CKI Backport Bot) [RHEL-232599] {CVE-2026-45856}
+- KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path (CKI Backport Bot) [RHEL-214951] {CVE-2026-63794}
 
 * Mon Sep 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.53.1.el9_8]
 - arm64: tlb: Flush walk cache when unsharing PMD tables (Rafael Aquini) [RHEL-259312] {CVE-2026-63875}
