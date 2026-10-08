@@ -1,3 +1,73 @@
+* Mon Oct 05 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.63.1.el10_2]
+- netfilter: nfnetlink_log: wait for rcu grace period before freeing pernet state (CKI Backport Bot) [RHEL-271653] {CVE-2026-93288}
+- tcp: fix stale per-CPU tcp_tw_isn leak enabling ISN prediction (Davide Caratti) [RHEL-231698] {CVE-2026-64024}
+- Bluetooth: hci_uart: clear HCI_UART_SENDING when write_work is canceled (CKI Backport Bot) [RHEL-232645] {CVE-2026-46275}
+- Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths (CKI Backport Bot) [RHEL-232645] {CVE-2026-46275}
+- nvme/ioctl: check SUBMIT_IO with nvme_cmd_allowed() (CKI Backport Bot) [RHEL-269475] {CVE-2026-90227}
+- nvme: add missing SRCU grace period in error path (CKI Backport Bot) [RHEL-270934] {CVE-2026-89972}
+- s390/cpum_cf: Handle CPU hotplug via prepare/dead callbacks (Jan Polensky) [RHEL-270888]
+- ipv6: ioam: refresh hdr pointer before ioam6_event() (Prasenjit Mukherjee) [RHEL-259773] {CVE-2026-64132}
+- netfilter: nf_conntrack: use get_unaligned_be32() in tcp_sack() (CKI Backport Bot) [RHEL-270657] {CVE-2026-97417}
+- crypto: af_alg - Cap AEAD AD length to 0x80000000 (Pablo Alessandro Santos Hugen) [RHEL-259063] {CVE-2026-52972}
+- wifi: iwlwifi: reduce encryption error message to debug level in FIPS mode (Filip Balluch) [RHEL-257457]
+- wifi: iwlwifi: restore FIPS-disabled features with fips exception (Filip Balluch) [RHEL-257457]
+- wifi: mac80211: allow keys to driver with fips exception (Filip Balluch) [RHEL-257457]
+- crypto: fips: add rh_fips_exception kernel boot parameter and fips_allows() helper (Filip Balluch) [RHEL-257457]
+- futex: Prevent rcuwait use-after-free during requeue PI (Waiman Long) [RHEL-263469] {CVE-2026-90003}
+- futex: Fix might_sleep() warning in futex_pivot_pending() (Waiman Long) [RHEL-263469]
+- futex: Fix race on the initial mm->futex.phash.ref allocation (Waiman Long) [RHEL-263469] {CVE-2026-80775}
+- futex/pi: Reject cross-mm private futex owners (Waiman Long) [RHEL-263469] {CVE-2026-80778}
+- futex: Avoid private hash use-after-free on final put (Waiman Long) [RHEL-263469] {CVE-2026-80758}
+- futex: Fix race in futex_pivot_pending() during private hash resize (Waiman Long) [RHEL-263469] {CVE-2026-80776}
+- futex: Prevent robust futex exit race some more (Waiman Long) [RHEL-263469] {CVE-2026-74658}
+- futex: Optimize futex hash bucket access patterns (Waiman Long) [RHEL-263469]
+- compiler_types.h: add "auto" as a macro for "__auto_type" (Waiman Long) [RHEL-263469]
+- ipvs: reload ip header after head reallocation (CKI Backport Bot) [RHEL-263870] {CVE-2026-68476}
+- ipv6: fix use-after-free in ip6_finish_output2() (Antoine Tenart) [RHEL-258672] {CVE-2026-80792}
+- ipv6: exthdrs: refresh nh pointer after ipv6_hop_jumbo() (Antoine Tenart) [RHEL-259369] {CVE-2026-63924}
+- ipv6: exthdrs: refresh nh after handling HAO option (Antoine Tenart) [RHEL-259404] {CVE-2026-63922}
+- ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress() (Antoine Tenart) [RHEL-231288] {CVE-2026-63984}
+- ipv6: validate extension header length before copying to cmsg (Antoine Tenart) [RHEL-225393] {CVE-2026-63920}
+- Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_new_connection_cb() (CKI Backport Bot) [RHEL-231359] {CVE-2026-64557}
+- Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_new_connection_cb() (CKI Backport Bot) [RHEL-231359] {CVE-2026-64557}
+- Bluetooth: 6lowpan: fix cyclic locking warning on netdev unregister (CKI Backport Bot) [RHEL-231359] {CVE-2026-64557}
+- l2tp: use refcount_inc_not_zero in l2tp_session_get_by_ifname (Abhishek Rawal) [RHEL-227466] {CVE-2026-63918}
+- tunnels: do not assume transport header in iptunnel_pmtud_check_icmp() (Abhishek Rawal) [RHEL-230778] {CVE-2026-63992}
+- tunnels: load network headers after skb_cow() in iptunnel_pmtud_build_icmp[v6]() (Abhishek Rawal) [RHEL-259564] {CVE-2026-63994}
+- vxlan: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-239729] {CVE-2026-68432}
+- net: ip6_gre: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-247005] {CVE-2026-72052}
+- net: ip_gre: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-247054] {CVE-2026-63829}
+- Bluetooth: fix UAF in bt_accept_dequeue() (CKI Backport Bot) [RHEL-229761] {CVE-2026-53357}
+- Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del() (CKI Backport Bot) [RHEL-229761] {CVE-2026-53357}
+- netfilter: nft_lookup: fix catchall element handling with inverted lookups (CKI Backport Bot) [RHEL-261255] {CVE-2026-72320}
+- KVM: s390: vsie: zero stale crypto bits (CKI Backport Bot) [RHEL-258155] {CVE-2026-80921}
+- KVM: SVM: Update x2APIC MSR intercepts if AVIC is inhibited while L2 is active (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Move x2AVIC MSR interception helper to avic.c (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Add a helper to look up the max physical ID for AVIC (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Limit AVIC physical max index based on configured max_vcpu_ids (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- ipvs: clear IPv4 options after rebasing tunnel ICMP errors (CKI Backport Bot) [RHEL-254392] {CVE-2026-74669}
+- ipvs: ensure inner headers in ICMP errors are in headroom (CKI Backport Bot) [RHEL-254392] {CVE-2026-74669}
+- ipvs: fix PMTU for GUE/GRE tunnel ICMP errors (CKI Backport Bot) [RHEL-254392] {CVE-2026-74669}
+- netfilter: nf_queue: pin bridge device while NFQUEUE holds fake dst (CKI Backport Bot) [RHEL-252430] {CVE-2026-72255}
+- netfilter: x_tables: close dangling table module init race (Phil Sutter) [RHEL-243394]
+- netfilter: ebtables: close dangling table module init race (Phil Sutter) [RHEL-243394]
+- netfilter: ebtables: move to two-stage removal scheme (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: add and use xtables_unregister_table_exit (Phil Sutter) [RHEL-243394] {CVE-2026-64078}
+- netfilter: x_tables: unregister the templates first (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: add and use xt_unregister_table_pre_exit (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: allocate hook ops while under mutex (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: allow initial table replace without emitting audit log message (Phil Sutter) [RHEL-243394]
+- netfilter: flowtable: publish GC-visible tuple last (CKI Backport Bot) [RHEL-250538] {CVE-2026-74746}
+- packet: use consistent hard_header_len in TX_RING send path (Toke Høiland-Jørgensen) [RHEL-244537]
+- packet: use consistent hard_header_len in non-ring send paths (Toke Høiland-Jørgensen) [RHEL-244537] {CVE-2026-74582}
+- net: remove CAP_SYS_RAWIO zero-padding in dev_validate_header (Toke Høiland-Jørgensen) [RHEL-244537]
+- RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send (CKI Backport Bot) [RHEL-232598] {CVE-2026-45856}
+- netfilter: nf_conncount: increase the connection clean up limit to 64 (CKI Backport Bot) [RHEL-232220] {CVE-2026-45860}
+- ipvs: clear the svc scheduler ptr early on edit (CKI Backport Bot) [RHEL-225996] {CVE-2026-53270}
+- KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path (CKI Backport Bot) [RHEL-214949] {CVE-2026-63794}
+Resolves: RHEL-214949, RHEL-225393, RHEL-225996, RHEL-227466, RHEL-229761, RHEL-230778, RHEL-231288, RHEL-231359, RHEL-231698, RHEL-232220, RHEL-232598, RHEL-232645, RHEL-239729, RHEL-243394, RHEL-244537, RHEL-247005, RHEL-247054, RHEL-250538, RHEL-252430, RHEL-254392, RHEL-254525, RHEL-257457, RHEL-258155, RHEL-258672, RHEL-259063, RHEL-259369, RHEL-259404, RHEL-259564, RHEL-259773, RHEL-261255, RHEL-263469, RHEL-263870, RHEL-269475, RHEL-270657, RHEL-270888, RHEL-270934, RHEL-271653
+
 * Wed Sep 30 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.62.1.el10_2]
 - dm-integrity: don't increment hash_offset twice (CKI Backport Bot) [RHEL-257773] {CVE-2026-72099}
 - net: mana: Fix TOCTOU double-fetch of hwc_msg_id from DMA buffer (CKI Backport Bot) [RHEL-230992] {CVE-2026-64034}

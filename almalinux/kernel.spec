@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.62.1
+%define pkgrelease 211.63.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.62.1%{?buildid}%{?dist}
+%define specrelease 211.63.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1348,6 +1348,75 @@ Patch1295: 1295-net-mana-fix-toctou-double-fetch-of-hwc-msg-id-from-dma-buffer.p
 Patch1296: 1296-dm-integrity-don-t-increment-hash-offset-twice.patch
 Patch1297: 1297-gve-fix-netdev-lock-deadlock-in-gve-add-napi-by-using-netif-napi-set-irq-locked.patch
 
+# Backports for 6.12.0-211.63.1.el10_2
+Patch1298: 1298-kvm-svm-fix-page-overflow-in-sev-dbg-crypt-for-encrypt-path.patch
+Patch1299: 1299-ipvs-clear-the-svc-scheduler-ptr-early-on-edit.patch
+Patch1300: 1300-netfilter-nf-conncount-increase-the-connection-clean-up-limit-to-64.patch
+Patch1301: 1301-rdma-uverbs-validate-wqe-size-before-using-it-in-ib-uverbs-post-send.patch
+Patch1302: 1302-net-remove-cap-sys-rawio-zero-padding-in-dev-validate-header.patch
+Patch1303: 1303-packet-use-consistent-hard-header-len-in-non-ring-send-paths.patch
+Patch1304: 1304-packet-use-consistent-hard-header-len-in-tx-ring-send-path.patch
+Patch1305: 1305-netfilter-flowtable-publish-gc-visible-tuple-last.patch
+Patch1306: 1306-netfilter-x-tables-allow-initial-table-replace-without-emitting-audit-log-messag.patch
+Patch1307: 1307-netfilter-x-tables-allocate-hook-ops-while-under-mutex.patch
+Patch1308: 1308-netfilter-x-tables-add-and-use-xt-unregister-table-pre-exit.patch
+Patch1309: 1309-netfilter-x-tables-unregister-the-templates-first.patch
+Patch1310: 1310-netfilter-x-tables-add-and-use-xtables-unregister-table-exit.patch
+Patch1311: 1311-netfilter-ebtables-move-to-two-stage-removal-scheme.patch
+Patch1312: 1312-netfilter-ebtables-close-dangling-table-module-init-race.patch
+Patch1313: 1313-netfilter-x-tables-close-dangling-table-module-init-race.patch
+Patch1314: 1314-netfilter-nf-queue-pin-bridge-device-while-nfqueue-holds-fake-dst.patch
+Patch1315: 1315-ipvs-fix-pmtu-for-gue-gre-tunnel-icmp-errors.patch
+Patch1316: 1316-ipvs-ensure-inner-headers-in-icmp-errors-are-in-headroom.patch
+Patch1317: 1317-ipvs-clear-ipv4-options-after-rebasing-tunnel-icmp-errors.patch
+Patch1318: 1318-kvm-svm-limit-avic-physical-max-index-based-on-configured-max-vcpu-ids.patch
+Patch1319: 1319-kvm-svm-add-a-helper-to-look-up-the-max-physical-id-for-avic.patch
+Patch1320: 1320-kvm-svm-move-x2avic-msr-interception-helper-to-avic-c.patch
+Patch1321: 1321-kvm-svm-set-clear-cr8-write-interception-when-avic-is-de-activated.patch
+Patch1322: 1322-kvm-svm-update-x2apic-msr-intercepts-if-avic-is-inhibited-while-l2-is-active.patch
+Patch1323: 1323-kvm-s390-vsie-zero-stale-crypto-bits.patch
+Patch1324: 1324-netfilter-nft-lookup-fix-catchall-element-handling-with-inverted-lookups.patch
+Patch1325: 1325-bluetooth-fix-uaf-in-l2cap-sock-cleanup-listen-vs-l2cap-conn-del.patch
+Patch1326: 1326-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
+Patch1327: 1327-net-ip-gre-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+Patch1328: 1328-net-ip6-gre-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+Patch1329: 1329-vxlan-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+Patch1330: 1330-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icmp-v6.patch
+Patch1331: 1331-tunnels-do-not-assume-transport-header-in-iptunnel-pmtud-check-icmp.patch
+Patch1332: 1332-l2tp-use-refcount-inc-not-zero-in-l2tp-session-get-by-ifname.patch
+Patch1333: 1333-bluetooth-6lowpan-fix-cyclic-locking-warning-on-netdev-unregister.patch
+Patch1334: 1334-bluetooth-l2cap-fix-null-ptr-deref-in-l2cap-sock-new-connection-cb.patch
+Patch1335: 1335-bluetooth-l2cap-fix-use-after-free-in-l2cap-sock-new-connection-cb.patch
+Patch1336: 1336-ipv6-validate-extension-header-length-before-copying-to-cmsg.patch
+Patch1337: 1337-ipv6-rpl-fix-hdrlen-overflow-in-ipv6-rpl-srh-decompress.patch
+Patch1338: 1338-ipv6-exthdrs-refresh-nh-after-handling-hao-option.patch
+Patch1339: 1339-ipv6-exthdrs-refresh-nh-pointer-after-ipv6-hop-jumbo.patch
+Patch1340: 1340-ipv6-fix-use-after-free-in-ip6-finish-output2.patch
+Patch1341: 1341-ipvs-reload-ip-header-after-head-reallocation.patch
+Patch1342: 1342-compiler-types-h-add-auto-as-a-macro-for-auto-type.patch
+Patch1343: 1343-futex-optimize-futex-hash-bucket-access-patterns.patch
+Patch1344: 1344-futex-prevent-robust-futex-exit-race-some-more.patch
+Patch1345: 1345-futex-fix-race-in-futex-pivot-pending-during-private-hash-resize.patch
+Patch1346: 1346-futex-avoid-private-hash-use-after-free-on-final-put.patch
+Patch1347: 1347-futex-pi-reject-cross-mm-private-futex-owners.patch
+Patch1348: 1348-futex-fix-race-on-the-initial-mm-futex-phash-ref-allocation.patch
+Patch1349: 1349-futex-fix-might-sleep-warning-in-futex-pivot-pending.patch
+Patch1350: 1350-futex-prevent-rcuwait-use-after-free-during-requeue-pi.patch
+Patch1351: 1351-crypto-fips-add-rh-fips-exception-kernel-boot-parameter-and-fips-allows-helper.patch
+Patch1352: 1352-wifi-mac80211-allow-keys-to-driver-with-fips-exception.patch
+Patch1353: 1353-wifi-iwlwifi-restore-fips-disabled-features-with-fips-exception.patch
+Patch1354: 1354-wifi-iwlwifi-reduce-encryption-error-message-to-debug-level-in-fips-mode.patch
+Patch1355: 1355-crypto-af-alg-cap-aead-ad-length-to-0x80000000.patch
+Patch1356: 1356-netfilter-nf-conntrack-use-get-unaligned-be32-in-tcp-sack.patch
+Patch1357: 1357-ipv6-ioam-refresh-hdr-pointer-before-ioam6-event.patch
+Patch1358: 1358-s390-cpum-cf-handle-cpu-hotplug-via-prepare-dead-callbacks.patch
+Patch1359: 1359-nvme-add-missing-srcu-grace-period-in-error-path.patch
+Patch1360: 1360-nvme-ioctl-check-submit-io-with-nvme-cmd-allowed.patch
+Patch1361: 1361-bluetooth-hci-uart-fix-uafs-and-race-conditions-in-close-and-init-paths.patch
+Patch1362: 1362-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
+Patch1363: 1363-tcp-fix-stale-per-cpu-tcp-tw-isn-leak-enabling-isn-prediction.patch
+Patch1364: 1364-netfilter-nfnetlink-log-wait-for-rcu-grace-period-before-freeing-pernet-state.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2439,6 +2508,75 @@ ApplyPatch 1294-gve-fix-rx-queue-stall-on-alloc-failure.patch
 ApplyPatch 1295-net-mana-fix-toctou-double-fetch-of-hwc-msg-id-from-dma-buffer.patch
 ApplyPatch 1296-dm-integrity-don-t-increment-hash-offset-twice.patch
 ApplyPatch 1297-gve-fix-netdev-lock-deadlock-in-gve-add-napi-by-using-netif-napi-set-irq-locked.patch
+
+# Applying backports for 6.12.0-211.63.1.el10_2
+ApplyPatch 1298-kvm-svm-fix-page-overflow-in-sev-dbg-crypt-for-encrypt-path.patch
+ApplyPatch 1299-ipvs-clear-the-svc-scheduler-ptr-early-on-edit.patch
+ApplyPatch 1300-netfilter-nf-conncount-increase-the-connection-clean-up-limit-to-64.patch
+ApplyPatch 1301-rdma-uverbs-validate-wqe-size-before-using-it-in-ib-uverbs-post-send.patch
+ApplyPatch 1302-net-remove-cap-sys-rawio-zero-padding-in-dev-validate-header.patch
+ApplyPatch 1303-packet-use-consistent-hard-header-len-in-non-ring-send-paths.patch
+ApplyPatch 1304-packet-use-consistent-hard-header-len-in-tx-ring-send-path.patch
+ApplyPatch 1305-netfilter-flowtable-publish-gc-visible-tuple-last.patch
+ApplyPatch 1306-netfilter-x-tables-allow-initial-table-replace-without-emitting-audit-log-messag.patch
+ApplyPatch 1307-netfilter-x-tables-allocate-hook-ops-while-under-mutex.patch
+ApplyPatch 1308-netfilter-x-tables-add-and-use-xt-unregister-table-pre-exit.patch
+ApplyPatch 1309-netfilter-x-tables-unregister-the-templates-first.patch
+ApplyPatch 1310-netfilter-x-tables-add-and-use-xtables-unregister-table-exit.patch
+ApplyPatch 1311-netfilter-ebtables-move-to-two-stage-removal-scheme.patch
+ApplyPatch 1312-netfilter-ebtables-close-dangling-table-module-init-race.patch
+ApplyPatch 1313-netfilter-x-tables-close-dangling-table-module-init-race.patch
+ApplyPatch 1314-netfilter-nf-queue-pin-bridge-device-while-nfqueue-holds-fake-dst.patch
+ApplyPatch 1315-ipvs-fix-pmtu-for-gue-gre-tunnel-icmp-errors.patch
+ApplyPatch 1316-ipvs-ensure-inner-headers-in-icmp-errors-are-in-headroom.patch
+ApplyPatch 1317-ipvs-clear-ipv4-options-after-rebasing-tunnel-icmp-errors.patch
+ApplyPatch 1318-kvm-svm-limit-avic-physical-max-index-based-on-configured-max-vcpu-ids.patch
+ApplyPatch 1319-kvm-svm-add-a-helper-to-look-up-the-max-physical-id-for-avic.patch
+ApplyPatch 1320-kvm-svm-move-x2avic-msr-interception-helper-to-avic-c.patch
+ApplyPatch 1321-kvm-svm-set-clear-cr8-write-interception-when-avic-is-de-activated.patch
+ApplyPatch 1322-kvm-svm-update-x2apic-msr-intercepts-if-avic-is-inhibited-while-l2-is-active.patch
+ApplyPatch 1323-kvm-s390-vsie-zero-stale-crypto-bits.patch
+ApplyPatch 1324-netfilter-nft-lookup-fix-catchall-element-handling-with-inverted-lookups.patch
+ApplyPatch 1325-bluetooth-fix-uaf-in-l2cap-sock-cleanup-listen-vs-l2cap-conn-del.patch
+ApplyPatch 1326-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
+ApplyPatch 1327-net-ip-gre-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+ApplyPatch 1328-net-ip6-gre-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+ApplyPatch 1329-vxlan-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+ApplyPatch 1330-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icmp-v6.patch
+ApplyPatch 1331-tunnels-do-not-assume-transport-header-in-iptunnel-pmtud-check-icmp.patch
+ApplyPatch 1332-l2tp-use-refcount-inc-not-zero-in-l2tp-session-get-by-ifname.patch
+ApplyPatch 1333-bluetooth-6lowpan-fix-cyclic-locking-warning-on-netdev-unregister.patch
+ApplyPatch 1334-bluetooth-l2cap-fix-null-ptr-deref-in-l2cap-sock-new-connection-cb.patch
+ApplyPatch 1335-bluetooth-l2cap-fix-use-after-free-in-l2cap-sock-new-connection-cb.patch
+ApplyPatch 1336-ipv6-validate-extension-header-length-before-copying-to-cmsg.patch
+ApplyPatch 1337-ipv6-rpl-fix-hdrlen-overflow-in-ipv6-rpl-srh-decompress.patch
+ApplyPatch 1338-ipv6-exthdrs-refresh-nh-after-handling-hao-option.patch
+ApplyPatch 1339-ipv6-exthdrs-refresh-nh-pointer-after-ipv6-hop-jumbo.patch
+ApplyPatch 1340-ipv6-fix-use-after-free-in-ip6-finish-output2.patch
+ApplyPatch 1341-ipvs-reload-ip-header-after-head-reallocation.patch
+ApplyPatch 1342-compiler-types-h-add-auto-as-a-macro-for-auto-type.patch
+ApplyPatch 1343-futex-optimize-futex-hash-bucket-access-patterns.patch
+ApplyPatch 1344-futex-prevent-robust-futex-exit-race-some-more.patch
+ApplyPatch 1345-futex-fix-race-in-futex-pivot-pending-during-private-hash-resize.patch
+ApplyPatch 1346-futex-avoid-private-hash-use-after-free-on-final-put.patch
+ApplyPatch 1347-futex-pi-reject-cross-mm-private-futex-owners.patch
+ApplyPatch 1348-futex-fix-race-on-the-initial-mm-futex-phash-ref-allocation.patch
+ApplyPatch 1349-futex-fix-might-sleep-warning-in-futex-pivot-pending.patch
+ApplyPatch 1350-futex-prevent-rcuwait-use-after-free-during-requeue-pi.patch
+ApplyPatch 1351-crypto-fips-add-rh-fips-exception-kernel-boot-parameter-and-fips-allows-helper.patch
+ApplyPatch 1352-wifi-mac80211-allow-keys-to-driver-with-fips-exception.patch
+ApplyPatch 1353-wifi-iwlwifi-restore-fips-disabled-features-with-fips-exception.patch
+ApplyPatch 1354-wifi-iwlwifi-reduce-encryption-error-message-to-debug-level-in-fips-mode.patch
+ApplyPatch 1355-crypto-af-alg-cap-aead-ad-length-to-0x80000000.patch
+ApplyPatch 1356-netfilter-nf-conntrack-use-get-unaligned-be32-in-tcp-sack.patch
+ApplyPatch 1357-ipv6-ioam-refresh-hdr-pointer-before-ioam6-event.patch
+ApplyPatch 1358-s390-cpum-cf-handle-cpu-hotplug-via-prepare-dead-callbacks.patch
+ApplyPatch 1359-nvme-add-missing-srcu-grace-period-in-error-path.patch
+ApplyPatch 1360-nvme-ioctl-check-submit-io-with-nvme-cmd-allowed.patch
+ApplyPatch 1361-bluetooth-hci-uart-fix-uafs-and-race-conditions-in-close-and-init-paths.patch
+ApplyPatch 1362-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
+ApplyPatch 1363-tcp-fix-stale-per-cpu-tcp-tw-isn-leak-enabling-isn-prediction.patch
+ApplyPatch 1364-netfilter-nfnetlink-log-wait-for-rcu-grace-period-before-freeing-pernet-state.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5040,14 +5178,14 @@ fi\
 #
 #
 %changelog
-* Fri Oct 09 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.62.1
+* Thu Oct 08 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.63.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Oct 09 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.62.1
+* Thu Oct 08 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.63.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Oct 09 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.62.1
+* Thu Oct 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.63.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -5059,6 +5197,75 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Mon Oct 05 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.63.1.el10_2]
+- netfilter: nfnetlink_log: wait for rcu grace period before freeing pernet state (CKI Backport Bot) [RHEL-271653] {CVE-2026-93288}
+- tcp: fix stale per-CPU tcp_tw_isn leak enabling ISN prediction (Davide Caratti) [RHEL-231698] {CVE-2026-64024}
+- Bluetooth: hci_uart: clear HCI_UART_SENDING when write_work is canceled (CKI Backport Bot) [RHEL-232645] {CVE-2026-46275}
+- Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths (CKI Backport Bot) [RHEL-232645] {CVE-2026-46275}
+- nvme/ioctl: check SUBMIT_IO with nvme_cmd_allowed() (CKI Backport Bot) [RHEL-269475] {CVE-2026-90227}
+- nvme: add missing SRCU grace period in error path (CKI Backport Bot) [RHEL-270934] {CVE-2026-89972}
+- s390/cpum_cf: Handle CPU hotplug via prepare/dead callbacks (Jan Polensky) [RHEL-270888]
+- ipv6: ioam: refresh hdr pointer before ioam6_event() (Prasenjit Mukherjee) [RHEL-259773] {CVE-2026-64132}
+- netfilter: nf_conntrack: use get_unaligned_be32() in tcp_sack() (CKI Backport Bot) [RHEL-270657] {CVE-2026-97417}
+- crypto: af_alg - Cap AEAD AD length to 0x80000000 (Pablo Alessandro Santos Hugen) [RHEL-259063] {CVE-2026-52972}
+- wifi: iwlwifi: reduce encryption error message to debug level in FIPS mode (Filip Balluch) [RHEL-257457]
+- wifi: iwlwifi: restore FIPS-disabled features with fips exception (Filip Balluch) [RHEL-257457]
+- wifi: mac80211: allow keys to driver with fips exception (Filip Balluch) [RHEL-257457]
+- crypto: fips: add rh_fips_exception kernel boot parameter and fips_allows() helper (Filip Balluch) [RHEL-257457]
+- futex: Prevent rcuwait use-after-free during requeue PI (Waiman Long) [RHEL-263469] {CVE-2026-90003}
+- futex: Fix might_sleep() warning in futex_pivot_pending() (Waiman Long) [RHEL-263469]
+- futex: Fix race on the initial mm->futex.phash.ref allocation (Waiman Long) [RHEL-263469] {CVE-2026-80775}
+- futex/pi: Reject cross-mm private futex owners (Waiman Long) [RHEL-263469] {CVE-2026-80778}
+- futex: Avoid private hash use-after-free on final put (Waiman Long) [RHEL-263469] {CVE-2026-80758}
+- futex: Fix race in futex_pivot_pending() during private hash resize (Waiman Long) [RHEL-263469] {CVE-2026-80776}
+- futex: Prevent robust futex exit race some more (Waiman Long) [RHEL-263469] {CVE-2026-74658}
+- futex: Optimize futex hash bucket access patterns (Waiman Long) [RHEL-263469]
+- compiler_types.h: add "auto" as a macro for "__auto_type" (Waiman Long) [RHEL-263469]
+- ipvs: reload ip header after head reallocation (CKI Backport Bot) [RHEL-263870] {CVE-2026-68476}
+- ipv6: fix use-after-free in ip6_finish_output2() (Antoine Tenart) [RHEL-258672] {CVE-2026-80792}
+- ipv6: exthdrs: refresh nh pointer after ipv6_hop_jumbo() (Antoine Tenart) [RHEL-259369] {CVE-2026-63924}
+- ipv6: exthdrs: refresh nh after handling HAO option (Antoine Tenart) [RHEL-259404] {CVE-2026-63922}
+- ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress() (Antoine Tenart) [RHEL-231288] {CVE-2026-63984}
+- ipv6: validate extension header length before copying to cmsg (Antoine Tenart) [RHEL-225393] {CVE-2026-63920}
+- Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_new_connection_cb() (CKI Backport Bot) [RHEL-231359] {CVE-2026-64557}
+- Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_new_connection_cb() (CKI Backport Bot) [RHEL-231359] {CVE-2026-64557}
+- Bluetooth: 6lowpan: fix cyclic locking warning on netdev unregister (CKI Backport Bot) [RHEL-231359] {CVE-2026-64557}
+- l2tp: use refcount_inc_not_zero in l2tp_session_get_by_ifname (Abhishek Rawal) [RHEL-227466] {CVE-2026-63918}
+- tunnels: do not assume transport header in iptunnel_pmtud_check_icmp() (Abhishek Rawal) [RHEL-230778] {CVE-2026-63992}
+- tunnels: load network headers after skb_cow() in iptunnel_pmtud_build_icmp[v6]() (Abhishek Rawal) [RHEL-259564] {CVE-2026-63994}
+- vxlan: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-239729] {CVE-2026-68432}
+- net: ip6_gre: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-247005] {CVE-2026-72052}
+- net: ip_gre: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-247054] {CVE-2026-63829}
+- Bluetooth: fix UAF in bt_accept_dequeue() (CKI Backport Bot) [RHEL-229761] {CVE-2026-53357}
+- Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del() (CKI Backport Bot) [RHEL-229761] {CVE-2026-53357}
+- netfilter: nft_lookup: fix catchall element handling with inverted lookups (CKI Backport Bot) [RHEL-261255] {CVE-2026-72320}
+- KVM: s390: vsie: zero stale crypto bits (CKI Backport Bot) [RHEL-258155] {CVE-2026-80921}
+- KVM: SVM: Update x2APIC MSR intercepts if AVIC is inhibited while L2 is active (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Move x2AVIC MSR interception helper to avic.c (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Add a helper to look up the max physical ID for AVIC (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- KVM: SVM: Limit AVIC physical max index based on configured max_vcpu_ids (CKI Backport Bot) [RHEL-254525] {CVE-2026-74516}
+- ipvs: clear IPv4 options after rebasing tunnel ICMP errors (CKI Backport Bot) [RHEL-254392] {CVE-2026-74669}
+- ipvs: ensure inner headers in ICMP errors are in headroom (CKI Backport Bot) [RHEL-254392] {CVE-2026-74669}
+- ipvs: fix PMTU for GUE/GRE tunnel ICMP errors (CKI Backport Bot) [RHEL-254392] {CVE-2026-74669}
+- netfilter: nf_queue: pin bridge device while NFQUEUE holds fake dst (CKI Backport Bot) [RHEL-252430] {CVE-2026-72255}
+- netfilter: x_tables: close dangling table module init race (Phil Sutter) [RHEL-243394]
+- netfilter: ebtables: close dangling table module init race (Phil Sutter) [RHEL-243394]
+- netfilter: ebtables: move to two-stage removal scheme (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: add and use xtables_unregister_table_exit (Phil Sutter) [RHEL-243394] {CVE-2026-64078}
+- netfilter: x_tables: unregister the templates first (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: add and use xt_unregister_table_pre_exit (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: allocate hook ops while under mutex (Phil Sutter) [RHEL-243394]
+- netfilter: x_tables: allow initial table replace without emitting audit log message (Phil Sutter) [RHEL-243394]
+- netfilter: flowtable: publish GC-visible tuple last (CKI Backport Bot) [RHEL-250538] {CVE-2026-74746}
+- packet: use consistent hard_header_len in TX_RING send path (Toke Høiland-Jørgensen) [RHEL-244537]
+- packet: use consistent hard_header_len in non-ring send paths (Toke Høiland-Jørgensen) [RHEL-244537] {CVE-2026-74582}
+- net: remove CAP_SYS_RAWIO zero-padding in dev_validate_header (Toke Høiland-Jørgensen) [RHEL-244537]
+- RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send (CKI Backport Bot) [RHEL-232598] {CVE-2026-45856}
+- netfilter: nf_conncount: increase the connection clean up limit to 64 (CKI Backport Bot) [RHEL-232220] {CVE-2026-45860}
+- ipvs: clear the svc scheduler ptr early on edit (CKI Backport Bot) [RHEL-225996] {CVE-2026-53270}
+- KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path (CKI Backport Bot) [RHEL-214949] {CVE-2026-63794}
 
 * Wed Sep 30 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.62.1.el10_2]
 - dm-integrity: don't increment hash_offset twice (CKI Backport Bot) [RHEL-257773] {CVE-2026-72099}
