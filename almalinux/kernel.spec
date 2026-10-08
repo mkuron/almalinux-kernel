@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.63.1
+%define pkgrelease 211.64.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.63.1%{?buildid}%{?dist}
+%define specrelease 211.64.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1417,6 +1417,48 @@ Patch1362: 1362-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-can
 Patch1363: 1363-tcp-fix-stale-per-cpu-tcp-tw-isn-leak-enabling-isn-prediction.patch
 Patch1364: 1364-netfilter-nfnetlink-log-wait-for-rcu-grace-period-before-freeing-pernet-state.patch
 
+# Backports for 6.12.0-211.64.1.el10_2
+Patch1365: 1365-igc-set-tx-buffer-type-for-smd-frames.patch
+Patch1366: 1366-platform-mellanox-mlxbf-bootctl-use-sysfs-emit-instead-of-sprintf.patch
+Patch1367: 1367-mlxbf-bootctl-support-sysfs-entries-for-rtc-battery-status.patch
+Patch1368: 1368-mlxbf-bootctl-use-sysfs-emit-at-in-secure-boot-fuse-state-show.patch
+Patch1369: 1369-vsock-vmci-fix-uaf-when-peer-resets-connection-during-handshake.patch
+Patch1370: 1370-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+Patch1371: 1371-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+Patch1372: 1372-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+Patch1373: 1373-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+Patch1374: 1374-kvm-sev-ignore-mmio-requests-of-length-0.patch
+Patch1375: 1375-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+Patch1376: 1376-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+Patch1377: 1377-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-requests.patch
+Patch1378: 1378-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+Patch1379: 1379-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+Patch1380: 1380-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+Patch1381: 1381-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
+Patch1382: 1382-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+Patch1383: 1383-vsock-virtio-fix-msg-zerocopy-pinned-pages-accounting.patch
+Patch1384: 1384-vsock-virtio-fix-zerocopy-completion-for-multi-skb-sends.patch
+Patch1385: 1385-vsock-virtio-bind-uarg-before-filling-zerocopy-skb.patch
+Patch1386: 1386-ipvlan-make-the-addrs-lock-be-per-port.patch
+Patch1387: 1387-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
+Patch1388: 1388-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
+Patch1389: 1389-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
+Patch1390: 1390-sunrpc-pin-upper-rpc-clnt-across-the-tls-connect-worker.patch
+Patch1391: 1391-nfsd-fix-secinfo-no-name-decode-error-cleanup.patch
+Patch1392: 1392-nfsd-fix-cpntf-publish-race-in-nfs4-init-cp-state.patch
+Patch1393: 1393-nfsd-check-client-ownership-when-cancelling-a-copy-notify-stateid.patch
+Patch1394: 1394-nfsd-revoke-copy-notify-stateids-before-dropping-their-reference.patch
+Patch1395: 1395-nfsd-initialize-copy-notify-stateid-before-publishing-it.patch
+Patch1396: 1396-nfsd-fix-uaf-in-async-copy-cancel-and-shutdown.patch
+Patch1397: 1397-nfsd-fix-stale-s2s-cp-stateids-idr-entry-for-async-copy.patch
+Patch1398: 1398-svcrdma-reject-inline-replies-that-overflow-the-pull-up-buffer.patch
+Patch1399: 1399-nfsd-defer-vfree-of-compound-ops-to-fix-rpc-status-uaf.patch
+Patch1400: 1400-udp-fix-potential-use-after-free-in-tunnel-segmentation.patch
+Patch1401: 1401-ice-suppress-dpll-errors-during-reset-recovery.patch
+Patch1402: 1402-ice-monitor-tspll-lock-from-ptp-periodic-worker.patch
+Patch1403: 1403-ice-add-tspll-dpll-device-and-time-ref-pin-for-e825.patch
+Patch1404: 1404-ice-use-per-interface-clock-id-for-e825-generic-dplls.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2577,6 +2619,48 @@ ApplyPatch 1361-bluetooth-hci-uart-fix-uafs-and-race-conditions-in-close-and-ini
 ApplyPatch 1362-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
 ApplyPatch 1363-tcp-fix-stale-per-cpu-tcp-tw-isn-leak-enabling-isn-prediction.patch
 ApplyPatch 1364-netfilter-nfnetlink-log-wait-for-rcu-grace-period-before-freeing-pernet-state.patch
+
+# Applying backports for 6.12.0-211.64.1.el10_2
+ApplyPatch 1365-igc-set-tx-buffer-type-for-smd-frames.patch
+ApplyPatch 1366-platform-mellanox-mlxbf-bootctl-use-sysfs-emit-instead-of-sprintf.patch
+ApplyPatch 1367-mlxbf-bootctl-support-sysfs-entries-for-rtc-battery-status.patch
+ApplyPatch 1368-mlxbf-bootctl-use-sysfs-emit-at-in-secure-boot-fuse-state-show.patch
+ApplyPatch 1369-vsock-vmci-fix-uaf-when-peer-resets-connection-during-handshake.patch
+ApplyPatch 1370-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+ApplyPatch 1371-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+ApplyPatch 1372-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+ApplyPatch 1373-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+ApplyPatch 1374-kvm-sev-ignore-mmio-requests-of-length-0.patch
+ApplyPatch 1375-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+ApplyPatch 1376-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+ApplyPatch 1377-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-requests.patch
+ApplyPatch 1378-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+ApplyPatch 1379-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+ApplyPatch 1380-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+ApplyPatch 1381-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
+ApplyPatch 1382-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+ApplyPatch 1383-vsock-virtio-fix-msg-zerocopy-pinned-pages-accounting.patch
+ApplyPatch 1384-vsock-virtio-fix-zerocopy-completion-for-multi-skb-sends.patch
+ApplyPatch 1385-vsock-virtio-bind-uarg-before-filling-zerocopy-skb.patch
+ApplyPatch 1386-ipvlan-make-the-addrs-lock-be-per-port.patch
+ApplyPatch 1387-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
+ApplyPatch 1388-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
+ApplyPatch 1389-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
+ApplyPatch 1390-sunrpc-pin-upper-rpc-clnt-across-the-tls-connect-worker.patch
+ApplyPatch 1391-nfsd-fix-secinfo-no-name-decode-error-cleanup.patch
+ApplyPatch 1392-nfsd-fix-cpntf-publish-race-in-nfs4-init-cp-state.patch
+ApplyPatch 1393-nfsd-check-client-ownership-when-cancelling-a-copy-notify-stateid.patch
+ApplyPatch 1394-nfsd-revoke-copy-notify-stateids-before-dropping-their-reference.patch
+ApplyPatch 1395-nfsd-initialize-copy-notify-stateid-before-publishing-it.patch
+ApplyPatch 1396-nfsd-fix-uaf-in-async-copy-cancel-and-shutdown.patch
+ApplyPatch 1397-nfsd-fix-stale-s2s-cp-stateids-idr-entry-for-async-copy.patch
+ApplyPatch 1398-svcrdma-reject-inline-replies-that-overflow-the-pull-up-buffer.patch
+ApplyPatch 1399-nfsd-defer-vfree-of-compound-ops-to-fix-rpc-status-uaf.patch
+ApplyPatch 1400-udp-fix-potential-use-after-free-in-tunnel-segmentation.patch
+ApplyPatch 1401-ice-suppress-dpll-errors-during-reset-recovery.patch
+ApplyPatch 1402-ice-monitor-tspll-lock-from-ptp-periodic-worker.patch
+ApplyPatch 1403-ice-add-tspll-dpll-device-and-time-ref-pin-for-e825.patch
+ApplyPatch 1404-ice-use-per-interface-clock-id-for-e825-generic-dplls.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5178,14 +5262,14 @@ fi\
 #
 #
 %changelog
-* Thu Oct 08 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.63.1
+* Thu Oct 08 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.64.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Thu Oct 08 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.63.1
+* Thu Oct 08 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.64.1
 - Enable Btrfs support for all kernel variants
 
-* Thu Oct 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.63.1
+* Thu Oct 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.64.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -5197,6 +5281,48 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Oct 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.64.1.el10_2]
+- ice: use per-interface clock_id for E825 generic DPLLs (Jakub Ramaseuski) [RHEL-273805]
+- ice: add TSPLL DPLL device and TIME_REF pin for E825 (Jakub Ramaseuski) [RHEL-273805]
+- ice: monitor TSPLL lock from PTP periodic worker (Jakub Ramaseuski) [RHEL-273805]
+- ice: suppress DPLL errors during reset recovery (Jakub Ramaseuski) [RHEL-273805]
+- udp: fix potential use-after-free in tunnel segmentation (Antoine Tenart) [RHEL-268127] {CVE-2026-74705}
+- nfsd: defer vfree of compound ops to fix rpc_status UAF (Roberto Bergantinos Corpas) [RHEL-264930] {CVE-2026-89690}
+- svcrdma: Reject inline replies that overflow the pull-up buffer (Roberto Bergantinos Corpas) [RHEL-187745] {CVE-2026-89530}
+- nfsd: fix stale s2s_cp_stateids IDR entry for async COPY (Roberto Bergantinos Corpas) [RHEL-264798] {CVE-2026-89676}
+- nfsd: fix UAF in async copy cancel and shutdown (Roberto Bergantinos Corpas) [RHEL-264749] {CVE-2026-89675}
+- nfsd: initialize copy-notify stateid before publishing it (Roberto Bergantinos Corpas) [RHEL-264168] {CVE-2026-89669}
+- nfsd: revoke copy-notify stateids before dropping their reference (Roberto Bergantinos Corpas) [RHEL-264134] {CVE-2026-89663}
+- nfsd: check client ownership when cancelling a copy-notify stateid (Roberto Bergantinos Corpas) [RHEL-264134]
+- nfsd: fix cpntf publish race in nfs4_init_cp_state (Roberto Bergantinos Corpas) [RHEL-264134]
+- NFSD: Fix SECINFO_NO_NAME decode error cleanup (Roberto Bergantinos Corpas) [RHEL-259243] {CVE-2026-53398}
+- SUNRPC: pin upper rpc_clnt across the TLS connect_worker (Roberto Bergantinos Corpas) [RHEL-261492] {CVE-2026-72317}
+- vlan: fix skb_under_panic and races when toggling HW VLAN offload (Vb Vasu) [RHEL-254268]
+- macvlan: inherit needed_headroom and needed_tailroom from lowerdev (Vb Vasu) [RHEL-254268]
+- ipvlan: inherit needed_headroom and needed_tailroom from phy_dev (Vb Vasu) [RHEL-254268] {CVE-2026-74744}
+- ipvlan: Make the addrs_lock be per port (Vb Vasu) [RHEL-246118] {CVE-2026-23103}
+- vsock/virtio: bind uarg before filling zerocopy skb (Jon Maloy) [RHEL-229037] {CVE-2026-63970}
+- vsock/virtio: fix zerocopy completion for multi-skb sends (Jon Maloy) [RHEL-232860] {CVE-2026-53365}
+- vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting (Jon Maloy) [RHEL-232860] {CVE-2026-53365}
+- KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Check PSC request indices against the actual size of the buffer (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Don't explicitly pass PSC buffer to snp_begin_psc() (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: WARN if KVM attempts to setup scratch area with min_len==0 (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Compute the correct max length of the in-GHCB scratch area (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Use the size of the PSC header as the minimum size for PSC requests (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Ignore Port I/O requests of length '0' (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Reject MMIO requests larger than 8 bytes with GHCB v2+ (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Ignore MMIO requests of length '0' (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: x86: Dedup kvm_sev_es_mmio_{read,write}() (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Require in-GHCB scratch area if GHCB v2+ is in use (Rahul Kumar) [RHEL-192289] {CVE-2026-53360}
+- vsock/vmci: fix UAF when peer resets connection during handshake (CKI Backport Bot) [RHEL-232273] {CVE-2026-64115}
+- mlxbf-bootctl: use sysfs_emit_at() in secure_boot_fuse_state_show() (CKI Backport Bot) [RHEL-212709]
+- mlxbf-bootctl: Support sysfs entries for RTC battery status (CKI Backport Bot) [RHEL-212709]
+- platform/mellanox: mlxbf-bootctl: use sysfs_emit() instead of sprintf() (CKI Backport Bot) [RHEL-212709]
+- igc: set tx buffer type for SMD frames (CKI Backport Bot) [RHEL-227035] {CVE-2026-64035}
 
 * Mon Oct 05 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.63.1.el10_2]
 - netfilter: nfnetlink_log: wait for rcu grace period before freeing pernet state (CKI Backport Bot) [RHEL-271653] {CVE-2026-93288}
