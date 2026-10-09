@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.61.1
+%define pkgrelease 211.62.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.61.1%{?buildid}%{?dist}
+%define specrelease 211.62.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1263,6 +1263,91 @@ Patch1212: 1212-perf-core-fix-missing-read-event-generation-on-task-exit.patch
 Patch1213: 1213-perf-core-detach-event-groups-during-remove-on-exec.patch
 Patch1214: 1214-perf-reject-exited-events-as-group-leaders.patch
 
+# Backports for 6.12.0-211.62.1.el10_2
+Patch1215: 1215-gve-map-irqs-to-napi-instances.patch
+Patch1216: 1216-gve-map-napi-instances-to-queues.patch
+Patch1217: 1217-gve-move-dqo-rx-buffer-management-related-code-to-a-new-file.patch
+Patch1218: 1218-gve-adopt-page-pool-for-dq-rda-mode.patch
+Patch1219: 1219-gve-add-support-for-basic-queue-stats.patch
+Patch1220: 1220-gve-change-to-use-page-pool-put-full-page-when-recycling-pages.patch
+Patch1221: 1221-gve-flow-steering-trigger-reset-only-for-timeout-error.patch
+Patch1222: 1222-gve-remove-unused-gve-adminq-set-mtu.patch
+Patch1223: 1223-gve-convert-timeouts-to-secs-to-jiffies.patch
+Patch1224: 1224-gve-clean-xdp-queues-in-gve-tx-stop-ring-gqi.patch
+Patch1225: 1225-gve-guard-xdp-xmit-ndo-on-existence-of-xdp-queues.patch
+Patch1226: 1226-gve-guard-xsk-operations-on-the-existence-of-queues.patch
+Patch1227: 1227-gve-process-xsk-tx-descriptors-as-part-of-rx-napi.patch
+Patch1228: 1228-gve-fix-xdp-allocation-path-in-edge-cases.patch
+Patch1229: 1229-gve-trigger-rx-napi-instead-of-tx-napi-in-gve-xsk-wakeup.patch
+Patch1230: 1230-gve-add-rss-cache-for-non-rss-device-option-scenario.patch
+Patch1231: 1231-gve-unlink-old-napi-when-stopping-a-queue-using-queue-api.patch
+Patch1232: 1232-gve-convert-to-use-netmem-for-dqo-rda-mode.patch
+Patch1233: 1233-gve-unlink-old-napi-only-if-page-pool-exists.patch
+Patch1234: 1234-gve-remove-xdp-xsk-done-and-xdp-xsk-wakeup-statistics.patch
+Patch1235: 1235-gve-introduce-config-based-allocation-for-xdp.patch
+Patch1236: 1236-gve-update-gq-rx-to-use-buf-size.patch
+Patch1237: 1237-gve-merge-packet-buffer-size-fields.patch
+Patch1238: 1238-gve-update-xdp-allocation-path-support-rx-buffer-posting.patch
+Patch1239: 1239-gve-add-xdp-drop-and-pass-support-for-dq.patch
+Patch1240: 1240-gve-handle-overflow-when-reporting-tx-consumed-descriptors.patch
+Patch1241: 1241-gve-fix-rx-buffers-posted-stat-to-report-per-queue-fill-cnt.patch
+Patch1242: 1242-gve-add-missing-null-check-for-gve-alloc-pending-packet-in-tx-dqo.patch
+Patch1243: 1243-gve-add-device-option-for-nic-clock-synchronization.patch
+Patch1244: 1244-gve-add-adminq-command-to-report-nic-timestamp.patch
+Patch1245: 1245-gve-add-initial-ptp-device-support.patch
+Patch1246: 1246-gve-add-adminq-lock-for-queues-creation-and-destruction.patch
+Patch1247: 1247-gve-add-support-to-query-the-nic-clock.patch
+Patch1248: 1248-gve-add-rx-hardware-timestamp-expansion.patch
+Patch1249: 1249-gve-implement-ndo-hwtstamp-get-set-for-rx-timestamping.patch
+Patch1250: 1250-gve-advertise-support-for-rx-hardware-timestamping.patch
+Patch1251: 1251-gve-fix-various-typos-and-improve-code-comments.patch
+Patch1252: 1252-gve-return-error-for-unknown-admin-queue-command.patch
+Patch1253: 1253-gve-rename-gve-xdp-xmit-to-gve-xdp-xmit-gqi.patch
+Patch1254: 1254-gve-refactor-dqo-tx-methods-to-be-more-generic-for-xdp.patch
+Patch1255: 1255-gve-add-xdp-tx-and-xdp-redirect-support-for-dq-rda.patch
+Patch1256: 1256-gve-global-fix-for-a-while-typo.patch
+Patch1257: 1257-gve-make-irq-handlers-and-page-allocation-numa-aware.patch
+Patch1258: 1258-gve-fix-stuck-tx-queue-for-dq-queue-format.patch
+Patch1259: 1259-gve-deduplicate-xdp-info-and-xsk-pool-registration-logic.patch
+Patch1260: 1260-gve-merge-xdp-and-xsk-registration.patch
+Patch1261: 1261-gve-keep-registry-of-zc-xsk-pools-in-netdev-priv.patch
+Patch1262: 1262-gve-implement-dqo-tx-datapath-for-af-xdp-zero-copy.patch
+Patch1263: 1263-gve-implement-dqo-rx-datapath-and-control-path-for-af-xdp-zero-copy.patch
+Patch1264: 1264-gve-prevent-ethtool-ops-after-shutdown.patch
+Patch1265: 1265-gve-check-valid-ts-bit-on-rx-descriptor-before-hw-timestamping.patch
+Patch1266: 1266-gve-consolidate-and-persist-ethtool-ring-changes.patch
+Patch1267: 1267-gve-implement-gettimex64-with-eopnotsupp.patch
+Patch1268: 1268-gve-implement-settime64-with-eopnotsupp.patch
+Patch1269: 1269-gve-decouple-header-split-from-rx-buffer-length.patch
+Patch1270: 1270-gve-use-extack-to-log-xdp-config-verification-errors.patch
+Patch1271: 1271-gve-allow-ethtool-to-configure-rx-buf-len.patch
+Patch1272: 1272-gve-default-to-max-rx-buffer-size-for-dqo-if-device-supported.patch
+Patch1273: 1273-gve-move-ptp-schedule-worker-to-gve-init-clock.patch
+Patch1274: 1274-gve-wrap-struct-xdp-buff.patch
+Patch1275: 1275-gve-prepare-bpf-xdp-metadata-rx-timestamp-support.patch
+Patch1276: 1276-gve-add-rx-hwts-metadata-to-af-xdp-zc-mode.patch
+Patch1277: 1277-gve-fix-race-condition-on-tx-dropped-pkt-update.patch
+Patch1278: 1278-gve-move-gve-init-clock-to-after-aq-configure-device-resources-call.patch
+Patch1279: 1279-gve-defer-interrupt-enabling-until-napi-registration.patch
+Patch1280: 1280-net-gve-convert-to-use-get-rx-ring-count.patch
+Patch1281: 1281-gve-fix-probe-failure-if-clock-read-fails.patch
+Patch1282: 1282-gve-fix-stats-report-corruption-on-queue-count-change.patch
+Patch1283: 1283-gve-correct-ethtool-rx-dropped-calculation.patch
+Patch1284: 1284-gve-fix-incorrect-buffer-cleanup-in-gve-tx-clean-pending-packets-for-qpl.patch
+Patch1285: 1285-gve-update-qpl-page-registration-logic.patch
+Patch1286: 1286-gve-enable-reading-max-ring-size-from-the-device-in-dqo-qpl-mode.patch
+Patch1287: 1287-gve-advertise-netif-f-gro-hw-instead-of-netif-f-lro.patch
+Patch1288: 1288-gve-fix-sw-coalescing-when-hw-gro-is-used.patch
+Patch1289: 1289-gve-pull-network-headers-into-skb-linear-part.patch
+Patch1290: 1290-gve-enable-hw-gro-by-default-if-device-supported.patch
+Patch1291: 1291-gve-add-support-for-udp-gso-for-dqo-format.patch
+Patch1292: 1292-gve-use-generic-power-management.patch
+Patch1293: 1293-gve-fix-header-buffer-corruption-with-header-split-and-hw-gro.patch
+Patch1294: 1294-gve-fix-rx-queue-stall-on-alloc-failure.patch
+Patch1295: 1295-net-mana-fix-toctou-double-fetch-of-hwc-msg-id-from-dma-buffer.patch
+Patch1296: 1296-dm-integrity-don-t-increment-hash-offset-twice.patch
+Patch1297: 1297-gve-fix-netdev-lock-deadlock-in-gve-add-napi-by-using-netif-napi-set-irq-locked.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1273,8 +1358,6 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
-Patch2011: 2011-gve-Update-QPL-page-registration-logic.patch
-Patch2012: 2012-gve-Enable-reading-max-ring-size-in-DQO-QPL-mode.patch
 Patch2014: 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 Patch2015: 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 Patch2016: 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
@@ -2272,6 +2355,91 @@ ApplyPatch 1212-perf-core-fix-missing-read-event-generation-on-task-exit.patch
 ApplyPatch 1213-perf-core-detach-event-groups-during-remove-on-exec.patch
 ApplyPatch 1214-perf-reject-exited-events-as-group-leaders.patch
 
+# Applying backports for 6.12.0-211.62.1.el10_2
+ApplyPatch 1215-gve-map-irqs-to-napi-instances.patch
+ApplyPatch 1216-gve-map-napi-instances-to-queues.patch
+ApplyPatch 1217-gve-move-dqo-rx-buffer-management-related-code-to-a-new-file.patch
+ApplyPatch 1218-gve-adopt-page-pool-for-dq-rda-mode.patch
+ApplyPatch 1219-gve-add-support-for-basic-queue-stats.patch
+ApplyPatch 1220-gve-change-to-use-page-pool-put-full-page-when-recycling-pages.patch
+ApplyPatch 1221-gve-flow-steering-trigger-reset-only-for-timeout-error.patch
+ApplyPatch 1222-gve-remove-unused-gve-adminq-set-mtu.patch
+ApplyPatch 1223-gve-convert-timeouts-to-secs-to-jiffies.patch
+ApplyPatch 1224-gve-clean-xdp-queues-in-gve-tx-stop-ring-gqi.patch
+ApplyPatch 1225-gve-guard-xdp-xmit-ndo-on-existence-of-xdp-queues.patch
+ApplyPatch 1226-gve-guard-xsk-operations-on-the-existence-of-queues.patch
+ApplyPatch 1227-gve-process-xsk-tx-descriptors-as-part-of-rx-napi.patch
+ApplyPatch 1228-gve-fix-xdp-allocation-path-in-edge-cases.patch
+ApplyPatch 1229-gve-trigger-rx-napi-instead-of-tx-napi-in-gve-xsk-wakeup.patch
+ApplyPatch 1230-gve-add-rss-cache-for-non-rss-device-option-scenario.patch
+ApplyPatch 1231-gve-unlink-old-napi-when-stopping-a-queue-using-queue-api.patch
+ApplyPatch 1232-gve-convert-to-use-netmem-for-dqo-rda-mode.patch
+ApplyPatch 1233-gve-unlink-old-napi-only-if-page-pool-exists.patch
+ApplyPatch 1234-gve-remove-xdp-xsk-done-and-xdp-xsk-wakeup-statistics.patch
+ApplyPatch 1235-gve-introduce-config-based-allocation-for-xdp.patch
+ApplyPatch 1236-gve-update-gq-rx-to-use-buf-size.patch
+ApplyPatch 1237-gve-merge-packet-buffer-size-fields.patch
+ApplyPatch 1238-gve-update-xdp-allocation-path-support-rx-buffer-posting.patch
+ApplyPatch 1239-gve-add-xdp-drop-and-pass-support-for-dq.patch
+ApplyPatch 1240-gve-handle-overflow-when-reporting-tx-consumed-descriptors.patch
+ApplyPatch 1241-gve-fix-rx-buffers-posted-stat-to-report-per-queue-fill-cnt.patch
+ApplyPatch 1242-gve-add-missing-null-check-for-gve-alloc-pending-packet-in-tx-dqo.patch
+ApplyPatch 1243-gve-add-device-option-for-nic-clock-synchronization.patch
+ApplyPatch 1244-gve-add-adminq-command-to-report-nic-timestamp.patch
+ApplyPatch 1245-gve-add-initial-ptp-device-support.patch
+ApplyPatch 1246-gve-add-adminq-lock-for-queues-creation-and-destruction.patch
+ApplyPatch 1247-gve-add-support-to-query-the-nic-clock.patch
+ApplyPatch 1248-gve-add-rx-hardware-timestamp-expansion.patch
+ApplyPatch 1249-gve-implement-ndo-hwtstamp-get-set-for-rx-timestamping.patch
+ApplyPatch 1250-gve-advertise-support-for-rx-hardware-timestamping.patch
+ApplyPatch 1251-gve-fix-various-typos-and-improve-code-comments.patch
+ApplyPatch 1252-gve-return-error-for-unknown-admin-queue-command.patch
+ApplyPatch 1253-gve-rename-gve-xdp-xmit-to-gve-xdp-xmit-gqi.patch
+ApplyPatch 1254-gve-refactor-dqo-tx-methods-to-be-more-generic-for-xdp.patch
+ApplyPatch 1255-gve-add-xdp-tx-and-xdp-redirect-support-for-dq-rda.patch
+ApplyPatch 1256-gve-global-fix-for-a-while-typo.patch
+ApplyPatch 1257-gve-make-irq-handlers-and-page-allocation-numa-aware.patch
+ApplyPatch 1258-gve-fix-stuck-tx-queue-for-dq-queue-format.patch
+ApplyPatch 1259-gve-deduplicate-xdp-info-and-xsk-pool-registration-logic.patch
+ApplyPatch 1260-gve-merge-xdp-and-xsk-registration.patch
+ApplyPatch 1261-gve-keep-registry-of-zc-xsk-pools-in-netdev-priv.patch
+ApplyPatch 1262-gve-implement-dqo-tx-datapath-for-af-xdp-zero-copy.patch
+ApplyPatch 1263-gve-implement-dqo-rx-datapath-and-control-path-for-af-xdp-zero-copy.patch
+ApplyPatch 1264-gve-prevent-ethtool-ops-after-shutdown.patch
+ApplyPatch 1265-gve-check-valid-ts-bit-on-rx-descriptor-before-hw-timestamping.patch
+ApplyPatch 1266-gve-consolidate-and-persist-ethtool-ring-changes.patch
+ApplyPatch 1267-gve-implement-gettimex64-with-eopnotsupp.patch
+ApplyPatch 1268-gve-implement-settime64-with-eopnotsupp.patch
+ApplyPatch 1269-gve-decouple-header-split-from-rx-buffer-length.patch
+ApplyPatch 1270-gve-use-extack-to-log-xdp-config-verification-errors.patch
+ApplyPatch 1271-gve-allow-ethtool-to-configure-rx-buf-len.patch
+ApplyPatch 1272-gve-default-to-max-rx-buffer-size-for-dqo-if-device-supported.patch
+ApplyPatch 1273-gve-move-ptp-schedule-worker-to-gve-init-clock.patch
+ApplyPatch 1274-gve-wrap-struct-xdp-buff.patch
+ApplyPatch 1275-gve-prepare-bpf-xdp-metadata-rx-timestamp-support.patch
+ApplyPatch 1276-gve-add-rx-hwts-metadata-to-af-xdp-zc-mode.patch
+ApplyPatch 1277-gve-fix-race-condition-on-tx-dropped-pkt-update.patch
+ApplyPatch 1278-gve-move-gve-init-clock-to-after-aq-configure-device-resources-call.patch
+ApplyPatch 1279-gve-defer-interrupt-enabling-until-napi-registration.patch
+ApplyPatch 1280-net-gve-convert-to-use-get-rx-ring-count.patch
+ApplyPatch 1281-gve-fix-probe-failure-if-clock-read-fails.patch
+ApplyPatch 1282-gve-fix-stats-report-corruption-on-queue-count-change.patch
+ApplyPatch 1283-gve-correct-ethtool-rx-dropped-calculation.patch
+ApplyPatch 1284-gve-fix-incorrect-buffer-cleanup-in-gve-tx-clean-pending-packets-for-qpl.patch
+ApplyPatch 1285-gve-update-qpl-page-registration-logic.patch
+ApplyPatch 1286-gve-enable-reading-max-ring-size-from-the-device-in-dqo-qpl-mode.patch
+ApplyPatch 1287-gve-advertise-netif-f-gro-hw-instead-of-netif-f-lro.patch
+ApplyPatch 1288-gve-fix-sw-coalescing-when-hw-gro-is-used.patch
+ApplyPatch 1289-gve-pull-network-headers-into-skb-linear-part.patch
+ApplyPatch 1290-gve-enable-hw-gro-by-default-if-device-supported.patch
+ApplyPatch 1291-gve-add-support-for-udp-gso-for-dqo-format.patch
+ApplyPatch 1292-gve-use-generic-power-management.patch
+ApplyPatch 1293-gve-fix-header-buffer-corruption-with-header-split-and-hw-gro.patch
+ApplyPatch 1294-gve-fix-rx-queue-stall-on-alloc-failure.patch
+ApplyPatch 1295-net-mana-fix-toctou-double-fetch-of-hwc-msg-id-from-dma-buffer.patch
+ApplyPatch 1296-dm-integrity-don-t-increment-hash-offset-twice.patch
+ApplyPatch 1297-gve-fix-netdev-lock-deadlock-in-gve-add-napi-by-using-netif-napi-set-irq-locked.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2282,8 +2450,6 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
-ApplyPatch 2011-gve-Update-QPL-page-registration-logic.patch
-ApplyPatch 2012-gve-Enable-reading-max-ring-size-in-DQO-QPL-mode.patch
 ApplyPatch 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 ApplyPatch 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 ApplyPatch 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
@@ -4874,14 +5040,14 @@ fi\
 #
 #
 %changelog
-* Fri Oct 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.61.1
+* Fri Oct 09 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.62.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Oct 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.61.1
+* Fri Oct 09 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.62.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Oct 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.61.1
+* Fri Oct 09 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.62.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -4893,10 +5059,90 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
-- gve: update QPL page registration logic to honor max_registered_pages
-  (backport from upstream)
-- gve: enable reading max ring size from the device in DQO-QPL mode (backport
-  from upstream)
+
+* Wed Sep 30 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.62.1.el10_2]
+- dm-integrity: don't increment hash_offset twice (CKI Backport Bot) [RHEL-257773] {CVE-2026-72099}
+- net: mana: Fix TOCTOU double-fetch of hwc_msg_id from DMA buffer (CKI Backport Bot) [RHEL-230992] {CVE-2026-64034}
+- gve: fix Rx queue stall on alloc failure (Michal Schmidt) [RHEL-219261]
+- gve: fix header buffer corruption with header-split and HW-GRO (Michal Schmidt) [RHEL-219261]
+- gve: Use generic power management (Michal Schmidt) [RHEL-219261]
+- gve: add support for UDP GSO for DQO format (Michal Schmidt) [RHEL-219261]
+- gve: Enable hw-gro by default if device supported (Michal Schmidt) [RHEL-219261]
+- gve: pull network headers into skb linear part (Michal Schmidt) [RHEL-219261]
+- gve: fix SW coalescing when hw-GRO is used (Michal Schmidt) [RHEL-219261]
+- gve: Advertise NETIF_F_GRO_HW instead of NETIF_F_LRO (Michal Schmidt) [RHEL-219261]
+- gve: Enable reading max ring size from the device in DQO-QPL mode (Michal Schmidt) [RHEL-219261]
+- gve: Update QPL page registration logic (Michal Schmidt) [RHEL-219261]
+- gve: fix incorrect buffer cleanup in gve_tx_clean_pending_packets for QPL (Michal Schmidt) [RHEL-219261]
+- gve: Correct ethtool rx_dropped calculation (Michal Schmidt) [RHEL-219261]
+- gve: Fix stats report corruption on queue count change (Michal Schmidt) [RHEL-219261]
+- gve: fix probe failure if clock read fails (Michal Schmidt) [RHEL-219261]
+- net: gve: convert to use .get_rx_ring_count (Michal Schmidt) [RHEL-219261]
+- gve: defer interrupt enabling until NAPI registration (Michal Schmidt) [RHEL-219261]
+- gve: Move gve_init_clock to after AQ CONFIGURE_DEVICE_RESOURCES call (Michal Schmidt) [RHEL-219261]
+- gve: Fix race condition on tx->dropped_pkt update (Michal Schmidt) [RHEL-219261]
+- gve: Add Rx HWTS metadata to AF_XDP ZC mode (Michal Schmidt) [RHEL-219261]
+- gve: Prepare bpf_xdp_metadata_rx_timestamp support (Michal Schmidt) [RHEL-219261]
+- gve: Wrap struct xdp_buff (Michal Schmidt) [RHEL-219261]
+- gve: Move ptp_schedule_worker to gve_init_clock (Michal Schmidt) [RHEL-219261]
+- gve: Default to max_rx_buffer_size for DQO if device supported (Michal Schmidt) [RHEL-219261]
+- gve: Allow ethtool to configure rx_buf_len (Michal Schmidt) [RHEL-219261]
+- gve: Use extack to log xdp config verification errors (Michal Schmidt) [RHEL-219261]
+- gve: Decouple header split from RX buffer length (Michal Schmidt) [RHEL-219261]
+- gve: Implement settime64 with -EOPNOTSUPP (Michal Schmidt) [RHEL-219261]
+- gve: Implement gettimex64 with -EOPNOTSUPP (Michal Schmidt) [RHEL-219261]
+- gve: Consolidate and persist ethtool ring changes (Michal Schmidt) [RHEL-219261]
+- gve: Check valid ts bit on RX descriptor before hw timestamping (Michal Schmidt) [RHEL-219261]
+- gve: prevent ethtool ops after shutdown (Michal Schmidt) [RHEL-219261]
+- gve: implement DQO RX datapath and control path for AF_XDP zero-copy (Michal Schmidt) [RHEL-219261]
+- gve: implement DQO TX datapath for AF_XDP zero-copy (Michal Schmidt) [RHEL-219261]
+- gve: keep registry of zc xsk pools in netdev_priv (Michal Schmidt) [RHEL-219261]
+- gve: merge xdp and xsk registration (Michal Schmidt) [RHEL-219261]
+- gve: deduplicate xdp info and xsk pool registration logic (Michal Schmidt) [RHEL-219261]
+- gve: Fix stuck TX queue for DQ queue format (Michal Schmidt) [RHEL-219261]
+- gve: make IRQ handlers and page allocation NUMA aware (Michal Schmidt) [RHEL-219261]
+- gve: global: fix "for a while" typo (Michal Schmidt) [RHEL-219261]
+- gve: add XDP_TX and XDP_REDIRECT support for DQ RDA (Michal Schmidt) [RHEL-219261]
+- gve: refactor DQO TX methods to be more generic for XDP (Michal Schmidt) [RHEL-219261]
+- gve: rename gve_xdp_xmit to gve_xdp_xmit_gqi (Michal Schmidt) [RHEL-219261]
+- gve: Return error for unknown admin queue command (Michal Schmidt) [RHEL-219261]
+- gve: Fix various typos and improve code comments (Michal Schmidt) [RHEL-219261]
+- gve: Advertise support for rx hardware timestamping (Michal Schmidt) [RHEL-219261]
+- gve: Implement ndo_hwtstamp_get/set for RX timestamping (Michal Schmidt) [RHEL-219261]
+- gve: Add rx hardware timestamp expansion (Michal Schmidt) [RHEL-219261]
+- gve: Add support to query the nic clock (Michal Schmidt) [RHEL-219261]
+- gve: Add adminq lock for queues creation and destruction (Michal Schmidt) [RHEL-219261]
+- gve: Add initial PTP device support (Michal Schmidt) [RHEL-219261]
+- gve: Add adminq command to report nic timestamp (Michal Schmidt) [RHEL-219261]
+- gve: Add device option for nic clock synchronization (Michal Schmidt) [RHEL-219261]
+- gve: add missing NULL check for gve_alloc_pending_packet() in TX DQO (Michal Schmidt) [RHEL-219261]
+- gve: Fix RX_BUFFERS_POSTED stat to report per-queue fill_cnt (Michal Schmidt) [RHEL-219261]
+- gve: handle overflow when reporting TX consumed descriptors (Michal Schmidt) [RHEL-219261]
+- gve: add XDP DROP and PASS support for DQ (Michal Schmidt) [RHEL-219261]
+- gve: update XDP allocation path support RX buffer posting (Michal Schmidt) [RHEL-219261]
+- gve: merge packet buffer size fields (Michal Schmidt) [RHEL-219261]
+- gve: update GQ RX to use buf_size (Michal Schmidt) [RHEL-219261]
+- gve: introduce config-based allocation for XDP (Michal Schmidt) [RHEL-219261]
+- gve: remove xdp_xsk_done and xdp_xsk_wakeup statistics (Michal Schmidt) [RHEL-219261]
+- gve: unlink old napi only if page pool exists (Michal Schmidt) [RHEL-219261]
+- gve: convert to use netmem for DQO RDA mode (Michal Schmidt) [RHEL-219261]
+- gve: unlink old napi when stopping a queue using queue API (Michal Schmidt) [RHEL-219261]
+- gve: Add RSS cache for non RSS device option scenario (Michal Schmidt) [RHEL-219261]
+- gve: trigger RX NAPI instead of TX NAPI in gve_xsk_wakeup (Michal Schmidt) [RHEL-219261]
+- gve: fix XDP allocation path in edge cases (Michal Schmidt) [RHEL-219261]
+- gve: process XSK TX descriptors as part of RX NAPI (Michal Schmidt) [RHEL-219261]
+- gve: guard XSK operations on the existence of queues (Michal Schmidt) [RHEL-219261]
+- gve: guard XDP xmit NDO on existence of xdp queues (Michal Schmidt) [RHEL-219261]
+- gve: clean XDP queues in gve_tx_stop_ring_gqi (Michal Schmidt) [RHEL-219261]
+- gve: Convert timeouts to secs_to_jiffies() (Michal Schmidt) [RHEL-219261]
+- gve: Remove unused gve_adminq_set_mtu (Michal Schmidt) [RHEL-219261]
+- gve: Flow steering trigger reset only for timeout error (Michal Schmidt) [RHEL-219261]
+- gve: change to use page_pool_put_full_page when recycling pages (Michal Schmidt) [RHEL-219261]
+- gve: add support for basic queue stats (Michal Schmidt) [RHEL-219261]
+- gve: adopt page pool for DQ RDA mode (Michal Schmidt) [RHEL-219261]
+- gve: move DQO rx buffer management related code to a new file (Michal Schmidt) [RHEL-219261]
+- gve: Map NAPI instances to queues (Michal Schmidt) [RHEL-219261]
+- gve: Map IRQs to NAPI instances (Michal Schmidt) [RHEL-219261]
 
 * Mon Sep 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.61.1.el10_2]
 - perf: Reject exited events as group leaders (Anubhav Shelat) [RHEL-258812] {CVE-2026-74753}
