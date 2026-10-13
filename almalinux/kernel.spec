@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.64.1
+%define pkgrelease 211.65.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.64.1%{?buildid}%{?dist}
+%define specrelease 211.65.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1459,6 +1459,28 @@ Patch1402: 1402-ice-monitor-tspll-lock-from-ptp-periodic-worker.patch
 Patch1403: 1403-ice-add-tspll-dpll-device-and-time-ref-pin-for-e825.patch
 Patch1404: 1404-ice-use-per-interface-clock-id-for-e825-generic-dplls.patch
 
+# Backports for 6.12.0-211.65.1.el10_2
+Patch1405: 1405-i2c-stub-reject-i2c-block-transfers-with-invalid-length.patch
+Patch1406: 1406-kvm-arm64-vgic-check-the-interrupt-is-still-ours-before-migrating-it.patch
+Patch1407: 1407-smb-client-fix-double-free-in-smb2-ioctl-replay.patch
+Patch1408: 1408-cifs-validate-dfs-referral-string-offsets.patch
+Patch1409: 1409-macsec-fix-replay-protection-at-xpn-lower-pn-wrap.patch
+Patch1410: 1410-openvswitch-fix-gso-userspace-truncation-underflow.patch
+Patch1411: 1411-af-unix-unlink-scc-entry-in-unix-del-edge.patch
+Patch1412: 1412-tls-fix-race-condition-in-tls-sw-cancel-work-tx.patch
+Patch1413: 1413-tls-purge-async-hold-in-tls-decrypt-async-wait.patch
+Patch1414: 1414-net-tls-fix-use-after-free-in-ebusy-error-path-of-tls-do-encryption.patch
+Patch1415: 1415-net-tls-fix-strparser-anchor-skb-leak-on-offload-rx-setup-failure.patch
+Patch1416: 1416-net-tls-fix-silent-data-drop-under-pipe-back-pressure.patch
+Patch1417: 1417-net-tls-fix-off-by-one-in-sg-chain-entry-count-for-wrapped-sk-msg-ring.patch
+Patch1418: 1418-net-tls-prevent-chain-after-chain-in-plain-text-sg.patch
+Patch1419: 1419-tls-preserve-sk-err-across-recvmsg-when-data-has-been-copied.patch
+Patch1420: 1420-bpf-support-for-hardening-against-jit-spraying.patch
+Patch1421: 1421-x86-bugs-enable-ibpb-flush-on-bpf-jit-allocation.patch
+Patch1422: 1422-bpf-restrict-jit-predictor-flush-to-cbpf.patch
+Patch1423: 1423-thermal-core-fix-thermal-zone-device-registration-error-path.patch
+Patch1424: 1424-nvmet-auth-synchronize-timeout-work-during-sq-teardown.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2661,6 +2683,28 @@ ApplyPatch 1401-ice-suppress-dpll-errors-during-reset-recovery.patch
 ApplyPatch 1402-ice-monitor-tspll-lock-from-ptp-periodic-worker.patch
 ApplyPatch 1403-ice-add-tspll-dpll-device-and-time-ref-pin-for-e825.patch
 ApplyPatch 1404-ice-use-per-interface-clock-id-for-e825-generic-dplls.patch
+
+# Applying backports for 6.12.0-211.65.1.el10_2
+ApplyPatch 1405-i2c-stub-reject-i2c-block-transfers-with-invalid-length.patch
+ApplyPatch 1406-kvm-arm64-vgic-check-the-interrupt-is-still-ours-before-migrating-it.patch
+ApplyPatch 1407-smb-client-fix-double-free-in-smb2-ioctl-replay.patch
+ApplyPatch 1408-cifs-validate-dfs-referral-string-offsets.patch
+ApplyPatch 1409-macsec-fix-replay-protection-at-xpn-lower-pn-wrap.patch
+ApplyPatch 1410-openvswitch-fix-gso-userspace-truncation-underflow.patch
+ApplyPatch 1411-af-unix-unlink-scc-entry-in-unix-del-edge.patch
+ApplyPatch 1412-tls-fix-race-condition-in-tls-sw-cancel-work-tx.patch
+ApplyPatch 1413-tls-purge-async-hold-in-tls-decrypt-async-wait.patch
+ApplyPatch 1414-net-tls-fix-use-after-free-in-ebusy-error-path-of-tls-do-encryption.patch
+ApplyPatch 1415-net-tls-fix-strparser-anchor-skb-leak-on-offload-rx-setup-failure.patch
+ApplyPatch 1416-net-tls-fix-silent-data-drop-under-pipe-back-pressure.patch
+ApplyPatch 1417-net-tls-fix-off-by-one-in-sg-chain-entry-count-for-wrapped-sk-msg-ring.patch
+ApplyPatch 1418-net-tls-prevent-chain-after-chain-in-plain-text-sg.patch
+ApplyPatch 1419-tls-preserve-sk-err-across-recvmsg-when-data-has-been-copied.patch
+ApplyPatch 1420-bpf-support-for-hardening-against-jit-spraying.patch
+ApplyPatch 1421-x86-bugs-enable-ibpb-flush-on-bpf-jit-allocation.patch
+ApplyPatch 1422-bpf-restrict-jit-predictor-flush-to-cbpf.patch
+ApplyPatch 1423-thermal-core-fix-thermal-zone-device-registration-error-path.patch
+ApplyPatch 1424-nvmet-auth-synchronize-timeout-work-during-sq-teardown.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5262,14 +5306,14 @@ fi\
 #
 #
 %changelog
-* Thu Oct 08 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.64.1
+* Tue Oct 13 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.65.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Thu Oct 08 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.64.1
+* Tue Oct 13 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.65.1
 - Enable Btrfs support for all kernel variants
 
-* Thu Oct 08 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.64.1
+* Tue Oct 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.65.1
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -5281,6 +5325,28 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Fri Oct 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.65.1.el10_2]
+- nvmet-auth: Synchronize timeout work during SQ teardown (CKI Backport Bot) [RHEL-276363] {CVE-2026-89970}
+- thermal: core: Fix thermal zone device registration error path (Dennis Chen) [RHEL-226827] {CVE-2026-43332}
+- bpf: Restrict JIT predictor flush to cBPF (Viktor Malik) [RHEL-273875] {CVE-2026-64508}
+- x86/bugs: Enable IBPB flush on BPF JIT allocation (Viktor Malik) [RHEL-273900] {CVE-2026-64507}
+- bpf: Support for hardening against JIT spraying (Viktor Malik) [RHEL-273875] {CVE-2026-64508}
+- tls: Preserve sk_err across recvmsg() when data has been copied (Valentin Schneider) [RHEL-275027]
+- net: tls: prevent chain-after-chain in plain text SG (Valentin Schneider) [RHEL-275027]
+- net: tls: fix off-by-one in sg_chain entry count for wrapped sk_msg ring (Valentin Schneider) [RHEL-275027]
+- net: tls: fix silent data drop under pipe back-pressure (Valentin Schneider) [RHEL-275027]
+- net: tls: fix strparser anchor skb leak on offload RX setup failure (Valentin Schneider) [RHEL-275027]
+- net/tls: fix use-after-free in -EBUSY error path of tls_do_encryption (Valentin Schneider) [RHEL-275027]
+- tls: Purge async_hold in tls_decrypt_async_wait() (Valentin Schneider) [RHEL-275027]
+- tls: Fix race condition in tls_sw_cancel_work_tx() (Valentin Schneider) [RHEL-275027]
+- af_unix: Unlink scc_entry in unix_del_edge(). (CKI Backport Bot) [RHEL-270654] {CVE-2026-80521}
+- openvswitch: fix GSO userspace truncation underflow (CKI Backport Bot) [RHEL-263802] {CVE-2026-68123}
+- macsec: fix replay protection at XPN lower-PN wrap (Abhishek Rawal) [RHEL-226678] {CVE-2026-63925}
+- cifs: validate DFS referral string offsets (CKI Backport Bot) [RHEL-261989] {CVE-2026-72318}
+- smb: client: fix double-free in SMB2_ioctl() replay (CKI Backport Bot) [RHEL-259796] {CVE-2026-64385}
+- KVM: arm64: vgic: Check the interrupt is still ours before migrating it (CKI Backport Bot) [RHEL-252479] {CVE-2026-72289}
+- i2c: stub: Reject I2C block transfers with invalid length (CKI Backport Bot) [RHEL-232114] {CVE-2026-64191}
 
 * Wed Oct 07 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.64.1.el10_2]
 - ice: use per-interface clock_id for E825 generic DPLLs (Jakub Ramaseuski) [RHEL-273805]
