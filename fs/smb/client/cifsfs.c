@@ -12,6 +12,7 @@
 
 #include <linux/module.h>
 #include <linux/fs.h>
+#include <linux/fs_context.h>
 #include <linux/filelock.h>
 #include <linux/mount.h>
 #include <linux/slab.h>
@@ -32,7 +33,6 @@
 #include <uapi/linux/magic.h>
 #include <net/ipv6.h>
 #include "cifsfs.h"
-#include "cifspdu.h"
 #define DECLARE_GLOBALS_HERE
 #include "cifsglob.h"
 #include "cifsproto.h"
@@ -124,42 +124,8 @@ MODULE_PARM_DESC(dir_cache_timeout, "Number of seconds to cache directory conten
 /* Module-wide total cached dirents (in bytes) across all tcons */
 atomic64_t cifs_dircache_bytes_used = ATOMIC64_INIT(0);
 
-/*
- * Write-only module parameter to drop all cached directory entries across
- * all CIFS mounts. Echo a non-zero value to trigger.
- */
-static void cifs_drop_all_dir_caches(void)
-{
-	struct TCP_Server_Info *server;
-	struct cifs_ses *ses;
-	struct cifs_tcon *tcon;
-
-	spin_lock(&cifs_tcp_ses_lock);
-	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
-		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-			if (cifs_ses_exiting(ses))
-				continue;
-			list_for_each_entry(tcon, &ses->tcon_list, tcon_list)
-				invalidate_all_cached_dirs(tcon);
-		}
-	}
-	spin_unlock(&cifs_tcp_ses_lock);
-}
-
-static int cifs_param_set_drop_dir_cache(const char *val, const struct kernel_param *kp)
-{
-	bool bv;
-	int rc = kstrtobool(val, &bv);
-
-	if (rc)
-		return rc;
-	if (bv)
-		cifs_drop_all_dir_caches();
-	return 0;
-}
-
-module_param_call(drop_dir_cache, cifs_param_set_drop_dir_cache, NULL, NULL, 0200);
-MODULE_PARM_DESC(drop_dir_cache, "Write 1 to drop all cached directory entries across all CIFS mounts");
+atomic_t cifs_sillycounter;
+atomic_t cifs_tmpcounter;
 
 #ifdef CONFIG_CIFS_STATS2
 unsigned int slow_rsp_threshold = 1;
@@ -991,26 +957,19 @@ cifs_get_root(struct smb3_fs_context *ctx, struct super_block *sb)
 	return dentry;
 }
 
-static int cifs_set_super(struct super_block *sb, void *data)
-{
-	struct cifs_mnt_data *mnt_data = data;
-	sb->s_fs_info = mnt_data->cifs_sb;
-	return set_anon_super(sb, NULL);
-}
-
 struct dentry *
-cifs_smb3_do_mount(struct file_system_type *fs_type,
-	      int flags, struct smb3_fs_context *old_ctx)
+cifs_smb3_do_mount(struct fs_context *fc, struct smb3_fs_context *old_ctx)
 {
 	struct cifs_mnt_data mnt_data;
 	struct cifs_sb_info *cifs_sb;
 	struct super_block *sb;
 	struct dentry *root;
+	unsigned int saved_sb_flags;
 	int rc;
 
 	if (cifsFYI) {
-		cifs_dbg(FYI, "%s: devname=%s flags=0x%x\n", __func__,
-			 old_ctx->source, flags);
+		cifs_dbg(FYI, "%s: devname=%s sb_flags=0x%x\n", __func__,
+			 old_ctx->source, fc->sb_flags);
 	} else {
 		cifs_info("Attempting to mount %s\n", old_ctx->source);
 	}
@@ -1037,7 +996,7 @@ cifs_smb3_do_mount(struct file_system_type *fs_type,
 
 	rc = cifs_mount(cifs_sb, cifs_sb->ctx);
 	if (rc) {
-		if (!(flags & SB_SILENT))
+		if (!(fc->sb_flags & SB_SILENT))
 			cifs_dbg(VFS, "cifs_mount failed w/return code = %d\n",
 				 rc);
 		root = ERR_PTR(rc);
@@ -1046,12 +1005,27 @@ cifs_smb3_do_mount(struct file_system_type *fs_type,
 
 	mnt_data.ctx = cifs_sb->ctx;
 	mnt_data.cifs_sb = cifs_sb;
-	mnt_data.flags = flags;
+	mnt_data.flags = 0;
 
-	/* BB should we make this contingent on mount parm? */
-	flags |= SB_NODIRATIME | SB_NOATIME;
-
-	sb = sget(fs_type, cifs_match_super, cifs_set_super, flags, &mnt_data);
+	/*
+	 * sb->s_flags is set from fc->sb_flags by alloc_super(). CIFS has
+	 * historically forced SB_NODIRATIME | SB_NOATIME on every mount and
+	 * ignored the caller-supplied SB_* flags. Preserve that behaviour by
+	 * overriding fc->sb_flags around the sget_fc() call.
+	 *
+	 * Hand cifs_sb to sget_fc() via fc->s_fs_info; sget_fc() copies it
+	 * onto sb->s_fs_info before running set() and clears fc->s_fs_info
+	 * on successful publish. Pass the rest of the per-mount context to
+	 * cifs_match_super() through fc->sget_key.
+	 */
+	saved_sb_flags = fc->sb_flags;
+	fc->sb_flags = SB_NODIRATIME | SB_NOATIME;
+	fc->s_fs_info = cifs_sb;
+	fc->sget_key = &mnt_data;
+	sb = sget_fc(fc, cifs_match_super, set_anon_super_fc);
+	fc->sget_key = NULL;
+	fc->s_fs_info = NULL;
+	fc->sb_flags = saved_sb_flags;
 	if (IS_ERR(sb)) {
 		cifs_umount(cifs_sb);
 		return ERR_CAST(sb);
@@ -1248,6 +1222,7 @@ MODULE_ALIAS("smb3");
 const struct inode_operations cifs_dir_inode_ops = {
 	.create = cifs_create,
 	.atomic_open = cifs_atomic_open,
+	.tmpfile = cifs_tmpfile,
 	.lookup = cifs_lookup,
 	.getattr = cifs_getattr,
 	.unlink = cifs_unlink,
@@ -1318,7 +1293,7 @@ static int cifs_precopy_set_eof(struct inode *src_inode, struct cifsInodeInfo *s
 	struct cifsFileInfo *writeable_srcfile;
 	int rc = -EINVAL;
 
-	writeable_srcfile = find_writable_file(src_cifsi, FIND_WR_FSUID_ONLY);
+	writeable_srcfile = find_writable_file(src_cifsi, FIND_FSUID_ONLY);
 	if (writeable_srcfile) {
 		if (src_tcon->ses->server->ops->set_file_size)
 			rc = src_tcon->ses->server->ops->set_file_size(
@@ -1484,9 +1459,13 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
 		}
 	}
 
-	/* force revalidate of size and timestamps of target file now
-	   that target is updated on the server */
-	CIFS_I(target_inode)->time = 0;
+	/*
+	 * On success, duplicate_extents already updated the target inode attrs
+	 * or marked them stale if the refresh failed.  On failure, mark attrs
+	 * stale because EOF may have changed before the clone failed.
+	 */
+	if (rc)
+		CIFS_I(target_inode)->time = 0;
 unlock:
 	/* although unlocking in the reverse order from locking is not
 	   strictly necessary here it is a little cleaner to be consistent */
@@ -1688,7 +1667,7 @@ const struct file_operations cifs_file_strict_ops = {
 
 const struct file_operations cifs_file_direct_ops = {
 	.read_iter = cifs_direct_readv,
-	.write_iter = cifs_direct_writev,
+	.write_iter = cifs_direct_write_iter,
 	.open = cifs_open,
 	.release = cifs_close,
 	.lock = cifs_lock,
@@ -1744,7 +1723,7 @@ const struct file_operations cifs_file_strict_nobrl_ops = {
 
 const struct file_operations cifs_file_direct_nobrl_ops = {
 	.read_iter = cifs_direct_readv,
-	.write_iter = cifs_direct_writev,
+	.write_iter = cifs_direct_write_iter,
 	.open = cifs_open,
 	.release = cifs_close,
 	.fsync = cifs_fsync,
@@ -1922,6 +1901,17 @@ static int __init
 init_cifs(void)
 {
 	int rc = 0;
+
+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+	rc = smb1_init_maperror();
+	if (rc)
+		return rc;
+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+
+	rc = smb2_init_maperror();
+	if (rc)
+		return rc;
+
 	cifs_proc_init();
 	INIT_LIST_HEAD(&cifs_tcp_ses_list);
 /*
@@ -2142,7 +2132,6 @@ MODULE_DESCRIPTION
 	("VFS to access SMB3 servers e.g. Samba, Macs, Azure and Windows (and "
 	"also older servers complying with the SNIA CIFS Specification)");
 MODULE_VERSION(CIFS_VERSION);
-MODULE_SOFTDEP("ecb");
 MODULE_SOFTDEP("hmac");
 MODULE_SOFTDEP("md5");
 MODULE_SOFTDEP("nls");

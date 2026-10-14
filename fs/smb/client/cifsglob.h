@@ -20,6 +20,7 @@
 #include <linux/utsname.h>
 #include <linux/sched/mm.h>
 #include <linux/netfs.h>
+#include <linux/fcntl.h>
 #include "cifs_fs_sb.h"
 #include "cifsacl.h"
 #include <crypto/internal/hash.h>
@@ -28,6 +29,7 @@
 #include "../common/smb2pdu.h"
 #include "../common/fscc.h"
 #include "smb2pdu.h"
+#include "smb1pdu.h"
 #include <linux/filelock.h>
 
 #define SMB_PATH_MAX 260
@@ -102,8 +104,6 @@
  * to reduce possibility of seeing more server credit overflow bugs.
  */
 #define SMB2_MAX_CREDITS_AVAILABLE 32000
-
-#include "cifspdu.h"
 
 #ifndef XATTR_DOS_ATTRIB
 #define XATTR_DOS_ATTRIB "user.DOSATTRIB"
@@ -256,6 +256,7 @@ struct cifs_open_info_data {
 	bool adjust_tz;
 	bool reparse_point;
 	bool contains_posix_file_info;
+	bool unknown_nlink;
 	struct {
 		/* ioctl response buffer */
 		struct {
@@ -435,7 +436,7 @@ struct smb_version_operations {
 	int (*set_file_info)(struct inode *, const char *, FILE_BASIC_INFO *,
 			     const unsigned int);
 	int (*set_compression)(const unsigned int, struct cifs_tcon *,
-			       struct cifsFileInfo *);
+			       struct cifsFileInfo *, __u16);
 	/* check if we can send an echo or nor */
 	bool (*can_echo)(struct TCP_Server_Info *);
 	/* send echo request */
@@ -956,18 +957,6 @@ revert_current_mid_from_hdr(struct TCP_Server_Info *server,
 	return revert_current_mid(server, num > 0 ? num : 1);
 }
 
-static inline __u16
-get_mid(const struct smb_hdr *smb)
-{
-	return le16_to_cpu(smb->Mid);
-}
-
-static inline bool
-compare_mid(__u16 mid, const struct smb_hdr *smb)
-{
-	return mid == le16_to_cpu(smb->Mid);
-}
-
 /*
  * When the server supports very large reads and writes via POSIX extensions,
  * we can allow up to 2^24-1, minus the size of a READ/WRITE_AND_X header, not
@@ -1333,8 +1322,8 @@ struct tcon_link {
 	struct cifs_tcon	*tl_tcon;
 };
 
-extern struct tcon_link *cifs_sb_tlink(struct cifs_sb_info *cifs_sb);
-extern void smb3_free_compound_rqst(int num_rqst, struct smb_rqst *rqst);
+struct tcon_link *cifs_sb_tlink(struct cifs_sb_info *cifs_sb);
+void smb3_free_compound_rqst(int num_rqst, struct smb_rqst *rqst);
 
 static inline struct cifs_tcon *
 tlink_tcon(struct tcon_link *tlink)
@@ -1348,7 +1337,7 @@ cifs_sb_master_tlink(struct cifs_sb_info *cifs_sb)
 	return cifs_sb->master_tlink;
 }
 
-extern void cifs_put_tlink(struct tcon_link *tlink);
+void cifs_put_tlink(struct tcon_link *tlink);
 
 static inline struct tcon_link *
 cifs_get_tlink(struct tcon_link *tlink)
@@ -1359,7 +1348,7 @@ cifs_get_tlink(struct tcon_link *tlink)
 }
 
 /* This function is always expected to succeed */
-extern struct cifs_tcon *cifs_sb_master_tcon(struct cifs_sb_info *cifs_sb);
+struct cifs_tcon *cifs_sb_master_tcon(struct cifs_sb_info *cifs_sb);
 
 #define CIFS_OPLOCK_NO_CHANGE 0xfe
 
@@ -1410,6 +1399,7 @@ struct cifs_search_info {
 	bool emptyDir:1;
 	bool unicode:1;
 	bool smallBuf:1; /* so we know which buf_release function to call */
+	bool is_dynamic_buf:1; /* dynamically allocated buffer - can be variable size */
 };
 
 #define ACL_NO_MODE	((umode_t)(-1))
@@ -1587,8 +1577,8 @@ cifsFileInfo_get_locked(struct cifsFileInfo *cifs_file)
 }
 
 struct cifsFileInfo *cifsFileInfo_get(struct cifsFileInfo *cifs_file);
-void _cifsFileInfo_put(struct cifsFileInfo *cifs_file, bool wait_oplock_hdlr,
-		       bool offload);
+void _cifsFileInfo_put(struct cifsFileInfo *cifs_file,
+		       bool wait_oplock_handler, bool offload);
 void cifsFileInfo_put(struct cifsFileInfo *cifs_file);
 int cifs_file_flush(const unsigned int xid, struct inode *inode,
 		    struct cifsFileInfo *cfile);
@@ -1603,9 +1593,17 @@ int cifs_file_set_size(const unsigned int xid, struct dentry *dentry,
 #define CIFS_CACHE_RW_FLG	(CIFS_CACHE_READ_FLG | CIFS_CACHE_WRITE_FLG)
 #define CIFS_CACHE_RHW_FLG	(CIFS_CACHE_RW_FLG | CIFS_CACHE_HANDLE_FLG)
 
-/*
- * One of these for each file inode
- */
+enum cifs_inode_flags {
+	CIFS_INODE_PENDING_OPLOCK_BREAK,	/* oplock break in progress */
+	CIFS_INODE_PENDING_WRITERS,		/* Writes in progress */
+	CIFS_INODE_FLAG_UNUSED,			/* Unused flag */
+	CIFS_INO_DELETE_PENDING,		/* delete pending on server */
+	CIFS_INO_INVALID_MAPPING,		/* pagecache is invalid */
+	CIFS_INO_LOCK,				/* lock bit for synchronization */
+	CIFS_INO_MODIFIED_ATTR,			/* Indicate change in mtime/ctime */
+	CIFS_INO_CLOSE_ON_LOCK,			/* Not to defer the close when lock is set */
+	CIFS_INO_TMPFILE,			/* for O_TMPFILE inodes */
+};
 
 struct cifsInodeInfo {
 	struct netfs_inode netfs; /* Netfslib context and vfs inode */
@@ -1623,14 +1621,6 @@ struct cifsInodeInfo {
 	__u32 cifsAttrs; /* e.g. DOS archive bit, sparse, compressed, system */
 	unsigned int oplock;		/* oplock/lease level we have */
 	__u16 epoch;		/* used to track lease state changes */
-#define CIFS_INODE_PENDING_OPLOCK_BREAK   (0) /* oplock break in progress */
-#define CIFS_INODE_PENDING_WRITERS	  (1) /* Writes in progress */
-#define CIFS_INODE_FLAG_UNUSED		  (2) /* Unused flag */
-#define CIFS_INO_DELETE_PENDING		  (3) /* delete pending on server */
-#define CIFS_INO_INVALID_MAPPING	  (4) /* pagecache is invalid */
-#define CIFS_INO_LOCK			  (5) /* lock bit for synchronization */
-#define CIFS_INO_MODIFIED_ATTR            (6) /* Indicate change in mtime/ctime */
-#define CIFS_INO_CLOSE_ON_LOCK            (7) /* Not to defer the close when lock is set */
 	unsigned long flags;
 	spinlock_t writers_lock;
 	unsigned int writers;		/* Number of writers on this inode */
@@ -1890,6 +1880,11 @@ struct cifs_mount_ctx {
 	struct cifs_tcon *tcon;
 };
 
+struct mchan_mount {
+	struct work_struct work;
+	struct cifs_ses *ses;
+};
+
 static inline void __free_dfs_info_param(struct dfs_info3_param *param)
 {
 	kfree(param->path_name);
@@ -1951,12 +1946,12 @@ static inline bool is_replayable_error(int error)
 }
 
 
-/* cifs_get_writable_file() flags */
-enum cifs_writable_file_flags {
-	FIND_WR_ANY			= 0U,
-	FIND_WR_FSUID_ONLY		= (1U << 0),
-	FIND_WR_WITH_DELETE		= (1U << 1),
-	FIND_WR_NO_PENDING_DELETE	= (1U << 2),
+enum cifs_find_flags {
+	FIND_ANY		= 0U,
+	FIND_FSUID_ONLY		= (1U << 0),
+	FIND_WITH_DELETE	= (1U << 1),
+	FIND_NO_PENDING_DELETE	= (1U << 2),
+	FIND_OPEN_FLAGS		= (1U << 3),
 };
 
 #define   MID_FREE 0
@@ -1973,6 +1968,7 @@ enum cifs_writable_file_flags {
 #define   CIFS_NO_BUFFER        0    /* Response buffer not returned */
 #define   CIFS_SMALL_BUFFER     1
 #define   CIFS_LARGE_BUFFER     2
+#define   CIFS_DYNAMIC_BUFFER   3    /* Dynamically allocated buffer */
 #define   CIFS_IOVEC            4    /* array of response buffers */
 
 /* Type of Request to SendReceive2 */
@@ -2214,8 +2210,6 @@ extern mempool_t cifs_mid_pool;
 
 /* Operations for different SMB versions */
 #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
-extern struct smb_version_operations smb1_operations;
-extern struct smb_version_values smb1_values;
 extern struct smb_version_operations smb20_operations;
 extern struct smb_version_values smb20_values;
 #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
@@ -2369,7 +2363,7 @@ static inline struct scatterlist *cifs_sg_set_buf(struct scatterlist *sg,
 			buflen -= len;
 		} while (buflen);
 	} else {
-		sg_set_page(sg++, virt_to_page(addr), buflen, off);
+		sg_set_page(sg++, virt_to_page((void *)addr), buflen, off);
 	}
 	return sg;
 }
@@ -2393,6 +2387,7 @@ struct smb2_compound_vars {
 	struct kvec qi_iov;
 	struct kvec io_iov[SMB2_IOCTL_IOV_SIZE];
 	struct kvec si_iov[SMB2_SET_INFO_IOV_SIZE];
+	struct kvec hl_iov[SMB2_SET_INFO_IOV_SIZE];
 	struct kvec unlink_iov[SMB2_SET_INFO_IOV_SIZE];
 	struct kvec rename_iov[SMB2_SET_INFO_IOV_SIZE];
 	struct kvec close_iov;
@@ -2509,5 +2504,26 @@ static inline bool cifs_forced_shutdown(const struct cifs_sb_info *sbi)
 {
 	return cifs_sb_flags(sbi) & CIFS_MOUNT_SHUTDOWN;
 }
+
+static inline int cifs_open_create_options(unsigned int oflags, int opts)
+{
+	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
+	if (oflags & O_SYNC)
+		opts |= CREATE_WRITE_THROUGH;
+	if (oflags & O_DIRECT)
+		opts |= CREATE_NO_BUFFER;
+	if (oflags & O_TMPFILE)
+		opts |= CREATE_DELETE_ON_CLOSE;
+	return opts;
+}
+
+/*
+ * inode->i_blocks is counted in 512-byte units, independent of
+ * inode->i_blksize.
+ */
+#define CIFS_INO_BLOCK_SIZE 512ULL
+#define CIFS_INO_BLOCKS(size) \
+	DIV_ROUND_UP_ULL((u64)(size), CIFS_INO_BLOCK_SIZE)
+#define CIFS_INO_BYTES(blocks) ((u64)(blocks) * CIFS_INO_BLOCK_SIZE)
 
 #endif	/* _CIFS_GLOB_H */
