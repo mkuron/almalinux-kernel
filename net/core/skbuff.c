@@ -78,6 +78,7 @@
 #include <net/mptcp.h>
 #include <net/mctp.h>
 #include <net/page_pool/helpers.h>
+#include <net/psp/types.h>
 #include <net/dropreason.h>
 
 #include <linux/uaccess.h>
@@ -4966,6 +4967,9 @@ static const u8 skb_ext_type_len[] = {
 #if IS_ENABLED(CONFIG_MCTP_FLOWS)
 	[SKB_EXT_MCTP] = SKB_EXT_CHUNKSIZEOF(struct mctp_flow),
 #endif
+#if IS_ENABLED(CONFIG_INET_PSP)
+	[SKB_EXT_PSP] = SKB_EXT_CHUNKSIZEOF(struct psp_skb_ext),
+#endif
 };
 
 static __always_inline unsigned int skb_ext_total_length(void)
@@ -5411,15 +5415,28 @@ static void __skb_complete_tx_timestamp(struct sk_buff *skb,
 
 static bool skb_may_tx_timestamp(struct sock *sk, bool tsonly)
 {
-	bool ret;
+	struct socket *sock;
+	struct file *file;
+	bool ret = false;
 
 	if (likely(READ_ONCE(sysctl_tstamp_allow_data) || tsonly))
 		return true;
 
-	read_lock_bh(&sk->sk_callback_lock);
-	ret = sk->sk_socket && sk->sk_socket->file &&
-	      file_ns_capable(sk->sk_socket->file, &init_user_ns, CAP_NET_RAW);
-	read_unlock_bh(&sk->sk_callback_lock);
+	/* The sk pointer remains valid as long as the skb is. The sk_socket and
+	 * file pointer may become NULL if the socket is closed. Both structures
+	 * (including file->cred) are RCU freed which means they can be accessed
+	 * within a RCU read section.
+	 */
+	rcu_read_lock();
+	sock = READ_ONCE(sk->sk_socket);
+	if (!sock)
+		goto out;
+	file = READ_ONCE(sock->file);
+	if (!file)
+		goto out;
+	ret = file_ns_capable(file, &init_user_ns, CAP_NET_RAW);
+out:
+	rcu_read_unlock();
 	return ret;
 }
 
@@ -6575,7 +6592,7 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
 		return NULL;
 
 	while (data_len) {
-		if (nr_frags == MAX_SKB_FRAGS - 1)
+		if (nr_frags == MAX_SKB_FRAGS)
 			goto failure;
 		while (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order))
 			order--;
@@ -6640,6 +6657,8 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
 			skb_kfree_head(data, size);
 			return -ENOMEM;
 		}
+		if (skb_zcopy(skb))
+			net_zcopy_get(skb_zcopy(skb));
 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
 			skb_frag_ref(skb, i);
 		if (skb_has_frag_list(skb))
@@ -6784,6 +6803,8 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
 		skb_kfree_head(data, size);
 		return -ENOMEM;
 	}
+	if (skb_zcopy(skb))
+		net_zcopy_get(skb_zcopy(skb));
 	skb_release_data(skb, SKB_CONSUMED);
 
 	skb->head = data;
@@ -7087,8 +7108,9 @@ static void kfree_skb_napi_cache(struct sk_buff *skb)
  */
 void skb_attempt_defer_free(struct sk_buff *skb)
 {
+	struct skb_defer_node *sdn;
+	unsigned long defer_count;
 	int cpu = skb->alloc_cpu;
-	struct softnet_data *sd;
 	unsigned int defer_max;
 	bool kick;
 
@@ -7101,28 +7123,26 @@ nodefer:	kfree_skb_napi_cache(skb);
 
 	DEBUG_NET_WARN_ON_ONCE(skb_dst(skb));
 	DEBUG_NET_WARN_ON_ONCE(skb->destructor);
+	DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb));
 
-	sd = &per_cpu(softnet_data, cpu);
+	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + numa_node_id();
+
 	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
-	if (READ_ONCE(sd->defer_count) >= defer_max)
+	defer_count = atomic_long_inc_return(&sdn->defer_count);
+
+	if (defer_count >= defer_max)
 		goto nodefer;
 
-	spin_lock_bh(&sd->defer_lock);
-	/* Send an IPI every time queue reaches half capacity. */
-	kick = sd->defer_count == (defer_max >> 1);
-	/* Paired with the READ_ONCE() few lines above */
-	WRITE_ONCE(sd->defer_count, sd->defer_count + 1);
+	llist_add(&skb->ll_node, &sdn->defer_list);
 
-	skb->next = sd->defer_list;
-	/* Paired with READ_ONCE() in skb_defer_free_flush() */
-	WRITE_ONCE(sd->defer_list, skb);
-	spin_unlock_bh(&sd->defer_lock);
+	/* Send an IPI every time queue reaches half capacity. */
+	kick = (defer_count - 1) == (defer_max >> 1);
 
 	/* Make sure to trigger NET_RX_SOFTIRQ on the remote CPU
 	 * if we are unlucky enough (this seems very unlikely).
 	 */
 	if (unlikely(kick))
-		kick_defer_list_purge(sd, cpu);
+		kick_defer_list_purge(cpu);
 }
 
 static void skb_splice_csum_page(struct sk_buff *skb, struct page *page,

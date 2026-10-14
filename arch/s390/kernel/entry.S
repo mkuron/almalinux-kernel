@@ -52,16 +52,7 @@ _LPP_OFFSET	= __LC_LPP
 		ALT_FACILITY(193)
 	.endm
 
-	.macro	CHECK_STACK savearea, lowcore
-#ifdef CONFIG_CHECK_STACK
-	tml	%r15,THREAD_SIZE - CONFIG_STACK_GUARD
-	la	%r14,\savearea(\lowcore)
-	jz	stack_overflow
-#endif
-	.endm
-
 	.macro	CHECK_VMAP_STACK savearea, lowcore, oklabel
-#ifdef CONFIG_VMAP_STACK
 	lgr	%r14,%r15
 	nill	%r14,0x10000 - THREAD_SIZE
 	oill	%r14,STACK_INIT_OFFSET
@@ -77,9 +68,6 @@ _LPP_OFFSET	= __LC_LPP
 	je	\oklabel
 	la	%r14,\savearea(\lowcore)
 	j	stack_overflow
-#else
-	j	\oklabel
-#endif
 	.endm
 
 	/*
@@ -196,10 +184,11 @@ SYM_FUNC_START(__sie64a)
 	stg	%r3,__SF_SIE_CONTROL(%r15)	# ...and virtual addresses
 	stg	%r4,__SF_SIE_SAVEAREA(%r15)	# save guest register save area
 	stg	%r5,__SF_SIE_GUEST_ASCE(%r15)	# save guest asce
-	xc	__SF_SIE_REASON(8,%r15),__SF_SIE_REASON(%r15) # reason code = 0
+	xc	__SF_SIE_RETURN(8,%r15),__SF_SIE_RETURN(%r15) # return code = 0
 	mvc	__SF_SIE_FLAGS(8,%r15),__TI_flags(%r14) # copy thread flags
 	lmg	%r0,%r13,0(%r4)			# load guest gprs 0-13
 	mvi	__TI_sie(%r14),1
+	stosm	__SF_SIE_IRQ(%r15),0x03		# enable interrupts
 	lctlg	%c1,%c1,__SF_SIE_GUEST_ASCE(%r15) # load primary asce
 	lg	%r14,__SF_SIE_CONTROL(%r15)	# get control block pointer
 	oi	__SIE_PROG0C+3(%r14),1		# we are going into SIE now
@@ -223,6 +212,7 @@ SYM_FUNC_START(__sie64a)
 	lg	%r14,__LC_CURRENT(%r14)
 	mvi	__TI_sie(%r14),0
 SYM_INNER_LABEL(sie_exit, SYM_L_GLOBAL)
+	stnsm	__SF_SIE_IRQ(%r15),0xfc		# disable interrupts
 	lg	%r14,__SF_SIE_SAVEAREA(%r15)	# load guest register save area
 	stmg	%r0,%r13,0(%r14)		# save guest gprs 0-13
 	xgr	%r0,%r0				# clear guest registers to
@@ -231,7 +221,7 @@ SYM_INNER_LABEL(sie_exit, SYM_L_GLOBAL)
 	xgr	%r4,%r4
 	xgr	%r5,%r5
 	lmg	%r6,%r14,__SF_GPRS(%r15)	# restore kernel registers
-	lg	%r2,__SF_SIE_REASON(%r15)	# return exit reason code
+	lg	%r2,__SF_SIE_RETURN(%r15)	# return sie return code
 	BR_EX	%r14
 SYM_FUNC_END(__sie64a)
 EXPORT_SYMBOL(__sie64a)
@@ -266,6 +256,7 @@ SYM_CODE_START(system_call)
 	xgr	%r9,%r9
 	xgr	%r10,%r10
 	xgr	%r11,%r11
+	xgr	%r12,%r12
 	la	%r2,STACK_FRAME_OVERHEAD(%r15)	# pointer to pt_regs
 	mvc	__PT_R8(64,%r2),__LC_SAVE_AREA(%r13)
 	MBEAR	%r2,%r13
@@ -326,8 +317,7 @@ SYM_CODE_START(pgm_check_handler)
 	jnz	2f			# -> enabled, can't be a double fault
 	tm	__LC_PGM_ILC+3(%r13),0x80	# check for per exception
 	jnz	.Lpgm_svcper		# -> single stepped svc
-2:	CHECK_STACK __LC_SAVE_AREA,%r13
-	aghi	%r15,-(STACK_FRAME_OVERHEAD + __PT_SIZE)
+2:	aghi	%r15,-(STACK_FRAME_OVERHEAD + __PT_SIZE)
 	# CHECK_VMAP_STACK branches to stack_overflow or 4f
 	CHECK_VMAP_STACK __LC_SAVE_AREA,%r13,4f
 3:	lg	%r15,__LC_KERNEL_STACK(%r13)
@@ -394,8 +384,7 @@ SYM_CODE_START(\name)
 	BPENTER	__SF_SIE_FLAGS(%r15),_TIF_ISOLATE_BP_GUEST
 	SIEEXIT __SF_SIE_CONTROL(%r15),%r13
 #endif
-0:	CHECK_STACK __LC_SAVE_AREA,%r13
-	aghi	%r15,-(STACK_FRAME_OVERHEAD + __PT_SIZE)
+0:	aghi	%r15,-(STACK_FRAME_OVERHEAD + __PT_SIZE)
 	j	2f
 1:	lctlg	%c1,%c1,__LC_KERNEL_ASCE(%r13)
 	lg	%r15,__LC_KERNEL_STACK(%r13)
@@ -411,6 +400,7 @@ SYM_CODE_START(\name)
 	xgr	%r6,%r6
 	xgr	%r7,%r7
 	xgr	%r10,%r10
+	xgr	%r12,%r12
 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
 	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA(%r13)
 	MBEAR	%r11,%r13
@@ -503,6 +493,7 @@ SYM_CODE_START(mcck_int_handler)
 	xgr	%r6,%r6
 	xgr	%r7,%r7
 	xgr	%r10,%r10
+	xgr	%r12,%r12
 	stmg	%r8,%r9,__PT_PSW(%r11)
 	xc	__PT_FLAGS(8,%r11),__PT_FLAGS(%r11)
 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
@@ -603,7 +594,6 @@ SYM_CODE_END(early_pgm_check_handler)
 
 	.section .kprobes.text, "ax"
 
-#if defined(CONFIG_CHECK_STACK) || defined(CONFIG_VMAP_STACK)
 /*
  * The synchronous or the asynchronous stack overflowed. We are dead.
  * No need to properly save the registers, we are going to panic anyway.
@@ -621,7 +611,6 @@ SYM_CODE_START(stack_overflow)
 	lgr	%r2,%r11		# pass pointer to pt_regs
 	jg	kernel_stack_overflow
 SYM_CODE_END(stack_overflow)
-#endif
 
 	.section .data, "aw"
 	.balign	4

@@ -90,9 +90,10 @@ enum {
 	MAC_40000FD	= BIT(13),
 	MAC_50000FD	= BIT(14),
 	MAC_56000FD	= BIT(15),
-	MAC_100000FD	= BIT(16),
-	MAC_200000FD	= BIT(17),
-	MAC_400000FD	= BIT(18),
+	MAC_80000FD	= BIT(16),
+	MAC_100000FD	= BIT(17),
+	MAC_200000FD	= BIT(18),
+	MAC_400000FD	= BIT(19),
 };
 
 static inline bool phylink_autoneg_inband(unsigned int mode)
@@ -470,7 +471,6 @@ struct phylink_pcs_ops;
  *                        are supported by this PCS.
  * @ops: a pointer to the &struct phylink_pcs_ops structure
  * @phylink: pointer to &struct phylink_config
- * @neg_mode: provide PCS neg mode via "mode" argument
  * @poll: poll the PCS for link changes
  * @rxc_always_on: The MAC driver requires the reference clock
  *                 to always be on. Standalone PCS drivers which
@@ -487,7 +487,6 @@ struct phylink_pcs {
 	DECLARE_PHY_INTERFACE_MASK(supported_interfaces);
 	const struct phylink_pcs_ops *ops;
 	struct phylink *phylink;
-	bool neg_mode;
 	bool poll;
 	bool rxc_always_on;
 };

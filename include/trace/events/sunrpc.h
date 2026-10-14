@@ -21,7 +21,6 @@ TRACE_DEFINE_ENUM(SOCK_DGRAM);
 TRACE_DEFINE_ENUM(SOCK_RAW);
 TRACE_DEFINE_ENUM(SOCK_RDM);
 TRACE_DEFINE_ENUM(SOCK_SEQPACKET);
-TRACE_DEFINE_ENUM(SOCK_DCCP);
 TRACE_DEFINE_ENUM(SOCK_PACKET);
 
 #define show_socket_type(type)					\
@@ -31,7 +30,6 @@ TRACE_DEFINE_ENUM(SOCK_PACKET);
 		{ SOCK_RAW,		"RAW" },		\
 		{ SOCK_RDM,		"RDM" },		\
 		{ SOCK_SEQPACKET,	"SEQPACKET" },		\
-		{ SOCK_DCCP,		"DCCP" },		\
 		{ SOCK_PACKET,		"PACKET" })
 
 /* This list is known to be incomplete, add new enums as needed. */
@@ -1935,7 +1933,9 @@ TRACE_EVENT(svc_stats_latency,
 	svc_xprt_flag(CONG_CTRL)					\
 	svc_xprt_flag(HANDSHAKE)					\
 	svc_xprt_flag(TLS_SESSION)					\
-	svc_xprt_flag_end(PEER_AUTH)
+	svc_xprt_flag(PEER_AUTH)					\
+	svc_xprt_flag(PEER_VALID)					\
+	svc_xprt_flag_end(RPCB_UNREG)
 
 #undef svc_xprt_flag
 #undef svc_xprt_flag_end

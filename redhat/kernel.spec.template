@@ -6,7 +6,10 @@
 # Disable frame pointers
 %undefine _include_frame_pointers
 
-# Disable LTO in userspace packages.
+# Save default LTO flags before disabling (for use with kernel tools).
+%global _default_lto_cflags %{_lto_cflags}
+
+# Disable LTO in userspace packages (disabled for perf).
 %global _lto_cflags %{nil}
 
 # Option to enable compiling with clang instead of gcc.
@@ -801,6 +804,7 @@ BuildRequires: lld
 %endif
 BuildRequires: libcap-devel libcap-ng-devel rsync libmnl-devel libxml2-devel
 BuildRequires: numactl-devel
+BuildRequires: xxd
 %endif
 BuildConflicts: rhbuildsys(DiskFree) < 500Mb
 %if %{with_debuginfo}
@@ -921,32 +925,23 @@ Source13: redhatsecureboot501.cer
 %define signing_key_filename kernel-signing-s390.cer
 %endif
 
+# pesign cert name is auto-discovered during build from secureboot_key_0,
+# see pesign_name_0 shell variable
+#
 # Fedora/ELN pesign macro expects to see these cert file names, see:
 # https://github.com/rhboot/pesign/blob/main/src/pesign-rpmbuild-helper.in#L216
 %if 0%{?fedora}%{?eln}
-%define pesign_name_0 redhatsecureboot501
 %define secureboot_ca_0 %{SOURCE10}
 %define secureboot_key_0 %{SOURCE13}
+%define secureboot_key_uki_0 %{secureboot_key_0}
 %endif
 
 # RHEL/centos certs come from system-sb-certs
 %if 0%{?rhel} && !0%{?eln}
 %define secureboot_ca_0 %{_datadir}/pki/sb-certs/secureboot-ca-%{_arch}.cer
 %define secureboot_key_0 %{_datadir}/pki/sb-certs/secureboot-kernel-%{_arch}.cer
+%define secureboot_key_uki_0 %{_datadir}/pki/sb-certs/secureboot-uki-virt-%{_arch}.cer
 
-%if 0%{?centos}
-%define pesign_name_0 centossecureboot201
-%else
-%ifarch x86_64 aarch64
-%define pesign_name_0 redhatsecureboot801
-%endif
-%ifarch s390x
-%define pesign_name_0 redhatsecureboot302
-%endif
-%ifarch ppc64le
-%define pesign_name_0 redhatsecureboot701
-%endif
-%endif
 # rhel && !eln
 %endif
 
@@ -1373,7 +1368,28 @@ the real-time properties of Linux. Instead of testing Linux as a black box,
 rtla leverages kernel tracing capabilities to provide precise information
 about the properties and root causes of unexpected results.
 
+%if %{with_debuginfo}
+%package -n rtla-debuginfo
+%if 0%{gemini}
+Epoch: %{gemini}
+%endif
+Summary: Debug information for package rtla
+Requires: %{name}-debuginfo-common-%{_target_cpu} = %{version}-%{release}
+AutoReqProv: no
+%description -n rtla-debuginfo
+This package provides debug information for the rtla package.
+
+# Note that this pattern only works right to match the .build-id
+# symlinks because of the trailing nonmatching alternation and
+# the leading .*, because of find-debuginfo.sh's buggy handling
+# of matching the pattern against the symlinks file.
+%{expand:%%global _find_debuginfo_opts %{?_find_debuginfo_opts} -p '.*%%{_bindir}/rtla(\.debug)?|.*%%{_bindir}/hwnoise(\.debug)?|.*%%{_bindir}/osnoise(\.debug)?|.*%%{_bindir}/timerlat(\.debug)?|XXX' -o rtla-debuginfo.list}
+%endif
+
 %package -n rv
+%if 0%{gemini}
+Epoch: %{gemini}
+%endif
 Summary: RV: Runtime Verification
 %description -n rv
 Runtime Verification (RV) is a lightweight (yet rigorous) method that
@@ -1381,7 +1397,25 @@ complements classical exhaustive verification techniques (such as model
 checking and theorem proving) with a more practical approach for
 complex systems.
 The rv tool is the interface for a collection of monitors that aim
-analysing the logical and timing behavior of Linux.
+to analyze the logical and timing behavior of Linux.
+
+%if %{with_debuginfo}
+%package -n rv-debuginfo
+%if 0%{gemini}
+Epoch: %{gemini}
+%endif
+Summary: Debug information for package rv
+Requires: %{name}-debuginfo-common-%{_target_cpu} = %{version}-%{release}
+AutoReqProv: no
+%description -n rv-debuginfo
+This package provides debug information for the rv package.
+
+# Note that this pattern only works right to match the .build-id
+# symlinks because of the trailing nonmatching alternation and
+# the leading .*, because of find-debuginfo.sh's buggy handling
+# of matching the pattern against the symlinks file.
+%{expand:%%global _find_debuginfo_opts %{?_find_debuginfo_opts} -p '.*%%{_bindir}/rv(\.debug)?|XXX' -o rv-debuginfo.list}
+%endif
 
 # with_tools
 %endif
@@ -1412,6 +1446,7 @@ Files installed under /usr/share/%{name}-kmap-internal/:
 %package selftests-internal
 Summary: Kernel samples and selftests
 Requires: binutils, bpftool, iproute-tc, nmap-ncat, python3, fuse-libs, keyutils
+Provides: %{name}-selftests-internal-present
 %description selftests-internal
 Kernel sample programs and selftests.
 
@@ -1542,6 +1577,7 @@ Provides: %{name}%{?1:-%{1}}-modules-internal-uname-r = %{KVERREL}%{uname_suffix
 Requires: %{name}-uname-r = %{KVERREL}%{uname_suffix %{?1}}\
 Requires: %{name}%{?1:-%{1}}-modules-uname-r = %{KVERREL}%{uname_suffix %{?1}}\
 Requires: %{name}%{?1:-%{1}}-modules-core-uname-r = %{KVERREL}%{uname_suffix %{?1}}\
+Supplements: (%{name}-selftests-internal-present and %{name}-uname-r = %{KVERREL}%{uname_suffix %{?1}})\
 AutoReq: no\
 AutoProv: yes\
 %description %{?1:%{1}-}modules-internal\
@@ -2391,6 +2427,11 @@ BuildKernel() {
       cp arch/$Arch/boot/zImage.stub $RPM_BUILD_ROOT/lib/modules/$KernelVer/zImage.stub-$KernelVer || :
     fi
 
+%if %{with_efiuki}
+    # Preserve unsigned kernel for the UKI
+    cp $KernelImage $KernelImage.unsigned
+%endif
+
     %if %{signkernel}
     %{log_msg "Copy kernel for signing"}
     if [ "$KernelImage" = vmlinux ]; then
@@ -2404,13 +2445,45 @@ BuildKernel() {
 
     SignImage=$KernelImage
 
+    get_pesign_name() {
+        # If it's a symlink, resolve it to get the pesign cert name
+        # e.g. secureboot-kernel-x86_64.cer -> redhatsecureboot801.cer
+        if [ -L "$1" ]; then
+            basename "$(readlink "$1")" .cer
+            return
+        fi
+        local fname
+        fname=$(basename "$1")
+        # If it's a regular file with a generic name (secureboot-*),
+        # find a pesign-named cert with matching content in the same dir
+        # e.g. secureboot-kernel-x86_64.cer has same md5 as centossecureboot801.cer
+        # e.g. centos-sb-certs-10.0-23.el10.noarch.rpm doesn't have symlinks
+        if [[ "$fname" == secureboot-* ]]; then
+            local dir mysum match
+            dir=$(dirname "$1")
+            mysum=$(md5sum "$1" | awk '{print $1}')
+            match=$(md5sum "$dir"/*.cer 2>/dev/null \
+                | grep -v 'secureboot-' \
+                | awk -v s="$mysum" '$1 == s {print $2; exit}')
+            if [ -n "$match" ]; then
+                basename "$match" .cer
+                return
+            fi
+        fi
+        # Fallback: use the filename as-is
+        basename "$1" .cer
+    }
+
+    pesign_name_0=$(get_pesign_name %{secureboot_key_0})
+    %{log_msg "kernel signing: secureboot_key_0=%{secureboot_key_0} pesign_name_0=$pesign_name_0"}
+
     %ifarch x86_64 aarch64
     %{log_msg "Sign kernel image"}
-    %pesign -s -i $SignImage -o vmlinuz.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n %{pesign_name_0}
+    %pesign -s -i $SignImage -o vmlinuz.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n $pesign_name_0
     %endif
     %ifarch s390x ppc64le
     if [ -x /usr/bin/rpm-sign ]; then
-	rpm-sign --key "%{pesign_name_0}" --lkmsign $SignImage --output vmlinuz.signed
+	rpm-sign --key "$pesign_name_0" --lkmsign $SignImage --output vmlinuz.signed
     elif [ "$DoModules" == "1" -a "%{signmodules}" == "1" ]; then
 	chmod +x scripts/sign-file
 	./scripts/sign-file -p sha256 certs/signing_key.pem certs/signing_key.x509 $SignImage vmlinuz.signed
@@ -2793,18 +2866,27 @@ BuildKernel() {
     cp System.map $RPM_BUILD_ROOT/.
 
     if [[ "$Variant" == "rt" || "$Variant" == "rt-debug" || "$Variant" == "rt-64k" || "$Variant" == "rt-64k-debug" || "$Variant" == "automotive" || "$Variant" == "automotive-debug" ]]; then
-	%{log_msg "Skipping efiuki build"}
+        %{log_msg "Skipping efiuki build"}
     else
 %if %{with_efiuki}
+
+%if %{signkernel}%{signmodules}
+        # Sign inner vmlinuz with the transient modules signing key to allow kexec
+        KernelUnifiedVmlinuz="$KernelImage.signed.trans"
+        /lib/systemd/systemd-sbsign sign --certificate certs/signing_key.pem --private-key certs/signing_key.pem "$KernelImage.unsigned" --output $KernelUnifiedVmlinuz
+%else
+        KernelUnifiedVmlinuz="$KernelImage.unsigned"
+%endif
+
         %{log_msg "Setup the EFI UKI kernel"}
 
-	KernelUnifiedImageDir="$RPM_BUILD_ROOT/lib/modules/$KernelVer"
-    	KernelUnifiedImage="$KernelUnifiedImageDir/$InstallName-virt.efi"
-	KernelUnifiedInitrd="$KernelUnifiedImageDir/$InstallName-virt.img"
+        KernelUnifiedImageDir="$RPM_BUILD_ROOT/lib/modules/$KernelVer"
+        KernelUnifiedImage="$KernelUnifiedImageDir/$InstallName-virt.efi"
+        KernelUnifiedInitrd="$KernelUnifiedImageDir/$InstallName-virt.img"
 
-    	mkdir -p $KernelUnifiedImageDir
+        mkdir -p $KernelUnifiedImageDir
 
-    	dracut --conf=%{SOURCE86} \
+        dracut --conf=%{SOURCE86} \
            --confdir=$(mktemp -d) \
            --no-hostonly \
            --verbose \
@@ -2813,61 +2895,44 @@ BuildKernel() {
            --logfile=$(mktemp) \
            $KernelUnifiedInitrd
 
-       ukify build --linux $(realpath $KernelImage) --initrd $KernelUnifiedInitrd \
-          --sbat @uki.sbat --os-release @/etc/os-release --uname $KernelVer \
-          --cmdline 'console=tty0 console=ttyS0' --output $KernelUnifiedImage
+        ukify build --linux $KernelUnifiedVmlinuz --initrd $KernelUnifiedInitrd \
+           --sbat @uki.sbat --os-release @/etc/os-release --uname $KernelVer \
+           --cmdline 'console=tty0 console=ttyS0' --output $KernelUnifiedImage
 
-       rm -f $KernelUnifiedInitrd
+        rm -f $KernelUnifiedInitrd
 
-  KernelAddonsDirOut="$KernelUnifiedImage.extra.d"
-  mkdir -p $KernelAddonsDirOut
-  python3 %{SOURCE151} %{SOURCE152} $KernelAddonsDirOut virt %{primary_target} %{_target_cpu} @uki-addons.sbat
+        KernelAddonsDirOut="$KernelUnifiedImage.extra.d"
+        mkdir -p $KernelAddonsDirOut
+        python3 %{SOURCE151} %{SOURCE152} $KernelAddonsDirOut virt %{primary_target} %{_target_cpu} @uki-addons.sbat
 
 %if %{signkernel}
-	%{log_msg "Sign the EFI UKI kernel"}
-%if 0%{?fedora}%{?eln}
-        %pesign -s -i $KernelUnifiedImage -o $KernelUnifiedImage.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n %{pesign_name_0}
-%else
-%if 0%{?centos}
-        UKI_secureboot_name=centossecureboot204
-        UKI_secureboot_cert=%{_datadir}/pki/sb-certs/secureboot-uki-virt-%{_arch}.cer
-%else
-	# RHEL only builds UKI for x86
-	UKI_secureboot_name=redhatsecureboot504
-	UKI_secureboot_cert=%{SOURCE153}
-%endif
-
-        %pesign -s -i $KernelUnifiedImage -o $KernelUnifiedImage.signed -a %{secureboot_ca_0} -c $UKI_secureboot_cert -n $UKI_secureboot_name
-        for addon in "$KernelAddonsDirOut"/*; do
-            %pesign -s -i $addon -o $addon.signed -a %{secureboot_ca_0} -c $UKI_secureboot_cert -n $UKI_secureboot_name
-            rm -f $addon
-            mv $addon.signed $addon
-        done
-# 0%{?fedora}%{?eln}
-%endif
+        %{log_msg "Sign the EFI UKI kernel"}
+        pesign_name_uki_0=$(get_pesign_name %{secureboot_key_uki_0})
+        %{log_msg "UKI signing: secureboot_key_uki_0=%{secureboot_key_uki_0} pesign_name_uki_0=$pesign_name_uki_0"}
+        %pesign -s -i $KernelUnifiedImage -o $KernelUnifiedImage.signed -a %{secureboot_ca_0} -c %{secureboot_key_uki_0} -n $pesign_name_uki_0
         if [ ! -s $KernelUnifiedImage.signed ]; then
             echo "pesigning failed"
             exit 1
         fi
         mv $KernelUnifiedImage.signed $KernelUnifiedImage
 
-      mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer
-      cp -a $UKI_secureboot_cert $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/secureboot-uki-%{_arch}.cer
-
-# signkernel
+        for addon in "$KernelAddonsDirOut"/*; do
+           %pesign -s -i $addon -o $addon.signed -a %{secureboot_ca_0} -c %{secureboot_key_uki_0} -n $pesign_name_uki_0
+           rm -f $addon
+           mv $addon.signed $addon
+        done
 %endif
 
-    # hmac sign the UKI for FIPS
-    KernelUnifiedImageHMAC="$KernelUnifiedImageDir/.$InstallName-virt.efi.hmac"
-    %{log_msg "hmac sign the UKI for FIPS"}
-    %{log_msg "Creating hmac file: $KernelUnifiedImageHMAC"}
-    (cd $KernelUnifiedImageDir && sha512hmac $InstallName-virt.efi) > $KernelUnifiedImageHMAC;
+        # hmac sign the UKI for FIPS
+        KernelUnifiedImageHMAC="$KernelUnifiedImageDir/.$InstallName-virt.efi.hmac"
+        %{log_msg "hmac sign the UKI for FIPS"}
+        %{log_msg "Creating hmac file: $KernelUnifiedImageHMAC"}
+        (cd $KernelUnifiedImageDir && sha512hmac $InstallName-virt.efi) > $KernelUnifiedImageHMAC;
 
 # with_efiuki
 %endif
-	:  # in case of empty block
+        :  # in case of empty block
     fi # "$Variant" == "rt" || "$Variant" == "rt-debug" || "$Variant" == "automotive" || "$Variant" == "automotive-debug"
-
 
     #
     # Generate the modules files lists
@@ -3196,7 +3261,7 @@ chmod +x tools/perf/check-headers.sh
 %endif
 
 %global tools_make \
-  CFLAGS="${RPM_OPT_FLAGS}" LDFLAGS="%{__global_ldflags}" EXTRA_CFLAGS="${RPM_OPT_FLAGS}" %{make} %{?make_opts}
+  CFLAGS="${RPM_OPT_FLAGS} %{_default_lto_cflags}" LDFLAGS="%{__global_ldflags}" EXTRA_CFLAGS="${RPM_OPT_FLAGS} %{_default_lto_cflags}" %{make} %{?make_opts}
 
 %ifarch %{cpupowerarchs}
     # link against in-tree libcpupower for idle state support
@@ -3356,9 +3421,14 @@ for dir in bpf bpf/no_alu32 bpf/cpuv4 bpf/progs; do
 	test -d $dir || continue
 	mkdir -p %{buildroot}%{_libexecdir}/kselftests/$dir
 	find $dir -maxdepth 1 \( -type f  -o -type l \) \
-        \( -executable -o -name '*.py' -o -name settings -o \
-		-name 'btf_dump_test_case_*.c' -o -name '*.ko' -o \
-		-name '*.o' -exec sh -c 'readelf -h "{}" | grep -q "^  Machine:.*BPF"' \; \) -print0 | \
+		\( -executable -o \
+			-name '*.py' -o \
+			-name settings -o \
+			-name DENYLIST -o \
+			-name 'btf_dump_test_case_*.c' -o \
+			-name '*.ko' -o \
+			-name '*.o' -exec sh -c 'readelf -h "{}" | grep -q "^  Machine:.*BPF"' \; \
+		\) -print0 | \
 	xargs -0 cp -t %{buildroot}%{_libexecdir}/kselftests/$dir || true
 done
 
@@ -3380,6 +3450,12 @@ rm -f %{buildroot}/usr/libexec/kselftests/bpf/cpuv4/urandom_read
 # Copy bpftool to kselftests so selftests is packaged with 
 # the full bpftool instead of bootstrap bpftool
 cp ./bpf/tools/sbin/bpftool %{buildroot}%{_libexecdir}/kselftests/bpf/bpftool
+
+# Append RHEL-specific BPF selftests DENYLIST.rhel to the global DENYLIST that
+# is automatically picked by BPF selftest runners.
+%if 0%{?rhel}%{?centos}
+	cat ./bpf/DENYLIST.rhel >> %{buildroot}%{_libexecdir}/kselftests/bpf/DENYLIST
+%endif
 
 popd
 %{log_msg "end build selftests"}
@@ -3635,10 +3711,10 @@ install -m755 slabinfo %{buildroot}%{_bindir}/slabinfo
 install -m755 page_owner_sort %{buildroot}%{_bindir}/page_owner_sort
 popd
 pushd tools/verification/rv/
-%{tools_make} DESTDIR=%{buildroot} install
+%{tools_make} DESTDIR=%{buildroot} STRIP=/bin/true install
 popd
 pushd tools/tracing/rtla/
-%{tools_make} DESTDIR=%{buildroot} install
+%{tools_make} DESTDIR=%{buildroot} STRIP=/bin/true install
 rm -f %{buildroot}%{_bindir}/hwnoise
 rm -f %{buildroot}%{_bindir}/osnoise
 rm -f %{buildroot}%{_bindir}/timerlat
@@ -4378,6 +4454,10 @@ fi\
 %{_mandir}/man1/rtla-timerlat.1.gz
 %{_mandir}/man1/rtla.1.gz
 
+%if %{with_debuginfo}
+%files -f rtla-debuginfo.list -n rtla-debuginfo
+%endif
+
 %files -n rv
 %{_bindir}/rv
 %{_mandir}/man1/rv-list.1.gz
@@ -4386,6 +4466,10 @@ fi\
 %{_mandir}/man1/rv-mon.1.gz
 %{_mandir}/man1/rv-mon-sched.1.gz
 %{_mandir}/man1/rv.1.gz
+
+%if %{with_debuginfo}
+%files -f rv-debuginfo.list -n rv-debuginfo
+%endif
 
 # with_tools
 %endif

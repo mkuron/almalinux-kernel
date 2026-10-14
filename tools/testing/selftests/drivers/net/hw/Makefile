@@ -13,6 +13,7 @@ TEST_PROGS = \
 	pp_alloc_fail.py \
 	rss_api.py \
 	rss_ctx.py \
+	rss_drv.py \
 	rss_flow_label.py \
 	rss_input_xfrm.py \
 	#
@@ -24,8 +25,8 @@ TEST_FILES := \
 TEST_INCLUDES := \
 	$(wildcard lib/py/*.py ../lib/py/*.py) \
 	../../../net/lib.sh \
-	../../../net/forwarding/lib.sh \
 	../../../net/forwarding/ipip_lib.sh \
+	../../../net/forwarding/lib.sh \
 	../../../net/forwarding/tc_common.sh \
 	#
 

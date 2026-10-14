@@ -249,6 +249,7 @@ struct sk_filter;
   *	@sk_dst_cache: destination cache
   *	@sk_dst_pending_confirm: need to confirm neighbour
   *	@sk_policy: flow policy
+  *	@psp_assoc: PSP association, if socket is PSP-secured
   *	@sk_receive_queue: incoming packets
   *	@sk_wmem_alloc: transmit queue bytes committed
   *	@sk_tsq_flags: TCP Small Queues flags
@@ -282,6 +283,7 @@ struct sk_filter;
   *	@sk_err_soft: errors that don't cause failure but are the cause of a
   *		      persistent failure not just 'timed out'
   *	@sk_drops: raw/udp drops counter
+  *	@sk_drop_counters: optional pointer to numa_drop_counters
   *	@sk_ack_backlog: current listen backlog
   *	@sk_max_ack_backlog: listen backlog set in listen()
   *	@sk_uid: user id of owner
@@ -442,6 +444,9 @@ struct sock {
 #ifdef CONFIG_XFRM
 	struct xfrm_policy __rcu *sk_policy[2];
 #endif
+#if IS_ENABLED(CONFIG_INET_PSP)
+	struct psp_assoc __rcu	*psp_assoc;
+#endif
 	__cacheline_group_end(sock_read_rxtx);
 
 	__cacheline_group_begin(sock_write_rxtx);
@@ -454,7 +459,7 @@ struct sock {
 	__cacheline_group_begin(sock_write_tx);
 	int			sk_write_pending;
 	atomic_t		sk_omem_alloc;
-	int			sk_sndbuf;
+	int			sk_err_soft;
 
 	int			sk_wmem_queued;
 	refcount_t		sk_wmem_alloc;
@@ -479,6 +484,9 @@ struct sock {
 	long			sk_sndtimeo;
 	u32			sk_priority;
 	u32			sk_mark;
+	kuid_t			sk_uid;
+	u16			sk_protocol;
+	u16			sk_type;
 	struct dst_entry __rcu	*sk_dst_cache;
 	netdev_features_t	sk_route_caps;
 #ifdef CONFIG_SOCK_VALIDATE_XMIT
@@ -491,6 +499,7 @@ struct sock {
 	unsigned int		sk_gso_max_size;
 	gfp_t			sk_allocation;
 	u32			sk_txhash;
+	int			sk_sndbuf;
 	u8			sk_pacing_shift;
 	bool			sk_use_task_frag;
 	__cacheline_group_end(sock_read_tx);
@@ -504,15 +513,11 @@ struct sock {
 				sk_no_check_tx : 1,
 				sk_no_check_rx : 1;
 	u8			sk_shutdown;
-	u16			sk_type;
-	u16			sk_protocol;
 	unsigned long	        sk_lingertime;
 	struct proto		*sk_prot_creator;
 	rwlock_t		sk_callback_lock;
-	int			sk_err_soft;
 	u32			sk_ack_backlog;
 	u32			sk_max_ack_backlog;
-	kuid_t			sk_uid;
 	unsigned long		sk_ino;
 	spinlock_t		sk_peer_lock;
 	int			sk_bind_phc;
@@ -548,6 +553,7 @@ struct sock {
 #ifdef CONFIG_BPF_SYSCALL
 	struct bpf_local_storage __rcu	*sk_bpf_storage;
 #endif
+	struct numa_drop_counters *sk_drop_counters;
 	struct rcu_head		sk_rcu;
 	netns_tracker		ns_tracker;
 	struct xarray		sk_user_frags;
@@ -1788,7 +1794,6 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 void sk_free(struct sock *sk);
 void sk_destruct(struct sock *sk);
 struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority);
-void sk_free_unlock_clone(struct sock *sk);
 
 struct sk_buff *sock_wmalloc(struct sock *sk, unsigned long size, int force,
 			     gfp_t priority);
@@ -2042,7 +2047,7 @@ static inline int sk_rx_queue_get(const struct sock *sk)
 
 static inline void sk_set_socket(struct sock *sk, struct socket *sock)
 {
-	sk->sk_socket = sock;
+	WRITE_ONCE(sk->sk_socket, sock);
 	if (sock) {
 		WRITE_ONCE(sk->sk_uid, SOCK_INODE(sock)->i_uid);
 		WRITE_ONCE(sk->sk_ino, SOCK_INODE(sock)->i_ino);
@@ -2630,18 +2635,53 @@ struct sock_skb_cb {
 #define sock_skb_cb_check_size(size) \
 	BUILD_BUG_ON((size) > SOCK_SKB_CB_OFFSET)
 
+static inline void sk_drops_add(struct sock *sk, int segs)
+{
+	struct numa_drop_counters *ndc = sk->sk_drop_counters;
+
+	if (ndc)
+		numa_drop_add(ndc, segs);
+	else
+		atomic_add(segs, &sk->sk_drops);
+}
+
+static inline void sk_drops_inc(struct sock *sk)
+{
+	sk_drops_add(sk, 1);
+}
+
+static inline int sk_drops_read(const struct sock *sk)
+{
+	const struct numa_drop_counters *ndc = sk->sk_drop_counters;
+
+	if (ndc) {
+		DEBUG_NET_WARN_ON_ONCE(atomic_read(&sk->sk_drops));
+		return numa_drop_read(ndc);
+	}
+	return atomic_read(&sk->sk_drops);
+}
+
+static inline void sk_drops_reset(struct sock *sk)
+{
+	struct numa_drop_counters *ndc = sk->sk_drop_counters;
+
+	if (ndc)
+		numa_drop_reset(ndc);
+	atomic_set(&sk->sk_drops, 0);
+}
+
 static inline void
 sock_skb_set_dropcount(const struct sock *sk, struct sk_buff *skb)
 {
 	SOCK_SKB_CB(skb)->dropcount = sock_flag(sk, SOCK_RXQ_OVFL) ?
-						atomic_read(&sk->sk_drops) : 0;
+						sk_drops_read(sk) : 0;
 }
 
-static inline void sk_drops_add(struct sock *sk, const struct sk_buff *skb)
+static inline void sk_drops_skbadd(struct sock *sk, const struct sk_buff *skb)
 {
 	int segs = max_t(u16, 1, skb_shinfo(skb)->gso_segs);
 
-	atomic_add(segs, &sk->sk_drops);
+	sk_drops_add(sk, segs);
 }
 
 static inline ktime_t sock_read_timestamp(struct sock *sk)
@@ -2842,28 +2882,6 @@ static inline bool
 sk_requests_wifi_status(struct sock *sk)
 {
 	return sk && sk_fullsock(sk) && sock_flag(sk, SOCK_WIFI_STATUS);
-}
-
-/* Checks if this SKB belongs to an HW offloaded socket
- * and whether any SW fallbacks are required based on dev.
- * Check decrypted mark in case skb_orphan() cleared socket.
- */
-static inline struct sk_buff *sk_validate_xmit_skb(struct sk_buff *skb,
-						   struct net_device *dev)
-{
-#ifdef CONFIG_SOCK_VALIDATE_XMIT
-	struct sock *sk = skb->sk;
-
-	if (sk && sk_fullsock(sk) && sk->sk_validate_xmit_skb) {
-		skb = sk->sk_validate_xmit_skb(sk, dev, skb);
-	} else if (unlikely(skb_is_decrypted(skb))) {
-		pr_warn_ratelimited("unencrypted skb with no associated socket - dropping\n");
-		kfree_skb(skb);
-		skb = NULL;
-	}
-#endif
-
-	return skb;
 }
 
 /* This helper checks if a socket is a LISTEN or NEW_SYN_RECV

@@ -173,7 +173,32 @@ struct ima_kexec_hdr {
 				 IMA_BPRM_APPRAISED | IMA_READ_APPRAISED | \
 				 IMA_CREDS_APPRAISED)
 
-/* IMA iint cache atomic_flags */
+/*
+ * IMA iint cache atomic_flags
+ *
+ * IMA_CHANGE_ATTR - indicates that chATTR() was called (chmod, chown, chgrp)
+ * and file attributes have changed. On file open, it causes IMA to clear
+ * iint->flags to re-evaluate policy and perform IMA functions again.
+ *
+ * IMA_CHANGE_XATTR - indicates that setxattr or removexattr was called and
+ * extended attributes have changed. On file open, it causes IMA to clear
+ * iint->flags IMA_DONE_MASK to re-appraise.
+ *
+ * IMA_UPDATE_XATTR - indicates that security.ima needs to be updated. It is
+ * cleared if file policy changes and no update is needed.
+ *
+ * IMA_DIGSIG - indicates that file security.ima has signature and file
+ * security.ima must not update on file close.
+ *
+ * IMA_MAY_EMIT_TOMTOU - indicates to add Time-of-Measure-Time-of-Use (ToMToU)
+ * integrity violation (a file that is already opened for read is opened for
+ * write) to the measurement list and to also emit an audit message.
+ *
+ * IMA_EMITTED_OPENWRITERS - indicates to add open-writers integrity violation
+ * (a file that is already opened for write is opened for read) to the
+ * measurement list and to also emit an audit message.
+ *
+ */
 #define IMA_CHANGE_XATTR	0
 #define IMA_UPDATE_XATTR	1
 #define IMA_CHANGE_ATTR		2
@@ -369,7 +394,7 @@ static inline void ima_process_queued_keys(void) {}
 
 /* LIM API function definitions */
 int ima_get_action(struct mnt_idmap *idmap, struct inode *inode,
-		   const struct cred *cred, u32 secid, int mask,
+		   const struct cred *cred, struct lsm_prop *prop, int mask,
 		   enum ima_hooks func, int *pcr,
 		   struct ima_template_desc **template_desc,
 		   const char *func_data, unsigned int *allowed_algos);
@@ -400,8 +425,8 @@ const char *ima_d_path(const struct path *path, char **pathbuf, char *filename);
 
 /* IMA policy related functions */
 int ima_match_policy(struct mnt_idmap *idmap, struct inode *inode,
-		     const struct cred *cred, u32 secid, enum ima_hooks func,
-		     int mask, int flags, int *pcr,
+		     const struct cred *cred, struct lsm_prop *prop,
+		     enum ima_hooks func, int mask, int flags, int *pcr,
 		     struct ima_template_desc **template_desc,
 		     const char *func_data, unsigned int *allowed_algos);
 void ima_init_policy(void);
@@ -555,7 +580,7 @@ static inline void ima_filter_rule_free(void *lsmrule)
 {
 }
 
-static inline int ima_filter_rule_match(u32 secid, u32 field, u32 op,
+static inline int ima_filter_rule_match(struct lsm_prop *prop, u32 field, u32 op,
 					void *lsmrule)
 {
 	return -EINVAL;

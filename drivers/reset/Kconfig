@@ -66,6 +66,16 @@ config RESET_BRCMSTB_RESCAL
 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
 	  BCM7216.
 
+config RESET_EIC7700
+	bool "Reset controller driver for ESWIN SoCs"
+	depends on ARCH_ESWIN || COMPILE_TEST
+	default ARCH_ESWIN
+	help
+	  This enables the reset controller driver for ESWIN SoCs. This driver is
+	  specific to ESWIN SoCs and should only be enabled if using such hardware.
+	  The driver supports eic7700 series chips and provides functionality for
+	  asserting and deasserting resets on the chip.
+
 config RESET_EYEQ
 	bool "Mobileye EyeQ reset controller"
 	depends on MACH_EYEQ5 || MACH_EYEQ6H || COMPILE_TEST
@@ -152,20 +162,6 @@ config RESET_MCHP_SPARX5
 	select MFD_SYSCON
 	help
 	  This driver supports switch core reset for the Microchip Sparx5 SoC.
-
-config RESET_MESON
-	tristate "Meson Reset Driver"
-	depends on ARCH_MESON || COMPILE_TEST
-	default ARCH_MESON
-	help
-	  This enables the reset driver for Amlogic Meson SoCs.
-
-config RESET_MESON_AUDIO_ARB
-	tristate "Meson Audio Memory Arbiter Reset Driver"
-	depends on ARCH_MESON || COMPILE_TEST
-	help
-	  This enables the reset driver for Audio Memory Arbiter of
-	  Amlogic's A113 based SoCs
 
 config RESET_NPCM
 	bool "NPCM BMC Reset Driver" if COMPILE_TEST
@@ -356,9 +352,11 @@ config RESET_ZYNQMP
 	help
 	  This enables the reset controller driver for Xilinx ZynqMP SoCs.
 
+source "drivers/reset/amlogic/Kconfig"
+source "drivers/reset/hisilicon/Kconfig"
+source "drivers/reset/spacemit/Kconfig"
 source "drivers/reset/starfive/Kconfig"
 source "drivers/reset/sti/Kconfig"
-source "drivers/reset/hisilicon/Kconfig"
 source "drivers/reset/tegra/Kconfig"
 
 endif

@@ -1160,12 +1160,15 @@ int ip_tunnel_init_net(struct net *net, unsigned int ip_tnl_net_id,
 }
 EXPORT_SYMBOL_GPL(ip_tunnel_init_net);
 
-static void ip_tunnel_destroy(struct net *net, struct ip_tunnel_net *itn,
-			      struct list_head *head,
-			      struct rtnl_link_ops *ops)
+void ip_tunnel_delete_net(struct net *net, unsigned int id,
+			  struct rtnl_link_ops *ops,
+			  struct list_head *head)
 {
+	struct ip_tunnel_net *itn = net_generic(net, id);
 	struct net_device *dev, *aux;
 	int h;
+
+	ASSERT_RTNL_NET(net);
 
 	for_each_netdev_safe(net, dev, aux)
 		if (dev->rtnl_link_ops == ops)
@@ -1184,27 +1187,13 @@ static void ip_tunnel_destroy(struct net *net, struct ip_tunnel_net *itn,
 				unregister_netdevice_queue(t->dev, head);
 	}
 }
+EXPORT_SYMBOL_GPL(ip_tunnel_delete_net);
 
-void ip_tunnel_delete_nets(struct list_head *net_list, unsigned int id,
-			   struct rtnl_link_ops *ops,
-			   struct list_head *dev_to_kill)
-{
-	struct ip_tunnel_net *itn;
-	struct net *net;
-
-	ASSERT_RTNL();
-	list_for_each_entry(net, net_list, exit_list) {
-		itn = net_generic(net, id);
-		ip_tunnel_destroy(net, itn, dev_to_kill, ops);
-	}
-}
-EXPORT_SYMBOL_GPL(ip_tunnel_delete_nets);
-
-int ip_tunnel_newlink(struct net_device *dev, struct nlattr *tb[],
-		      struct ip_tunnel_parm_kern *p, __u32 fwmark)
+int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
+		      __u32 fwmark)
 {
 	struct ip_tunnel *nt;
-	struct net *net = dev_net(dev);
 	struct ip_tunnel_net *itn;
 	int mtu;
 	int err;
@@ -1292,7 +1281,7 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
 }
 EXPORT_SYMBOL_GPL(ip_tunnel_changelink);
 
-int ip_tunnel_init(struct net_device *dev)
+int __ip_tunnel_init(struct net_device *dev)
 {
 	struct ip_tunnel *tunnel = netdev_priv(dev);
 	struct iphdr *iph = &tunnel->parms.iph;
@@ -1313,17 +1302,15 @@ int ip_tunnel_init(struct net_device *dev)
 	}
 
 	tunnel->dev = dev;
-	tunnel->net = dev_net(dev);
 	strscpy(tunnel->parms.name, dev->name);
 	iph->version		= 4;
 	iph->ihl		= 5;
 
 	if (tunnel->collect_md)
 		netif_keep_dst(dev);
-	netdev_lockdep_set_classes(dev);
 	return 0;
 }
-EXPORT_SYMBOL_GPL(ip_tunnel_init);
+EXPORT_SYMBOL_GPL(__ip_tunnel_init);
 
 void ip_tunnel_uninit(struct net_device *dev)
 {

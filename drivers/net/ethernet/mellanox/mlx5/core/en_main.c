@@ -4083,17 +4083,16 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
 
 static void mlx5e_nic_set_rx_mode(struct mlx5e_priv *priv)
 {
-	if (mlx5e_is_uplink_rep(priv))
-		return; /* no rx mode for uplink rep */
-
 	queue_work(priv->wq, &priv->set_rx_mode_work);
 }
 
-static void mlx5e_set_rx_mode(struct net_device *dev)
+static void mlx5e_set_rx_mode(struct net_device *dev,
+			      struct netdev_hw_addr_list *uc,
+			      struct netdev_hw_addr_list *mc)
 {
 	struct mlx5e_priv *priv = netdev_priv(dev);
 
-	mlx5e_nic_set_rx_mode(priv);
+	mlx5e_fs_set_rx_mode_work(priv->fs, dev, uc, mc);
 }
 
 static int mlx5e_set_mac(struct net_device *netdev, void *addr)
@@ -5302,7 +5301,7 @@ const struct net_device_ops mlx5e_netdev_ops = {
 	.ndo_setup_tc            = mlx5e_setup_tc,
 	.ndo_select_queue        = mlx5e_select_queue,
 	.ndo_get_stats64         = mlx5e_get_stats,
-	.ndo_set_rx_mode         = mlx5e_set_rx_mode,
+	.ndo_set_rx_mode_async   = mlx5e_set_rx_mode,
 	.ndo_set_mac_address     = mlx5e_set_mac,
 	.ndo_vlan_rx_add_vid     = mlx5e_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid    = mlx5e_vlan_rx_kill_vid,
@@ -6204,8 +6203,11 @@ void mlx5e_set_rx_mode_work(struct work_struct *work)
 {
 	struct mlx5e_priv *priv = container_of(work, struct mlx5e_priv,
 					       set_rx_mode_work);
+	struct net_device *dev = priv->netdev;
 
-	return mlx5e_fs_set_rx_mode_work(priv->fs, priv->netdev);
+	netdev_lock_ops(dev);
+	mlx5e_fs_set_rx_mode_work(priv->fs, dev, NULL, NULL);
+	netdev_unlock_ops(dev);
 }
 
 /* mlx5e generic netdev management API (move to en_common.c) */
@@ -6416,12 +6418,23 @@ int mlx5e_attach_netdev(struct mlx5e_priv *priv)
 
 	/* max number of channels may have changed */
 	max_nch = mlx5e_calc_max_nch(priv->mdev, priv->netdev, profile);
+
+	/* Locking is required by ethtool_rxfh_indir_lost() (sends
+	 * ETHTOOL_MSG_RSS_NTF) and by netif_set_real_num_*_queues in case
+	 * the netdev has been registered by this point (if this function
+	 * was called in the reload or resume flow).
+	 */
+	if (need_lock) {
+		rtnl_lock();
+		netdev_lock(priv->netdev);
+	}
+
 	if (priv->channels.params.num_channels > max_nch) {
 		mlx5_core_warn(priv->mdev, "MLX5E: Reducing number of channels to %d\n", max_nch);
 		/* Reducing the number of channels - RXFH has to be reset, and
 		 * mlx5e_num_channels_changed below will build the RQT.
 		 */
-		priv->netdev->priv_flags &= ~IFF_RXFH_CONFIGURED;
+		ethtool_rxfh_indir_lost(priv->netdev);
 		priv->channels.params.num_channels = max_nch;
 		if (priv->channels.params.mqprio.mode == TC_MQPRIO_MODE_CHANNEL) {
 			mlx5_core_warn(priv->mdev, "MLX5E: Disabling MQPRIO channel mode\n");
@@ -6438,15 +6451,7 @@ int mlx5e_attach_netdev(struct mlx5e_priv *priv)
 	/* 1. Set the real number of queues in the kernel the first time.
 	 * 2. Set our default XPS cpumask.
 	 * 3. Build the RQT.
-	 *
-	 * Locking is required by netif_set_real_num_*_queues in case the
-	 * netdev has been registered by this point (if this function was called
-	 * in the reload or resume flow).
 	 */
-	if (need_lock) {
-		rtnl_lock();
-		netdev_lock(priv->netdev);
-	}
 	err = mlx5e_num_channels_changed(priv);
 	if (need_lock) {
 		netdev_unlock(priv->netdev);

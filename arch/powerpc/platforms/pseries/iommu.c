@@ -198,7 +198,7 @@ static void tce_iommu_userspace_view_free(struct iommu_table *tbl)
 
 static void tce_free_pSeries(struct iommu_table *tbl)
 {
-	if (!tbl->it_userspace)
+	if (tbl->it_userspace)
 		tce_iommu_userspace_view_free(tbl);
 }
 
@@ -1778,10 +1778,8 @@ out_failed:
 out_unlock:
 	mutex_unlock(&dma_win_init_mutex);
 
-	/* If we have persistent memory and the window size is not big enough
-	 * to directly map both RAM and vPMEM, then we need to set DMA limit.
-	 */
-	if (pmem_present && direct_mapping && len != MAX_PHYSMEM_BITS)
+	/* For pre-mapped memory, set bus_dma_limit to the max RAM */
+	if (direct_mapping)
 		dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset +
 						(1ULL << max_ram_len);
 

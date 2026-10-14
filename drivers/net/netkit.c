@@ -154,7 +154,9 @@ static int netkit_get_iflink(const struct net_device *dev)
 	return iflink;
 }
 
-static void netkit_set_multicast(struct net_device *dev)
+static void netkit_set_multicast(struct net_device *dev,
+				 struct netdev_hw_addr_list *uc,
+				 struct netdev_hw_addr_list *mc)
 {
 	/* Nothing to do, we receive whatever gets pushed to us! */
 }
@@ -210,7 +212,7 @@ static const struct net_device_ops netkit_netdev_ops = {
 	.ndo_open		= netkit_open,
 	.ndo_stop		= netkit_close,
 	.ndo_start_xmit		= netkit_xmit,
-	.ndo_set_rx_mode	= netkit_set_multicast,
+	.ndo_set_rx_mode_async	= netkit_set_multicast,
 	.ndo_set_rx_headroom	= netkit_set_headroom,
 	.ndo_set_mac_address	= netkit_set_macaddr,
 	.ndo_get_iflink		= netkit_get_iflink,
@@ -326,21 +328,25 @@ static int netkit_validate(struct nlattr *tb[], struct nlattr *data[],
 
 static struct rtnl_link_ops netkit_link_ops;
 
-static int netkit_new_link(struct net *peer_net, struct net_device *dev,
-			   struct nlattr *tb[], struct nlattr *data[],
+static int netkit_new_link(struct net_device *dev,
+			   struct rtnl_newlink_params *params,
 			   struct netlink_ext_ack *extack)
 {
-	struct nlattr *peer_tb[IFLA_MAX + 1], **tbp = tb, *attr;
+	struct net *peer_net = rtnl_newlink_peer_net(params);
+	struct nlattr *peer_tb[IFLA_MAX + 1], **tbp, *attr;
 	enum netkit_action default_prim = NETKIT_PASS;
 	enum netkit_action default_peer = NETKIT_PASS;
+	struct nlattr **data = params->data;
 	enum netkit_mode mode = NETKIT_L3;
 	unsigned char ifname_assign_type;
+	struct nlattr **tb = params->tb;
 	struct ifinfomsg *ifmp = NULL;
 	struct net_device *peer;
 	char ifname[IFNAMSIZ];
 	struct netkit *nk;
 	int err;
 
+	tbp = tb;
 	if (data) {
 		if (data[IFLA_NETKIT_MODE]) {
 			attr = data[IFLA_NETKIT_MODE];

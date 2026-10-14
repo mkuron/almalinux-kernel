@@ -6,6 +6,7 @@
 #include <linux/workqueue.h>
 #include <linux/delay.h>
 #include <linux/cpuhotplug.h>
+#include <linux/kvm_types.h>
 #include <asm/cpu_device_id.h>
 #include <asm/cmdline.h>
 #include <asm/traps.h>
@@ -49,7 +50,7 @@ static unsigned int sysctl_sld_mitigate = 1;
 static DEFINE_SEMAPHORE(buslock_sem, 1);
 
 #ifdef CONFIG_PROC_SYSCTL
-static struct ctl_table sld_sysctls[] = {
+static const struct ctl_table sld_sysctls[] = {
 	{
 		.procname       = "split_lock_mitigate",
 		.data           = &sysctl_sld_mitigate,
@@ -263,7 +264,7 @@ bool handle_guest_split_lock(unsigned long ip)
 	force_sig_fault(SIGBUS, BUS_ADRALN, NULL);
 	return false;
 }
-EXPORT_SYMBOL_GPL(handle_guest_split_lock);
+EXPORT_SYMBOL_FOR_KVM(handle_guest_split_lock);
 
 void bus_lock_init(void)
 {

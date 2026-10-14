@@ -54,7 +54,6 @@ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
 
 	return dst;
 }
-EXPORT_SYMBOL(inet6_csk_route_req);
 
 void inet6_csk_addr2sockaddr(struct sock *sk, struct sockaddr *uaddr)
 {
@@ -106,7 +105,7 @@ static struct dst_entry *inet6_csk_route_socket(struct sock *sk,
 		dst = ip6_dst_lookup_flow(sock_net(sk), sk, fl6, final_p);
 
 		if (!IS_ERR(dst))
-			ip6_dst_store(sk, dst, NULL, NULL);
+			ip6_dst_store(sk, dst, false, false);
 	}
 	return dst;
 }
@@ -151,4 +150,3 @@ struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu)
 	dst = inet6_csk_route_socket(sk, &fl6);
 	return IS_ERR(dst) ? NULL : dst;
 }
-EXPORT_SYMBOL_GPL(inet6_csk_update_pmtu);

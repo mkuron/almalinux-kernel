@@ -295,13 +295,13 @@ static inline int timer_overrun_to_int(struct k_itimer *timr)
 	return (int)timr->it_overrun_last;
 }
 
-static void common_hrtimer_rearm(struct k_itimer *timr)
+static bool common_hrtimer_rearm(struct k_itimer *timr)
 {
 	struct hrtimer *timer = &timr->it.real.timer;
 
-	timr->it_overrun += hrtimer_forward(timer, timer->base->get_time(),
-					    timr->it_interval);
+	timr->it_overrun += hrtimer_forward_now(timer, timr->it_interval);
 	hrtimer_restart(timer);
+	return true;
 }
 
 static bool __posixtimer_deliver_signal(struct kernel_siginfo *info, struct k_itimer *timr)
@@ -535,7 +535,7 @@ static int do_timer_create(clockid_t which_clock, struct sigevent *event,
 		goto out;
 	}
 	/*
-	 * After succesful copy out, the timer ID is visible to user space
+	 * After successful copy out, the timer ID is visible to user space
 	 * now but not yet valid because new_timer::signal low order bit is 1.
 	 *
 	 * Complete the initialization with the clock specific create
@@ -803,7 +803,7 @@ SYSCALL_DEFINE1(timer_getoverrun, timer_t, timer_id)
 		return timer_overrun_to_int(scoped_timer);
 }
 
-static void common_hrtimer_arm(struct k_itimer *timr, ktime_t expires,
+static bool common_hrtimer_arm(struct k_itimer *timr, ktime_t expires,
 			       bool absolute, bool sigev_none)
 {
 	struct hrtimer *timer = &timr->it.real.timer;
@@ -825,11 +825,12 @@ static void common_hrtimer_arm(struct k_itimer *timr, ktime_t expires,
 	hrtimer_setup(&timr->it.real.timer, posix_timer_fn, timr->it_clock, mode);
 
 	if (!absolute)
-		expires = ktime_add_safe(expires, timer->base->get_time());
+		expires = ktime_add_safe(expires, hrtimer_cb_get_time(timer));
 	hrtimer_set_expires(timer, expires);
 
 	if (!sigev_none)
 		hrtimer_start_expires(timer, HRTIMER_MODE_ABS);
+	return true;
 }
 
 static int common_hrtimer_try_to_cancel(struct k_itimer *timr)
@@ -1243,7 +1244,7 @@ SYSCALL_DEFINE2(clock_adjtime, const clockid_t, which_clock,
  *    sys_clock_settime(). The kernel internal timekeeping is always using
  *    nanoseconds precision independent of the clocksource device which is
  *    used to read the time from. The resolution of that device only
- *    affects the presicion of the time returned by sys_clock_gettime().
+ *    affects the precision of the time returned by sys_clock_gettime().
  *
  * Returns:
  *	0		Success. @tp contains the resolution
@@ -1526,6 +1527,9 @@ static const struct k_clock * const posix_clocks[] = {
 	[CLOCK_REALTIME_ALARM]		= &alarm_clock,
 	[CLOCK_BOOTTIME_ALARM]		= &alarm_clock,
 	[CLOCK_TAI]			= &clock_tai,
+#ifdef CONFIG_POSIX_AUX_CLOCKS
+	[CLOCK_AUX ... CLOCK_AUX_LAST]	= &clock_aux,
+#endif
 };
 
 static const struct k_clock *clockid_to_kclock(const clockid_t id)

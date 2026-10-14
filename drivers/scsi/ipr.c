@@ -4644,10 +4644,10 @@ ATTRIBUTE_GROUPS(ipr_dev);
 
 /**
  * ipr_biosparam - Return the HSC mapping
- * @sdev:			scsi device struct
- * @block_device:	block device pointer
+ * @sdev:		scsi device struct
+ * @unused:		gendisk pointer
  * @capacity:		capacity of the device
- * @parm:			Array containing returned HSC values.
+ * @parm:		Array containing returned HSC values.
  *
  * This function generates the HSC parms that fdisk uses.
  * We want to make sure we return something that places partitions
@@ -4657,7 +4657,7 @@ ATTRIBUTE_GROUPS(ipr_dev);
  * 	0 on success
  **/
 static int ipr_biosparam(struct scsi_device *sdev,
-			 struct block_device *block_device,
+			 struct gendisk *unused,
 			 sector_t capacity, int *parm)
 {
 	int heads, sectors;
@@ -7859,7 +7859,6 @@ static int ipr_reset_restore_cfg_space(struct ipr_cmnd *ipr_cmd)
 	struct ipr_ioa_cfg *ioa_cfg = ipr_cmd->ioa_cfg;
 
 	ENTER;
-	ioa_cfg->pdev->state_saved = true;
 	pci_restore_state(ioa_cfg->pdev);
 
 	if (ipr_set_pcix_cmd_reg(ioa_cfg)) {

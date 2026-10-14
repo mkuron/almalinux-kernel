@@ -19,7 +19,7 @@
 
 #include "posix-timers.h"
 
-static void posix_cpu_timer_rearm(struct k_itimer *timer);
+static bool posix_cpu_timer_rearm(struct k_itimer *timer);
 
 void posix_cputimers_group_init(struct posix_cputimers *pct, u64 cpu_limit)
 {
@@ -1075,8 +1075,11 @@ static void check_process_timers(struct task_struct *tsk,
 /*
  * This is called from the signal code (via posixtimer_rearm)
  * when the last timer signal was delivered and we have to reload the timer.
+ *
+ * Return true unconditionally so the core code assumes the timer to be
+ * armed. Otherwise it would requeue the signal.
  */
-static void posix_cpu_timer_rearm(struct k_itimer *timer)
+static bool posix_cpu_timer_rearm(struct k_itimer *timer)
 {
 	clockid_t clkid = CPUCLOCK_WHICH(timer->it_clock);
 	struct task_struct *p;
@@ -1085,7 +1088,7 @@ static void posix_cpu_timer_rearm(struct k_itimer *timer)
 
 	p = timer_lock_sighand(timer, &flags);
 	if (unlikely(!p))
-		return;
+		return true;
 
 	/*
 	 * Fetch the current sample and update the timer's expiry time.
@@ -1102,6 +1105,7 @@ static void posix_cpu_timer_rearm(struct k_itimer *timer)
 	 */
 	arm_timer(timer, p);
 	unlock_task_sighand(p, &flags);
+	return true;
 }
 
 /**

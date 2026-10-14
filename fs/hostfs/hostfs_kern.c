@@ -395,7 +395,7 @@ static const struct file_operations hostfs_file_fops = {
 	.splice_write	= iter_file_splice_write,
 	.read_iter	= generic_file_read_iter,
 	.write_iter	= generic_file_write_iter,
-	.mmap		= generic_file_mmap,
+	.mmap_prepare	= generic_file_mmap_prepare,
 	.open		= hostfs_open,
 	.release	= hostfs_file_release,
 	.fsync		= hostfs_fsync,
@@ -463,7 +463,8 @@ static int hostfs_read_folio(struct file *file, struct folio *folio)
 	return ret;
 }
 
-static int hostfs_write_begin(struct file *file, struct address_space *mapping,
+static int hostfs_write_begin(const struct kiocb *iocb,
+			      struct address_space *mapping,
 			      loff_t pos, unsigned len,
 			      struct folio **foliop, void **fsdata)
 {
@@ -476,7 +477,8 @@ static int hostfs_write_begin(struct file *file, struct address_space *mapping,
 	return 0;
 }
 
-static int hostfs_write_end(struct file *file, struct address_space *mapping,
+static int hostfs_write_end(const struct kiocb *iocb,
+			    struct address_space *mapping,
 			    loff_t pos, unsigned len, unsigned copied,
 			    struct folio *folio, void *fsdata)
 {
@@ -486,7 +488,7 @@ static int hostfs_write_end(struct file *file, struct address_space *mapping,
 	int err;
 
 	buffer = kmap_local_folio(folio, from);
-	err = write_file(FILE_HOSTFS_I(file)->fd, &pos, buffer, copied);
+	err = write_file(FILE_HOSTFS_I(iocb->ki_filp)->fd, &pos, buffer, copied);
 	kunmap_local(buffer);
 
 	if (!folio_test_uptodate(folio) && err == folio_size(folio))
@@ -697,17 +699,25 @@ static int hostfs_symlink(struct mnt_idmap *idmap, struct inode *ino,
 	return err;
 }
 
-static int hostfs_mkdir(struct mnt_idmap *idmap, struct inode *ino,
-			struct dentry *dentry, umode_t mode)
+static struct dentry *hostfs_mkdir(struct mnt_idmap *idmap, struct inode *ino,
+				   struct dentry *dentry, umode_t mode)
 {
+	struct inode *inode;
 	char *file;
 	int err;
 
 	if ((file = dentry_name(dentry)) == NULL)
-		return -ENOMEM;
+		return ERR_PTR(-ENOMEM);
 	err = do_mkdir(file, mode);
+	if (err) {
+		dentry = ERR_PTR(err);
+	} else {
+		inode = hostfs_iget(dentry->d_sb, file);
+		d_drop(dentry);
+		dentry = d_splice_alias(inode, dentry);
+	}
 	__putname(file);
-	return err;
+	return dentry;
 }
 
 static int hostfs_rmdir(struct inode *ino, struct dentry *dentry)

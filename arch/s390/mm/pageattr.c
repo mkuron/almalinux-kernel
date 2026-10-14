@@ -77,10 +77,8 @@ static void pgt_set(unsigned long *old, unsigned long new, unsigned long addr,
 		}
 		table = (unsigned long *)((unsigned long)old & mask);
 		crdte(*old, new, table, dtt, addr, get_lowcore()->kernel_asce.val);
-	} else if (MACHINE_HAS_IDTE) {
-		cspg(old, *old, new);
 	} else {
-		csp((unsigned int *)old + 1, *old, new);
+		cspg(old, *old, new);
 	}
 }
 
@@ -109,8 +107,6 @@ static int walk_pte_level(pmd_t *pmdp, unsigned long addr, unsigned long end,
 		} else if (flags & SET_MEMORY_DEF) {
 			new = __pte(pte_val(new) & PAGE_MASK);
 			new = set_pte_bit(new, PAGE_KERNEL);
-			if (!MACHINE_HAS_NX)
-				new = clear_pte_bit(new, __pgprot(_PAGE_NOEXEC));
 		}
 		pgt_set((unsigned long *)ptep, pte_val(new), addr, CRDTE_DTT_PAGE);
 		ptep++;
@@ -167,8 +163,6 @@ static void modify_pmd_page(pmd_t *pmdp, unsigned long addr,
 	} else if (flags & SET_MEMORY_DEF) {
 		new = __pmd(pmd_val(new) & PMD_MASK);
 		new = set_pmd_bit(new, SEGMENT_KERNEL);
-		if (!MACHINE_HAS_NX)
-			new = clear_pmd_bit(new, __pgprot(_SEGMENT_ENTRY_NOEXEC));
 	}
 	pgt_set((unsigned long *)pmdp, pmd_val(new), addr, CRDTE_DTT_SEGMENT);
 }
@@ -256,8 +250,6 @@ static void modify_pud_page(pud_t *pudp, unsigned long addr,
 	} else if (flags & SET_MEMORY_DEF) {
 		new = __pud(pud_val(new) & PUD_MASK);
 		new = set_pud_bit(new, REGION3_KERNEL);
-		if (!MACHINE_HAS_NX)
-			new = clear_pud_bit(new, __pgprot(_REGION_ENTRY_NOEXEC));
 	}
 	pgt_set((unsigned long *)pudp, pud_val(new), addr, CRDTE_DTT_REGION3);
 }

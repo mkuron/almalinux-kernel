@@ -1,17 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0-only
-
-#include <linux/dcache.h>
-#include <linux/module.h>
-#include <linux/skbuff.h>
-#include <linux/sock_diag.h>
 #include <linux/types.h>
-#include <linux/user_namespace.h>
-#include <net/af_unix.h>
+#include <linux/spinlock.h>
+#include <linux/sock_diag.h>
+#include <linux/unix_diag.h>
+#include <linux/skbuff.h>
+#include <linux/module.h>
+#include <linux/uidgid.h>
 #include <net/netlink.h>
+#include <net/af_unix.h>
 #include <net/tcp_states.h>
-#include <uapi/linux/unix_diag.h>
-
-#include "af_unix.h"
+#include <net/sock.h>
 
 static int sk_diag_dump_name(struct sock *sk, struct sk_buff *nlskb)
 {

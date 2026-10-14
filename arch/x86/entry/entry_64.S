@@ -19,6 +19,7 @@
  * - idtentry:		Define exception entry points.
  */
 #include <linux/export.h>
+#include <linux/kvm_types.h>
 #include <linux/linkage.h>
 #include <asm/segment.h>
 #include <asm/cache.h>
@@ -192,7 +193,7 @@ SYM_FUNC_START(__switch_to_asm)
 
 #ifdef CONFIG_STACKPROTECTOR
 	movq	TASK_stack_canary(%rsi), %rbx
-	movq	%rbx, PER_CPU_VAR(fixed_percpu_data + FIXED_stack_canary)
+	movq	%rbx, PER_CPU_VAR(__stack_chk_guard)
 #endif
 
 	/*
@@ -1569,5 +1570,5 @@ SYM_FUNC_START(clear_bhb_loop)
 	pop	%rbp
 	RET
 SYM_FUNC_END(clear_bhb_loop)
-EXPORT_SYMBOL_GPL(clear_bhb_loop)
+EXPORT_SYMBOL_FOR_KVM(clear_bhb_loop)
 STACK_FRAME_NON_STANDARD(clear_bhb_loop)

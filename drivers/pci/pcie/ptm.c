@@ -81,9 +81,14 @@ void pci_ptm_init(struct pci_dev *dev)
 		dev->ptm_granularity = 0;
 	}
 
+	if (cap & PCI_PTM_CAP_RES)
+		dev->ptm_responder = 1;
+	if (cap & PCI_PTM_CAP_REQ)
+		dev->ptm_requester = 1;
+
 	if (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
 	    pci_pcie_type(dev) == PCI_EXP_TYPE_UPSTREAM)
-		pci_enable_ptm(dev, NULL);
+		pci_enable_ptm(dev);
 }
 
 void pci_save_ptm_state(struct pci_dev *dev)
@@ -144,6 +149,24 @@ static int __pci_enable_ptm(struct pci_dev *dev)
 			return -EINVAL;
 	}
 
+	switch (pci_pcie_type(dev)) {
+	case PCI_EXP_TYPE_ROOT_PORT:
+		if (!dev->ptm_root)
+			return -EINVAL;
+		break;
+	case PCI_EXP_TYPE_UPSTREAM:
+		if (!dev->ptm_responder)
+			return -EINVAL;
+		break;
+	case PCI_EXP_TYPE_ENDPOINT:
+	case PCI_EXP_TYPE_LEG_END:
+		if (!dev->ptm_requester)
+			return -EINVAL;
+		break;
+	default:
+		return -EINVAL;
+	}
+
 	pci_read_config_dword(dev, ptm + PCI_PTM_CTRL, &ctrl);
 
 	ctrl |= PCI_PTM_CTRL_ENABLE;
@@ -159,15 +182,13 @@ static int __pci_enable_ptm(struct pci_dev *dev)
 /**
  * pci_enable_ptm() - Enable Precision Time Measurement
  * @dev: PCI device
- * @granularity: pointer to return granularity
  *
- * Enable Precision Time Measurement for @dev.  If successful and
- * @granularity is non-NULL, return the Effective Granularity.
+ * Enable Precision Time Measurement for @dev.
  *
  * Return: zero if successful, or -EINVAL if @dev lacks a PTM Capability or
  * is not a PTM Root and lacks an upstream path of PTM-enabled devices.
  */
-int pci_enable_ptm(struct pci_dev *dev, u8 *granularity)
+int pci_enable_ptm(struct pci_dev *dev)
 {
 	int rc;
 	char clock_desc[8];
@@ -177,9 +198,6 @@ int pci_enable_ptm(struct pci_dev *dev, u8 *granularity)
 		return rc;
 
 	dev->ptm_enabled = 1;
-
-	if (granularity)
-		*granularity = dev->ptm_granularity;
 
 	switch (dev->ptm_granularity) {
 	case 0:
@@ -519,8 +537,10 @@ struct pci_ptm_debugfs *pcie_ptm_create_debugfs(struct device *dev, void *pdata,
 		return NULL;
 
 	dirname = devm_kasprintf(dev, GFP_KERNEL, "pcie_ptm_%s", dev_name(dev));
-	if (!dirname)
+	if (!dirname) {
+		kfree(ptm_debugfs);
 		return NULL;
+	}
 
 	ptm_debugfs->debugfs = debugfs_create_dir(dirname, NULL);
 	ptm_debugfs->pdata = pdata;
@@ -551,6 +571,7 @@ void pcie_ptm_destroy_debugfs(struct pci_ptm_debugfs *ptm_debugfs)
 
 	mutex_destroy(&ptm_debugfs->lock);
 	debugfs_remove_recursive(ptm_debugfs->debugfs);
+	kfree(ptm_debugfs);
 }
 EXPORT_SYMBOL_GPL(pcie_ptm_destroy_debugfs);
 #endif

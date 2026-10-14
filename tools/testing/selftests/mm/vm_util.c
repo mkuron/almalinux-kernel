@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <string.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <dirent.h>
 #include <inttypes.h>
@@ -139,7 +140,7 @@ void clear_softdirty(void)
 		ksft_exit_fail_msg("opening clear_refs failed\n");
 	ret = write(fd, ctrl, strlen(ctrl));
 	close(fd);
-	if (ret != strlen(ctrl))
+	if (ret != (signed int)strlen(ctrl))
 		ksft_exit_fail_msg("writing clear_refs failed\n");
 }
 
@@ -425,6 +426,67 @@ bool check_vmflag_io(void *addr)
 	}
 }
 
+/*
+ * Open an fd at /proc/$pid/maps and configure procmap_out ready for
+ * PROCMAP_QUERY query. Returns 0 on success, or an error code otherwise.
+ */
+int open_procmap(pid_t pid, struct procmap_fd *procmap_out)
+{
+	char path[256];
+	int ret = 0;
+
+	memset(procmap_out, '\0', sizeof(*procmap_out));
+	sprintf(path, "/proc/%d/maps", pid);
+	procmap_out->query.size = sizeof(procmap_out->query);
+	procmap_out->fd = open(path, O_RDONLY);
+	if (procmap_out->fd < 0)
+		ret = -errno;
+
+	return ret;
+}
+
+/* Perform PROCMAP_QUERY. Returns 0 on success, or an error code otherwise. */
+int query_procmap(struct procmap_fd *procmap)
+{
+	int ret = 0;
+
+	if (ioctl(procmap->fd, PROCMAP_QUERY, &procmap->query) == -1)
+		ret = -errno;
+
+	return ret;
+}
+
+/*
+ * Try to find the VMA at specified address, returns true if found, false if not
+ * found, and the test is failed if any other error occurs.
+ *
+ * On success, procmap->query is populated with the results.
+ */
+bool find_vma_procmap(struct procmap_fd *procmap, void *address)
+{
+	int err;
+
+	procmap->query.query_flags = 0;
+	procmap->query.query_addr = (unsigned long)address;
+	err = query_procmap(procmap);
+	if (!err)
+		return true;
+
+	if (err != -ENOENT)
+		ksft_exit_fail_msg("%s: Error %d on ioctl(PROCMAP_QUERY)\n",
+				   __func__, err);
+	return false;
+}
+
+/*
+ * Close fd used by PROCMAP_QUERY mechanism. Returns 0 on success, or an error
+ * code otherwise.
+ */
+int close_procmap(struct procmap_fd *procmap)
+{
+	return close(procmap->fd);
+}
+
 int write_sysfs(const char *file_path, unsigned long val)
 {
 	FILE *f = fopen(file_path, "w");
@@ -461,4 +523,35 @@ int read_sysfs(const char *file_path, unsigned long *val)
 	fclose(f);
 
 	return 0;
+}
+
+void *sys_mremap(void *old_address, unsigned long old_size,
+		 unsigned long new_size, int flags, void *new_address)
+{
+	return (void *)syscall(__NR_mremap, (unsigned long)old_address,
+			       old_size, new_size, flags,
+			       (unsigned long)new_address);
+}
+
+bool detect_huge_zeropage(void)
+{
+	int fd = open("/sys/kernel/mm/transparent_hugepage/use_zero_page",
+		      O_RDONLY);
+	bool enabled = 0;
+	char buf[15];
+	int ret;
+
+	if (fd < 0)
+		return 0;
+
+	ret = pread(fd, buf, sizeof(buf), 0);
+	if (ret > 0 && ret < sizeof(buf)) {
+		buf[ret] = 0;
+
+		if (strtoul(buf, NULL, 10) == 1)
+			enabled = 1;
+	}
+
+	close(fd);
+	return enabled;
 }

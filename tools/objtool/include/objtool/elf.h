@@ -69,7 +69,7 @@ struct symbol {
 	unsigned int idx, len;
 	unsigned long offset;
 	unsigned long __subtree_last;
-	struct symbol *pfunc, *cfunc, *alias;
+	struct symbol *pfunc, *cfunc, *alias, *file;
 	unsigned char bind, type;
 	u8 uaccess_safe      : 1;
 	u8 static_call_tramp : 1;
@@ -185,6 +185,9 @@ struct symbol *find_func_by_offset(struct section *sec, unsigned long offset);
 struct symbol *find_symbol_by_offset(struct section *sec, unsigned long offset);
 struct symbol *find_symbol_by_name(const struct elf *elf, const char *name);
 struct symbol *find_global_symbol_by_name(const struct elf *elf, const char *name);
+void iterate_global_symbol_by_demangled_name(const struct elf *elf, const char *demangled_name,
+					     void (*process)(struct symbol *sym, void *data),
+					     void *data);
 struct symbol *find_symbol_containing(const struct section *sec, unsigned long offset);
 int find_symbol_hole_containing(const struct section *sec, unsigned long offset);
 struct reloc *find_reloc_by_dest(const struct elf *elf, struct section *sec, unsigned long offset);

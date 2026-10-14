@@ -569,6 +569,10 @@ static int dev_map_enqueue_clone(struct bpf_dtab_netdev *obj,
 {
 	struct xdp_frame *nxdpf;
 
+	/* Frags live outside the linear frame and cannot be cloned safely. */
+	if (unlikely(xdp_frame_has_frags(xdpf)))
+		return -EOPNOTSUPP;
+
 	nxdpf = xdpf_clone(xdpf);
 	if (!nxdpf)
 		return -ENOMEM;
@@ -705,6 +709,9 @@ static int dev_map_redirect_clone(struct bpf_dtab_netdev *dst,
 {
 	struct sk_buff *nskb;
 	int err;
+
+	if (unlikely(skb_is_nonlinear(skb)))
+		return -EOPNOTSUPP;
 
 	nskb = skb_clone(skb, GFP_ATOMIC);
 	if (!nskb)
@@ -865,7 +872,7 @@ static struct bpf_dtab_netdev *__dev_map_alloc_node(struct net *net,
 	struct bpf_dtab_netdev *dev;
 
 	dev = bpf_map_kmalloc_node(&dtab->map, sizeof(*dev),
-				   GFP_NOWAIT | __GFP_NOWARN,
+				   GFP_NOWAIT,
 				   dtab->map.numa_node);
 	if (!dev)
 		return ERR_PTR(-ENOMEM);

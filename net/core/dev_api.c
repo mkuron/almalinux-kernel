@@ -66,6 +66,7 @@ int dev_change_flags(struct net_device *dev, unsigned int flags,
 
 	netdev_lock_ops(dev);
 	ret = netif_change_flags(dev, flags, extack);
+	netif_rx_mode_sync(dev);
 	netdev_unlock_ops(dev);
 
 	return ret;
@@ -117,7 +118,7 @@ EXPORT_SYMBOL(dev_set_mac_address_user);
 int dev_change_net_namespace(struct net_device *dev, struct net *net,
 			     const char *pat)
 {
-	return __dev_change_net_namespace(dev, net, pat, 0);
+	return __dev_change_net_namespace(dev, net, pat, 0, NULL);
 }
 EXPORT_SYMBOL_GPL(dev_change_net_namespace);
 
@@ -284,6 +285,7 @@ int dev_set_promiscuity(struct net_device *dev, int inc)
 
 	netdev_lock_ops(dev);
 	ret = netif_set_promiscuity(dev, inc);
+	netif_rx_mode_sync(dev);
 	netdev_unlock_ops(dev);
 
 	return ret;
@@ -310,6 +312,7 @@ int dev_set_allmulti(struct net_device *dev, int inc)
 
 	netdev_lock_ops(dev);
 	ret = netif_set_allmulti(dev, inc, true);
+	netif_rx_mode_sync(dev);
 	netdev_unlock_ops(dev);
 
 	return ret;

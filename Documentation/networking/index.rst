@@ -48,7 +48,6 @@ Contents:
    ax25
    bonding
    cdc_mbim
-   dccp
    dctcp
    devmem
    dns_resolver
@@ -100,6 +99,7 @@ Contents:
    ppp_generic
    proc_net_tcp
    pse-pd/index
+   psp
    radiotap-headers
    rds
    regulatory

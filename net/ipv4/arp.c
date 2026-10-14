@@ -564,7 +564,7 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
 
 	skb_reserve(skb, hlen);
 	skb_reset_network_header(skb);
-	arp = skb_put(skb, arp_hdr_len(dev));
+	skb_put(skb, arp_hdr_len(dev));
 	skb->dev = dev;
 	skb->protocol = htons(ETH_P_ARP);
 	if (!src_hw)
@@ -572,12 +572,13 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
 	if (!dest_hw)
 		dest_hw = dev->broadcast;
 
-	/*
-	 *	Fill the device header for the ARP frame
+	/* Fill the device header for the ARP frame.
+	 * Note: skb->head can be changed.
 	 */
 	if (dev_hard_header(skb, dev, ptype, dest_hw, src_hw, skb->len) < 0)
 		goto out;
 
+	arp = arp_hdr(skb);
 	/*
 	 * Fill out the arp protocol part.
 	 *
@@ -864,7 +865,7 @@ static int arp_process(struct net *net, struct sock *sk, struct sk_buff *skb)
 			    (arp_fwd_proxy(in_dev, dev, rt) ||
 			     arp_fwd_pvlan(in_dev, dev, rt, sip, tip) ||
 			     (rt->dst.dev != dev &&
-			      pneigh_lookup(&arp_tbl, net, &tip, dev, 0)))) {
+			      pneigh_lookup(&arp_tbl, net, &tip, dev)))) {
 				n = neigh_event_ns(&arp_tbl, sha, &sip, dev);
 				if (n)
 					neigh_release(n);
@@ -1068,8 +1069,8 @@ static int arp_req_set_proxy(struct net *net, struct net_device *dev, int on)
 		IPV4_DEVCONF_ALL(net, PROXY_ARP) = on;
 		return 0;
 	}
-	if (__in_dev_get_rtnl(dev)) {
-		IN_DEV_CONF_SET(__in_dev_get_rtnl(dev), PROXY_ARP, on);
+	if (__in_dev_get_rtnl_net(dev)) {
+		IN_DEV_CONF_SET(__in_dev_get_rtnl_net(dev), PROXY_ARP, on);
 		return 0;
 	}
 	return -ENXIO;
@@ -1089,9 +1090,7 @@ static int arp_req_set_public(struct net *net, struct arpreq *r,
 	if (mask) {
 		__be32 ip = ((struct sockaddr_in *)&r->arp_pa)->sin_addr.s_addr;
 
-		if (!pneigh_lookup(&arp_tbl, net, &ip, dev, 1))
-			return -ENOBUFS;
-		return 0;
+		return pneigh_create(&arp_tbl, net, &ip, dev, 0, 0);
 	}
 
 	return arp_req_set_proxy(net, dev, 1);
@@ -1219,10 +1218,10 @@ int arp_invalidate(struct net_device *dev, __be32 ip, bool force)
 			err = neigh_update(neigh, NULL, NUD_FAILED,
 					   NEIGH_UPDATE_F_OVERRIDE|
 					   NEIGH_UPDATE_F_ADMIN, 0);
-		write_lock_bh(&tbl->lock);
+		spin_lock_bh(&tbl->lock);
 		neigh_release(neigh);
 		neigh_remove_one(neigh, tbl);
-		write_unlock_bh(&tbl->lock);
+		spin_unlock_bh(&tbl->lock);
 	}
 
 	return err;
@@ -1299,14 +1298,14 @@ int arp_ioctl(struct net *net, unsigned int cmd, void __user *arg)
 
 	switch (cmd) {
 	case SIOCDARP:
-		rtnl_lock();
+		rtnl_net_lock(net);
 		err = arp_req_delete(net, &r);
-		rtnl_unlock();
+		rtnl_net_unlock(net);
 		break;
 	case SIOCSARP:
-		rtnl_lock();
+		rtnl_net_lock(net);
 		err = arp_req_set(net, &r);
-		rtnl_unlock();
+		rtnl_net_unlock(net);
 		break;
 	case SIOCGARP:
 		rcu_read_lock();

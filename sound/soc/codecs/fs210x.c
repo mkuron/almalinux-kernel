@@ -924,7 +924,7 @@ static int fs210x_get_drvdata_from_kctrl(struct snd_kcontrol *kctrl,
 		return -EINVAL;
 	}
 
-	cmpnt = snd_soc_kcontrol_component(kctrl);
+	cmpnt = snd_kcontrol_chip(kctrl);
 	if (!cmpnt) {
 		pr_err("fs210x: component is null\n");
 		return -EINVAL;
@@ -968,7 +968,7 @@ static int fs210x_effect_scene_info(struct snd_kcontrol *kcontrol,
 	if (scene->name)
 		name = scene->name;
 
-	strscpy(uinfo->value.enumerated.name, name, strlen(name) + 1);
+	strscpy(uinfo->value.enumerated.name, name);
 
 	return 0;
 }

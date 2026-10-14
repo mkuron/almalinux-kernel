@@ -118,18 +118,18 @@ int sysctl_tcp_max_orphans __read_mostly = NR_FILE;
 #if IS_ENABLED(CONFIG_TLS_DEVICE)
 static DEFINE_STATIC_KEY_DEFERRED_FALSE(clean_acked_data_enabled, HZ);
 
-void clean_acked_data_enable(struct inet_connection_sock *icsk,
+void clean_acked_data_enable(struct tcp_sock *tp,
 			     void (*cad)(struct sock *sk, u32 ack_seq))
 {
-	icsk->icsk_clean_acked = cad;
+	tp->tcp_clean_acked = cad;
 	static_branch_deferred_inc(&clean_acked_data_enabled);
 }
 EXPORT_SYMBOL_GPL(clean_acked_data_enable);
 
-void clean_acked_data_disable(struct inet_connection_sock *icsk)
+void clean_acked_data_disable(struct tcp_sock *tp)
 {
 	static_branch_slow_dec_deferred(&clean_acked_data_enabled);
-	icsk->icsk_clean_acked = NULL;
+	tp->tcp_clean_acked = NULL;
 }
 EXPORT_SYMBOL_GPL(clean_acked_data_disable);
 
@@ -3972,8 +3972,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 
 #if IS_ENABLED(CONFIG_TLS_DEVICE)
 		if (static_branch_unlikely(&clean_acked_data_enabled.key))
-			if (icsk->icsk_clean_acked)
-				icsk->icsk_clean_acked(sk, ack);
+			if (tp->tcp_clean_acked)
+				tp->tcp_clean_acked(sk, ack);
 #endif
 	}
 
@@ -4040,7 +4040,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 	/* We passed data and got it acked, remove any soft error
 	 * log. Something worked...
 	 */
-	WRITE_ONCE(sk->sk_err_soft, 0);
+	if (READ_ONCE(sk->sk_err_soft))
+		WRITE_ONCE(sk->sk_err_soft, 0);
 	icsk->icsk_probes_out = 0;
 	tp->rcv_tstamp = tcp_jiffies32;
 	if (!prior_packets)
@@ -4948,7 +4949,7 @@ static bool tcp_ooo_try_coalesce(struct sock *sk,
 noinline_for_tracing static void
 tcp_drop_reason(struct sock *sk, struct sk_buff *skb, enum skb_drop_reason reason)
 {
-	sk_drops_add(sk, skb);
+	sk_drops_skbadd(sk, skb);
 	sk_skb_reason_drop(sk, skb, reason);
 }
 
@@ -7133,8 +7134,8 @@ static bool tcp_syn_flood_action(struct sock *sk, const char *proto)
 #endif
 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPREQQFULLDROP);
 
-	if (!READ_ONCE(queue->synflood_warned) && syncookies != 2 &&
-	    xchg(&queue->synflood_warned, 1) == 0) {
+	if (syncookies != 2 && !READ_ONCE(queue->synflood_warned)) {
+		WRITE_ONCE(queue->synflood_warned, 1);
 		if (IS_ENABLED(CONFIG_IPV6) && sk->sk_family == AF_INET6) {
 			net_info_ratelimited("%s: Possible SYN flooding on port [%pI6c]:%u. %s.\n",
 					proto, inet6_rcv_saddr(sk),
@@ -7215,29 +7216,27 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 		     struct sock *sk, struct sk_buff *skb)
 {
 	struct tcp_fastopen_cookie foc = { .len = -1 };
+	u32 isn = TCP_SKB_CB(skb)->tcp_tw_isn;
 	struct tcp_options_received tmp_opt;
 	struct tcp_sock *tp = tcp_sk(sk);
 	struct net *net = sock_net(sk);
 	struct sock *fastopen_sk = NULL;
+	union tcp_seq_and_ts_off st;
 	struct request_sock *req;
 	bool want_cookie = false;
 	struct dst_entry *dst;
 	struct flowi fl;
 	u8 syncookies;
-	u32 isn;
 
 #ifdef CONFIG_TCP_AO
 	const struct tcp_ao_hdr *aoh;
 #endif
 
-	isn = __this_cpu_read(tcp_tw_isn);
-	if (isn) {
-		/* TW buckets are converted to open requests without
-		 * limitations, they conserve resources and peer is
-		 * evidently real one.
-		 */
-		__this_cpu_write(tcp_tw_isn, 0);
-	} else {
+	/* If isn is non-zero, this SYN originally matched a TIME_WAIT socket.
+	 * TW sockets are converted to open requests without limitations,
+	 * we skip the queue limits and syncookie checks in the block below.
+	 */
+	if (!isn) {
 		syncookies = READ_ONCE(net->ipv4.sysctl_tcp_syncookies);
 
 		if (syncookies == 2 || inet_csk_reqsk_queue_is_full(sk)) {
@@ -7288,9 +7287,12 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 	if (!dst)
 		goto drop_and_free;
 
+	if (tmp_opt.tstamp_ok || (!want_cookie && !isn))
+		st = af_ops->init_seq_and_ts_off(net, skb);
+
 	if (tmp_opt.tstamp_ok) {
 		tcp_rsk(req)->req_usec_ts = dst_tcp_usec_ts(dst);
-		tcp_rsk(req)->ts_off = af_ops->init_ts_off(net, skb);
+		tcp_rsk(req)->ts_off = st.ts_off;
 	}
 	if (!want_cookie && !isn) {
 		int max_syn_backlog = READ_ONCE(net->ipv4.sysctl_max_syn_backlog);
@@ -7312,7 +7314,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
 			goto drop_and_release;
 		}
 
-		isn = af_ops->init_seq(skb);
+		isn = st.seq;
 	}
 
 	tcp_ecn_create_request(req, skb, sk, dst);

@@ -43,7 +43,7 @@ typedef unsigned long		uintptr_t;
 typedef long			intptr_t;
 
 #ifdef CONFIG_HAVE_UID16
-/* This is defined by arch/{arch}/include/asm/posix_types.h */
+/* This is defined by include/asm-{arch}/posix_types.h */
 typedef __kernel_old_uid_t	old_uid_t;
 typedef __kernel_old_gid_t	old_gid_t;
 #endif /* CONFIG_UID16 */
@@ -163,6 +163,11 @@ typedef u64 phys_addr_t;
 #else
 typedef u32 phys_addr_t;
 #endif
+
+struct phys_vec {
+	phys_addr_t	paddr;
+	size_t		len;
+};
 
 typedef phys_addr_t resource_size_t;
 

@@ -7,7 +7,7 @@
 
 #define IDT_ALIGN	(8 * (1 + HAS_KERNEL_IBT))
 
-#ifndef __ASSEMBLY__
+#ifndef __ASSEMBLER__
 #include <linux/entry-common.h>
 #include <linux/hardirq.h>
 
@@ -474,7 +474,7 @@ static inline void fred_install_sysvec(unsigned int vector, const idtentry_t fun
 		idt_install_sysvec(vector, asm_##function);		\
 }
 
-#else /* !__ASSEMBLY__ */
+#else /* !__ASSEMBLER__ */
 
 /*
  * The ASM variants for DECLARE_IDTENTRY*() which emit the ASM entry stubs.
@@ -579,7 +579,7 @@ SYM_CODE_START(spurious_entries_start)
 SYM_CODE_END(spurious_entries_start)
 #endif
 
-#endif /* __ASSEMBLY__ */
+#endif /* __ASSEMBLER__ */
 
 /*
  * The actual entry points. Note that DECLARE_IDTENTRY*() serves two
@@ -749,6 +749,12 @@ DECLARE_IDTENTRY_SYSVEC(POSTED_INTR_NESTED_VECTOR,	sysvec_kvm_posted_intr_nested
 # define fred_sysvec_kvm_posted_intr_ipi		NULL
 # define fred_sysvec_kvm_posted_intr_wakeup_ipi		NULL
 # define fred_sysvec_kvm_posted_intr_nested_ipi		NULL
+#endif
+
+# ifdef CONFIG_GUEST_PERF_EVENTS
+DECLARE_IDTENTRY_SYSVEC(PERF_GUEST_MEDIATED_PMI_VECTOR,	sysvec_perf_guest_mediated_pmi_handler);
+#else
+# define fred_sysvec_perf_guest_mediated_pmi_handler	NULL
 #endif
 
 # ifdef CONFIG_X86_POSTED_MSI

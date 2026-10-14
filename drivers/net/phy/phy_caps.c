@@ -21,10 +21,12 @@ static struct link_capabilities link_caps[__LINK_CAPA_MAX] __ro_after_init = {
 	{ SPEED_40000, DUPLEX_FULL, {0} }, /* LINK_CAPA_40000FD */
 	{ SPEED_50000, DUPLEX_FULL, {0} }, /* LINK_CAPA_50000FD */
 	{ SPEED_56000, DUPLEX_FULL, {0} }, /* LINK_CAPA_56000FD */
+	{ SPEED_80000, DUPLEX_FULL, {0} }, /* LINK_CAPA_80000FD */
 	{ SPEED_100000, DUPLEX_FULL, {0} }, /* LINK_CAPA_100000FD */
 	{ SPEED_200000, DUPLEX_FULL, {0} }, /* LINK_CAPA_200000FD */
 	{ SPEED_400000, DUPLEX_FULL, {0} }, /* LINK_CAPA_400000FD */
 	{ SPEED_800000, DUPLEX_FULL, {0} }, /* LINK_CAPA_800000FD */
+	{ SPEED_1600000, DUPLEX_FULL, {0} }, /* LINK_CAPA_1600000FD */
 };
 
 static int speed_duplex_to_capa(int speed, unsigned int duplex)
@@ -48,10 +50,12 @@ static int speed_duplex_to_capa(int speed, unsigned int duplex)
 	case SPEED_40000: return LINK_CAPA_40000FD;
 	case SPEED_50000: return LINK_CAPA_50000FD;
 	case SPEED_56000: return LINK_CAPA_56000FD;
+	case SPEED_80000: return LINK_CAPA_80000FD;
 	case SPEED_100000: return LINK_CAPA_100000FD;
 	case SPEED_200000: return LINK_CAPA_200000FD;
 	case SPEED_400000: return LINK_CAPA_400000FD;
 	case SPEED_800000: return LINK_CAPA_800000FD;
+	case SPEED_1600000: return LINK_CAPA_1600000FD;
 	}
 
 	return -EINVAL;
@@ -78,6 +82,14 @@ int __init phy_caps_init(void)
 	/* Fill the caps array from net/ethtool/common.c */
 	for (i = 0; i < __ETHTOOL_LINK_MODE_MASK_NBITS; i++) {
 		linkmode = &link_mode_params[i];
+
+		/* Sanity check the linkmodes array for number of pairs */
+		if (linkmode->pairs < linkmode->min_pairs) {
+			pr_err("Pairs count must not be under min_pairs for linkmode %d\n",
+			       i);
+			return -EINVAL;
+		}
+
 		capa = speed_duplex_to_capa(linkmode->speed, linkmode->duplex);
 
 		if (capa < 0) {

@@ -58,27 +58,29 @@ static void ext4_journalled_zero_new_buffers(handle_t *handle,
 static __u32 ext4_inode_csum(struct inode *inode, struct ext4_inode *raw,
 			      struct ext4_inode_info *ei)
 {
+	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
 	__u32 csum;
 	__u16 dummy_csum = 0;
 	int offset = offsetof(struct ext4_inode, i_checksum_lo);
 	unsigned int csum_size = sizeof(dummy_csum);
 
-	csum = ext4_chksum(ei->i_csum_seed, (__u8 *)raw, offset);
-	csum = ext4_chksum(csum, (__u8 *)&dummy_csum, csum_size);
+	csum = ext4_chksum(sbi, ei->i_csum_seed, (__u8 *)raw, offset);
+	csum = ext4_chksum(sbi, csum, (__u8 *)&dummy_csum, csum_size);
 	offset += csum_size;
-	csum = ext4_chksum(csum, (__u8 *)raw + offset,
+	csum = ext4_chksum(sbi, csum, (__u8 *)raw + offset,
 			   EXT4_GOOD_OLD_INODE_SIZE - offset);
 
 	if (EXT4_INODE_SIZE(inode->i_sb) > EXT4_GOOD_OLD_INODE_SIZE) {
 		offset = offsetof(struct ext4_inode, i_checksum_hi);
-		csum = ext4_chksum(csum, (__u8 *)raw + EXT4_GOOD_OLD_INODE_SIZE,
+		csum = ext4_chksum(sbi, csum, (__u8 *)raw +
+				   EXT4_GOOD_OLD_INODE_SIZE,
 				   offset - EXT4_GOOD_OLD_INODE_SIZE);
 		if (EXT4_FITS_IN_INODE(raw, ei, i_checksum_hi)) {
-			csum = ext4_chksum(csum, (__u8 *)&dummy_csum,
+			csum = ext4_chksum(sbi, csum, (__u8 *)&dummy_csum,
 					   csum_size);
 			offset += csum_size;
 		}
-		csum = ext4_chksum(csum, (__u8 *)raw + offset,
+		csum = ext4_chksum(sbi, csum, (__u8 *)raw + offset,
 				   EXT4_INODE_SIZE(inode->i_sb) - offset);
 	}
 
@@ -92,7 +94,7 @@ static int ext4_inode_csum_verify(struct inode *inode, struct ext4_inode *raw,
 
 	if (EXT4_SB(inode->i_sb)->s_es->s_creator_os !=
 	    cpu_to_le32(EXT4_OS_LINUX) ||
-	    !ext4_has_feature_metadata_csum(inode->i_sb))
+	    !ext4_has_metadata_csum(inode->i_sb))
 		return 1;
 
 	provided = le16_to_cpu(raw->i_checksum_lo);
@@ -113,7 +115,7 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
 
 	if (EXT4_SB(inode->i_sb)->s_es->s_creator_os !=
 	    cpu_to_le32(EXT4_OS_LINUX) ||
-	    !ext4_has_feature_metadata_csum(inode->i_sb))
+	    !ext4_has_metadata_csum(inode->i_sb))
 		return;
 
 	csum = ext4_inode_csum(inode, raw, ei);
@@ -176,6 +178,8 @@ void ext4_evict_inode(struct inode *inode)
 	bool freeze_protected = false;
 
 	trace_ext4_evict_inode(inode);
+
+	dax_break_layout_final(inode);
 
 	if (EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)
 		ext4_evict_ea_inode(inode);
@@ -1270,7 +1274,8 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
  * and the ext4_write_end().  So doing the jbd2_journal_start at the start of
  * ext4_write_begin() is the right place.
  */
-static int ext4_write_begin(struct file *file, struct address_space *mapping,
+static int ext4_write_begin(const struct kiocb *iocb,
+			    struct address_space *mapping,
 			    loff_t pos, unsigned len,
 			    struct folio **foliop, void **fsdata)
 {
@@ -1281,7 +1286,6 @@ static int ext4_write_begin(struct file *file, struct address_space *mapping,
 	struct folio *folio;
 	pgoff_t index;
 	unsigned from, to;
-	fgf_t fgp = FGP_WRITEBEGIN;
 
 	ret = ext4_emergency_state(inode->i_sb);
 	if (unlikely(ret))
@@ -1306,16 +1310,14 @@ static int ext4_write_begin(struct file *file, struct address_space *mapping,
 	}
 
 	/*
-	 * __filemap_get_folio() can take a long time if the
+	 * write_begin_get_folio() can take a long time if the
 	 * system is thrashing due to memory pressure, or if the folio
 	 * is being written back.  So grab it first before we start
 	 * the transaction handle.  This also allows us to allocate
 	 * the folio (if needed) without using GFP_NOFS.
 	 */
 retry_grab:
-	fgp |= fgf_set_order(len);
-	folio = __filemap_get_folio(mapping, index, fgp,
-				    mapping_gfp_mask(mapping));
+	folio = write_begin_get_folio(iocb, mapping, index, len);
 	if (IS_ERR(folio))
 		return PTR_ERR(folio);
 
@@ -1421,12 +1423,12 @@ static int write_end_fn(handle_t *handle, struct inode *inode,
 
 /*
  * We need to pick up the new inode size which generic_commit_write gave us
- * `file' can be NULL - eg, when called from page_symlink().
+ * `iocb` can be NULL - eg, when called from page_symlink().
  *
  * ext4 never places buffers on inode->i_mapping->i_private_list.  metadata
  * buffers are managed internally.
  */
-static int ext4_write_end(struct file *file,
+static int ext4_write_end(const struct kiocb *iocb,
 			  struct address_space *mapping,
 			  loff_t pos, unsigned len, unsigned copied,
 			  struct folio *folio, void *fsdata)
@@ -1445,7 +1447,7 @@ static int ext4_write_end(struct file *file,
 		return ext4_write_inline_data_end(inode, pos, len, copied,
 						  folio);
 
-	copied = block_write_end(file, mapping, pos, len, copied, folio, fsdata);
+	copied = block_write_end(pos, len, copied, folio);
 	/*
 	 * it's important to update i_size while still holding folio lock:
 	 * page writeout could otherwise come in and zero beyond i_size.
@@ -1531,7 +1533,7 @@ static void ext4_journalled_zero_new_buffers(handle_t *handle,
 	} while (bh != head);
 }
 
-static int ext4_journalled_write_end(struct file *file,
+static int ext4_journalled_write_end(const struct kiocb *iocb,
 				     struct address_space *mapping,
 				     loff_t pos, unsigned len, unsigned copied,
 				     struct folio *folio, void *fsdata)
@@ -3108,7 +3110,8 @@ static int ext4_nonda_switch(struct super_block *sb)
 	return 0;
 }
 
-static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
+static int ext4_da_write_begin(const struct kiocb *iocb,
+			       struct address_space *mapping,
 			       loff_t pos, unsigned len,
 			       struct folio **foliop, void **fsdata)
 {
@@ -3116,7 +3119,6 @@ static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
 	struct folio *folio;
 	pgoff_t index;
 	struct inode *inode = mapping->host;
-	fgf_t fgp = FGP_WRITEBEGIN;
 
 	ret = ext4_emergency_state(inode->i_sb);
 	if (unlikely(ret))
@@ -3126,7 +3128,7 @@ static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
 
 	if (ext4_nonda_switch(inode->i_sb) || ext4_verity_in_progress(inode)) {
 		*fsdata = (void *)FALL_BACK_TO_NONDELALLOC;
-		return ext4_write_begin(file, mapping, pos,
+		return ext4_write_begin(iocb, mapping, pos,
 					len, foliop, fsdata);
 	}
 	*fsdata = (void *)0;
@@ -3142,9 +3144,7 @@ static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
 	}
 
 retry:
-	fgp |= fgf_set_order(len);
-	folio = __filemap_get_folio(mapping, index, fgp,
-				    mapping_gfp_mask(mapping));
+	folio = write_begin_get_folio(iocb, mapping, index, len);
 	if (IS_ERR(folio))
 		return PTR_ERR(folio);
 
@@ -3216,8 +3216,7 @@ static int ext4_da_do_write_end(struct address_space *mapping,
 	 * block_write_end() will mark the inode as dirty with I_DIRTY_PAGES
 	 * flag, which all that's needed to trigger page writeback.
 	 */
-	copied = block_write_end(NULL, mapping, pos, len, copied,
-			folio, NULL);
+	copied = block_write_end(pos, len, copied, folio);
 	new_i_size = pos + copied;
 
 	/*
@@ -3268,7 +3267,7 @@ static int ext4_da_do_write_end(struct address_space *mapping,
 	return copied;
 }
 
-static int ext4_da_write_end(struct file *file,
+static int ext4_da_write_end(const struct kiocb *iocb,
 			     struct address_space *mapping,
 			     loff_t pos, unsigned len, unsigned copied,
 			     struct folio *folio, void *fsdata)
@@ -3277,7 +3276,7 @@ static int ext4_da_write_end(struct file *file,
 	int write_mode = (int)(unsigned long)fsdata;
 
 	if (write_mode == FALL_BACK_TO_NONDELALLOC)
-		return ext4_write_end(file, mapping, pos,
+		return ext4_write_end(iocb, mapping, pos,
 				      len, copied, folio, fsdata);
 
 	trace_ext4_da_write_end(inode, pos, len, copied);
@@ -4353,24 +4352,10 @@ static void ext4_wait_dax_page(struct inode *inode)
 
 int ext4_break_layouts(struct inode *inode)
 {
-	struct page *page;
-	int error;
-
 	if (WARN_ON_ONCE(!rwsem_is_locked(&inode->i_mapping->invalidate_lock)))
 		return -EINVAL;
 
-	do {
-		page = dax_layout_busy_page(inode->i_mapping);
-		if (!page)
-			return 0;
-
-		error = ___wait_var_event(&page->_refcount,
-				atomic_read(&page->_refcount) == 1,
-				TASK_INTERRUPTIBLE, 0, 0,
-				ext4_wait_dax_page(inode));
-	} while (error == 0);
-
-	return error;
+	return dax_break_layout_inode(inode, ext4_wait_dax_page);
 }
 
 /*
@@ -5228,14 +5213,15 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
 		ei->i_extra_isize = 0;
 
 	/* Precompute checksum seed for inode metadata */
-	if (ext4_has_feature_metadata_csum(sb)) {
+	if (ext4_has_metadata_csum(sb)) {
 		struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
 		__u32 csum;
 		__le32 inum = cpu_to_le32(inode->i_ino);
 		__le32 gen = raw_inode->i_generation;
-		csum = ext4_chksum(sbi->s_csum_seed, (__u8 *)&inum,
+		csum = ext4_chksum(sbi, sbi->s_csum_seed, (__u8 *)&inum,
 				   sizeof(inum));
-		ei->i_csum_seed = ext4_chksum(csum, (__u8 *)&gen, sizeof(gen));
+		ei->i_csum_seed = ext4_chksum(sbi, csum, (__u8 *)&gen,
+					      sizeof(gen));
 	}
 
 	if ((!ext4_inode_csum_verify(inode, raw_inode, ei) ||
@@ -5315,8 +5301,7 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
 	 * we'd normally treat htree data as empty space. But with metadata
 	 * checksumming that corrupts checksums so forbid that.
 	 */
-	if (!ext4_has_feature_dir_index(sb) &&
-	    ext4_has_feature_metadata_csum(sb) &&
+	if (!ext4_has_feature_dir_index(sb) && ext4_has_metadata_csum(sb) &&
 	    ext4_test_inode_flag(inode, EXT4_INODE_INDEX)) {
 		ext4_error_inode(inode, function, line, 0,
 			 "iget: Dir with htree data on filesystem without dir_index feature.");
@@ -6612,7 +6597,7 @@ static int ext4_block_page_mkwrite(struct inode *inode, struct folio *folio,
 		goto out_error;
 
 	if (!ext4_should_journal_data(inode)) {
-		block_commit_write(&folio->page, 0, len);
+		block_commit_write(folio, 0, len);
 		folio_mark_dirty(folio);
 	} else {
 		ret = ext4_journal_folio_buffers(handle, folio, len);

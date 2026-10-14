@@ -77,37 +77,46 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
-#include <linux/bpf-cgroup.h>
-#include <linux/btf_ids.h>
-#include <linux/dcache.h>
-#include <linux/errno.h>
-#include <linux/fcntl.h>
-#include <linux/file.h>
-#include <linux/filter.h>
-#include <linux/fs.h>
-#include <linux/init.h>
+#include <linux/module.h>
 #include <linux/kernel.h>
-#include <linux/mount.h>
-#include <linux/namei.h>
-#include <linux/poll.h>
-#include <linux/proc_fs.h>
+#include <linux/signal.h>
 #include <linux/sched/signal.h>
-#include <linux/security.h>
-#include <linux/seq_file.h>
-#include <linux/skbuff.h>
-#include <linux/slab.h>
-#include <linux/socket.h>
-#include <linux/splice.h>
+#include <linux/errno.h>
 #include <linux/string.h>
+#include <linux/stat.h>
+#include <linux/dcache.h>
+#include <linux/namei.h>
+#include <linux/socket.h>
+#include <linux/un.h>
+#include <linux/fcntl.h>
+#include <linux/filter.h>
+#include <linux/termios.h>
+#include <linux/sockios.h>
+#include <linux/net.h>
+#include <linux/in.h>
+#include <linux/fs.h>
+#include <linux/slab.h>
 #include <linux/uaccess.h>
-#include <net/af_unix.h>
+#include <linux/skbuff.h>
+#include <linux/netdevice.h>
 #include <net/net_namespace.h>
-#include <net/scm.h>
+#include <net/sock.h>
 #include <net/tcp_states.h>
-#include <uapi/linux/sockios.h>
-#include <uapi/linux/termios.h>
-
-#include "af_unix.h"
+#include <net/af_unix.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <net/scm.h>
+#include <linux/init.h>
+#include <linux/poll.h>
+#include <linux/rtnetlink.h>
+#include <linux/mount.h>
+#include <net/checksum.h>
+#include <linux/security.h>
+#include <linux/splice.h>
+#include <linux/freezer.h>
+#include <linux/file.h>
+#include <linux/btf_ids.h>
+#include <linux/bpf-cgroup.h>
 
 static atomic_long_t unix_nr_socks;
 static struct hlist_head bsd_socket_buckets[UNIX_HASH_SIZE / 2];
@@ -724,7 +733,19 @@ static void unix_release_sock(struct sock *sk, int embrion)
 
 	/* ---- Socket is dead now and most probably destroyed ---- */
 
-	unix_schedule_gc(NULL);
+	/*
+	 * Fixme: BSD difference: In BSD all sockets connected to us get
+	 *	  ECONNRESET and we die on the spot. In Linux we behave
+	 *	  like files and pipes do and wait for the last
+	 *	  dereference.
+	 *
+	 * Can't we simply set sock->err?
+	 *
+	 *	  What the above comment does talk about? --ANK(980817)
+	 */
+
+	if (READ_ONCE(unix_tot_inflight))
+		unix_gc();		/* Garbage collect fds */
 }
 
 static void init_peercred(struct sock *sk)
@@ -1846,22 +1867,23 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
 static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
 {
 	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
-
-	unix_peek_fpl(scm->fp);
 }
 
 static void unix_destruct_scm(struct sk_buff *skb)
 {
-	struct scm_cookie scm;
+	struct scm_cookie scm = {};
 
-	memset(&scm, 0, sizeof(scm));
-	scm.pid  = UNIXCB(skb).pid;
+	swap(scm.pid, UNIXCB(skb).pid);
+
 	if (UNIXCB(skb).fp)
 		unix_detach_fds(&scm, skb);
 
-	/* Alas, it calls VFS */
-	/* So fscking what? fput() had been SMP-safe since the last Summer */
 	scm_destroy(&scm);
+}
+
+static void unix_wfree(struct sk_buff *skb)
+{
+	unix_destruct_scm(skb);
 	sock_wfree(skb);
 }
 
@@ -1877,7 +1899,7 @@ static int unix_scm_to_skb(struct scm_cookie *scm, struct sk_buff *skb, bool sen
 	if (scm->fp && send_fds)
 		err = unix_attach_fds(scm, skb);
 
-	skb->destructor = unix_destruct_scm;
+	skb->destructor = unix_wfree;
 	return err;
 }
 
@@ -1938,6 +1960,13 @@ static void scm_stat_del(struct sock *sk, struct sk_buff *skb)
 	}
 }
 
+static void unix_orphan_scm(struct sock *sk, struct sk_buff *skb)
+{
+	scm_stat_del(sk, skb);
+	unix_destruct_scm(skb);
+	skb->destructor = sock_wfree;
+}
+
 /*
  *	Send AF_UNIX data.
  */
@@ -1958,6 +1987,8 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
 	err = scm_send(sock, msg, &scm, false);
 	if (err < 0)
 		return err;
+
+	wait_for_unix_gc(scm.fp);
 
 	err = -EOPNOTSUPP;
 	if (msg->msg_flags&MSG_OOB)
@@ -2230,6 +2261,8 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
 	err = scm_send(sock, msg, &scm, false);
 	if (err < 0)
 		return err;
+
+	wait_for_unix_gc(scm.fp);
 
 	if (msg->msg_flags & MSG_OOB) {
 		err = -EOPNOTSUPP;
@@ -2519,10 +2552,16 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 	int err;
 
 	mutex_lock(&u->iolock);
+
 	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
-	mutex_unlock(&u->iolock);
-	if (!skb)
+	if (!skb) {
+		mutex_unlock(&u->iolock);
 		return err;
+	}
+
+	unix_orphan_scm(sk, skb);
+
+	mutex_unlock(&u->iolock);
 
 	return recv_actor(sk, skb);
 }
@@ -2531,8 +2570,7 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
  *	Sleep until more data has arrived. But check for races..
  */
 static long unix_stream_data_wait(struct sock *sk, long timeo,
-				  struct sk_buff *last, unsigned int last_len,
-				  bool freezable)
+				  struct sk_buff *last, bool freezable)
 {
 	unsigned int state = TASK_INTERRUPTIBLE | freezable * TASK_FREEZABLE;
 	struct sk_buff *tail;
@@ -2545,7 +2583,6 @@ static long unix_stream_data_wait(struct sock *sk, long timeo,
 
 		tail = skb_peek_tail(&sk->sk_receive_queue);
 		if (tail != last ||
-		    (tail && tail->len != last_len) ||
 		    sk->sk_err ||
 		    (sk->sk_shutdown & RCV_SHUTDOWN) ||
 		    signal_pending(current) ||
@@ -2681,6 +2718,7 @@ unlock:
 
 static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 {
+	struct sk_buff_head *queue = &sk->sk_receive_queue;
 	struct unix_sock *u = unix_sk(sk);
 	struct sk_buff *skb;
 	int err;
@@ -2688,39 +2726,36 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
 	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED))
 		return -ENOTCONN;
 
-	mutex_lock(&u->iolock);
-	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
-	mutex_unlock(&u->iolock);
-	if (!skb)
+	err = sock_error(sk);
+	if (err)
 		return err;
 
+	mutex_lock(&u->iolock);
+	spin_lock(&queue->lock);
+
+	skb = __skb_dequeue(queue);
+	if (!skb) {
+		spin_unlock(&queue->lock);
+		mutex_unlock(&u->iolock);
+		return -EAGAIN;
+	}
+
 #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-	if (unlikely(skb == READ_ONCE(u->oob_skb))) {
-		bool drop = false;
+	if (skb == u->oob_skb) {
+		WRITE_ONCE(u->oob_skb, NULL);
+		spin_unlock(&queue->lock);
+		mutex_unlock(&u->iolock);
 
-		unix_state_lock(sk);
-
-		if (sock_flag(sk, SOCK_DEAD)) {
-			unix_state_unlock(sk);
-			kfree_skb_reason(skb, SKB_DROP_REASON_SOCKET_CLOSE);
-			return -ECONNRESET;
-		}
-
-		spin_lock(&sk->sk_receive_queue.lock);
-		if (likely(skb == u->oob_skb)) {
-			WRITE_ONCE(u->oob_skb, NULL);
-			drop = true;
-		}
-		spin_unlock(&sk->sk_receive_queue.lock);
-
-		unix_state_unlock(sk);
-
-		if (drop) {
-			kfree_skb_reason(skb, SKB_DROP_REASON_UNIX_SKIP_OOB);
-			return -EAGAIN;
-		}
+		kfree_skb_reason(skb, SKB_DROP_REASON_UNIX_SKIP_OOB);
+		return -EAGAIN;
 	}
 #endif
+
+	spin_unlock(&queue->lock);
+
+	unix_orphan_scm(sk, skb);
+
+	mutex_unlock(&u->iolock);
 
 	return recv_actor(sk, skb);
 }
@@ -2741,7 +2776,6 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
 	long timeo;
 	int skip;
 	size_t size = state->size;
-	unsigned int last_len;
 
 	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
 		err = -EINVAL;
@@ -2779,7 +2813,6 @@ redo:
 			goto unlock;
 		}
 		last = skb = skb_peek(&sk->sk_receive_queue);
-		last_len = last ? last->len : 0;
 
 again:
 #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
@@ -2813,8 +2846,7 @@ again:
 
 			mutex_unlock(&u->iolock);
 
-			timeo = unix_stream_data_wait(sk, timeo, last,
-						      last_len, freezable);
+			timeo = unix_stream_data_wait(sk, timeo, last, freezable);
 
 			if (signal_pending(current)) {
 				err = sock_intr_errno(timeo);
@@ -2832,7 +2864,6 @@ unlock:
 		while (skip >= unix_skb_len(skb)) {
 			skip -= unix_skb_len(skb);
 			last = skb;
-			last_len = skb->len;
 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
 			if (!skb)
 				goto again;
@@ -2907,7 +2938,6 @@ unlock:
 
 			skip = 0;
 			last = skb;
-			last_len = skb->len;
 			unix_state_lock(sk);
 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
 			if (skb)

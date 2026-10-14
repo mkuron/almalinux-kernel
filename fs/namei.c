@@ -125,6 +125,13 @@
 
 #define EMBEDDED_NAME_MAX	(PATH_MAX - offsetof(struct filename, iname))
 
+static inline void initname(struct filename *name, const char __user *uptr)
+{
+	name->uptr = uptr;
+	name->aname = NULL;
+	atomic_set(&name->refcnt, 1);
+}
+
 struct filename *
 getname_flags(const char __user *filename, int flags)
 {
@@ -203,10 +210,7 @@ getname_flags(const char __user *filename, int flags)
 			return ERR_PTR(-ENAMETOOLONG);
 		}
 	}
-
-	atomic_set(&result->refcnt, 1);
-	result->uptr = filename;
-	result->aname = NULL;
+	initname(result, filename);
 	audit_getname(result);
 	return result;
 }
@@ -269,11 +273,8 @@ struct filename *getname_kernel(const char * filename)
 		return ERR_PTR(-ENAMETOOLONG);
 	}
 	memcpy((char *)result->name, filename, len);
-	result->uptr = NULL;
-	result->aname = NULL;
-	atomic_set(&result->refcnt, 1);
+	initname(result, NULL);
 	audit_getname(result);
-
 	return result;
 }
 EXPORT_SYMBOL(getname_kernel);
@@ -1058,7 +1059,7 @@ static int sysctl_protected_fifos __read_mostly;
 static int sysctl_protected_regular __read_mostly;
 
 #ifdef CONFIG_SYSCTL
-static struct ctl_table namei_sysctls[] = {
+static const struct ctl_table namei_sysctls[] = {
 	{
 		.procname	= "protected_symlinks",
 		.data		= &sysctl_protected_symlinks,
@@ -3421,6 +3422,8 @@ static int may_open(struct mnt_idmap *idmap, const struct path *path,
 		if ((acc_mode & MAY_EXEC) && path_noexec(path))
 			return -EACCES;
 		break;
+	default:
+		VFS_BUG_ON_INODE(!IS_ANON_FILE(inode), inode);
 	}
 
 	error = inode_permission(idmap, inode, MAY_OPEN | acc_mode);
@@ -4286,6 +4289,7 @@ int vfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 {
 	int error;
 	unsigned max_links = dir->i_sb->s_max_links;
+	struct dentry *de;
 
 	error = may_create(idmap, dir, dentry);
 	if (error)
@@ -4302,10 +4306,18 @@ int vfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 	if (max_links && dir->i_nlink >= max_links)
 		return -EMLINK;
 
-	error = dir->i_op->mkdir(idmap, dir, dentry, mode);
-	if (!error)
+	de = dir->i_op->mkdir(idmap, dir, dentry, mode);
+	if (IS_ERR(de))
+		return PTR_ERR(de);
+	if (de) {
+		fsnotify_mkdir(dir, de);
+		/* Cannot return de yet */
+		dput(de);
+	} else {
 		fsnotify_mkdir(dir, dentry);
-	return error;
+	}
+
+	return 0;
 }
 EXPORT_SYMBOL(vfs_mkdir);
 

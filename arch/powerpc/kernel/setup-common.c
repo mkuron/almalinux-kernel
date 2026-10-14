@@ -70,6 +70,7 @@
 #include <asm/kasan.h>
 #include <asm/mce.h>
 #include <asm/systemcfg.h>
+#include <linux/kmsg_dump.h>
 
 #include "setup.h"
 
@@ -460,11 +461,8 @@ void __init smp_setup_cpu_maps(void)
 
 	DBG("smp_setup_cpu_maps()\n");
 
-	cpu_to_phys_id = memblock_alloc(nr_cpu_ids * sizeof(u32),
+	cpu_to_phys_id = memblock_alloc_or_panic(nr_cpu_ids * sizeof(u32),
 					__alignof__(u32));
-	if (!cpu_to_phys_id)
-		panic("%s: Failed to allocate %zu bytes align=0x%zx\n",
-		      __func__, nr_cpu_ids * sizeof(u32), __alignof__(u32));
 
 	for_each_node_by_type(dn, "cpu") {
 		const __be32 *intserv;
@@ -750,6 +748,13 @@ static int ppc_panic_fadump_handler(struct notifier_block *this,
 	hard_irq_disable();
 
 	/*
+	 * Invoke kmsg_dump (e.g., pstore) before crash_fadump() as fadump
+	 * runs before panic()'s kmsg_dump_desc() call.
+	 */
+	if (should_fadump_crash())
+		kmsg_dump_desc(KMSG_DUMP_PANIC, (char *)ptr);
+
+	/*
 	 * If firmware-assisted dump has been registered then trigger
 	 * its callback and let the firmware handles everything else.
 	 */
@@ -974,8 +979,6 @@ void __init setup_arch(char **cmdline_p)
 
 	/* Parse memory topology */
 	mem_topology_setup();
-	/* Set max_mapnr before paging_init() */
-	set_max_mapnr(max_pfn);
 	high_memory = (void *)__va(max_low_pfn * PAGE_SIZE);
 
 	/*
@@ -1014,9 +1017,11 @@ void __init setup_arch(char **cmdline_p)
 	initmem_init();
 
 	/*
-	 * Reserve large chunks of memory for use by CMA for KVM and hugetlb. These must
-	 * be called after initmem_init(), so that pageblock_order is initialised.
+	 * Reserve large chunks of memory for use by CMA for fadump, KVM and
+	 * hugetlb. These must be called after initmem_init(), so that
+	 * pageblock_order is initialised.
 	 */
+	fadump_cma_init();
 	kvm_cma_reserve();
 	gigantic_hugetlb_cma_reserve();
 

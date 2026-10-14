@@ -16,6 +16,7 @@
 #include <linux/minmax.h>
 #include <linux/module.h>
 #include <linux/overflow.h>
+#include <linux/pm_runtime.h>
 #include <linux/regmap.h>
 #include <linux/soundwire/sdw_registers.h>
 #include <linux/string_helpers.h>
@@ -148,6 +149,44 @@ int sdca_asoc_count_component(struct device *dev, struct sdca_function_data *fun
 }
 EXPORT_SYMBOL_NS(sdca_asoc_count_component, "SND_SOC_SDCA");
 
+static int ge_put_enum_double(struct snd_kcontrol *kcontrol,
+			      struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_dapm_context *dapm = snd_soc_dapm_kcontrol_to_dapm(kcontrol);
+	struct snd_soc_component *component = snd_soc_dapm_to_component(dapm);
+	struct device *dev = component->dev;
+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+	unsigned int *item = ucontrol->value.enumerated.item;
+	unsigned int reg = e->reg;
+	int ret;
+
+	if (item[0] >= e->items)
+		return -EINVAL;
+
+	reg &= ~SDW_SDCA_CTL_CSEL(0x3F);
+	reg |= SDW_SDCA_CTL_CSEL(SDCA_CTL_GE_DETECTED_MODE);
+
+	ret = pm_runtime_resume_and_get(dev);
+	if (ret < 0) {
+		dev_err(dev, "failed to resume writing %s: %d\n",
+			kcontrol->id.name, ret);
+		return ret;
+	}
+
+	ret = snd_soc_component_read(component, reg);
+	pm_runtime_put(dev);
+	if (ret < 0)
+		return ret;
+	else if (ret <= SDCA_DETECTED_MODE_DETECTION_IN_PROGRESS)
+		return -EBUSY;
+
+	ret = snd_soc_enum_item_to_val(e, item[0]);
+	if (ret <= SDCA_DETECTED_MODE_DETECTION_IN_PROGRESS)
+		return -EINVAL;
+
+	return snd_soc_dapm_put_enum_double(kcontrol, ucontrol);
+}
+
 static int entity_early_parse_ge(struct device *dev,
 				 struct sdca_function_data *function,
 				 struct sdca_entity *entity)
@@ -224,7 +263,7 @@ static int entity_early_parse_ge(struct device *dev,
 	kctl->name = control_name;
 	kctl->info = snd_soc_info_enum_double;
 	kctl->get = snd_soc_dapm_get_enum_double;
-	kctl->put = snd_soc_dapm_put_enum_double;
+	kctl->put = ge_put_enum_double;
 	kctl->private_value = (unsigned long)soc_enum;
 
 	entity->ge.kctl = kctl;
@@ -326,7 +365,7 @@ static int entity_parse_ot(struct device *dev,
 static int entity_pde_event(struct snd_soc_dapm_widget *widget,
 			    struct snd_kcontrol *kctl, int event)
 {
-	struct snd_soc_component *component = widget->dapm->component;
+	struct snd_soc_component *component = snd_soc_dapm_to_component(widget->dapm);
 	struct sdca_entity *entity = widget->priv;
 	static const int polls = 100;
 	unsigned int reg, val;
@@ -451,7 +490,7 @@ static int entity_parse_su_device(struct device *dev,
 	if (!range)
 		return -EINVAL;
 
-	(*widget)->id = snd_soc_dapm_mux;
+	(*widget)->id = snd_soc_dapm_mux_named_ctl;
 	(*widget)->kcontrol_news = entity->group->ge.kctl;
 	(*widget)->num_kcontrols = 1;
 	(*widget)++;
@@ -638,7 +677,7 @@ static int entity_parse_mu(struct device *dev,
 static int entity_cs_event(struct snd_soc_dapm_widget *widget,
 			   struct snd_kcontrol *kctl, int event)
 {
-	struct snd_soc_component *component = widget->dapm->component;
+	struct snd_soc_component *component = snd_soc_dapm_to_component(widget->dapm);
 	struct sdca_entity *entity = widget->priv;
 
 	if (!component)
@@ -769,6 +808,72 @@ int sdca_asoc_populate_dapm(struct device *dev, struct sdca_function_data *funct
 }
 EXPORT_SYMBOL_NS(sdca_asoc_populate_dapm, "SND_SOC_SDCA");
 
+static int q78_write(struct snd_soc_component *component,
+		     struct soc_mixer_control *mc,
+		     unsigned int reg, const int val)
+{
+	unsigned int mask = GENMASK(mc->sign_bit, 0);
+	unsigned int reg_val;
+
+	if (val < 0 || val > mc->max - mc->min)
+		return -EINVAL;
+
+	reg_val = (val + mc->min) * mc->shift;
+
+	return snd_soc_component_update_bits(component, reg, mask, reg_val);
+}
+
+int sdca_asoc_q78_put_volsw(struct snd_kcontrol *kcontrol,
+			    struct snd_ctl_elem_value *ucontrol)
+{
+	struct soc_mixer_control *mc = (struct soc_mixer_control *)kcontrol->private_value;
+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+	int ret;
+
+	ret = q78_write(component, mc, mc->reg, ucontrol->value.integer.value[0]);
+	if (ret < 0)
+		return ret;
+
+	if (snd_soc_volsw_is_stereo(mc)) {
+		int err; /* Don't drop change flag */
+
+		err = q78_write(component, mc, mc->rreg, ucontrol->value.integer.value[1]);
+		if (err)
+			return err;
+	}
+
+	return ret;
+}
+EXPORT_SYMBOL_NS(sdca_asoc_q78_put_volsw, "SND_SOC_SDCA");
+
+static int q78_read(struct snd_soc_component *component,
+		    struct soc_mixer_control *mc, unsigned int reg)
+{
+	unsigned int reg_val;
+	int val;
+
+	reg_val = snd_soc_component_read(component, reg);
+
+	val = (sign_extend32(reg_val, mc->sign_bit) / (int)mc->shift) - mc->min;
+
+	return val & GENMASK(mc->sign_bit, 0);
+}
+
+int sdca_asoc_q78_get_volsw(struct snd_kcontrol *kcontrol,
+			    struct snd_ctl_elem_value *ucontrol)
+{
+	struct soc_mixer_control *mc = (struct soc_mixer_control *)kcontrol->private_value;
+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+
+	ucontrol->value.integer.value[0] = q78_read(component, mc, mc->reg);
+
+	if (snd_soc_volsw_is_stereo(mc))
+		ucontrol->value.integer.value[1] = q78_read(component, mc, mc->rreg);
+
+	return 0;
+}
+EXPORT_SYMBOL_NS(sdca_asoc_q78_get_volsw, "SND_SOC_SDCA");
+
 static int control_limit_kctl(struct device *dev,
 			      struct sdca_entity *entity,
 			      struct sdca_control *control,
@@ -805,18 +910,59 @@ static int control_limit_kctl(struct device *dev,
 	tlv[2] = (min * 100) >> 8;
 	tlv[3] = (max * 100) >> 8;
 
-	step = (step * 100) >> 8;
-
-	mc->min = ((int)tlv[2] / step);
-	mc->max = ((int)tlv[3] / step);
+	mc->min = min / step;
+	mc->max = max / step;
 	mc->shift = step;
 	mc->sign_bit = 15;
-	mc->sdca_q78 = 1;
 
 	kctl->tlv.p = tlv;
 	kctl->access |= SNDRV_CTL_ELEM_ACCESS_TLV_READ;
+	kctl->get = sdca_asoc_q78_get_volsw;
+	kctl->put = sdca_asoc_q78_put_volsw;
 
 	return 0;
+}
+
+static int volatile_get_volsw(struct snd_kcontrol *kcontrol,
+			      struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+	struct device *dev = component->dev;
+	int ret;
+
+	ret = pm_runtime_resume_and_get(dev);
+	if (ret < 0) {
+		dev_err(dev, "failed to resume reading %s: %d\n",
+			kcontrol->id.name, ret);
+		return ret;
+	}
+
+	ret = snd_soc_get_volsw(kcontrol, ucontrol);
+
+	pm_runtime_put(dev);
+
+	return ret;
+}
+
+static int volatile_put_volsw(struct snd_kcontrol *kcontrol,
+			      struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+	struct device *dev = component->dev;
+	int ret;
+
+	ret = pm_runtime_resume_and_get(dev);
+	if (ret < 0) {
+		dev_err(dev, "failed to resume writing %s: %d\n",
+			kcontrol->id.name, ret);
+		return ret;
+	}
+
+	ret = snd_soc_put_volsw(kcontrol, ucontrol);
+
+	pm_runtime_put(dev);
+
+	return ret;
 }
 
 static int populate_control(struct device *dev,
@@ -876,8 +1022,13 @@ static int populate_control(struct device *dev,
 	(*kctl)->private_value = (unsigned long)mc;
 	(*kctl)->iface = SNDRV_CTL_ELEM_IFACE_MIXER;
 	(*kctl)->info = snd_soc_info_volsw;
-	(*kctl)->get = snd_soc_get_volsw;
-	(*kctl)->put = snd_soc_put_volsw;
+	if (control->is_volatile) {
+		(*kctl)->get = volatile_get_volsw;
+		(*kctl)->put = volatile_put_volsw;
+	} else {
+		(*kctl)->get = snd_soc_get_volsw;
+		(*kctl)->put = snd_soc_put_volsw;
+	}
 
 	if (readonly_control(control))
 		(*kctl)->access = SNDRV_CTL_ELEM_ACCESS_READ;
@@ -1293,7 +1444,7 @@ int sdca_asoc_set_constraints(struct device *dev, struct regmap *regmap,
 	dev_dbg(dev, "%s: set channel constraint mask: %#x\n",
 		entity->label, channel_mask);
 
-	constraint = kzalloc(sizeof(*constraint), GFP_KERNEL);
+	constraint = kzalloc_obj(*constraint);
 	if (!constraint)
 		return -ENOMEM;
 

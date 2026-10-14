@@ -16,20 +16,25 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <libgen.h>
 #include <ctype.h>
+#include <linux/align.h>
+#include <linux/kernel.h>
 #include <linux/interval_tree_generic.h>
+#include <linux/log2.h>
 #include <objtool/builtin.h>
 #include <objtool/elf.h>
 #include <objtool/warn.h>
 
-#define ALIGN_UP(x, align_to) (((x) + ((align_to)-1)) & ~((align_to)-1))
-#define ALIGN_UP_POW2(x) (1U << ((8 * sizeof(x)) - __builtin_clz((x) - 1U)))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+static ssize_t demangled_name_len(const char *name);
 
 static inline u32 str_hash(const char *str)
 {
 	return jhash(str, strlen(str), 0);
+}
+
+static inline u32 str_hash_demangled(const char *str)
+{
+	return jhash(str, demangled_name_len(str), 0);
 }
 
 #define __elf_table(name)	(elf->name##_hash)
@@ -172,11 +177,11 @@ static struct symbol *find_symbol_by_index(struct elf *elf, unsigned int idx)
 struct symbol *find_symbol_by_offset(struct section *sec, unsigned long offset)
 {
 	struct rb_root_cached *tree = (struct rb_root_cached *)&sec->symbol_tree;
-	struct symbol *iter;
+	struct symbol *sym;
 
-	__sym_for_each(iter, tree, offset, offset) {
-		if (iter->offset == offset && !is_sec_sym(iter))
-			return iter;
+	__sym_for_each(sym, tree, offset, offset) {
+		if (sym->offset == offset && !is_sec_sym(sym))
+			return sym->alias;
 	}
 
 	return NULL;
@@ -185,11 +190,11 @@ struct symbol *find_symbol_by_offset(struct section *sec, unsigned long offset)
 struct symbol *find_func_by_offset(struct section *sec, unsigned long offset)
 {
 	struct rb_root_cached *tree = (struct rb_root_cached *)&sec->symbol_tree;
-	struct symbol *iter;
+	struct symbol *func;
 
-	__sym_for_each(iter, tree, offset, offset) {
-		if (iter->offset == offset && is_func_sym(iter))
-			return iter;
+	__sym_for_each(func, tree, offset, offset) {
+		if (func->offset == offset && is_func_sym(func))
+			return func->alias;
 	}
 
 	return NULL;
@@ -220,7 +225,7 @@ struct symbol *find_symbol_containing(const struct section *sec, unsigned long o
 		}
 	}
 
-	return sym;
+	return sym ? sym->alias : NULL;
 }
 
 /*
@@ -266,11 +271,11 @@ int find_symbol_hole_containing(const struct section *sec, unsigned long offset)
 struct symbol *find_func_containing(struct section *sec, unsigned long offset)
 {
 	struct rb_root_cached *tree = (struct rb_root_cached *)&sec->symbol_tree;
-	struct symbol *iter;
+	struct symbol *func;
 
-	__sym_for_each(iter, tree, offset, offset) {
-		if (is_func_sym(iter))
-			return iter;
+	__sym_for_each(func, tree, offset, offset) {
+		if (is_func_sym(func))
+			return func->alias;
 	}
 
 	return NULL;
@@ -288,16 +293,46 @@ struct symbol *find_symbol_by_name(const struct elf *elf, const char *name)
 	return NULL;
 }
 
+/* Find local symbol with matching STT_FILE */
+static struct symbol *find_local_symbol_by_file_and_name(const struct elf *elf,
+							 struct symbol *file,
+							 const char *name)
+{
+	struct symbol *sym;
+
+	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash_demangled(name)) {
+		if (sym->bind == STB_LOCAL && sym->file == file &&
+		    !strcmp(sym->name, name)) {
+			return sym;
+		}
+	}
+
+	return NULL;
+}
+
 struct symbol *find_global_symbol_by_name(const struct elf *elf, const char *name)
 {
 	struct symbol *sym;
 
-	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash(name)) {
+	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash_demangled(name)) {
 		if (!strcmp(sym->name, name) && !is_local_sym(sym))
 			return sym;
 	}
 
 	return NULL;
+}
+
+void iterate_global_symbol_by_demangled_name(const struct elf *elf,
+					     const char *demangled_name,
+					     void (*process)(struct symbol *sym, void *data),
+					     void *data)
+{
+	struct symbol *sym;
+
+	elf_hash_for_each_possible(symbol_name, sym, name_hash, str_hash(demangled_name)) {
+		if (!strcmp(sym->demangled_name, demangled_name) && !is_local_sym(sym))
+			process(sym, data);
+	}
 }
 
 struct reloc *find_reloc_by_dest_range(const struct elf *elf, struct section *sec,
@@ -425,33 +460,66 @@ static int read_sections(struct elf *elf)
 	return 0;
 }
 
+/*
+ * Returns desired length of the demangled name.
+ * If name doesn't need demangling, return strlen(name).
+ */
+static ssize_t demangled_name_len(const char *name)
+{
+	ssize_t idx;
+	const char *p;
+
+	p = strstr(name, ".llvm.");
+	if (p)
+		return p - name;
+
+	if (!strstarts(name, "__UNIQUE_ID_") && !strchr(name, '.'))
+		return strlen(name);
+
+	for (idx = strlen(name) - 1; idx >= 0; idx--) {
+		char c = name[idx];
+
+		if (!isdigit(c) && c != '.' && c != '_')
+			break;
+	}
+	if (idx <= 0)
+		return strlen(name);
+	return idx + 1;
+}
+
+/*
+ * Remove number suffix of a symbol.
+ *
+ * Specifically, remove trailing numbers for "__UNIQUE_ID_" symbols and
+ * symbols with '.'.
+ *
+ * With CONFIG_LTO_CLANG_THIN, it is possible to have nested __UNIQUE_ID_,
+ * such as
+ *
+ *   __UNIQUE_ID_addressable___UNIQUE_ID_pci_invalid_bar_694_695
+ *
+ * to remove both trailing numbers, also remove trailing '_'.
+ *
+ * For symbols with llvm suffix, i.e., foo.llvm.<hash>, remove the
+ * .llvm.<hash> part.
+ */
 static const char *demangle_name(struct symbol *sym)
 {
 	char *str;
-
-	if (!is_local_sym(sym))
-		return sym->name;
+	ssize_t len;
 
 	if (!is_func_sym(sym) && !is_object_sym(sym))
 		return sym->name;
 
-	if (!strstarts(sym->name, "__UNIQUE_ID_") && !strchr(sym->name, '.'))
+	len = demangled_name_len(sym->name);
+	if (len == strlen(sym->name))
 		return sym->name;
 
-	str = strdup(sym->name);
+	str = strndup(sym->name, len);
 	if (!str) {
 		ERROR_GLIBC("strdup");
 		return NULL;
 	}
-
-	for (int i = strlen(str) - 1; i >= 0; i--) {
-		char c = str[i];
-
-		if (!isdigit(c) && c != '.') {
-			str[i + 1] = '\0';
-			break;
-		}
-	};
 
 	return str;
 }
@@ -475,8 +543,8 @@ static int elf_add_symbol(struct elf *elf, struct symbol *sym)
 	sym->len = sym->sym.st_size;
 
 	__sym_for_each(iter, &sym->sec->symbol_tree, sym->offset, sym->offset) {
-		if (iter->offset == sym->offset && iter->type == sym->type &&
-		    iter->len == sym->len)
+		if (!is_undef_sym(iter) && iter->offset == sym->offset &&
+		    iter->type == sym->type && iter->len == sym->len)
 			iter->alias = sym;
 	}
 
@@ -488,9 +556,13 @@ static int elf_add_symbol(struct elf *elf, struct symbol *sym)
 		entry = &sym->sec->symbol_list;
 	list_add(&sym->list, entry);
 
+	sym->demangled_name = demangle_name(sym);
+	if (!sym->demangled_name)
+		return -1;
+
 	list_add_tail(&sym->global_list, &elf->symbols);
 	elf_hash_add(symbol, &sym->hash, sym->idx);
-	elf_hash_add(symbol_name, &sym->name_hash, str_hash(sym->name));
+	elf_hash_add(symbol_name, &sym->name_hash, str_hash(sym->demangled_name));
 
 	if (is_func_sym(sym) &&
 	    (strstarts(sym->name, "__pfx_") ||
@@ -514,17 +586,13 @@ static int elf_add_symbol(struct elf *elf, struct symbol *sym)
 
 	sym->pfunc = sym->cfunc = sym;
 
-	sym->demangled_name = demangle_name(sym);
-	if (!sym->demangled_name)
-		return -1;
-
 	return 0;
 }
 
 static int read_symbols(struct elf *elf)
 {
 	struct section *symtab, *symtab_shndx, *sec;
-	struct symbol *sym, *pfunc;
+	struct symbol *sym, *pfunc, *file = NULL;
 	int symbols_nr, i;
 	char *coldstr;
 	Elf_Data *shndx_data = NULL;
@@ -597,6 +665,11 @@ static int read_symbols(struct elf *elf)
 
 		if (elf_add_symbol(elf, sym))
 			return -1;
+
+		if (is_file_sym(sym))
+			file = sym;
+		else if (sym->bind == STB_LOCAL)
+			sym->file = file;
 	}
 
 	if (opts.stats) {
@@ -626,7 +699,9 @@ static int read_symbols(struct elf *elf)
 				return -1;
 			}
 
-			pfunc = find_symbol_by_name(elf, pname);
+			pfunc = find_local_symbol_by_file_and_name(elf, sym->file, pname);
+			if (!pfunc)
+				pfunc = find_global_symbol_by_name(elf, pname);
 			free(pname);
 
 			if (!pfunc) {
@@ -634,8 +709,9 @@ static int read_symbols(struct elf *elf)
 				return -1;
 			}
 
-			sym->pfunc = pfunc;
+			sym->pfunc = pfunc->alias;
 			pfunc->cfunc = sym;
+			pfunc->alias->cfunc = sym;
 
 			/*
 			 * Unfortunately, -fnoreorder-functions puts the child
@@ -1165,7 +1241,7 @@ err:
 struct elf *elf_create_file(GElf_Ehdr *ehdr, const char *name)
 {
 	struct section *null, *symtab, *strtab, *shstrtab;
-	char *dir, *base, *tmp_name;
+	char *tmp_name;
 	struct symbol *sym;
 	struct elf *elf;
 
@@ -1179,29 +1255,13 @@ struct elf *elf_create_file(GElf_Ehdr *ehdr, const char *name)
 
 	INIT_LIST_HEAD(&elf->sections);
 
-	dir = strdup(name);
-	if (!dir) {
-		ERROR_GLIBC("strdup");
-		return NULL;
-	}
-
-	dir = dirname(dir);
-
-	base = strdup(name);
-	if (!base) {
-		ERROR_GLIBC("strdup");
-		return NULL;
-	}
-
-	base = basename(base);
-
-	tmp_name = malloc(256);
+	tmp_name = malloc(strlen(name) + 8);
 	if (!tmp_name) {
 		ERROR_GLIBC("malloc");
 		return NULL;
 	}
 
-	snprintf(tmp_name, 256, "%s/%s.XXXXXX", dir, base);
+	sprintf(tmp_name, "%s.XXXXXX", name);
 
 	elf->fd = mkstemp(tmp_name);
 	if (elf->fd == -1) {
@@ -1311,7 +1371,7 @@ unsigned int elf_add_string(struct elf *elf, struct section *strtab, const char 
 		return -1;
 	}
 
-	offset = ALIGN_UP(strtab->sh.sh_size, strtab->sh.sh_addralign);
+	offset = ALIGN(sec_size(strtab), strtab->sh.sh_addralign);
 
 	if (!elf_add_data(elf, strtab, str, strlen(str) + 1))
 		return -1;
@@ -1351,9 +1411,9 @@ void *elf_add_data(struct elf *elf, struct section *sec, const void *data, size_
 		memcpy(sec->data->d_buf, data, size);
 
 	sec->data->d_size = size;
-	sec->data->d_align = 1;
+	sec->data->d_align = sec->sh.sh_addralign;
 
-	offset = ALIGN_UP(sec->sh.sh_size, sec->sh.sh_addralign);
+	offset = ALIGN(sec_size(sec), sec->sh.sh_addralign);
 	sec->sh.sh_size = offset + size;
 
 	mark_sec_changed(elf, sec, true);
@@ -1477,7 +1537,7 @@ static int elf_alloc_reloc(struct elf *elf, struct section *rsec)
 	rsec->data->d_size = nr_relocs_new * elf_rela_size(elf);
 	rsec->sh.sh_size   = rsec->data->d_size;
 
-	nr_alloc = MAX(64, ALIGN_UP_POW2(nr_relocs_new));
+	nr_alloc = max(64UL, roundup_pow_of_two(nr_relocs_new));
 	if (nr_alloc <= rsec->nr_alloc_relocs)
 		return 0;
 

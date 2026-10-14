@@ -693,7 +693,7 @@ void __init tick_nohz_init(void)
  * NO HZ enabled ?
  */
 bool tick_nohz_enabled __read_mostly  = true;
-unsigned long tick_nohz_active  __read_mostly;
+static unsigned long tick_nohz_active  __read_mostly;
 /*
  * Enable / Disable tickless mode
  */
@@ -703,6 +703,12 @@ static int __init setup_tick_nohz(char *str)
 }
 
 __setup("nohz=", setup_tick_nohz);
+
+bool tick_nohz_is_active(void)
+{
+	return tick_nohz_active;
+}
+EXPORT_SYMBOL_GPL(tick_nohz_is_active);
 
 bool tick_nohz_tick_stopped(void)
 {
@@ -1174,16 +1180,15 @@ static bool report_idle_softirq(void)
 			return false;
 	}
 
-	if (ratelimit >= 10)
-		return false;
-
 	/* On RT, softirq handling may be waiting on some lock */
 	if (local_bh_blocked())
 		return false;
 
-	pr_warn("NOHZ tick-stop error: local softirq work is pending, handler #%02x!!!\n",
-		pending);
-	ratelimit++;
+	if (ratelimit < 10) {
+		pr_warn("NOHZ tick-stop error: local softirq work is pending, handler #%02x!!!\n",
+			pending);
+		ratelimit++;
+	}
 
 	return true;
 }

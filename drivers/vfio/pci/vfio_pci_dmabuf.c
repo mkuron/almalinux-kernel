@@ -14,7 +14,7 @@ struct vfio_pci_dma_buf {
 	struct vfio_pci_core_device *vdev;
 	struct list_head dmabufs_elm;
 	size_t size;
-	struct dma_buf_phys_vec *phys_vec;
+	struct phys_vec *phys_vec;
 	struct p2pdma_provider *provider;
 	u32 nr_ranges;
 	u8 revoked : 1;
@@ -106,7 +106,7 @@ static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
  *    will fail if it is currently revoked
  */
 int vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
-				 struct dma_buf_phys_vec *phys)
+				 struct phys_vec *phys)
 {
 	struct vfio_pci_dma_buf *priv;
 
@@ -126,9 +126,9 @@ int vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
 	*phys = priv->phys_vec[0];
 	return 0;
 }
-EXPORT_SYMBOL_GPL_FOR_MODULES(vfio_pci_dma_buf_iommufd_map, "iommufd");
+EXPORT_SYMBOL_FOR_MODULES(vfio_pci_dma_buf_iommufd_map, "iommufd");
 
-int vfio_pci_core_fill_phys_vec(struct dma_buf_phys_vec *phys_vec,
+int vfio_pci_core_fill_phys_vec(struct phys_vec *phys_vec,
 				struct vfio_region_dma_range *dma_ranges,
 				size_t nr_ranges, phys_addr_t start,
 				phys_addr_t len)
@@ -160,7 +160,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_fill_phys_vec);
 int vfio_pci_core_get_dmabuf_phys(struct vfio_pci_core_device *vdev,
 				  struct p2pdma_provider **provider,
 				  unsigned int region_index,
-				  struct dma_buf_phys_vec *phys_vec,
+				  struct phys_vec *phys_vec,
 				  struct vfio_region_dma_range *dma_ranges,
 				  size_t nr_ranges)
 {
@@ -232,11 +232,9 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
 		return -EINVAL;
 
 	/*
-	 * For PCI the region_index is the BAR number like everything
-	 * else.  Check that PCI resources have been claimed for it.
+	 * For PCI the region_index is the BAR number like everything else.
 	 */
-	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
-	    vfio_pci_core_setup_barmap(vdev, get_dma_buf.region_index))
+	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX)
 		return -ENODEV;
 
 	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
@@ -304,11 +302,10 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
 	 */
 	ret = dma_buf_fd(priv->dmabuf, get_dma_buf.open_flags);
 	if (ret < 0)
-		goto err_dma_buf;
+		dma_buf_put(priv->dmabuf);
+
 	return ret;
 
-err_dma_buf:
-	dma_buf_put(priv->dmabuf);
 err_dev_put:
 	vfio_device_put_registration(&vdev->vdev);
 err_free_phys:

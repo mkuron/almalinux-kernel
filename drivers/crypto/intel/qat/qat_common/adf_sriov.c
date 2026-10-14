@@ -48,7 +48,7 @@ void adf_schedule_vf2pf_handler(struct adf_accel_vf_info *vf_info)
 	if (READ_ONCE(accel_dev->pf.vf2pf_disabled))
 		return;
 
-	pf2vf_resp = kzalloc(sizeof(*pf2vf_resp), GFP_ATOMIC);
+	pf2vf_resp = kzalloc_obj(*pf2vf_resp, GFP_ATOMIC);
 	if (!pf2vf_resp)
 		return;
 
@@ -90,6 +90,10 @@ static int adf_enable_sriov(struct adf_accel_dev *accel_dev)
 
 	/* Enable VF to PF interrupts for all VFs */
 	adf_enable_all_vf2pf_interrupts(accel_dev, totalvfs);
+
+	/* Do not enable SR-IOV if already enabled */
+	if (pci_num_vf(pdev))
+		return 0;
 
 	/*
 	 * Due to the hardware design, when SR-IOV and the ring arbiter
@@ -187,8 +191,7 @@ static int adf_do_enable_sriov(struct adf_accel_dev *accel_dev)
 		goto err_del_cfg;
 
 	/* Allocate memory for VF info structs */
-	accel_dev->pf.vf_info = kcalloc(totalvfs, sizeof(struct adf_accel_vf_info),
-					GFP_KERNEL);
+	accel_dev->pf.vf_info = kzalloc_objs(struct adf_accel_vf_info, totalvfs);
 	ret = -ENOMEM;
 	if (!accel_dev->pf.vf_info)
 		goto err_del_cfg;
@@ -237,7 +240,7 @@ void adf_reenable_sriov(struct adf_accel_dev *accel_dev)
 	if (adf_add_sriov_configuration(accel_dev))
 		return;
 
-	dev_dbg(&pdev->dev, "Re-enabling SRIOV\n");
+	pci_dbg(pdev, "Re-enabling SRIOV\n");
 	adf_enable_sriov(accel_dev);
 }
 
@@ -261,7 +264,13 @@ void adf_disable_sriov(struct adf_accel_dev *accel_dev)
 
 	adf_pf2vf_notify_restarting(accel_dev);
 	adf_pf2vf_wait_for_restarting_complete(accel_dev);
-	pci_disable_sriov(accel_to_pci_dev(accel_dev));
+	/*
+	 * When the device is restarting, preserve VF PCI devices across
+	 * the reset by skipping pci_disable_sriov(). VFs are notified to
+	 * quiesce regardless so the PF can safely shut down.
+	 */
+	if (!test_bit(ADF_STATUS_RESTARTING, &accel_dev->status))
+		pci_disable_sriov(accel_to_pci_dev(accel_dev));
 
 	/* Block VF2PF work and disable VF to PF interrupts */
 	adf_disable_all_vf2pf_interrupts(accel_dev);

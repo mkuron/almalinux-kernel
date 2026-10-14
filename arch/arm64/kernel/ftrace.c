@@ -23,10 +23,10 @@ struct fregs_offset {
 	int offset;
 };
 
-#define FREGS_OFFSET(n, field)				\
-{							\
-	.name = n,					\
-	.offset = offsetof(struct ftrace_regs, field),	\
+#define FREGS_OFFSET(n, field)					\
+{								\
+	.name = n,						\
+	.offset = offsetof(struct __arch_ftrace_regs, field),	\
 }
 
 static const struct fregs_offset fregs_offsets[] = {
@@ -430,7 +430,7 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec,
 		return ret;
 
 	/*
-	 * When using mcount, callsites in modules may have been initalized to
+	 * When using mcount, callsites in modules may have been initialized to
 	 * call an arbitrary module PLT (which redirects to the _mcount stub)
 	 * rather than the ftrace PLT we'll use at runtime (which redirects to
 	 * the ftrace trampoline). We can ignore the old PLT when initializing
@@ -488,7 +488,7 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent,
 void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
 		       struct ftrace_ops *op, struct ftrace_regs *fregs)
 {
-	prepare_ftrace_return(ip, &fregs->lr, fregs->fp);
+	prepare_ftrace_return(ip, &arch_ftrace_regs(fregs)->lr, arch_ftrace_regs(fregs)->fp);
 }
 #else
 /*

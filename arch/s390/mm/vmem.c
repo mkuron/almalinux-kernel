@@ -63,13 +63,12 @@ void *vmem_crst_alloc(unsigned long val)
 
 pte_t __ref *vmem_pte_alloc(void)
 {
-	unsigned long size = PTRS_PER_PTE * sizeof(pte_t);
 	pte_t *pte;
 
 	if (slab_is_available())
-		pte = (pte_t *) page_table_alloc(&init_mm);
+		pte = (pte_t *)page_table_alloc(&init_mm);
 	else
-		pte = (pte_t *) memblock_alloc(size, size);
+		pte = (pte_t *)memblock_alloc(PAGE_SIZE, PAGE_SIZE);
 	if (!pte)
 		return NULL;
 	memset64((u64 *)pte, _PAGE_INVALID, PTRS_PER_PTE);
@@ -171,9 +170,6 @@ static int __ref modify_pte_table(pmd_t *pmd, unsigned long addr,
 	pte_t *pte;
 
 	prot = pgprot_val(PAGE_KERNEL);
-	if (!MACHINE_HAS_NX)
-		prot &= ~_PAGE_NOEXEC;
-
 	pte = pte_offset_kernel(pmd, addr);
 	for (; addr < end; addr += PAGE_SIZE, pte++) {
 		if (!add) {
@@ -230,9 +226,6 @@ static int __ref modify_pmd_table(pud_t *pud, unsigned long addr,
 	pte_t *pte;
 
 	prot = pgprot_val(SEGMENT_KERNEL);
-	if (!MACHINE_HAS_NX)
-		prot &= ~_SEGMENT_ENTRY_NOEXEC;
-
 	pmd = pmd_offset(pud, addr);
 	for (; addr < end; addr = next, pmd++) {
 		next = pmd_addr_end(addr, end);
@@ -324,8 +317,6 @@ static int modify_pud_table(p4d_t *p4d, unsigned long addr, unsigned long end,
 	pmd_t *pmd;
 
 	prot = pgprot_val(REGION3_KERNEL);
-	if (!MACHINE_HAS_NX)
-		prot &= ~_REGION_ENTRY_NOEXEC;
 	pud = pud_offset(p4d, addr);
 	for (; addr < end; addr = next, pud++) {
 		next = pud_addr_end(addr, end);
@@ -670,7 +661,7 @@ void __init vmem_map_init(void)
 	if (!static_key_enabled(&cpu_has_bear))
 		set_memory_x(0, 1);
 	if (debug_pagealloc_enabled())
-		__set_memory_4k(__va(0), __va(0) + ident_map_size);
+		__set_memory_4k(__va(0), absolute_pointer(__va(0)) + ident_map_size);
 	pr_info("Write protected kernel read-only data: %luk\n",
 		(unsigned long)(__end_rodata - _stext) >> 10);
 }

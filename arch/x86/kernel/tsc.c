@@ -11,6 +11,7 @@
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
 #include <linux/clocksource.h>
+#include <linux/kvm_types.h>
 #include <linux/percpu.h>
 #include <linux/timex.h>
 #include <linux/static_key.h>
@@ -1140,7 +1141,6 @@ static void tsc_cs_mark_unstable(struct clocksource *cs)
 	tsc_unstable = 1;
 	if (using_native_sched_clock())
 		clear_sched_clock_stable();
-	disable_sched_clock_irqtime();
 	pr_info("Marking TSC unstable due to clocksource watchdog\n");
 }
 
@@ -1210,7 +1210,6 @@ void mark_tsc_unstable(char *reason)
 	tsc_unstable = 1;
 	if (using_native_sched_clock())
 		clear_sched_clock_stable();
-	disable_sched_clock_irqtime();
 	pr_info("Marking TSC unstable due to %s\n", reason);
 
 	clocksource_mark_unstable(&clocksource_tsc_early);

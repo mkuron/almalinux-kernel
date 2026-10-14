@@ -208,7 +208,7 @@ dpll_xa_ref_pin_add(struct xarray *xa_pins, struct dpll_pin *pin,
 	}
 
 	if (!ref_exists) {
-		ref = kzalloc(sizeof(*ref), GFP_KERNEL);
+		ref = kzalloc_obj(*ref);
 		if (!ref)
 			return -ENOMEM;
 		ref->pin = pin;
@@ -221,7 +221,7 @@ dpll_xa_ref_pin_add(struct xarray *xa_pins, struct dpll_pin *pin,
 		refcount_set(&ref->refcount, 1);
 	}
 
-	reg = kzalloc(sizeof(*reg), GFP_KERNEL);
+	reg = kzalloc_obj(*reg);
 	if (!reg) {
 		if (!ref_exists) {
 			xa_erase(xa_pins, pin->pin_idx);
@@ -289,7 +289,7 @@ dpll_xa_ref_dpll_add(struct xarray *xa_dplls, struct dpll_device *dpll,
 	}
 
 	if (!ref_exists) {
-		ref = kzalloc(sizeof(*ref), GFP_KERNEL);
+		ref = kzalloc_obj(*ref);
 		if (!ref)
 			return -ENOMEM;
 		ref->dpll = dpll;
@@ -302,7 +302,7 @@ dpll_xa_ref_dpll_add(struct xarray *xa_dplls, struct dpll_device *dpll,
 		refcount_set(&ref->refcount, 1);
 	}
 
-	reg = kzalloc(sizeof(*reg), GFP_KERNEL);
+	reg = kzalloc_obj(*reg);
 	if (!reg) {
 		if (!ref_exists) {
 			xa_erase(xa_dplls, dpll->id);
@@ -363,7 +363,7 @@ dpll_device_alloc(const u64 clock_id, u32 device_idx, struct module *module)
 	struct dpll_device *dpll;
 	int ret;
 
-	dpll = kzalloc(sizeof(*dpll), GFP_KERNEL);
+	dpll = kzalloc_obj(*dpll);
 	if (!dpll)
 		return ERR_PTR(-ENOMEM);
 	refcount_set(&dpll->refcount, 1);
@@ -493,7 +493,7 @@ int dpll_device_register(struct dpll_device *dpll, enum dpll_type type,
 		return -EEXIST;
 	}
 
-	reg = kzalloc(sizeof(*reg), GFP_KERNEL);
+	reg = kzalloc_obj(*reg);
 	if (!reg) {
 		mutex_unlock(&dpll_lock);
 		return -ENOMEM;
@@ -647,7 +647,7 @@ dpll_pin_alloc(u64 clock_id, u32 pin_idx, struct module *module,
 	} else if (pin_idx > INT_MAX) {
 		return ERR_PTR(-EINVAL);
 	}
-	pin = kzalloc(sizeof(*pin), GFP_KERNEL);
+	pin = kzalloc_obj(*pin);
 	if (!pin) {
 		ret = -ENOMEM;
 		goto err_pin_alloc;
@@ -884,7 +884,11 @@ dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
 	    WARN_ON(ops->measured_freq_get &&
 		    (!dpll_device_ops(dpll)->freq_monitor_get ||
 		     !dpll_device_ops(dpll)->freq_monitor_set)) ||
-	    WARN_ON(ops->supported_ffo && !ops->ffo_get))
+	    WARN_ON(ops->supported_ffo && !ops->ffo_get) ||
+	    WARN_ON((pin->prop.capabilities &
+		     DPLL_PIN_CAPABILITIES_STATE_CONNECTED_OVERRIDE) &&
+		    !(pin->prop.capabilities &
+		      DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE)))
 		return -EINVAL;
 
 	mutex_lock(&dpll_lock);

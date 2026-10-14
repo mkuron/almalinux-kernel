@@ -59,10 +59,11 @@ int main(void)
 	OFFSET(__SF_EMPTY, stack_frame, empty[0]);
 	OFFSET(__SF_SIE_CONTROL, stack_frame, sie_control_block);
 	OFFSET(__SF_SIE_SAVEAREA, stack_frame, sie_savearea);
-	OFFSET(__SF_SIE_REASON, stack_frame, sie_reason);
+	OFFSET(__SF_SIE_RETURN, stack_frame, sie_return);
 	OFFSET(__SF_SIE_FLAGS, stack_frame, sie_flags);
 	OFFSET(__SF_SIE_CONTROL_PHYS, stack_frame, sie_control_block_phys);
 	OFFSET(__SF_SIE_GUEST_ASCE, stack_frame, sie_guest_asce);
+	OFFSET(__SF_SIE_IRQ, stack_frame, sie_irq);
 	DEFINE(STACK_FRAME_OVERHEAD, sizeof(struct stack_frame));
 	BLANK();
 	OFFSET(__SFUSER_BACKCHAIN, stack_frame_user, back_chain);
@@ -75,7 +76,7 @@ int main(void)
 	OFFSET(__LC_EXT_CPU_ADDR, lowcore, ext_cpu_addr);
 	OFFSET(__LC_EXT_INT_CODE, lowcore, ext_int_code);
 	OFFSET(__LC_PGM_ILC, lowcore, pgm_ilc);
-	OFFSET(__LC_PGM_INT_CODE, lowcore, pgm_code);
+	OFFSET(__LC_PGM_CODE, lowcore, pgm_code);
 	OFFSET(__LC_DATA_EXC_CODE, lowcore, data_exc_code);
 	OFFSET(__LC_MON_CLASS_NR, lowcore, mon_class_num);
 	OFFSET(__LC_PER_CODE, lowcore, per_code);
@@ -174,14 +175,8 @@ int main(void)
 	DEFINE(OLDMEM_SIZE, PARMAREA + offsetof(struct parmarea, oldmem_size));
 	DEFINE(COMMAND_LINE, PARMAREA + offsetof(struct parmarea, command_line));
 	DEFINE(MAX_COMMAND_LINE_SIZE, PARMAREA + offsetof(struct parmarea, max_command_line_size));
-#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-	/* function graph return value tracing */
-	OFFSET(__FGRAPH_RET_GPR2, fgraph_ret_regs, gpr2);
-	OFFSET(__FGRAPH_RET_FP, fgraph_ret_regs, fp);
-	DEFINE(__FGRAPH_RET_SIZE, sizeof(struct fgraph_ret_regs));
-#endif
-	OFFSET(__FTRACE_REGS_PT_REGS, ftrace_regs, regs);
-	DEFINE(__FTRACE_REGS_SIZE, sizeof(struct ftrace_regs));
+	OFFSET(__FTRACE_REGS_PT_REGS, __arch_ftrace_regs, regs);
+	DEFINE(__FTRACE_REGS_SIZE, sizeof(struct __arch_ftrace_regs));
 
 	OFFSET(__PCPU_FLAGS, pcpu, flags);
 	return 0;

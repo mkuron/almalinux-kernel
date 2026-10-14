@@ -459,6 +459,18 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
 	struct_size((type *)NULL, member, count)
 
 /**
+ * struct_offset() - Calculate the offset of a member within a struct
+ * @p: Pointer to the struct
+ * @member: Name of the member to get the offset of
+ *
+ * Calculates the offset of a particular @member of the structure pointed
+ * to by @p.
+ *
+ * Return: number of bytes to the location of @member.
+ */
+#define struct_offset(p, member) (offsetof(typeof(*(p)), member))
+
+/**
  * __DEFINE_FLEX() - helper macro for DEFINE_FLEX() family.
  * Enables caller macro to pass arbitrary trailing expressions
  *
@@ -503,6 +515,8 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
  * flexible array member.
  * Use __struct_size(@name) to get compile-time size of it afterwards.
  * Use __member_size(@name->member) to get compile-time size of @name members.
+ * Use STACK_FLEX_ARRAY_SIZE(@name, @member) to get compile-time number of
+ * elements in array @member.
  */
 #define DEFINE_RAW_FLEX(type, name, member, count)	\
 	__DEFINE_FLEX(type, name, member, count, = { })
@@ -521,8 +535,63 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
  * flexible array member.
  * Use __struct_size(@NAME) to get compile-time size of it afterwards.
  * Use __member_size(@NAME->member) to get compile-time size of @NAME members.
+ * Use STACK_FLEX_ARRAY_SIZE(@name, @member) to get compile-time number of
+ * elements in array @member.
  */
 #define DEFINE_FLEX(TYPE, NAME, MEMBER, COUNTER, COUNT)	\
 	_DEFINE_FLEX(TYPE, NAME, MEMBER, COUNT, = { .COUNTER = COUNT, })
+
+/**
+ * typeof_flex_counter() - Return the type of the counter variable of a given
+ *                         flexible array member annotated by __counted_by().
+ * @FAM: Instance of flexible array member within a given struct.
+ *
+ * Returns: "size_t" if no annotation exists.
+ */
+#define typeof_flex_counter(FAM)				\
+	typeof(_Generic(__flex_counter(FAM),			\
+			void *: (size_t)0,			\
+			default: *__flex_counter(FAM)))
+
+/**
+ * overflows_flex_counter_type() - Check if the counter associated with the
+ *				   given flexible array member can represent
+ *				   a value.
+ * @TYPE: Type of the struct that contains the @FAM.
+ * @FAM: Member name of the FAM within @TYPE.
+ * @COUNT: Value to check against the __counted_by annotated @FAM's counter.
+ *
+ * Returns: true if @COUNT can be represented in the @FAM's counter. When
+ * @FAM is not annotated with __counted_by(), always returns true.
+ */
+#define overflows_flex_counter_type(TYPE, FAM, COUNT)		\
+	(overflows_type(COUNT, typeof_flex_counter(((TYPE *)NULL)->FAM)))
+
+/**
+ * __set_flex_counter() - Set the counter associated with the given flexible
+ *                        array member that has been annoated by __counted_by().
+ * @FAM: Instance of flexible array member within a given struct.
+ * @COUNT: Value to store to the __counted_by annotated @FAM_PTR's counter.
+ *
+ * This is a no-op if no annotation exists. Count needs to be checked with
+ * overflows_flex_counter_type() before using this function.
+ */
+#define __set_flex_counter(FAM, COUNT)				\
+({								\
+	*_Generic(__flex_counter(FAM),				\
+		  void *:  &(size_t){ 0 },			\
+		  default: __flex_counter(FAM)) = (COUNT);	\
+})
+
+/**
+ * STACK_FLEX_ARRAY_SIZE() - helper macro for DEFINE_FLEX() family.
+ * Returns the number of elements in @array.
+ *
+ * @name: Name for a variable defined in DEFINE_RAW_FLEX()/DEFINE_FLEX().
+ * @array: Name of the array member.
+ */
+#define STACK_FLEX_ARRAY_SIZE(name, array)						\
+	(__member_size((name)->array) / sizeof(*(name)->array) +			\
+						__must_be_array((name)->array))
 
 #endif /* __LINUX_OVERFLOW_H */
