@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.65.1
+%define pkgrelease 211.66.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.65.1%{?buildid}%{?dist}
+%define specrelease 211.66.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1481,6 +1481,43 @@ Patch1422: 1422-bpf-restrict-jit-predictor-flush-to-cbpf.patch
 Patch1423: 1423-thermal-core-fix-thermal-zone-device-registration-error-path.patch
 Patch1424: 1424-nvmet-auth-synchronize-timeout-work-during-sq-teardown.patch
 
+# Backports for 6.12.0-211.66.1.el10_2
+Patch1425: 1425-ionic-convert-to-ndo-hwtstamp-api.patch
+Patch1426: 1426-net-sched-taprio-fix-use-after-free-in-advance-sched-on-schedule-switch.patch
+Patch1427: 1427-net-sched-act-ct-only-release-rcu-read-lock-after-ct-ft.patch
+Patch1428: 1428-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+Patch1429: 1429-net-sched-act-tunnel-key-defer-dst-release-to-rcu-callback.patch
+Patch1430: 1430-bluetooth-hci-sync-set-hci-cmd-drain-workqueue-during-device-close.patch
+Patch1431: 1431-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+Patch1432: 1432-idpf-fix-preempt-rt-raw-bh-spinlock-nesting-for-async-vc-handling.patch
+Patch1433: 1433-idpf-fix-read-dev-clk-lock-spinlock-init-in-idpf-ptp-init.patch
+Patch1434: 1434-idpf-fix-double-free-and-use-after-free-in-aux-device-error-paths.patch
+Patch1435: 1435-idpf-fix-max-vport-related-crash-on-allocation-error-during-init.patch
+Patch1436: 1436-dmaengine-idxd-fix-fdev-setup-failure-cleanup-in-idxd-cdev-open.patch
+Patch1437: 1437-alsa-usx2y-bound-the-hwdep-mmap-fault-offset.patch
+Patch1438: 1438-netfilter-nfnetlink-queue-do-shared-unconfirmed-check-before-segmentation.patch
+Patch1439: 1439-usb-serial-mxuport-fix-memory-corruption-with-small-endpoint.patch
+Patch1440: 1440-usb-serial-omninet-fix-memory-corruption-with-small-endpoint.patch
+Patch1441: 1441-usb-serial-safe-serial-fix-memory-corruption-with-small-endpoint.patch
+Patch1442: 1442-usb-serial-cypress-m8-fix-memory-corruption-with-small-endpoint.patch
+Patch1443: 1443-wifi-mac80211-bounds-check-link-id-in-ieee80211-ml-epcs.patch
+Patch1444: 1444-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
+Patch1445: 1445-asoc-sof-ipc3-control-fix-heap-overflow-in-bytes-ext-put-get.patch
+Patch1446: 1446-media-cx231xx-reject-geometry-changes-while-the-vbi-queue-is-busy.patch
+Patch1447: 1447-iavf-iavf-virtchnl-completion-drop-duplicate-ether-addr-equal-test.patch
+Patch1448: 1448-i40e-skip-unnecessary-vf-reset-when-setting-trust.patch
+Patch1449: 1449-iavf-send-mac-change-request-synchronously.patch
+Patch1450: 1450-ice-skip-unnecessary-vf-reset-when-setting-trust.patch
+Patch1451: 1451-svcrdma-validate-read-chunk-positions-before-reconstruction.patch
+Patch1452: 1452-nfsd-prevent-client-use-after-free-during-delegation-revoke.patch
+Patch1453: 1453-nfsd-prevent-client-use-after-free-during-blocked-lock-reaping.patch
+Patch1454: 1454-nfsd-don-t-free-session-slots-that-are-still-in-use.patch
+Patch1455: 1455-svcrdma-reject-write-reply-chunks-with-segcount-0.patch
+Patch1456: 1456-sunrpc-zero-rpc-gss-wire-cred-at-svcauth-gss-decode-credbody-entry.patch
+Patch1457: 1457-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-link.patch
+Patch1458: 1458-net-smc-bound-the-peer-rkey-counts-in-smc-rv2-llc-messages.patch
+Patch1459: 1459-net-smc-carry-oversized-smc-rv2-llc-messages-in-the-queue-entry.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1494,6 +1531,7 @@ Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
 Patch2014: 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 Patch2015: 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 Patch2016: 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
+Patch2017: 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -2706,6 +2744,43 @@ ApplyPatch 1422-bpf-restrict-jit-predictor-flush-to-cbpf.patch
 ApplyPatch 1423-thermal-core-fix-thermal-zone-device-registration-error-path.patch
 ApplyPatch 1424-nvmet-auth-synchronize-timeout-work-during-sq-teardown.patch
 
+# Applying backports for 6.12.0-211.66.1.el10_2
+ApplyPatch 1425-ionic-convert-to-ndo-hwtstamp-api.patch
+ApplyPatch 1426-net-sched-taprio-fix-use-after-free-in-advance-sched-on-schedule-switch.patch
+ApplyPatch 1427-net-sched-act-ct-only-release-rcu-read-lock-after-ct-ft.patch
+ApplyPatch 1428-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+ApplyPatch 1429-net-sched-act-tunnel-key-defer-dst-release-to-rcu-callback.patch
+ApplyPatch 1430-bluetooth-hci-sync-set-hci-cmd-drain-workqueue-during-device-close.patch
+ApplyPatch 1431-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+ApplyPatch 1432-idpf-fix-preempt-rt-raw-bh-spinlock-nesting-for-async-vc-handling.patch
+ApplyPatch 1433-idpf-fix-read-dev-clk-lock-spinlock-init-in-idpf-ptp-init.patch
+ApplyPatch 1434-idpf-fix-double-free-and-use-after-free-in-aux-device-error-paths.patch
+ApplyPatch 1435-idpf-fix-max-vport-related-crash-on-allocation-error-during-init.patch
+ApplyPatch 1436-dmaengine-idxd-fix-fdev-setup-failure-cleanup-in-idxd-cdev-open.patch
+ApplyPatch 1437-alsa-usx2y-bound-the-hwdep-mmap-fault-offset.patch
+ApplyPatch 1438-netfilter-nfnetlink-queue-do-shared-unconfirmed-check-before-segmentation.patch
+ApplyPatch 1439-usb-serial-mxuport-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1440-usb-serial-omninet-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1441-usb-serial-safe-serial-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1442-usb-serial-cypress-m8-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1443-wifi-mac80211-bounds-check-link-id-in-ieee80211-ml-epcs.patch
+ApplyPatch 1444-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
+ApplyPatch 1445-asoc-sof-ipc3-control-fix-heap-overflow-in-bytes-ext-put-get.patch
+ApplyPatch 1446-media-cx231xx-reject-geometry-changes-while-the-vbi-queue-is-busy.patch
+ApplyPatch 1447-iavf-iavf-virtchnl-completion-drop-duplicate-ether-addr-equal-test.patch
+ApplyPatch 1448-i40e-skip-unnecessary-vf-reset-when-setting-trust.patch
+ApplyPatch 1449-iavf-send-mac-change-request-synchronously.patch
+ApplyPatch 1450-ice-skip-unnecessary-vf-reset-when-setting-trust.patch
+ApplyPatch 1451-svcrdma-validate-read-chunk-positions-before-reconstruction.patch
+ApplyPatch 1452-nfsd-prevent-client-use-after-free-during-delegation-revoke.patch
+ApplyPatch 1453-nfsd-prevent-client-use-after-free-during-blocked-lock-reaping.patch
+ApplyPatch 1454-nfsd-don-t-free-session-slots-that-are-still-in-use.patch
+ApplyPatch 1455-svcrdma-reject-write-reply-chunks-with-segcount-0.patch
+ApplyPatch 1456-sunrpc-zero-rpc-gss-wire-cred-at-svcauth-gss-decode-credbody-entry.patch
+ApplyPatch 1457-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-link.patch
+ApplyPatch 1458-net-smc-bound-the-peer-rkey-counts-in-smc-rv2-llc-messages.patch
+ApplyPatch 1459-net-smc-carry-oversized-smc-rv2-llc-messages-in-the-queue-entry.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2719,6 +2794,7 @@ ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
 ApplyPatch 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 ApplyPatch 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 ApplyPatch 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
+ApplyPatch 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -5306,14 +5382,15 @@ fi\
 #
 #
 %changelog
-* Tue Oct 13 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.65.1
+* Fri Oct 16 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.66.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Tue Oct 13 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.65.1
+* Fri Oct 16 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.66.1
 - Enable Btrfs support for all kernel variants
 
-* Tue Oct 13 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.65.1
+* Fri Oct 16 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.66.1
+- bnxt_en: fix DMA mapping length for padded small packets
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -5325,6 +5402,43 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Oct 14 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.66.1.el10_2]
+- net/smc: carry oversized SMC-Rv2 LLC messages in the queue entry (Jan Polensky) [RHEL-271473] {CVE-2026-80985}
+- net/smc: bound the peer rkey counts in SMC-Rv2 LLC messages (Jan Polensky) [RHEL-271473] {CVE-2026-80985}
+- net/smc: fix use-after-free of the LLC qentry in smc_llc_srv_add_link() (Jan Polensky) [RHEL-271473] {CVE-2026-80985}
+- SUNRPC: Zero rpc_gss_wire_cred at svcauth_gss_decode_credbody() entry (Olga Kornievskaia) [RHEL-275057] {CVE-2026-93207}
+- svcrdma: Reject Write/Reply chunks with segcount 0 (Olga Kornievskaia) [RHEL-275073] {CVE-2026-93228}
+- nfsd: don't free session slots that are still in use (Olga Kornievskaia) [RHEL-270850] {CVE-2026-89689}
+- NFSD: Prevent client use-after-free during blocked-lock reaping (Olga Kornievskaia) [RHEL-270946] {CVE-2026-90036}
+- NFSD: Prevent client use-after-free during delegation revoke (Olga Kornievskaia) [RHEL-270946] {CVE-2026-89659}
+- svcrdma: Validate Read chunk positions before reconstruction (Olga Kornievskaia) [RHEL-271459] {CVE-2026-89526}
+- ice: skip unnecessary VF reset when setting trust (Jose Ignacio Tornos Martinez) [RHEL-143410]
+- iavf: send MAC change request synchronously (Jose Ignacio Tornos Martinez) [RHEL-143410]
+- i40e: skip unnecessary VF reset when setting trust (Jose Ignacio Tornos Martinez) [RHEL-143410]
+- iavf: iavf_virtchnl_completion: drop duplicate ether_addr_equal() test (Jose Ignacio Tornos Martinez) [RHEL-143410]
+- media: cx231xx: reject geometry changes while the VBI queue is busy (CKI Backport Bot) [RHEL-262501] {CVE-2026-89894}
+- ASoC: SOF: ipc3-control: Fix heap overflow in bytes_ext put/get (CKI Backport Bot) [RHEL-261677] {CVE-2026-72262}
+- net/iucv: fix use-after-free of a severed iucv_path (CKI Backport Bot) [RHEL-260529] {CVE-2026-68140}
+- wifi: mac80211: bounds-check link_id in ieee80211_ml_epcs (CKI Backport Bot) [RHEL-259554] {CVE-2026-64030}
+- USB: serial: cypress_m8: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259316] {CVE-2026-63956}
+- USB: serial: safe_serial: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259316] {CVE-2026-63957}
+- USB: serial: omninet: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259316] {CVE-2026-63928}
+- USB: serial: mxuport: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259316] {CVE-2026-63899}
+- netfilter: nfnetlink_queue: do shared-unconfirmed check before segmentation (Phil Sutter) [RHEL-230721] {CVE-2026-45859}
+- ALSA: usx2y: bound the hwdep mmap fault offset (CKI Backport Bot) [RHEL-256452] {CVE-2026-74641}
+- dmaengine: idxd: fix fdev setup failure cleanup in idxd_cdev_open() (CKI Backport Bot) [RHEL-254620] {CVE-2026-74574}
+- idpf: fix max_vport related crash on allocation error during init (Michal Schmidt) [RHEL-243402] {CVE-2026-68291}
+- idpf: fix double free and use-after-free in aux device error paths (Michal Schmidt) [RHEL-243402] {CVE-2026-53286}
+- idpf: fix read_dev_clk_lock spinlock init in idpf_ptp_init() (Michal Schmidt) [RHEL-243402] {CVE-2026-64162}
+- idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling (Michal Schmidt) [RHEL-243402] {CVE-2026-31647}
+- Bluetooth: hci_core: Fix queuing tx_work after workqueue is drained (CKI Backport Bot) [RHEL-244763] {CVE-2026-63974}
+- Bluetooth: hci_sync: Set HCI_CMD_DRAIN_WORKQUEUE during device close (CKI Backport Bot) [RHEL-244763] {CVE-2026-63974}
+- net/sched: act_tunnel_key: Defer dst_release to RCU callback (CKI Backport Bot) [RHEL-240917] {CVE-2026-68377}
+- bridge: mcast: Fix a possible use-after-free when removing a bridge port (CKI Backport Bot) [RHEL-232531] {CVE-2026-64032}
+- net/sched: act_ct: Only release RCU read lock after ct_ft (CKI Backport Bot) [RHEL-229655] {CVE-2026-46319}
+- net/sched: taprio: fix use-after-free in advance_sched() on schedule switch (CKI Backport Bot) [RHEL-226492] {CVE-2026-53011}
+- ionic: convert to ndo_hwtstamp API (CKI Backport Bot) [RHEL-165657]
 
 * Fri Oct 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.65.1.el10_2]
 - nvmet-auth: Synchronize timeout work during SQ teardown (CKI Backport Bot) [RHEL-276363] {CVE-2026-89970}
