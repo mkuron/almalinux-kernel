@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.66.1
+%define pkgrelease 211.67.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.66.1%{?buildid}%{?dist}
+%define specrelease 211.67.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1518,6 +1518,45 @@ Patch1457: 1457-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-
 Patch1458: 1458-net-smc-bound-the-peer-rkey-counts-in-smc-rv2-llc-messages.patch
 Patch1459: 1459-net-smc-carry-oversized-smc-rv2-llc-messages-in-the-queue-entry.patch
 
+# Backports for 6.12.0-211.67.1.el10_2
+Patch1460: 1460-xfrm-espintcp-do-not-reuse-an-in-progress-partial-send.patch
+Patch1461: 1461-s390-ap-use-all-bits-one-apmask-aqmask-for-vfio-in-use-checks.patch
+Patch1462: 1462-s390-ap-support-driver-override-for-ap-queue-devices.patch
+Patch1463: 1463-s390-ap-rename-mutex-ap-perms-mutex-to-ap-attr-mutex.patch
+Patch1464: 1464-s390-ap-restrict-driver-override-versus-apmask-and-aqmask-use.patch
+Patch1465: 1465-sctp-auth-verify-auth-requirement-when-auth-chunk-is-null.patch
+Patch1466: 1466-sctp-fix-auth-hmacs-array-size-in-struct-sctp-cookie.patch
+Patch1467: 1467-sctp-validate-stream-count-in-sctp-process-strreset-inreq.patch
+Patch1468: 1468-sctp-diag-reject-stale-associations-in-dump-one-path.patch
+Patch1469: 1469-sctp-fix-race-between-sctp-wait-for-connect-and-peeloff.patch
+Patch1470: 1470-tipc-clear-sock-sk-on-the-failed-insert-path-in-tipc-sk-create.patch
+Patch1471: 1471-tipc-fix-slab-use-after-free-read-in-tipc-aead-decrypt-done.patch
+Patch1472: 1472-openvswitch-defer-tunnel-netdev-put-to-rcu-release.patch
+Patch1473: 1473-openvswitch-vport-fix-self-deadlock-on-release-of-tunnel-ports.patch
+Patch1474: 1474-bluetooth-hci-sync-fix-advertising-data-uafs.patch
+Patch1475: 1475-usb-typec-altmodes-displayport-validate-count-before-reading-status-update-vdo.patch
+Patch1476: 1476-usb-typec-tcpm-validate-vdo-count-in-discover-identity-ack-handlers.patch
+Patch1477: 1477-usb-typec-tcpm-bound-altmode-desc-per-iteration-in-svdm-consume-modes.patch
+Patch1478: 1478-usb-typec-ucsi-displayport-nak-dp-cmd-configure-without-a-payload-vdo.patch
+Patch1479: 1479-usb-typec-ucsi-validate-connector-number-in-ucsi-connector-change.patch
+Patch1480: 1480-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+Patch1481: 1481-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+Patch1482: 1482-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+Patch1483: 1483-sctp-validate-cookie-auth-state-before-use.patch
+Patch1484: 1484-selftests-mm-hugepage-mremap-fix-mapping-alignment.patch
+Patch1485: 1485-drivers-hv-remove-deposited-pages-from-direct-map.patch
+Patch1486: 1486-xfrm-route-migrate-notifications-to-caller-s-netns.patch
+Patch1487: 1487-xfrm-check-for-underflow-in-xfrm-state-mtu.patch
+Patch1488: 1488-xfrm-nat-keepalive-avoid-double-free-on-send-error.patch
+Patch1489: 1489-xfrm-espintcp-fix-uaf-during-close.patch
+Patch1490: 1490-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+Patch1491: 1491-smb-client-reject-a-tree-connect-response-whose-byte-count-is-too-small.patch
+Patch1492: 1492-exec-cleanup-posix-timers-right-after-de-thread.patch
+Patch1493: 1493-posix-timers-target-group-sigqueue-to-current-task-only-if-not-exiting.patch
+Patch1494: 1494-signal-prevent-exec-race.patch
+Patch1495: 1495-ipv4-validate-checksum-start-before-completing-checksum.patch
+Patch1496: 1496-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2780,6 +2819,45 @@ ApplyPatch 1456-sunrpc-zero-rpc-gss-wire-cred-at-svcauth-gss-decode-credbody-ent
 ApplyPatch 1457-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-link.patch
 ApplyPatch 1458-net-smc-bound-the-peer-rkey-counts-in-smc-rv2-llc-messages.patch
 ApplyPatch 1459-net-smc-carry-oversized-smc-rv2-llc-messages-in-the-queue-entry.patch
+
+# Applying backports for 6.12.0-211.67.1.el10_2
+ApplyPatch 1460-xfrm-espintcp-do-not-reuse-an-in-progress-partial-send.patch
+ApplyPatch 1461-s390-ap-use-all-bits-one-apmask-aqmask-for-vfio-in-use-checks.patch
+ApplyPatch 1462-s390-ap-support-driver-override-for-ap-queue-devices.patch
+ApplyPatch 1463-s390-ap-rename-mutex-ap-perms-mutex-to-ap-attr-mutex.patch
+ApplyPatch 1464-s390-ap-restrict-driver-override-versus-apmask-and-aqmask-use.patch
+ApplyPatch 1465-sctp-auth-verify-auth-requirement-when-auth-chunk-is-null.patch
+ApplyPatch 1466-sctp-fix-auth-hmacs-array-size-in-struct-sctp-cookie.patch
+ApplyPatch 1467-sctp-validate-stream-count-in-sctp-process-strreset-inreq.patch
+ApplyPatch 1468-sctp-diag-reject-stale-associations-in-dump-one-path.patch
+ApplyPatch 1469-sctp-fix-race-between-sctp-wait-for-connect-and-peeloff.patch
+ApplyPatch 1470-tipc-clear-sock-sk-on-the-failed-insert-path-in-tipc-sk-create.patch
+ApplyPatch 1471-tipc-fix-slab-use-after-free-read-in-tipc-aead-decrypt-done.patch
+ApplyPatch 1472-openvswitch-defer-tunnel-netdev-put-to-rcu-release.patch
+ApplyPatch 1473-openvswitch-vport-fix-self-deadlock-on-release-of-tunnel-ports.patch
+ApplyPatch 1474-bluetooth-hci-sync-fix-advertising-data-uafs.patch
+ApplyPatch 1475-usb-typec-altmodes-displayport-validate-count-before-reading-status-update-vdo.patch
+ApplyPatch 1476-usb-typec-tcpm-validate-vdo-count-in-discover-identity-ack-handlers.patch
+ApplyPatch 1477-usb-typec-tcpm-bound-altmode-desc-per-iteration-in-svdm-consume-modes.patch
+ApplyPatch 1478-usb-typec-ucsi-displayport-nak-dp-cmd-configure-without-a-payload-vdo.patch
+ApplyPatch 1479-usb-typec-ucsi-validate-connector-number-in-ucsi-connector-change.patch
+ApplyPatch 1480-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+ApplyPatch 1481-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+ApplyPatch 1482-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+ApplyPatch 1483-sctp-validate-cookie-auth-state-before-use.patch
+ApplyPatch 1484-selftests-mm-hugepage-mremap-fix-mapping-alignment.patch
+ApplyPatch 1485-drivers-hv-remove-deposited-pages-from-direct-map.patch
+ApplyPatch 1486-xfrm-route-migrate-notifications-to-caller-s-netns.patch
+ApplyPatch 1487-xfrm-check-for-underflow-in-xfrm-state-mtu.patch
+ApplyPatch 1488-xfrm-nat-keepalive-avoid-double-free-on-send-error.patch
+ApplyPatch 1489-xfrm-espintcp-fix-uaf-during-close.patch
+ApplyPatch 1490-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+ApplyPatch 1491-smb-client-reject-a-tree-connect-response-whose-byte-count-is-too-small.patch
+ApplyPatch 1492-exec-cleanup-posix-timers-right-after-de-thread.patch
+ApplyPatch 1493-posix-timers-target-group-sigqueue-to-current-task-only-if-not-exiting.patch
+ApplyPatch 1494-signal-prevent-exec-race.patch
+ApplyPatch 1495-ipv4-validate-checksum-start-before-completing-checksum.patch
+ApplyPatch 1496-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5382,14 +5460,14 @@ fi\
 #
 #
 %changelog
-* Fri Oct 16 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.66.1
+* Tue Oct 20 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.67.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Oct 16 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.66.1
+* Tue Oct 20 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.67.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Oct 16 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.66.1
+* Tue Oct 20 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.67.1
 - bnxt_en: fix DMA mapping length for padded small packets
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
@@ -5402,6 +5480,46 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Fri Oct 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.67.1.el10_2]
+- net: always dissect GSO packets in __virtio_net_hdr_to_skb() (Davide Caratti) [RHEL-280590]
+- ipv4: validate checksum_start before completing checksum (CKI Backport Bot) [RHEL-280590] {CVE-2026-99999}
+- signal: Prevent exec() race (Phil Auld) [RHEL-282048] {CVE-2026-98256}
+- posix-timers: Target group sigqueue to current task only if not exiting (Phil Auld) [RHEL-282048]
+- exec: Cleanup POSIX timers right after de_thread() (Luiz Capitulino) [RHEL-282070] {CVE-2026-98260}
+- smb: client: reject a tree connect response whose byte count is too small (CKI Backport Bot) [RHEL-271291] {CVE-2026-89631}
+- smb: client: fix OOB read/write from unvalidated DataOffset in coalesce_t2() (Frank Sorenson) [RHEL-271484] {CVE-2026-89633}
+- xfrm: espintcp: fix UAF during close (CKI Backport Bot) [RHEL-256678]
+- xfrm: nat_keepalive: avoid double free on send error (CKI Backport Bot) [RHEL-256678]
+- xfrm: Check for underflow in xfrm_state_mtu (CKI Backport Bot) [RHEL-256678]
+- xfrm: route MIGRATE notifications to caller's netns (CKI Backport Bot) [RHEL-256678]
+- drivers/hv: remove deposited pages from direct map (Paolo Bonzini) [RHEL-267038]
+- selftests/mm: hugepage-mremap: fix mapping alignment (Luiz Capitulino) [RHEL-181987]
+- sctp: validate cookie AUTH state before use (Xin Long) [RHEL-254315] {CVE-2026-74752}
+- sctp: stop processing a packet once its association is deleted (Xin Long) [RHEL-254315] {CVE-2026-89479}
+- sctp: avoid auth_enable sysctl UAF during netns teardown (Xin Long) [RHEL-258778] {CVE-2026-68162}
+- sctp: keep chunk->transport in step with the list it is queued on (Xin Long) [RHEL-254353] {CVE-2026-74588}
+- usb: typec: ucsi: validate connector number in ucsi_connector_change() (Desnes Nunes) [RHEL-259412] {CVE-2026-63958}
+- usb: typec: ucsi: displayport: NAK DP_CMD_CONFIGURE without a payload VDO (Desnes Nunes) [RHEL-259412]
+- usb: typec: tcpm: bound altmode_desc[] per iteration in svdm_consume_modes() (Desnes Nunes) [RHEL-259412] {CVE-2026-63962}
+- usb: typec: tcpm: validate VDO count in Discover Identity ACK handlers (Desnes Nunes) [RHEL-259412] {CVE-2026-63963}
+- usb: typec: altmodes/displayport: validate count before reading Status Update VDO (Desnes Nunes) [RHEL-259412] {CVE-2026-63961}
+- redhat/configs: automotive: enable USB_CHIPIDEA_IMX (Jared Kangas) [RHEL-257228]
+- Bluetooth: hci_sync: Fix advertising data UAFs (CKI Backport Bot) [RHEL-254672] {CVE-2026-74509}
+- openvswitch: vport: fix self-deadlock on release of tunnel ports (CKI Backport Bot) [RHEL-253867] {CVE-2026-31678}
+- openvswitch: defer tunnel netdev_put to RCU release (CKI Backport Bot) [RHEL-253867] {CVE-2026-31678}
+- tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done (Xin Long) [RHEL-228912] {CVE-2026-63801}
+- tipc: clear sock->sk on the failed-insert path in tipc_sk_create() (Xin Long) [RHEL-238046] {CVE-2026-68117}
+- sctp: fix race between sctp_wait_for_connect and peeloff (Xin Long) [RHEL-229479] {CVE-2026-63971}
+- sctp: diag: reject stale associations in dump_one path (Xin Long) [RHEL-231579] {CVE-2026-52917}
+- sctp: validate stream count in sctp_process_strreset_inreq() (Xin Long) [RHEL-236158] {CVE-2026-68315}
+- sctp: fix auth_hmacs array size in struct sctp_cookie (Xin Long) [RHEL-237097] {CVE-2026-68376}
+- sctp: auth: verify auth requirement when auth_chunk is NULL (Xin Long) [RHEL-237097] {CVE-2026-68300}
+- s390/ap: Restrict driver_override versus apmask and aqmask use (Ramesh Chhetri) [RHEL-245336]
+- s390/ap: Rename mutex ap_perms_mutex to ap_attr_mutex (Ramesh Chhetri) [RHEL-245336]
+- s390/ap: Support driver_override for AP queue devices (Ramesh Chhetri) [RHEL-245336]
+- s390/ap: Use all-bits-one apmask/aqmask for vfio in_use() checks (Ramesh Chhetri) [RHEL-245336]
+- xfrm: espintcp: do not reuse an in-progress partial send (CKI Backport Bot) [RHEL-222980] {CVE-2026-52935}
 
 * Wed Oct 14 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.66.1.el10_2]
 - net/smc: carry oversized SMC-Rv2 LLC messages in the queue entry (Jan Polensky) [RHEL-271473] {CVE-2026-80985}
