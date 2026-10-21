@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.176.1.el8_10
+%define pkgrelease 553.177.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.176.1%{?dist}
+%define specrelease 553.177.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -567,6 +567,8 @@ Patch2005: 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+Patch1100: 1100-netfilter-nfnetlink_queue-unbreak-sctp-traffic.patch
+Patch1101: 1101-ipv4-validate-checksum_start-before-completing-checksum.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1155,6 +1157,8 @@ ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+ApplyPatch 1100-netfilter-nfnetlink_queue-unbreak-sctp-traffic.patch
+ApplyPatch 1101-ipv4-validate-checksum_start-before-completing-checksum.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -2803,7 +2807,9 @@ fi
 #
 #
 %changelog
-* Tue Oct 20 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.176.1
+* Wed Oct 21 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.177.1
+- ipv4: validate checksum_start before completing checksum {CVE-2026-99999}
+- netfilter: nfnetlink_queue: unbreak SCTP traffic
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2814,9 +2820,18 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Oct 20 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.176.1
+* Wed Oct 21 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.177.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Oct 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.177.1.el8_10]
+- vfio/pci: clear vdev->msi_perm after freeing it on init failure (Rodolfo Vick) [RHEL-270905] {CVE-2026-89777}
+- ALSA: seq: close a re-opened queue timer in the destructor (CKI Backport Bot) [RHEL-263644] {CVE-2026-68202}
+- inet: frags: strip GSO state from fragments before reassembly (Jamie Bainbridge) [RHEL-254200] {CVE-2026-80590}
+- ipv4: fib: free fib_alias with kfree_rcu() on insert error path (Jamie Bainbridge) [RHEL-233134] {CVE-2026-64572}
+- ipv4: raw: reject IP_HDRINCL packets with ihl < 5 (Jamie Bainbridge) [RHEL-225459] {CVE-2026-64114}
+- xfs: bounds-check buffer log item's dirty bitmap (CKI Backport Bot) [RHEL-253365] {CVE-2026-80536}
+- fuse: re-lock request before returning from fuse_ref_folio() (CKI Backport Bot) [RHEL-234242] {CVE-2026-64266}
 
 * Mon Oct 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.176.1.el8_10]
 - smb: client: reject a tree connect response whose byte count is too small (CKI Backport Bot) [RHEL-271288] {CVE-2026-89631}
