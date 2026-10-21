@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.58.1
+%define pkgrelease 687.59.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.58.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.58.1%{?buildid}%{?dist}
+%define specrelease 687.59.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.58.1.el9_8
 
@@ -980,6 +980,39 @@ Patch1: patch-%{patchversion}-redhat.patch
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
 
+# Backports for 5.14.0-687.59.1.el9_8
+Patch1100: 1100-xfrm-espintcp-do-not-reuse-an-in-progress-partial-send.patch
+Patch1101: 1101-bluetooth-hci-sync-set-hci-cmd-drain-workqueue-during-device-close.patch
+Patch1102: 1102-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+Patch1103: 1103-openvswitch-defer-tunnel-netdev-put-to-rcu-release.patch
+Patch1104: 1104-openvswitch-vport-fix-self-deadlock-on-release-of-tunnel-ports.patch
+Patch1105: 1105-bluetooth-hci-sync-fix-advertising-data-uafs.patch
+Patch1106: 1106-usb-serial-mxuport-fix-memory-corruption-with-small-endpoint.patch
+Patch1107: 1107-usb-serial-omninet-fix-memory-corruption-with-small-endpoint.patch
+Patch1108: 1108-usb-serial-safe-serial-fix-memory-corruption-with-small-endpoint.patch
+Patch1109: 1109-usb-serial-cypress-m8-fix-memory-corruption-with-small-endpoint.patch
+Patch1110: 1110-usb-typec-altmodes-displayport-validate-count-before-reading-status-update-vdo.patch
+Patch1111: 1111-usb-typec-tcpm-validate-vdo-count-in-discover-identity-ack-handlers.patch
+Patch1112: 1112-usb-typec-tcpm-bound-altmode-desc-per-iteration-in-svdm-consume-modes.patch
+Patch1113: 1113-usb-typec-ucsi-displayport-nak-dp-cmd-configure-without-a-payload-vdo.patch
+Patch1114: 1114-usb-typec-ucsi-validate-connector-number-in-ucsi-connector-change.patch
+Patch1115: 1115-ipv4-raw-reject-ip-hdrincl-packets-with-ihl-5.patch
+Patch1116: 1116-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+Patch1117: 1117-ipv4-fib-free-fib-alias-with-kfree-rcu-on-insert-error-path.patch
+Patch1118: 1118-tcp-fix-stale-per-cpu-tcp-tw-isn-leak-enabling-isn-prediction.patch
+Patch1119: 1119-net-bridge-flush-multicast-groups-when-snooping-is-disabled.patch
+Patch1120: 1120-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+Patch1121: 1121-xfrm-route-migrate-notifications-to-caller-s-netns.patch
+Patch1122: 1122-xfrm-check-for-underflow-in-xfrm-state-mtu.patch
+Patch1123: 1123-xfrm-espintcp-fix-uaf-during-close.patch
+Patch1124: 1124-strparser-make-sure-strp-recv-isn-t-running-before-tearing-down-the-parser.patch
+Patch1125: 1125-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+Patch1126: 1126-perf-fix-addr-filter-ranges-lifetime.patch
+Patch1127: 1127-exec-cleanup-posix-timers-right-after-de-thread.patch
+Patch1128: 1128-smb-client-reject-a-tree-connect-response-whose-byte-count-is-too-small.patch
+Patch1129: 1129-ipv4-validate-checksum-start-before-completing-checksum.patch
+Patch1130: 1130-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1750,6 +1783,39 @@ ApplyOptionalPatch patch-%{patchversion}-redhat.patch
 %endif
 
 ApplyOptionalPatch linux-kernel-test.patch
+
+# Applying backports for 5.14.0-687.59.1.el9_8
+ApplyPatch 1100-xfrm-espintcp-do-not-reuse-an-in-progress-partial-send.patch
+ApplyPatch 1101-bluetooth-hci-sync-set-hci-cmd-drain-workqueue-during-device-close.patch
+ApplyPatch 1102-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+ApplyPatch 1103-openvswitch-defer-tunnel-netdev-put-to-rcu-release.patch
+ApplyPatch 1104-openvswitch-vport-fix-self-deadlock-on-release-of-tunnel-ports.patch
+ApplyPatch 1105-bluetooth-hci-sync-fix-advertising-data-uafs.patch
+ApplyPatch 1106-usb-serial-mxuport-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1107-usb-serial-omninet-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1108-usb-serial-safe-serial-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1109-usb-serial-cypress-m8-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1110-usb-typec-altmodes-displayport-validate-count-before-reading-status-update-vdo.patch
+ApplyPatch 1111-usb-typec-tcpm-validate-vdo-count-in-discover-identity-ack-handlers.patch
+ApplyPatch 1112-usb-typec-tcpm-bound-altmode-desc-per-iteration-in-svdm-consume-modes.patch
+ApplyPatch 1113-usb-typec-ucsi-displayport-nak-dp-cmd-configure-without-a-payload-vdo.patch
+ApplyPatch 1114-usb-typec-ucsi-validate-connector-number-in-ucsi-connector-change.patch
+ApplyPatch 1115-ipv4-raw-reject-ip-hdrincl-packets-with-ihl-5.patch
+ApplyPatch 1116-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+ApplyPatch 1117-ipv4-fib-free-fib-alias-with-kfree-rcu-on-insert-error-path.patch
+ApplyPatch 1118-tcp-fix-stale-per-cpu-tcp-tw-isn-leak-enabling-isn-prediction.patch
+ApplyPatch 1119-net-bridge-flush-multicast-groups-when-snooping-is-disabled.patch
+ApplyPatch 1120-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+ApplyPatch 1121-xfrm-route-migrate-notifications-to-caller-s-netns.patch
+ApplyPatch 1122-xfrm-check-for-underflow-in-xfrm-state-mtu.patch
+ApplyPatch 1123-xfrm-espintcp-fix-uaf-during-close.patch
+ApplyPatch 1124-strparser-make-sure-strp-recv-isn-t-running-before-tearing-down-the-parser.patch
+ApplyPatch 1125-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+ApplyPatch 1126-perf-fix-addr-filter-ranges-lifetime.patch
+ApplyPatch 1127-exec-cleanup-posix-timers-right-after-de-thread.patch
+ApplyPatch 1128-smb-client-reject-a-tree-connect-response-whose-byte-count-is-too-small.patch
+ApplyPatch 1129-ipv4-validate-checksum-start-before-completing-checksum.patch
+ApplyPatch 1130-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -3893,7 +3959,7 @@ fi
 #
 #
 %changelog
-* Mon Oct 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.58.1
+* Wed Oct 21 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.59.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3905,11 +3971,44 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Oct 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.58.1
+* Wed Oct 21 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.59.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Fri Oct 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.59.1.el9_8]
+- net: always dissect GSO packets in __virtio_net_hdr_to_skb() (Davide Caratti) [RHEL-284987]
+- ipv4: validate checksum_start before completing checksum (CKI Backport Bot) [RHEL-284987] {CVE-2026-99999}
+- smb: client: reject a tree connect response whose byte count is too small (Alisher Mazhirinov) [RHEL-271284] {CVE-2026-89631}
+- exec: Cleanup POSIX timers right after de_thread() (Luiz Capitulino) [RHEL-282063] {CVE-2026-98260}
+- perf: Fix addr_filter_ranges lifetime (Vratislav Bendel) [RHEL-271871] {CVE-2026-93817}
+- smb: client: fix OOB read/write from unvalidated DataOffset in coalesce_t2() (Frank Sorenson) [RHEL-271487] {CVE-2026-89633}
+- strparser: make sure __strp_recv isn't running before tearing down the parser (Sabrina Dubroca) [RHEL-270747]
+- xfrm: espintcp: fix UAF during close (CKI Backport Bot) [RHEL-256697]
+- xfrm: Check for underflow in xfrm_state_mtu (CKI Backport Bot) [RHEL-256697]
+- xfrm: route MIGRATE notifications to caller's netns (CKI Backport Bot) [RHEL-256697]
+- bridge: mcast: Fix a possible use-after-free when removing a bridge port (Jakub Ramaseuski) [RHEL-232528] {CVE-2026-64032}
+- net: bridge: Flush multicast groups when snooping is disabled (Jakub Ramaseuski) [RHEL-232528]
+- tcp: fix stale per-CPU tcp_tw_isn leak enabling ISN prediction (Antoine Tenart) [RHEL-231693] {CVE-2026-64024}
+- ipv4: fib: free fib_alias with kfree_rcu() on insert error path (Jamie Bainbridge) [RHEL-233131] {CVE-2026-64572}
+- inet: frags: strip GSO state from fragments before reassembly (Jamie Bainbridge) [RHEL-254224] {CVE-2026-80590}
+- ipv4: raw: reject IP_HDRINCL packets with ihl < 5 (Jamie Bainbridge) [RHEL-225452] {CVE-2026-64114}
+- usb: typec: ucsi: validate connector number in ucsi_connector_change() (Desnes Nunes) [RHEL-259429] {CVE-2026-63958}
+- usb: typec: ucsi: displayport: NAK DP_CMD_CONFIGURE without a payload VDO (Desnes Nunes) [RHEL-259429]
+- usb: typec: tcpm: bound altmode_desc[] per iteration in svdm_consume_modes() (Desnes Nunes) [RHEL-259429] {CVE-2026-63962}
+- usb: typec: tcpm: validate VDO count in Discover Identity ACK handlers (Desnes Nunes) [RHEL-259429] {CVE-2026-63963}
+- usb: typec: altmodes/displayport: validate count before reading Status Update VDO (Desnes Nunes) [RHEL-259429] {CVE-2026-63961}
+- USB: serial: cypress_m8: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259322] {CVE-2026-63956}
+- USB: serial: safe_serial: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259322] {CVE-2026-63957}
+- USB: serial: omninet: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259322] {CVE-2026-63928}
+- USB: serial: mxuport: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259322] {CVE-2026-63899}
+- Bluetooth: hci_sync: Fix advertising data UAFs (CKI Backport Bot) [RHEL-254674] {CVE-2026-74509}
+- openvswitch: vport: fix self-deadlock on release of tunnel ports (CKI Backport Bot) [RHEL-253856] {CVE-2026-31678}
+- openvswitch: defer tunnel netdev_put to RCU release (CKI Backport Bot) [RHEL-253856] {CVE-2026-31678}
+- Bluetooth: hci_core: Fix queuing tx_work after workqueue is drained (CKI Backport Bot) [RHEL-244764] {CVE-2026-63974}
+- Bluetooth: hci_sync: Set HCI_CMD_DRAIN_WORKQUEUE during device close (CKI Backport Bot) [RHEL-244764] {CVE-2026-63974}
+- xfrm: espintcp: do not reuse an in-progress partial send (CKI Backport Bot) [RHEL-222958] {CVE-2026-52935}
 
 * Wed Oct 14 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.58.1.el9_8]
 - net/smc: carry oversized SMC-Rv2 LLC messages in the queue entry (Jan Polensky) [RHEL-271472] {CVE-2026-80985}
