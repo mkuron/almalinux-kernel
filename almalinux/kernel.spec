@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.67.1
+%define pkgrelease 211.68.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.67.1%{?buildid}%{?dist}
+%define specrelease 211.68.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1557,6 +1557,29 @@ Patch1494: 1494-signal-prevent-exec-race.patch
 Patch1495: 1495-ipv4-validate-checksum-start-before-completing-checksum.patch
 Patch1496: 1496-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
 
+# Backports for 6.12.0-211.68.1.el10_2
+Patch1497: 1497-rtla-fix-segfault-on-multiple-sigints.patch
+Patch1498: 1498-net-smc-reject-chid-0-accept-that-matches-an-empty-ism-dev-slot.patch
+Patch1499: 1499-alsa-hda-cs35l41-fix-firmware-load-work-teardown.patch
+Patch1500: 1500-fuse-re-lock-request-before-returning-from-fuse-ref-folio.patch
+Patch1501: 1501-calipso-don-t-call-calipso-functions-for-af-inet-sk.patch
+Patch1502: 1502-calipso-unlock-rcu-before-returning-eafnosupport.patch
+Patch1503: 1503-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
+Patch1504: 1504-ipv4-raw-reject-ip-hdrincl-packets-with-ihl-5.patch
+Patch1505: 1505-ipv4-fib-free-fib-alias-with-kfree-rcu-on-insert-error-path.patch
+Patch1506: 1506-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+Patch1507: 1507-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
+Patch1508: 1508-perf-fix-addr-filter-ranges-lifetime.patch
+Patch1509: 1509-fix-use-after-free-when-perf-mmap-revival-races-with-the-last-munmap.patch
+Patch1510: 1510-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+Patch1511: 1511-drm-dp-mst-fix-buffer-overflows-in-sideband-chunk-accumulation.patch
+Patch1512: 1512-drm-amdgpu-fix-lifetime-issue-of-amdgpu-vm-get-task-info-pasid.patch
+Patch1513: 1513-drm-vmwgfx-use-check-add-overflow-for-shader-size-offset-bound.patch
+Patch1514: 1514-drm-amd-display-set-new-stream-to-null-after-release.patch
+Patch1515: 1515-drm-amdkfd-add-tlb-flush-after-mes-queue-eviction-suspension.patch
+Patch1516: 1516-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
+Patch1517: 1517-bonding-only-set-speed-duplex-to-unknown-if-getting-speed-failed.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2858,6 +2881,29 @@ ApplyPatch 1493-posix-timers-target-group-sigqueue-to-current-task-only-if-not-e
 ApplyPatch 1494-signal-prevent-exec-race.patch
 ApplyPatch 1495-ipv4-validate-checksum-start-before-completing-checksum.patch
 ApplyPatch 1496-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
+
+# Applying backports for 6.12.0-211.68.1.el10_2
+ApplyPatch 1497-rtla-fix-segfault-on-multiple-sigints.patch
+ApplyPatch 1498-net-smc-reject-chid-0-accept-that-matches-an-empty-ism-dev-slot.patch
+ApplyPatch 1499-alsa-hda-cs35l41-fix-firmware-load-work-teardown.patch
+ApplyPatch 1500-fuse-re-lock-request-before-returning-from-fuse-ref-folio.patch
+ApplyPatch 1501-calipso-don-t-call-calipso-functions-for-af-inet-sk.patch
+ApplyPatch 1502-calipso-unlock-rcu-before-returning-eafnosupport.patch
+ApplyPatch 1503-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
+ApplyPatch 1504-ipv4-raw-reject-ip-hdrincl-packets-with-ihl-5.patch
+ApplyPatch 1505-ipv4-fib-free-fib-alias-with-kfree-rcu-on-insert-error-path.patch
+ApplyPatch 1506-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+ApplyPatch 1507-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
+ApplyPatch 1508-perf-fix-addr-filter-ranges-lifetime.patch
+ApplyPatch 1509-fix-use-after-free-when-perf-mmap-revival-races-with-the-last-munmap.patch
+ApplyPatch 1510-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+ApplyPatch 1511-drm-dp-mst-fix-buffer-overflows-in-sideband-chunk-accumulation.patch
+ApplyPatch 1512-drm-amdgpu-fix-lifetime-issue-of-amdgpu-vm-get-task-info-pasid.patch
+ApplyPatch 1513-drm-vmwgfx-use-check-add-overflow-for-shader-size-offset-bound.patch
+ApplyPatch 1514-drm-amd-display-set-new-stream-to-null-after-release.patch
+ApplyPatch 1515-drm-amdkfd-add-tlb-flush-after-mes-queue-eviction-suspension.patch
+ApplyPatch 1516-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
+ApplyPatch 1517-bonding-only-set-speed-duplex-to-unknown-if-getting-speed-failed.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5460,14 +5506,14 @@ fi\
 #
 #
 %changelog
-* Tue Oct 20 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.67.1
+* Fri Oct 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.68.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Tue Oct 20 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.67.1
+* Fri Oct 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.68.1
 - Enable Btrfs support for all kernel variants
 
-* Tue Oct 20 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.67.1
+* Fri Oct 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.68.1
 - bnxt_en: fix DMA mapping length for padded small packets
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
@@ -5480,6 +5526,29 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Oct 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.68.1.el10_2]
+- bonding: only set speed/duplex to unknown, if getting speed failed (Abhishek Rawal) [RHEL-179066]
+- drm/amdgpu: Bound GPIO I2C table entry count from VBIOS (Anusha Srivatsa) [RHEL-278280] {CVE-2026-97493}
+- drm/amdkfd: Add TLB flush after MES queue eviction/suspension (CKI Backport Bot) [RHEL-262095] {CVE-2026-89811}
+- drm/amd/display: set new_stream to NULL after release (CKI Backport Bot) [RHEL-260540] {CVE-2026-68236}
+- drm/vmwgfx: use check_add_overflow for shader size+offset bound (CKI Backport Bot) [RHEL-258141] {CVE-2026-80887}
+- drm/amdgpu: fix lifetime issue of amdgpu_vm_get_task_info_pasid() (CKI Backport Bot) [RHEL-236244] {CVE-2026-68245}
+- drm/dp/mst: fix buffer overflows in sideband chunk accumulation (CKI Backport Bot) [RHEL-240855] {CVE-2026-68278}
+- xfs: bounds-check buffer log item's dirty bitmap (Pavel Reichl) [RHEL-253369] {CVE-2026-80536}
+- Fix use-after-free when perf mmap() revival races with the last munmap() (Vratislav Bendel) [RHEL-270808] {CVE-2026-89791}
+- perf: Fix addr_filter_ranges lifetime (Vratislav Bendel) [RHEL-271846] {CVE-2026-93817}
+- ovl: check access to copy_file_range source with src mounter creds (Miklos Szeredi) [RHEL-238867] {CVE-2026-68448}
+- inet: frags: strip GSO state from fragments before reassembly (Jamie Bainbridge) [RHEL-254213] {CVE-2026-80590}
+- ipv4: fib: free fib_alias with kfree_rcu() on insert error path (Jamie Bainbridge) [RHEL-233130] {CVE-2026-64572}
+- ipv4: raw: reject IP_HDRINCL packets with ihl < 5 (Jamie Bainbridge) [RHEL-225476] {CVE-2026-64114}
+- ALSA: seq: close a re-opened queue timer in the destructor (CKI Backport Bot) [RHEL-263699] {CVE-2026-68202}
+- calipso: unlock rcu before returning -EAFNOSUPPORT (CKI Backport Bot) [RHEL-257678] {CVE-2025-38147}
+- calipso: Don't call calipso functions for AF_INET sk. (CKI Backport Bot) [RHEL-257678] {CVE-2025-38147}
+- fuse: re-lock request before returning from fuse_ref_folio() (CKI Backport Bot) [RHEL-234249] {CVE-2026-64266}
+- ALSA: hda/cs35l41: Fix firmware load work teardown (CKI Backport Bot) [RHEL-234100] {CVE-2026-64481}
+- net/smc: reject CHID-0 ACCEPT that matches an empty ism_dev slot (CKI Backport Bot) [RHEL-230097] {CVE-2026-64048}
+- rtla: Fix segfault on multiple SIGINTs (Tomas Glozar) [RHEL-193031]
 
 * Fri Oct 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.67.1.el10_2]
 - net: always dissect GSO packets in __virtio_net_hdr_to_skb() (Davide Caratti) [RHEL-280590]
