@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.177.1.el8_10
+%define pkgrelease 553.178.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.177.1%{?dist}
+%define specrelease 553.178.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -567,8 +567,7 @@ Patch2005: 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-Patch1100: 1100-netfilter-nfnetlink_queue-unbreak-sctp-traffic.patch
-Patch1101: 1101-ipv4-validate-checksum_start-before-completing-checksum.patch
+Patch1102: 1102-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1157,8 +1156,7 @@ ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
-ApplyPatch 1100-netfilter-nfnetlink_queue-unbreak-sctp-traffic.patch
-ApplyPatch 1101-ipv4-validate-checksum_start-before-completing-checksum.patch
+ApplyPatch 1102-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -2807,9 +2805,8 @@ fi
 #
 #
 %changelog
-* Wed Oct 21 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.177.1
-- ipv4: validate checksum_start before completing checksum {CVE-2026-99999}
-- netfilter: nfnetlink_queue: unbreak SCTP traffic
+* Sun Oct 25 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.178.1
+- net: skbuff: propagate shared-frag marker in skb_zerocopy()
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2820,9 +2817,30 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Oct 21 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.177.1
+* Sun Oct 25 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.178.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Fri Oct 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.178.1.el8_10]
+- selinux: avoid sk_socket dereference in selinux_sctp_bind_connect() (Ondrej Mosnacek) [RHEL-243220] {CVE-2026-72242}
+- ipv4: validate checksum_start before completing checksum (Davide Caratti) [RHEL-280584] {CVE-2026-99999}
+- smb: client: clear setuid/setgid bit on write with cifsacl/modefromsid/posix extensions (Jorge San Emeterio Villalain) [RHEL-271260] {CVE-2026-89638}
+- mptcp: options: reset DSS fields in case of unexpected size (Prasenjit Mukherjee) [RHEL-250583] {CVE-2026-80586}
+- net/iucv: filter frames in afiucv_hs_rcv() by ingress device (CKI Backport Bot) [RHEL-270897] {CVE-2026-81003}
+- net/packet: avoid fanout hook re-registration after unregister (Jamie Bainbridge) [RHEL-246978] {CVE-2026-68338}
+- net/packet: fix a race in packet_set_ring() and packet_notifier() (Jamie Bainbridge) [RHEL-246978]
+- net/packet: annotate accesses to po->bind (Jamie Bainbridge) [RHEL-246978]
+- net: gro: fix double aggregation of flush-marked skbs (Jamie Bainbridge) [RHEL-242641] {CVE-2026-68136}
+- tcp: restrict SO_ATTACH_FILTER to priv users (Jamie Bainbridge) [RHEL-257722] {CVE-2026-53236}
+- net: use sk_is_tcp() in more places (Jamie Bainbridge) [RHEL-257722]
+- fuse: re-lock request before replacing page cache folio (Miklos Szeredi) [RHEL-226080] {CVE-2026-53388}
+- fuse: release pipe buf after last use (Miklos Szeredi) [RHEL-226080] {CVE-2026-53388}
+- fuse: fix page stealing (Miklos Szeredi) [RHEL-226080] {CVE-2026-53388}
+- ipvs: reload ip header after head reallocation (Phil Sutter) [RHEL-263780] {CVE-2026-68476}
+- net/sched: serialize qdisc_rtab_list against concurrent get/put (CKI Backport Bot) [RHEL-266389] {CVE-2026-68138}
+- net/iucv: fix use-after-free of a severed iucv_path (CKI Backport Bot) [RHEL-260491] {CVE-2026-68140}
+- writeback: fix race between cgroup_writeback_umount() and inode_switch_wbs() (CKI Backport Bot) [RHEL-260517] {CVE-2026-64378}
+- usb: usbfs: fix use-after-free of usb_device in usbdev_release() (CKI Backport Bot) [RHEL-258546] {CVE-2026-80824}
 
 * Wed Oct 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.177.1.el8_10]
 - vfio/pci: clear vdev->msi_perm after freeing it on init failure (Rodolfo Vick) [RHEL-270905] {CVE-2026-89777}
