@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.60.1
+%define pkgrelease 687.61.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.58.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.60.1%{?buildid}%{?dist}
+%define specrelease 687.61.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.58.1.el9_8
 
@@ -961,6 +961,7 @@ Source3002: Patchlist.changelog
 Source4000: README.rst
 Source4001: rpminspect.yaml
 Source4002: gating.yaml
+Source4003: plans.fmf
 
 # AlmaLinux Source
 Source100: almalinuxdup1.x509
@@ -1024,6 +1025,85 @@ Patch1137: 1137-calipso-unlock-rcu-before-returning-eafnosupport.patch
 Patch1138: 1138-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
 Patch1139: 1139-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
 Patch1140: 1140-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+
+# Backports for 5.14.0-687.61.1.el9_8
+Patch1141: 1141-fuse-re-lock-request-before-returning-from-fuse-ref-folio.patch
+Patch1142: 1142-usb-usbfs-fix-use-after-free-of-usb-device-in-usbdev-release.patch
+Patch1143: 1143-selinux-avoid-sk-socket-dereference-in-selinux-sctp-bind-connect.patch
+Patch1144: 1144-ipvs-reload-ip-header-after-head-reallocation.patch
+Patch1145: 1145-fuse-fix-page-stealing.patch
+Patch1146: 1146-fuse-release-pipe-buf-after-last-use.patch
+Patch1147: 1147-fuse-re-lock-request-before-replacing-page-cache-folio.patch
+Patch1148: 1148-net-handshake-take-a-long-lived-file-reference-at-submit.patch
+Patch1149: 1149-net-handshake-hand-off-the-pinned-file-reference-to-accept-doit.patch
+Patch1150: 1150-net-handshake-use-spin-lock-bh-for-hn-lock.patch
+Patch1151: 1151-net-handshake-drain-pending-requests-at-net-namespace-exit.patch
+Patch1152: 1152-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+Patch1153: 1153-udp-deal-with-race-between-udp-socket-address-change-and-rehash.patch
+Patch1154: 1154-cifs-scripted-clean-up-fs-smb-client-cifsproto-h.patch
+Patch1155: 1155-cifs-scripted-clean-up-fs-smb-client-cifsfs-h.patch
+Patch1156: 1156-cifs-scripted-clean-up-fs-smb-client-fscache-h.patch
+Patch1157: 1157-cifs-scripted-clean-up-fs-smb-client-cifsglob-h.patch
+Patch1158: 1158-smb-client-fix-atomic-open-with-o-direct-o-sync.patch
+Patch1159: 1159-smb-client-fix-in-place-encryption-corruption-in-smb2-write.patch
+Patch1160: 1160-smb-client-fix-open-handle-lookup-in-cifs-open.patch
+Patch1161: 1161-smb-client-fix-generic-694-due-to-wrong-i-blocks.patch
+Patch1162: 1162-cifs-change-conf-needs-to-be-called-for-session-setup.patch
+Patch1163: 1163-cifs-abort-open-cached-dir-if-we-don-t-request-leases.patch
+Patch1164: 1164-cifs-invalidate-cfid-on-unlink-rename-rmdir.patch
+Patch1165: 1165-smb-client-fix-races-in-cifsd-thread-creation.patch
+Patch1166: 1166-smb-client-update-i-blocks-after-contiguous-writes.patch
+Patch1167: 1167-smb-client-name-the-default-fallocate-mode.patch
+Patch1168: 1168-smb-client-preserve-errors-from-smb2-set-sparse.patch
+Patch1169: 1169-smb-client-do-not-account-eof-extension-as-allocation.patch
+Patch1170: 1170-smb-client-refactor-cifs-revalidate-mapping-to-use-clear-and-wake-up-bit.patch
+Patch1171: 1171-smb-client-use-stack-allocated-smb2-file-all-info-in-smb3-query-mf-symlink.patch
+Patch1172: 1172-smb-client-pass-cifs-open-info-data-to-smb2-open.patch
+Patch1173: 1173-smb-client-zero-initialize-stack-allocated-cifs-open-info-data.patch
+Patch1174: 1174-smb-client-fix-incorrect-nlink-returned-by-fstat.patch
+Patch1175: 1175-smb-client-use-kvzalloc-for-megabyte-buffer-in-simple-fallocate.patch
+Patch1176: 1176-smb-client-refresh-allocation-size-after-duplicate-extents.patch
+Patch1177: 1177-smb-client-reduce-fallocate-zero-buffer-allocation.patch
+Patch1178: 1178-smb-client-emulate-small-eof-extending-mode-0-fallocate-ranges.patch
+Patch1179: 1179-smb-client-refresh-allocation-after-eof-extending-fallocate.patch
+Patch1180: 1180-smb-client-flush-dirty-data-before-punching-a-hole.patch
+Patch1181: 1181-smb-client-simplify-cifs-fscache-get-super-cookie.patch
+Patch1182: 1182-cifs-add-fscache-resize-cookie-to-cifs-setsize.patch
+Patch1183: 1183-cifs-use-cifs-invalidate-cache-in-cifs-do-truncate-for-o-trunc.patch
+Patch1184: 1184-cifs-add-cifs-resize-file-locked-to-guard-fscache-resize-cookie-under-i-rwsem.patch
+Patch1185: 1185-cifs-remove-redundant-size-update-block-in-cifs-remap-file-range.patch
+Patch1186: 1186-cifs-remove-dead-size-update-blocks-in-cifs-setattr-unix-nounix.patch
+Patch1187: 1187-smb-client-fix-nlink-of-an-overwritten-open-file.patch
+Patch1188: 1188-smb-client-mark-missing-nlink-values-as-unknown.patch
+Patch1189: 1189-smb-client-preserve-open-info-type-across-compound-queries.patch
+Patch1190: 1190-smb-client-decode-reparse-metadata-using-its-payload-type.patch
+Patch1191: 1191-cifs-clear-tcon-after-cifsfileinfo-put-in-cifs-file-set-size.patch
+Patch1192: 1192-cifs-call-pagecache-isize-extended-in-cifs-setsize-when-extending.patch
+Patch1193: 1193-cifs-fix-loff-t-underflow-in-cifs-remap-file-range-when-len-0.patch
+Patch1194: 1194-cifs-add-revalidation-on-fsctl-failure-in-smb2-duplicate-extents.patch
+Patch1195: 1195-smb-client-validate-new-eof-for-insert-range.patch
+Patch1196: 1196-smb-client-validate-new-eof-for-zero-range.patch
+Patch1197: 1197-smb-client-mark-file-sparse-before-emulating-insert-range.patch
+Patch1198: 1198-smb-client-fix-data-corruption-in-emulated-insert-range.patch
+Patch1199: 1199-smb-client-fix-integer-truncation-in-collapse-range.patch
+Patch1200: 1200-smb-client-fix-stale-page-cache-in-insert-collapse-range.patch
+Patch1201: 1201-smb-client-invalidate-fscache-for-fallocate-range-operations.patch
+Patch1202: 1202-cifs-don-t-update-i-size-in-cifs-do-truncate-without-a-cached-handle.patch
+Patch1203: 1203-smb-client-fix-data-corruption-with-concurrent-writes-and-o-trunc.patch
+Patch1204: 1204-smb-client-avoid-leaking-refcount-in-cifs-queue-oplock-break.patch
+Patch1205: 1205-smb-client-avoid-leaking-refcount-when-cifs-sb-tlink-fails.patch
+Patch1206: 1206-smb-client-fix-cifsfileinfo-reference-leak-in-deferred-close.patch
+Patch1207: 1207-smb-client-send-lease-break-acks-thru-correct-session-for-multiuser-mounts.patch
+Patch1208: 1208-smb-client-cancel-reconnect-work-in-clean-demultiplex-info.patch
+Patch1209: 1209-smb-client-fix-rlist-race-and-missing-initialization.patch
+Patch1210: 1210-smb-client-split-cifsfileinfo-bitfields-to-avoid-shared-byte-rmw-races.patch
+Patch1211: 1211-smb-client-guard-against-tailsz-underflow-in-wdata-send-pages.patch
+Patch1212: 1212-kvm-s390-pci-reject-adapter-interrupt-forwarding-if-already-enabled.patch
+Patch1213: 1213-keys-encrypted-fix-integer-overflow-of-datablob-len.patch
+Patch1214: 1214-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
+Patch1215: 1215-vfio-pci-clear-vdev-msi-perm-after-freeing-it-on-init-failure.patch
+Patch1216: 1216-netfilter-flowtable-hold-reference-on-ct-until-flow-is-released.patch
+Patch1217: 1217-redhat-gating-migrate-to-osci-tier0-gating-plans.patch
 
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -1841,6 +1921,85 @@ ApplyPatch 1137-calipso-unlock-rcu-before-returning-eafnosupport.patch
 ApplyPatch 1138-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
 ApplyPatch 1139-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
 ApplyPatch 1140-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+
+# Applying backports for 5.14.0-687.61.1.el9_8
+ApplyPatch 1141-fuse-re-lock-request-before-returning-from-fuse-ref-folio.patch
+ApplyPatch 1142-usb-usbfs-fix-use-after-free-of-usb-device-in-usbdev-release.patch
+ApplyPatch 1143-selinux-avoid-sk-socket-dereference-in-selinux-sctp-bind-connect.patch
+ApplyPatch 1144-ipvs-reload-ip-header-after-head-reallocation.patch
+ApplyPatch 1145-fuse-fix-page-stealing.patch
+ApplyPatch 1146-fuse-release-pipe-buf-after-last-use.patch
+ApplyPatch 1147-fuse-re-lock-request-before-replacing-page-cache-folio.patch
+ApplyPatch 1148-net-handshake-take-a-long-lived-file-reference-at-submit.patch
+ApplyPatch 1149-net-handshake-hand-off-the-pinned-file-reference-to-accept-doit.patch
+ApplyPatch 1150-net-handshake-use-spin-lock-bh-for-hn-lock.patch
+ApplyPatch 1151-net-handshake-drain-pending-requests-at-net-namespace-exit.patch
+ApplyPatch 1152-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+ApplyPatch 1153-udp-deal-with-race-between-udp-socket-address-change-and-rehash.patch
+ApplyPatch 1154-cifs-scripted-clean-up-fs-smb-client-cifsproto-h.patch
+ApplyPatch 1155-cifs-scripted-clean-up-fs-smb-client-cifsfs-h.patch
+ApplyPatch 1156-cifs-scripted-clean-up-fs-smb-client-fscache-h.patch
+ApplyPatch 1157-cifs-scripted-clean-up-fs-smb-client-cifsglob-h.patch
+ApplyPatch 1158-smb-client-fix-atomic-open-with-o-direct-o-sync.patch
+ApplyPatch 1159-smb-client-fix-in-place-encryption-corruption-in-smb2-write.patch
+ApplyPatch 1160-smb-client-fix-open-handle-lookup-in-cifs-open.patch
+ApplyPatch 1161-smb-client-fix-generic-694-due-to-wrong-i-blocks.patch
+ApplyPatch 1162-cifs-change-conf-needs-to-be-called-for-session-setup.patch
+ApplyPatch 1163-cifs-abort-open-cached-dir-if-we-don-t-request-leases.patch
+ApplyPatch 1164-cifs-invalidate-cfid-on-unlink-rename-rmdir.patch
+ApplyPatch 1165-smb-client-fix-races-in-cifsd-thread-creation.patch
+ApplyPatch 1166-smb-client-update-i-blocks-after-contiguous-writes.patch
+ApplyPatch 1167-smb-client-name-the-default-fallocate-mode.patch
+ApplyPatch 1168-smb-client-preserve-errors-from-smb2-set-sparse.patch
+ApplyPatch 1169-smb-client-do-not-account-eof-extension-as-allocation.patch
+ApplyPatch 1170-smb-client-refactor-cifs-revalidate-mapping-to-use-clear-and-wake-up-bit.patch
+ApplyPatch 1171-smb-client-use-stack-allocated-smb2-file-all-info-in-smb3-query-mf-symlink.patch
+ApplyPatch 1172-smb-client-pass-cifs-open-info-data-to-smb2-open.patch
+ApplyPatch 1173-smb-client-zero-initialize-stack-allocated-cifs-open-info-data.patch
+ApplyPatch 1174-smb-client-fix-incorrect-nlink-returned-by-fstat.patch
+ApplyPatch 1175-smb-client-use-kvzalloc-for-megabyte-buffer-in-simple-fallocate.patch
+ApplyPatch 1176-smb-client-refresh-allocation-size-after-duplicate-extents.patch
+ApplyPatch 1177-smb-client-reduce-fallocate-zero-buffer-allocation.patch
+ApplyPatch 1178-smb-client-emulate-small-eof-extending-mode-0-fallocate-ranges.patch
+ApplyPatch 1179-smb-client-refresh-allocation-after-eof-extending-fallocate.patch
+ApplyPatch 1180-smb-client-flush-dirty-data-before-punching-a-hole.patch
+ApplyPatch 1181-smb-client-simplify-cifs-fscache-get-super-cookie.patch
+ApplyPatch 1182-cifs-add-fscache-resize-cookie-to-cifs-setsize.patch
+ApplyPatch 1183-cifs-use-cifs-invalidate-cache-in-cifs-do-truncate-for-o-trunc.patch
+ApplyPatch 1184-cifs-add-cifs-resize-file-locked-to-guard-fscache-resize-cookie-under-i-rwsem.patch
+ApplyPatch 1185-cifs-remove-redundant-size-update-block-in-cifs-remap-file-range.patch
+ApplyPatch 1186-cifs-remove-dead-size-update-blocks-in-cifs-setattr-unix-nounix.patch
+ApplyPatch 1187-smb-client-fix-nlink-of-an-overwritten-open-file.patch
+ApplyPatch 1188-smb-client-mark-missing-nlink-values-as-unknown.patch
+ApplyPatch 1189-smb-client-preserve-open-info-type-across-compound-queries.patch
+ApplyPatch 1190-smb-client-decode-reparse-metadata-using-its-payload-type.patch
+ApplyPatch 1191-cifs-clear-tcon-after-cifsfileinfo-put-in-cifs-file-set-size.patch
+ApplyPatch 1192-cifs-call-pagecache-isize-extended-in-cifs-setsize-when-extending.patch
+ApplyPatch 1193-cifs-fix-loff-t-underflow-in-cifs-remap-file-range-when-len-0.patch
+ApplyPatch 1194-cifs-add-revalidation-on-fsctl-failure-in-smb2-duplicate-extents.patch
+ApplyPatch 1195-smb-client-validate-new-eof-for-insert-range.patch
+ApplyPatch 1196-smb-client-validate-new-eof-for-zero-range.patch
+ApplyPatch 1197-smb-client-mark-file-sparse-before-emulating-insert-range.patch
+ApplyPatch 1198-smb-client-fix-data-corruption-in-emulated-insert-range.patch
+ApplyPatch 1199-smb-client-fix-integer-truncation-in-collapse-range.patch
+ApplyPatch 1200-smb-client-fix-stale-page-cache-in-insert-collapse-range.patch
+ApplyPatch 1201-smb-client-invalidate-fscache-for-fallocate-range-operations.patch
+ApplyPatch 1202-cifs-don-t-update-i-size-in-cifs-do-truncate-without-a-cached-handle.patch
+ApplyPatch 1203-smb-client-fix-data-corruption-with-concurrent-writes-and-o-trunc.patch
+ApplyPatch 1204-smb-client-avoid-leaking-refcount-in-cifs-queue-oplock-break.patch
+ApplyPatch 1205-smb-client-avoid-leaking-refcount-when-cifs-sb-tlink-fails.patch
+ApplyPatch 1206-smb-client-fix-cifsfileinfo-reference-leak-in-deferred-close.patch
+ApplyPatch 1207-smb-client-send-lease-break-acks-thru-correct-session-for-multiuser-mounts.patch
+ApplyPatch 1208-smb-client-cancel-reconnect-work-in-clean-demultiplex-info.patch
+ApplyPatch 1209-smb-client-fix-rlist-race-and-missing-initialization.patch
+ApplyPatch 1210-smb-client-split-cifsfileinfo-bitfields-to-avoid-shared-byte-rmw-races.patch
+ApplyPatch 1211-smb-client-guard-against-tailsz-underflow-in-wdata-send-pages.patch
+ApplyPatch 1212-kvm-s390-pci-reject-adapter-interrupt-forwarding-if-already-enabled.patch
+ApplyPatch 1213-keys-encrypted-fix-integer-overflow-of-datablob-len.patch
+ApplyPatch 1214-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
+ApplyPatch 1215-vfio-pci-clear-vdev-msi-perm-after-freeing-it-on-init-failure.patch
+ApplyPatch 1216-netfilter-flowtable-hold-reference-on-ct-until-flow-is-released.patch
+ApplyPatch 1217-redhat-gating-migrate-to-osci-tier0-gating-plans.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -3985,7 +4144,7 @@ fi
 #
 #
 %changelog
-* Mon Oct 26 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.60.1
+* Mon Oct 26 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.61.1
 - net: skbuff: propagate shared-frag marker in skb_zerocopy()
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3998,11 +4157,89 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Oct 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.60.1
+* Mon Oct 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.61.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Mon Oct 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.61.1.el9_8]
+- netfilter: flowtable: hold reference on ct until flow is released (CKI Backport Bot) [RHEL-280075] {CVE-2026-98320}
+- vfio/pci: clear vdev->msi_perm after freeing it on init failure (Rodolfo Vick) [RHEL-270901] {CVE-2026-89777}
+- md/raid5-ppl: fix use-after-free in ppl_do_flush() (CKI Backport Bot) [RHEL-278089] {CVE-2026-93262}
+- KEYS: encrypted: fix integer overflow of datablob_len (Bruno Meneguele) [RHEL-279504] {CVE-2026-98222}
+- KVM: s390: pci: Reject adapter interrupt forwarding if already enabled (CKI Backport Bot) [RHEL-277620] {CVE-2026-74515}
+- smb: client: guard against tailsz underflow in wdata_send_pages() (Paulo Alcantara) [RHEL-257205]
+- smb: client: split cifsFileInfo bitfields to avoid shared-byte RMW races (Paulo Alcantara) [RHEL-257205]
+- smb: client: fix rlist race and missing initialization (Paulo Alcantara) [RHEL-257205] {CVE-2026-98174}
+- smb: client: cancel reconnect work in clean_demultiplex_info() (Paulo Alcantara) [RHEL-257205] {CVE-2026-98175}
+- smb/client: send lease break ACKs thru correct session for multiuser mounts (Paulo Alcantara) [RHEL-257205]
+- smb: client: fix cifsFileInfo reference leak in deferred close (Paulo Alcantara) [RHEL-257205] {CVE-2026-97558}
+- smb: client: avoid leaking refcount when cifs_sb_tlink() fails (Paulo Alcantara) [RHEL-257205] {CVE-2026-97556}
+- smb: client: avoid leaking refcount in cifs_queue_oplock_break() (Paulo Alcantara) [RHEL-257205] {CVE-2026-97557}
+- smb: client: fix data corruption with concurrent writes and O_TRUNC (Paulo Alcantara) [RHEL-257205]
+- cifs: don't update i_size in cifs_do_truncate without a cached handle (Paulo Alcantara) [RHEL-257205]
+- smb: client: invalidate fscache for fallocate range operations (Paulo Alcantara) [RHEL-257205] {CVE-2026-98124}
+- smb: client: fix stale page cache in insert/collapse range (Paulo Alcantara) [RHEL-257205] {CVE-2026-98125}
+- smb: client: fix integer truncation in collapse range (Paulo Alcantara) [RHEL-257205]
+- smb: client: fix data corruption in emulated insert range (Paulo Alcantara) [RHEL-257205]
+- smb/client: mark file sparse before emulating insert range (Paulo Alcantara) [RHEL-257205]
+- smb/client: validate new EOF for zero range (Paulo Alcantara) [RHEL-257205] {CVE-2026-98126}
+- smb/client: validate new EOF for insert range (Paulo Alcantara) [RHEL-257205] {CVE-2026-98127}
+- cifs: add revalidation on FSCTL failure in smb2_duplicate_extents() (Paulo Alcantara) [RHEL-257205]
+- cifs: fix loff_t underflow in cifs_remap_file_range() when len == 0 (Paulo Alcantara) [RHEL-257205] {CVE-2026-89640}
+- cifs: call pagecache_isize_extended() in cifs_setsize() when extending (Paulo Alcantara) [RHEL-257205] {CVE-2026-89642}
+- cifs: clear tcon after cifsFileInfo_put() in cifs_file_set_size() (Paulo Alcantara) [RHEL-257205] {CVE-2026-89641}
+- smb/client: decode reparse metadata using its payload type (Paulo Alcantara) [RHEL-257205]
+- smb/client: preserve open info type across compound queries (Paulo Alcantara) [RHEL-257205]
+- smb/client: mark missing nlink values as unknown (Paulo Alcantara) [RHEL-257205]
+- smb/client: fix nlink of an overwritten open file (Paulo Alcantara) [RHEL-257205]
+- cifs: remove dead size-update blocks in cifs_setattr_unix/nounix (Paulo Alcantara) [RHEL-257205]
+- cifs: remove redundant size-update block in cifs_remap_file_range() (Paulo Alcantara) [RHEL-257205]
+- cifs: add cifs_resize_file_locked() to guard fscache_resize_cookie() under i_rwsem (Paulo Alcantara) [RHEL-257205]
+- cifs: use cifs_invalidate_cache() in cifs_do_truncate() for O_TRUNC (Paulo Alcantara) [RHEL-257205] {CVE-2026-89639}
+- cifs: add fscache_resize_cookie() to cifs_setsize() (Paulo Alcantara) [RHEL-257205]
+- smb: client: simplify cifs_fscache_get_super_cookie() (Paulo Alcantara) [RHEL-257205]
+- smb/client: flush dirty data before punching a hole (Paulo Alcantara) [RHEL-257205] {CVE-2026-93794}
+- smb/client: refresh allocation after EOF-extending fallocate (Paulo Alcantara) [RHEL-257205]
+- smb/client: emulate small EOF-extending mode 0 fallocate ranges (Paulo Alcantara) [RHEL-257205]
+- smb/client: reduce fallocate zero buffer allocation (Paulo Alcantara) [RHEL-257205]
+- smb/client: refresh allocation size after duplicate extents (Paulo Alcantara) [RHEL-257205]
+- smb: client: use kvzalloc() for megabyte buffer in simple fallocate (Paulo Alcantara) [RHEL-257205]
+- smb/client: fix incorrect nlink returned by fstat() (Paulo Alcantara) [RHEL-257205]
+- smb/client: zero-initialize stack-allocated cifs_open_info_data (Paulo Alcantara) [RHEL-257205] {CVE-2026-93801}
+- smb/client: pass cifs_open_info_data to SMB2_open() (Paulo Alcantara) [RHEL-257205]
+- smb/client: use stack-allocated smb2_file_all_info in smb3_query_mf_symlink() (Paulo Alcantara) [RHEL-257205]
+- smb: client: refactor cifs_revalidate_mapping() to use clear_and_wake_up_bit() (Paulo Alcantara) [RHEL-257205]
+- smb/client: do not account EOF extension as allocation (Paulo Alcantara) [RHEL-257205]
+- smb/client: preserve errors from smb2_set_sparse() (Paulo Alcantara) [RHEL-257205]
+- smb/client: name the default fallocate mode (Paulo Alcantara) [RHEL-257205]
+- smb/client: update i_blocks after contiguous writes (Paulo Alcantara) [RHEL-257205]
+- smb: client: fix races in cifsd thread creation (Paulo Alcantara) [RHEL-257205] {CVE-2026-93829}
+- cifs: invalidate cfid on unlink/rename/rmdir (Paulo Alcantara) [RHEL-257205]
+- cifs: abort open_cached_dir if we don't request leases (Paulo Alcantara) [RHEL-257205]
+- cifs: change_conf needs to be called for session setup (Paulo Alcantara) [RHEL-257205]
+- smb: client: fix generic/694 due to wrong ->i_blocks (Paulo Alcantara) [RHEL-257205]
+- smb: client: fix open handle lookup in cifs_open() (Paulo Alcantara) [RHEL-257205]
+- smb: client: fix in-place encryption corruption in SMB2_write() (Paulo Alcantara) [RHEL-257205] {CVE-2026-43362}
+- smb: client: fix atomic open with O_DIRECT & O_SYNC (Paulo Alcantara) [RHEL-257205]
+- cifs: Scripted clean up fs/smb/client/cifsglob.h (Paulo Alcantara) [RHEL-257205]
+- cifs: Scripted clean up fs/smb/client/fscache.h (Paulo Alcantara) [RHEL-257205]
+- cifs: Scripted clean up fs/smb/client/cifsfs.h (Paulo Alcantara) [RHEL-257205]
+- cifs: Scripted clean up fs/smb/client/cifsproto.h (Paulo Alcantara) [RHEL-257205]
+- udp: Deal with race between UDP socket address change and rehash (Jamie Bainbridge) [RHEL-257635] {CVE-2024-57974}
+- smb: client: clear setuid/setgid bit on write with cifsacl/modefromsid/posix extensions (CKI Backport Bot) [RHEL-271257] {CVE-2026-89638}
+- net/handshake: Drain pending requests at net namespace exit (Xin Long) [RHEL-232134] {CVE-2026-63978}
+- net/handshake: Use spin_lock_bh for hn_lock (Xin Long) [RHEL-232134]
+- net/handshake: hand off the pinned file reference to accept_doit (Xin Long) [RHEL-230363] {CVE-2026-63979}
+- net/handshake: Take a long-lived file reference at submit (Xin Long) [RHEL-234159] {CVE-2026-64523}
+- fuse: re-lock request before replacing page cache folio (Miklos Szeredi) [RHEL-226093] {CVE-2026-53388}
+- fuse: release pipe buf after last use (Miklos Szeredi) [RHEL-226093] {CVE-2026-53388}
+- fuse: fix page stealing (Miklos Szeredi) [RHEL-226093] {CVE-2026-53388}
+- ipvs: reload ip header after head reallocation (Phil Sutter) [RHEL-263800] {CVE-2026-68476}
+- selinux: avoid sk_socket dereference in selinux_sctp_bind_connect() (CKI Backport Bot) [RHEL-243225] {CVE-2026-72242}
+- usb: usbfs: fix use-after-free of usb_device in usbdev_release() (CKI Backport Bot) [RHEL-258557] {CVE-2026-80824}
+- fuse: re-lock request before returning from fuse_ref_folio() (CKI Backport Bot) [RHEL-234250] {CVE-2026-64266}
 
 * Wed Oct 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.60.1.el9_8]
 - xfs: bounds-check buffer log item's dirty bitmap (Pavel Reichl) [RHEL-253366] {CVE-2026-80536}
