@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.59.1
+%define pkgrelease 687.60.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.58.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.59.1%{?buildid}%{?dist}
+%define specrelease 687.60.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.58.1.el9_8
 
@@ -1013,6 +1013,18 @@ Patch1128: 1128-smb-client-reject-a-tree-connect-response-whose-byte-count-is-to
 Patch1129: 1129-ipv4-validate-checksum-start-before-completing-checksum.patch
 Patch1130: 1130-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
 
+# Backports for 5.14.0-687.60.1.el9_8
+Patch1131: 1131-rtla-fix-segfault-on-multiple-sigints.patch
+Patch1132: 1132-alsa-hda-cs35l41-fix-firmware-load-work-teardown.patch
+Patch1133: 1133-vmxnet3-fix-bug-on-in-vmxnet3-get-hdr-len-for-geneve-packets.patch
+Patch1134: 1134-xfs-fix-exchange-range-reflink-flag-clearing-issue-with-ino1-written.patch
+Patch1135: 1135-netlabel-fix-null-pointer-exception-caused-by-calipso-on-ipv4-sockets.patch
+Patch1136: 1136-calipso-don-t-call-calipso-functions-for-af-inet-sk.patch
+Patch1137: 1137-calipso-unlock-rcu-before-returning-eafnosupport.patch
+Patch1138: 1138-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
+Patch1139: 1139-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
+Patch1140: 1140-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1027,6 +1039,7 @@ Patch2100: 2100-gve-Update-QPL-page-registration-logic.patch
 Patch2101: 2101-gve-Add-adminq-support-for-modifiable-ring-size.patch
 Patch2102: 2102-gve-Add-ethtool-support-for-changing-ring-size.patch
 Patch2103: 2103-gve-harden-modifiable-ring-size-support.patch
+Patch2104: 2104-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 Patch11111: ppc64le-kvm-support.patch
 
@@ -1817,6 +1830,18 @@ ApplyPatch 1128-smb-client-reject-a-tree-connect-response-whose-byte-count-is-to
 ApplyPatch 1129-ipv4-validate-checksum-start-before-completing-checksum.patch
 ApplyPatch 1130-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
 
+# Applying backports for 5.14.0-687.60.1.el9_8
+ApplyPatch 1131-rtla-fix-segfault-on-multiple-sigints.patch
+ApplyPatch 1132-alsa-hda-cs35l41-fix-firmware-load-work-teardown.patch
+ApplyPatch 1133-vmxnet3-fix-bug-on-in-vmxnet3-get-hdr-len-for-geneve-packets.patch
+ApplyPatch 1134-xfs-fix-exchange-range-reflink-flag-clearing-issue-with-ino1-written.patch
+ApplyPatch 1135-netlabel-fix-null-pointer-exception-caused-by-calipso-on-ipv4-sockets.patch
+ApplyPatch 1136-calipso-don-t-call-calipso-functions-for-af-inet-sk.patch
+ApplyPatch 1137-calipso-unlock-rcu-before-returning-eafnosupport.patch
+ApplyPatch 1138-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
+ApplyPatch 1139-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
+ApplyPatch 1140-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1831,6 +1856,7 @@ ApplyPatch 2100-gve-Update-QPL-page-registration-logic.patch
 ApplyPatch 2101-gve-Add-adminq-support-for-modifiable-ring-size.patch
 ApplyPatch 2102-gve-Add-ethtool-support-for-changing-ring-size.patch
 ApplyPatch 2103-gve-harden-modifiable-ring-size-support.patch
+ApplyPatch 2104-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -3959,7 +3985,8 @@ fi
 #
 #
 %changelog
-* Wed Oct 21 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.59.1
+* Mon Oct 26 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.60.1
+- net: skbuff: propagate shared-frag marker in skb_zerocopy()
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -3971,11 +3998,23 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Oct 21 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.59.1
+* Mon Oct 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.60.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Wed Oct 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.60.1.el9_8]
+- xfs: bounds-check buffer log item's dirty bitmap (Pavel Reichl) [RHEL-253366] {CVE-2026-80536}
+- ovl: check access to copy_file_range source with src mounter creds (Miklos Szeredi) [RHEL-238870] {CVE-2026-68448}
+- ALSA: seq: close a re-opened queue timer in the destructor (CKI Backport Bot) [RHEL-263709] {CVE-2026-68202}
+- calipso: unlock rcu before returning -EAFNOSUPPORT (CKI Backport Bot) [RHEL-257685] {CVE-2025-38147}
+- calipso: Don't call calipso functions for AF_INET sk. (CKI Backport Bot) [RHEL-257685] {CVE-2025-38147}
+- netlabel: Fix NULL pointer exception caused by CALIPSO on IPv4 sockets (CKI Backport Bot) [RHEL-257666] {CVE-2025-22063}
+- xfs: fix exchange-range reflink flag clearing issue with INO1_WRITTEN (CKI Backport Bot) [RHEL-255258] {CVE-2026-80530}
+- vmxnet3: fix BUG_ON in vmxnet3_get_hdr_len() for Geneve packets (CKI Backport Bot) [RHEL-252811] {CVE-2026-68299}
+- ALSA: hda/cs35l41: Fix firmware load work teardown (CKI Backport Bot) [RHEL-234099] {CVE-2026-64481}
+- rtla: Fix segfault on multiple SIGINTs (Tomas Glozar) [RHEL-193029]
 
 * Fri Oct 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.59.1.el9_8]
 - net: always dissect GSO packets in __virtio_net_hdr_to_skb() (Davide Caratti) [RHEL-284987]
