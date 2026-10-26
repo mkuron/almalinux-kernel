@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.178.1.el8_10
+%define pkgrelease 553.179.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.178.1%{?dist}
+%define specrelease 553.179.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2805,7 +2805,7 @@ fi
 #
 #
 %changelog
-* Sun Oct 25 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.178.1
+* Mon Oct 26 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.179.1
 - net: skbuff: propagate shared-frag marker in skb_zerocopy()
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2817,9 +2817,12 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Sun Oct 25 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.178.1
+* Mon Oct 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.179.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Oct 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.179.1.el8_10]
+- KVM: s390: pci: Reject adapter interrupt forwarding if already enabled (CKI Backport Bot) [RHEL-277607] {CVE-2026-74515}
 
 * Fri Oct 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.178.1.el8_10]
 - selinux: avoid sk_socket dereference in selinux_sctp_bind_connect() (Ondrej Mosnacek) [RHEL-243220] {CVE-2026-72242}
