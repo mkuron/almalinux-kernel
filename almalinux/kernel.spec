@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.68.1
+%define pkgrelease 211.69.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.68.1%{?buildid}%{?dist}
+%define specrelease 211.69.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1120,6 +1120,7 @@ Source3002: Patchlist.changelog
 Source4000: README.rst
 Source4001: rpminspect.yaml
 Source4002: gating.yaml
+Source4003: plans.fmf
 
 # AlmaLinux Source
 Source100: almalinuxdup1.x509
@@ -1580,6 +1581,39 @@ Patch1515: 1515-drm-amdkfd-add-tlb-flush-after-mes-queue-eviction-suspension.pat
 Patch1516: 1516-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
 Patch1517: 1517-bonding-only-set-speed-duplex-to-unknown-if-getting-speed-failed.patch
 
+# Backports for 6.12.0-211.69.1.el10_2
+Patch1518: 1518-ipv6-fib6-fix-null-deref-in-fib6-walk-continue-on-multi-batch-dump.patch
+Patch1519: 1519-ipv4-fib-fix-route-re-dump-in-inet-dump-fib-on-multi-batch-dump.patch
+Patch1520: 1520-net-smc-fix-splice-entry-lifetime-imbalance-in-smc-rx-splice.patch
+Patch1521: 1521-usb-usbfs-fix-use-after-free-of-usb-device-in-usbdev-release.patch
+Patch1522: 1522-tcp-restrict-so-attach-filter-to-priv-users.patch
+Patch1523: 1523-net-gro-fix-double-aggregation-of-flush-marked-skbs.patch
+Patch1524: 1524-af-unix-cache-state-msg-in-unix-stream-read-generic.patch
+Patch1525: 1525-af-unix-fix-uaf-read-of-tail-len-in-unix-stream-data-wait.patch
+Patch1526: 1526-net-packet-avoid-fanout-hook-re-registration-after-unregister.patch
+Patch1527: 1527-net-shaper-protect-late-read-accesses-to-the-hierarchy.patch
+Patch1528: 1528-net-shaper-flip-the-polarity-of-the-valid-flag.patch
+Patch1529: 1529-net-shaper-fix-trivial-ordering-issue-in-net-shaper-commit.patch
+Patch1530: 1530-net-shaper-annotate-the-data-races.patch
+Patch1531: 1531-net-shaper-rework-the-valid-marking-again.patch
+Patch1532: 1532-sched-ext-fix-unsafe-locking-in-the-scx-dump-state.patch
+Patch1533: 1533-sched-ext-fix-possible-deadlock-in-the-deferred-irq-workfn.patch
+Patch1534: 1534-fuse-re-lock-request-before-replacing-page-cache-folio.patch
+Patch1535: 1535-x86-microcode-refactor-platform-id-enumeration-into-a-helper.patch
+Patch1536: 1536-x86-cpu-add-platform-id-to-cpu-info-structure.patch
+Patch1537: 1537-x86-cpu-add-platform-id-to-cpu-matching-structure.patch
+Patch1538: 1538-x86-microcode-add-platform-mask-to-intel-microcode-old-list.patch
+Patch1539: 1539-net-handshake-take-a-long-lived-file-reference-at-submit.patch
+Patch1540: 1540-net-handshake-hand-off-the-pinned-file-reference-to-accept-doit.patch
+Patch1541: 1541-net-handshake-use-spin-lock-bh-for-hn-lock.patch
+Patch1542: 1542-net-handshake-drain-pending-requests-at-net-namespace-exit.patch
+Patch1543: 1543-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+Patch1544: 1544-vfio-pci-clear-vdev-msi-perm-after-freeing-it-on-init-failure.patch
+Patch1545: 1545-kvm-s390-pci-reject-adapter-interrupt-forwarding-if-already-enabled.patch
+Patch1546: 1546-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
+Patch1547: 1547-scsi-target-core-fix-iscsi-isid-use-after-free-in-register-and-move.patch
+Patch1548: 1548-replace-kernel-qe-ci-gating-with-osci-tier0-plans.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1594,6 +1628,10 @@ Patch2014: 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 Patch2015: 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 Patch2016: 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
 Patch2017: 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
+Patch2018: 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
+Patch2019: 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
+Patch2020: 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
+Patch2021: 2021-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -2905,6 +2943,39 @@ ApplyPatch 1515-drm-amdkfd-add-tlb-flush-after-mes-queue-eviction-suspension.pat
 ApplyPatch 1516-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
 ApplyPatch 1517-bonding-only-set-speed-duplex-to-unknown-if-getting-speed-failed.patch
 
+# Applying backports for 6.12.0-211.69.1.el10_2
+ApplyPatch 1518-ipv6-fib6-fix-null-deref-in-fib6-walk-continue-on-multi-batch-dump.patch
+ApplyPatch 1519-ipv4-fib-fix-route-re-dump-in-inet-dump-fib-on-multi-batch-dump.patch
+ApplyPatch 1520-net-smc-fix-splice-entry-lifetime-imbalance-in-smc-rx-splice.patch
+ApplyPatch 1521-usb-usbfs-fix-use-after-free-of-usb-device-in-usbdev-release.patch
+ApplyPatch 1522-tcp-restrict-so-attach-filter-to-priv-users.patch
+ApplyPatch 1523-net-gro-fix-double-aggregation-of-flush-marked-skbs.patch
+ApplyPatch 1524-af-unix-cache-state-msg-in-unix-stream-read-generic.patch
+ApplyPatch 1525-af-unix-fix-uaf-read-of-tail-len-in-unix-stream-data-wait.patch
+ApplyPatch 1526-net-packet-avoid-fanout-hook-re-registration-after-unregister.patch
+ApplyPatch 1527-net-shaper-protect-late-read-accesses-to-the-hierarchy.patch
+ApplyPatch 1528-net-shaper-flip-the-polarity-of-the-valid-flag.patch
+ApplyPatch 1529-net-shaper-fix-trivial-ordering-issue-in-net-shaper-commit.patch
+ApplyPatch 1530-net-shaper-annotate-the-data-races.patch
+ApplyPatch 1531-net-shaper-rework-the-valid-marking-again.patch
+ApplyPatch 1532-sched-ext-fix-unsafe-locking-in-the-scx-dump-state.patch
+ApplyPatch 1533-sched-ext-fix-possible-deadlock-in-the-deferred-irq-workfn.patch
+ApplyPatch 1534-fuse-re-lock-request-before-replacing-page-cache-folio.patch
+ApplyPatch 1535-x86-microcode-refactor-platform-id-enumeration-into-a-helper.patch
+ApplyPatch 1536-x86-cpu-add-platform-id-to-cpu-info-structure.patch
+ApplyPatch 1537-x86-cpu-add-platform-id-to-cpu-matching-structure.patch
+ApplyPatch 1538-x86-microcode-add-platform-mask-to-intel-microcode-old-list.patch
+ApplyPatch 1539-net-handshake-take-a-long-lived-file-reference-at-submit.patch
+ApplyPatch 1540-net-handshake-hand-off-the-pinned-file-reference-to-accept-doit.patch
+ApplyPatch 1541-net-handshake-use-spin-lock-bh-for-hn-lock.patch
+ApplyPatch 1542-net-handshake-drain-pending-requests-at-net-namespace-exit.patch
+ApplyPatch 1543-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+ApplyPatch 1544-vfio-pci-clear-vdev-msi-perm-after-freeing-it-on-init-failure.patch
+ApplyPatch 1545-kvm-s390-pci-reject-adapter-interrupt-forwarding-if-already-enabled.patch
+ApplyPatch 1546-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
+ApplyPatch 1547-scsi-target-core-fix-iscsi-isid-use-after-free-in-register-and-move.patch
+ApplyPatch 1548-replace-kernel-qe-ci-gating-with-osci-tier0-plans.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2919,6 +2990,10 @@ ApplyPatch 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 ApplyPatch 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 ApplyPatch 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
 ApplyPatch 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
+ApplyPatch 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
+ApplyPatch 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
+ApplyPatch 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
+ApplyPatch 2021-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -5506,14 +5581,18 @@ fi\
 #
 #
 %changelog
-* Fri Oct 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.68.1
+* Wed Oct 28 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.69.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Fri Oct 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.68.1
+* Wed Oct 28 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.69.1
 - Enable Btrfs support for all kernel variants
 
-* Fri Oct 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.68.1
+* Wed Oct 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.69.1
+- net: skbuff: propagate shared-frag marker in skb_zerocopy()
+- ceph: pass cred pointer to ceph_mds_auth_match()
+- ceph: fix cred leak in ceph_mds_check_access() {CVE-2024-56563}
+- ceph: fix memory leak in ceph_mds_auth_match() {CVE-2025-21737}
 - bnxt_en: fix DMA mapping length for padded small packets
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
@@ -5526,6 +5605,38 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Mon Oct 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.69.1.el10_2]
+- scsi: target: core: Fix iSCSI ISID use-after-free in REGISTER AND MOVE (CKI Backport Bot) [RHEL-283521] {CVE-2026-72083}
+- md/raid5-ppl: fix use-after-free in ppl_do_flush() (Nigel Croxon) [RHEL-278085] {CVE-2026-93262}
+- KVM: s390: pci: Reject adapter interrupt forwarding if already enabled (CKI Backport Bot) [RHEL-277647] {CVE-2026-74515}
+- vfio/pci: clear vdev->msi_perm after freeing it on init failure (Rodolfo Vick) [RHEL-270937] {CVE-2026-89777}
+- smb: client: clear setuid/setgid bit on write with cifsacl/modefromsid/posix extensions (Jorge San Emeterio Villalain) [RHEL-271266] {CVE-2026-89638}
+- net/handshake: Drain pending requests at net namespace exit (Xin Long) [RHEL-232133] {CVE-2026-63978}
+- net/handshake: Use spin_lock_bh for hn_lock (Xin Long) [RHEL-232133]
+- net/handshake: hand off the pinned file reference to accept_doit (Xin Long) [RHEL-230367] {CVE-2026-63979}
+- net/handshake: Take a long-lived file reference at submit (Xin Long) [RHEL-234161] {CVE-2026-64523}
+- x86/microcode: Add platform mask to Intel microcode "old" list (Luis Claudio R. Goncalves) [RHEL-212778]
+- x86/cpu: Add platform ID to CPU matching structure (Luis Claudio R. Goncalves) [RHEL-212778]
+- x86/cpu: Add platform ID to CPU info structure (Luis Claudio R. Goncalves) [RHEL-212778]
+- x86/microcode: Refactor platform ID enumeration into a helper (Luis Claudio R. Goncalves) [RHEL-212778]
+- fuse: re-lock request before replacing page cache folio (Miklos Szeredi) [RHEL-226096] {CVE-2026-53388}
+- sched_ext: Fix possible deadlock in the deferred_irq_workfn() (CKI Backport Bot) [RHEL-259937]
+- sched_ext: Fix unsafe locking in the scx_dump_state() (CKI Backport Bot) [RHEL-259937]
+- net: shaper: rework the VALID marking (again) (Jamie Bainbridge) [RHEL-231705] {CVE-2026-64027}
+- net: shaper: annotate the data races (Jamie Bainbridge) [RHEL-231705]
+- net: shaper: fix trivial ordering issue in net_shaper_commit() (Jamie Bainbridge) [RHEL-231705]
+- net: shaper: flip the polarity of the valid flag (Jamie Bainbridge) [RHEL-231705]
+- net: shaper: protect late read accesses to the hierarchy (Jamie Bainbridge) [RHEL-231705]
+- net/packet: avoid fanout hook re-registration after unregister (Jamie Bainbridge) [RHEL-246967] {CVE-2026-68338}
+- af_unix: Fix UAF read of tail->len in unix_stream_data_wait() (Jamie Bainbridge) [RHEL-225883] {CVE-2026-64109}
+- af_unix: Cache state->msg in unix_stream_read_generic(). (Jamie Bainbridge) [RHEL-225883]
+- net: gro: fix double aggregation of flush-marked skbs (Jamie Bainbridge) [RHEL-242620] {CVE-2026-68136}
+- tcp: restrict SO_ATTACH_FILTER to priv users (Jamie Bainbridge) [RHEL-257741] {CVE-2026-53236}
+- usb: usbfs: fix use-after-free of usb_device in usbdev_release() (CKI Backport Bot) [RHEL-258583] {CVE-2026-80824}
+- net: smc: fix splice entry lifetime imbalance in smc_rx_splice (CKI Backport Bot) [RHEL-253457] {CVE-2026-74631}
+- ipv4: fib: fix route re-dump in inet_dump_fib() on multi-batch dump (Felix Maurer) [RHEL-245489]
+- ipv6: fib6: fix NULL deref in fib6_walk_continue() on multi-batch dump (Felix Maurer) [RHEL-245489]
 
 * Wed Oct 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.68.1.el10_2]
 - bonding: only set speed/duplex to unknown, if getting speed failed (Abhishek Rawal) [RHEL-179066]
