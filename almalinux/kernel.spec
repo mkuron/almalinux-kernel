@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.179.1.el8_10
+%define pkgrelease 553.180.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.179.1%{?dist}
+%define specrelease 553.180.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2805,7 +2805,7 @@ fi
 #
 #
 %changelog
-* Mon Oct 26 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.179.1
+* Thu Oct 29 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.180.1
 - net: skbuff: propagate shared-frag marker in skb_zerocopy()
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2817,9 +2817,18 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Oct 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.179.1
+* Thu Oct 29 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.180.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Oct 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.180.1.el8_10]
+- KVM: arm64: vgic: Check the interrupt is still ours before migrating it (Mohammadfaiz Bawa) [RHEL-252475] {CVE-2026-72289}
+- KVM: arm64: vgic: Handle race between interrupt affinity change and LPI disabling (Mohammadfaiz Bawa) [RHEL-243811] {CVE-2026-72288}
+- scsi: target: iscsi: Reserve a terminator byte for the login payload (CKI Backport Bot) [RHEL-285567] {CVE-2026-90011}
+- KEYS: encrypted: fix integer overflow of datablob_len (Bruno Meneguele) [RHEL-279488] {CVE-2026-98222}
+- arp: do not assume dev_hard_header() does not change skb->head (Guillaume Nault) [RHEL-271136]
+- ip6_gre: make ip6gre_header() robust (Guillaume Nault) [RHEL-271136]
+- ipv4: ip_gre: make ipgre_header() robust (Guillaume Nault) [RHEL-271135]
 
 * Mon Oct 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.179.1.el8_10]
 - KVM: s390: pci: Reject adapter interrupt forwarding if already enabled (CKI Backport Bot) [RHEL-277607] {CVE-2026-74515}
