@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.64.1
+%define pkgrelease 687.65.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.58.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.64.1%{?buildid}%{?dist}
+%define specrelease 687.65.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.58.1.el9_8
 
@@ -1149,6 +1149,10 @@ Patch1257: 1257-spi-fsl-lpspi-terminate-the-rx-channel-on-tx-prepare-failure-pat
 Patch1258: 1258-nvmet-auth-fix-out-of-bounds-write-in-nvmet-auth-challenge.patch
 Patch1259: 1259-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 
+# Backports for 5.14.0-687.65.1.el9_8
+Patch1260: 1260-ethtool-coalesce-cap-profile-updates-at-net-dim-params-num-profiles.patch
+Patch1261: 1261-ethtool-cmis-require-exact-cdb-reply-length.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2087,6 +2091,10 @@ ApplyPatch 1256-spi-fsl-lpspi-replace-dmaengine-terminate-all-with-dmaengine-ter
 ApplyPatch 1257-spi-fsl-lpspi-terminate-the-rx-channel-on-tx-prepare-failure-path.patch
 ApplyPatch 1258-nvmet-auth-fix-out-of-bounds-write-in-nvmet-auth-challenge.patch
 ApplyPatch 1259-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
+
+# Applying backports for 5.14.0-687.65.1.el9_8
+ApplyPatch 1260-ethtool-coalesce-cap-profile-updates-at-net-dim-params-num-profiles.patch
+ApplyPatch 1261-ethtool-cmis-require-exact-cdb-reply-length.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -4230,7 +4238,7 @@ fi
 #
 #
 %changelog
-* Mon Nov 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.64.1
+* Mon Nov 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.65.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4242,11 +4250,15 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Nov 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.64.1
+* Mon Nov 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.65.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.65.1.el9_8]
+- ethtool: cmis: require exact CDB reply length (CKI Backport Bot) [RHEL-229677] {CVE-2026-63996}
+- ethtool: coalesce: cap profile updates at NET_DIM_PARAMS_NUM_PROFILES (CKI Backport Bot) [RHEL-227145] {CVE-2026-63987}
 
 * Sat Oct 31 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.64.1.el9_8]
 - ipv4: free inet_opt and ireq_opt after an RCU grace period (CKI Backport Bot) [RHEL-295635] {CVE-2026-98432}
