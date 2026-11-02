@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.69.1
+%define pkgrelease 211.72.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.69.1%{?buildid}%{?dist}
+%define specrelease 211.72.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1614,6 +1614,34 @@ Patch1546: 1546-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
 Patch1547: 1547-scsi-target-core-fix-iscsi-isid-use-after-free-in-register-and-move.patch
 Patch1548: 1548-replace-kernel-qe-ci-gating-with-osci-tier0-plans.patch
 
+# Backports for 6.12.0-211.72.1.el10_2
+Patch1549: 1549-ipv4-ip-gre-make-ipgre-header-robust.patch
+Patch1550: 1550-ip6-gre-make-ip6gre-header-robust.patch
+Patch1551: 1551-arp-do-not-assume-dev-hard-header-does-not-change-skb-head.patch
+Patch1552: 1552-kvm-nvmx-always-flush-vpid02-on-first-use.patch
+Patch1553: 1553-kvm-nvmx-decouple-invvpid-operand-checks-from-flushing-of-vpid02.patch
+Patch1554: 1554-kvm-nvm-ensure-invvpid-is-emulated-on-the-correct-physical-cpu.patch
+Patch1555: 1555-mptcp-pm-userspace-fix-use-after-free-in-get-local-id.patch
+Patch1556: 1556-mptcp-options-reset-dss-fields-in-case-of-unexpected-size.patch
+Patch1557: 1557-keys-encrypted-fix-integer-overflow-of-datablob-len.patch
+Patch1558: 1558-virtio-fs-avoid-double-free-on-failed-queue-setup.patch
+Patch1559: 1559-scsi-target-iscsi-reserve-a-terminator-byte-for-the-login-payload.patch
+Patch1560: 1560-smb-client-bound-dirent-name-against-end-of-smb-response-in-cifs-filldir.patch
+Patch1561: 1561-net-skbuff-propagate-shared-frag-marker-in-skb-zerocopy.patch
+Patch1562: 1562-nvmet-auth-fix-out-of-bounds-write-in-nvmet-auth-challenge.patch
+Patch1563: 1563-net-sock-fix-hardened-usercopy-panic-in-sock-recv-errqueue.patch
+Patch1564: 1564-ppp-defer-channel-free-to-an-rcu-grace-period-to-fix-pppol2tp-rx-uaf.patch
+Patch1565: 1565-entry-fix-seccomp-bypass-after-ptrace-with-tsync.patch
+Patch1566: 1566-tipc-require-net-admin-for-tipcv2-netlink-mutators.patch
+Patch1567: 1567-xfrm-hold-net-device-reference-under-rcu-in-bundle-creation.patch
+Patch1568: 1568-netfilter-report-nlm-f-dump-filtered-when-all-is-filtered-out.patch
+Patch1569: 1569-netlink-specs-fix-the-conntrack-filter-type.patch
+Patch1570: 1570-selftests-netfilter-conntrack-dump-flush-remove-unused-variables-and-fix-typo.patch
+Patch1571: 1571-netfilter-conntrack-make-filtering-by-zone-discoverable.patch
+Patch1572: 1572-selftests-netfilter-use-khdr-includes-in-cflags.patch
+Patch1573: 1573-x86-cpu-amd-prevent-improper-isolation-of-shared-resources-in-zen2-s-op-cache.patch
+Patch1574: 1574-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1631,7 +1659,6 @@ Patch2017: 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 Patch2018: 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 Patch2019: 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 Patch2020: 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
-Patch2021: 2021-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -2976,6 +3003,34 @@ ApplyPatch 1546-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
 ApplyPatch 1547-scsi-target-core-fix-iscsi-isid-use-after-free-in-register-and-move.patch
 ApplyPatch 1548-replace-kernel-qe-ci-gating-with-osci-tier0-plans.patch
 
+# Applying backports for 6.12.0-211.72.1.el10_2
+ApplyPatch 1549-ipv4-ip-gre-make-ipgre-header-robust.patch
+ApplyPatch 1550-ip6-gre-make-ip6gre-header-robust.patch
+ApplyPatch 1551-arp-do-not-assume-dev-hard-header-does-not-change-skb-head.patch
+ApplyPatch 1552-kvm-nvmx-always-flush-vpid02-on-first-use.patch
+ApplyPatch 1553-kvm-nvmx-decouple-invvpid-operand-checks-from-flushing-of-vpid02.patch
+ApplyPatch 1554-kvm-nvm-ensure-invvpid-is-emulated-on-the-correct-physical-cpu.patch
+ApplyPatch 1555-mptcp-pm-userspace-fix-use-after-free-in-get-local-id.patch
+ApplyPatch 1556-mptcp-options-reset-dss-fields-in-case-of-unexpected-size.patch
+ApplyPatch 1557-keys-encrypted-fix-integer-overflow-of-datablob-len.patch
+ApplyPatch 1558-virtio-fs-avoid-double-free-on-failed-queue-setup.patch
+ApplyPatch 1559-scsi-target-iscsi-reserve-a-terminator-byte-for-the-login-payload.patch
+ApplyPatch 1560-smb-client-bound-dirent-name-against-end-of-smb-response-in-cifs-filldir.patch
+ApplyPatch 1561-net-skbuff-propagate-shared-frag-marker-in-skb-zerocopy.patch
+ApplyPatch 1562-nvmet-auth-fix-out-of-bounds-write-in-nvmet-auth-challenge.patch
+ApplyPatch 1563-net-sock-fix-hardened-usercopy-panic-in-sock-recv-errqueue.patch
+ApplyPatch 1564-ppp-defer-channel-free-to-an-rcu-grace-period-to-fix-pppol2tp-rx-uaf.patch
+ApplyPatch 1565-entry-fix-seccomp-bypass-after-ptrace-with-tsync.patch
+ApplyPatch 1566-tipc-require-net-admin-for-tipcv2-netlink-mutators.patch
+ApplyPatch 1567-xfrm-hold-net-device-reference-under-rcu-in-bundle-creation.patch
+ApplyPatch 1568-netfilter-report-nlm-f-dump-filtered-when-all-is-filtered-out.patch
+ApplyPatch 1569-netlink-specs-fix-the-conntrack-filter-type.patch
+ApplyPatch 1570-selftests-netfilter-conntrack-dump-flush-remove-unused-variables-and-fix-typo.patch
+ApplyPatch 1571-netfilter-conntrack-make-filtering-by-zone-discoverable.patch
+ApplyPatch 1572-selftests-netfilter-use-khdr-includes-in-cflags.patch
+ApplyPatch 1573-x86-cpu-amd-prevent-improper-isolation-of-shared-resources-in-zen2-s-op-cache.patch
+ApplyPatch 1574-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2993,7 +3048,6 @@ ApplyPatch 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 ApplyPatch 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 ApplyPatch 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 ApplyPatch 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
-ApplyPatch 2021-net-skbuff-propagate-shared-frag-marker-in-skb_zerocopy.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -5581,15 +5635,14 @@ fi\
 #
 #
 %changelog
-* Wed Oct 28 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.69.1
+* Mon Nov 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.72.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Oct 28 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.69.1
+* Mon Nov 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.72.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Oct 28 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.69.1
-- net: skbuff: propagate shared-frag marker in skb_zerocopy()
+* Mon Nov 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.72.1
 - ceph: pass cred pointer to ceph_mds_auth_match()
 - ceph: fix cred leak in ceph_mds_check_access() {CVE-2024-56563}
 - ceph: fix memory leak in ceph_mds_auth_match() {CVE-2025-21737}
@@ -5605,6 +5658,38 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Sun Nov 01 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.72.1.el10_2]
+- ipv4: free inet_opt and ireq_opt after an RCU grace period (CKI Backport Bot) [RHEL-295608] {CVE-2026-98432}
+- x86/CPU/AMD: Prevent improper isolation of shared resources in Zen2's op cache (Dennis Chen) [RHEL-230757] {CVE-2026-46174}
+- selftests: netfilter: use KHDR_INCLUDES in CFLAGS (CKI Backport Bot) [RHEL-291348]
+- netfilter: conntrack: make filtering by zone discoverable (CKI Backport Bot) [RHEL-291348]
+- selftests: netfilter: conntrack_dump_flush: remove unused variables and fix typo (CKI Backport Bot) [RHEL-291348]
+- netlink: specs: fix the conntrack filter type (CKI Backport Bot) [RHEL-291348]
+- netfilter: report NLM_F_DUMP_FILTERED when all is filtered out (CKI Backport Bot) [RHEL-291348]
+- xfrm: hold net_device reference under RCU in bundle creation (Abhishek Rawal) [RHEL-277962] {CVE-2026-98364}
+- tipc: require net admin for TIPCv2 netlink mutators (CKI Backport Bot) [RHEL-273184] {CVE-2026-74283}
+- entry: Fix seccomp bypass after ptrace with TSYNC (Audra Mitchell) [RHEL-271405] {CVE-2026-89603}
+- ppp: defer channel free to an RCU grace period to fix pppol2tp RX UAF (Abhishek Rawal) [RHEL-248847] {CVE-2026-68398}
+- net: sock: fix hardened usercopy panic in sock_recv_errqueue (CKI Backport Bot) [RHEL-189611] {CVE-2026-22977}
+
+* Fri Oct 30 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.71.1.el10_2]
+- nvmet-auth: fix out-of-bounds write in nvmet_auth_challenge() (Maurizio Lombardi) [RHEL-290598] {CVE-2026-98725}
+- net: skbuff: propagate shared-frag marker in skb_zerocopy() (Xin Long) [RHEL-291156]
+- smb: client: bound dirent name against end of SMB response in cifs_filldir (Paulo Alcantara) [RHEL-278330] {CVE-2026-93787}
+
+* Wed Oct 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.70.1.el10_2]
+- scsi: target: iscsi: Reserve a terminator byte for the login payload (CKI Backport Bot) [RHEL-285628] {CVE-2026-90011}
+- virtio-fs: avoid double-free on failed queue setup (CKI Backport Bot) [RHEL-278134] {CVE-2026-93827}
+- KEYS: encrypted: fix integer overflow of datablob_len (Bruno Meneguele) [RHEL-279482] {CVE-2026-98222}
+- mptcp: options: reset DSS fields in case of unexpected size (Prasenjit Mukherjee) [RHEL-250579] {CVE-2026-80586}
+- mptcp: pm: userspace: fix use-after-free in get_local_id (Prasenjit Mukherjee) [RHEL-236704] {CVE-2026-68169}
+- KVM: nVM: Ensure INVVPID is emulated on the correct physical CPU (Rahul Kumar) [RHEL-270935] {CVE-2026-89932}
+- KVM: nVMX: Decouple INVVPID operand checks from flushing of vpid02 (Rahul Kumar) [RHEL-270935] {CVE-2026-89932}
+- KVM: nVMX: Always flush vpid02 on first use (Rahul Kumar) [RHEL-270935] {CVE-2026-89932}
+- arp: do not assume dev_hard_header() does not change skb->head (Guillaume Nault) [RHEL-270721]
+- ip6_gre: make ip6gre_header() robust (Guillaume Nault) [RHEL-270721]
+- ipv4: ip_gre: make ipgre_header() robust (Guillaume Nault) [RHEL-270702]
 
 * Mon Oct 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.69.1.el10_2]
 - scsi: target: core: Fix iSCSI ISID use-after-free in REGISTER AND MOVE (CKI Backport Bot) [RHEL-283521] {CVE-2026-72083}
