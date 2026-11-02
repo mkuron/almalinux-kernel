@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.72.1
+%define pkgrelease 211.73.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.72.1%{?buildid}%{?dist}
+%define specrelease 211.73.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1642,6 +1642,9 @@ Patch1572: 1572-selftests-netfilter-use-khdr-includes-in-cflags.patch
 Patch1573: 1573-x86-cpu-amd-prevent-improper-isolation-of-shared-resources-in-zen2-s-op-cache.patch
 Patch1574: 1574-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 
+# Backports for 6.12.0-211.73.1.el10_2
+Patch1575: 1575-ethtool-cmis-require-exact-cdb-reply-length.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -3030,6 +3033,9 @@ ApplyPatch 1571-netfilter-conntrack-make-filtering-by-zone-discoverable.patch
 ApplyPatch 1572-selftests-netfilter-use-khdr-includes-in-cflags.patch
 ApplyPatch 1573-x86-cpu-amd-prevent-improper-isolation-of-shared-resources-in-zen2-s-op-cache.patch
 ApplyPatch 1574-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
+
+# Applying backports for 6.12.0-211.73.1.el10_2
+ApplyPatch 1575-ethtool-cmis-require-exact-cdb-reply-length.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5635,14 +5641,14 @@ fi\
 #
 #
 %changelog
-* Mon Nov 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.72.1
+* Mon Nov 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.73.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Mon Nov 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.72.1
+* Mon Nov 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.73.1
 - Enable Btrfs support for all kernel variants
 
-* Mon Nov 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.72.1
+* Mon Nov 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.73.1
 - ceph: pass cred pointer to ceph_mds_auth_match()
 - ceph: fix cred leak in ceph_mds_check_access() {CVE-2024-56563}
 - ceph: fix memory leak in ceph_mds_auth_match() {CVE-2025-21737}
@@ -5658,6 +5664,9 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.73.1.el10_2]
+- ethtool: cmis: require exact CDB reply length (CKI Backport Bot) [RHEL-229674] {CVE-2026-63996}
 
 * Sun Nov 01 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.72.1.el10_2]
 - ipv4: free inet_opt and ireq_opt after an RCU grace period (CKI Backport Bot) [RHEL-295608] {CVE-2026-98432}
