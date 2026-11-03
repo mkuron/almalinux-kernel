@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.182.1.el8_10
+%define pkgrelease 553.183.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.182.1%{?dist}
+%define specrelease 553.183.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2803,7 +2803,7 @@ fi
 #
 #
 %changelog
-* Sun Nov 01 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.182.1
+* Tue Nov 03 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.183.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2814,9 +2814,12 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Sun Nov 01 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.182.1
+* Tue Nov 03 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.183.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.183.1.el8_10]
+- gfs2: keep glocks alive while AIL entries exist (Andreas Gruenbacher) [RHEL-291229]
 
 * Sat Oct 31 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.182.1.el8_10]
 - ipv4: free inet_opt and ireq_opt after an RCU grace period (Davide Caratti) [RHEL-295615] {CVE-2026-98432}
