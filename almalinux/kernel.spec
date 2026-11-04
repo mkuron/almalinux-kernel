@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.183.1.el8_10
+%define pkgrelease 553.184.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.183.1%{?dist}
+%define specrelease 553.184.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -547,6 +547,8 @@ Source2100: kmap.py
 Source4000: gating.yaml
 # rpminspect config
 Source4001: rpminspect.yaml
+# OSCI gating plan
+Source4002: plans.fmf
 
 # AlmaLinux Source
 Source9000: almalinux.pem
@@ -2803,7 +2805,7 @@ fi
 #
 #
 %changelog
-* Tue Nov 03 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.183.1
+* Wed Nov 04 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.184.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2814,9 +2816,19 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Tue Nov 03 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.183.1
+* Wed Nov 04 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.184.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Nov 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.184.1.el8_10]
+- net/smc: fix UAF in smc_cdc_rx_handler() by pinning the socket (Jan Polensky) [RHEL-298266] {CVE-2026-64541}
+- s390/smp: Remove conditional emergency signal order code usage (Jan Polensky) [RHEL-298849]
+- sctp: stream: fully roll back denied add-stream state (CKI Backport Bot) [RHEL-277071] {CVE-2026-52929}
+- sctp: clear new_transport when removing a peer (CKI Backport Bot) [RHEL-275359] {CVE-2026-74586}
+- openvswitch: Fix CT limit teardown use-after-free (Timothy Redaelli) [RHEL-263524] {CVE-2026-89488}
+- RDMA/rxe: Fix OOB in free_rd_atomic_resources() (Kamal Heib) [RHEL-256416] {CVE-2026-80863}
+- RDMA/rxe: Fix responder UAF on IB_QP_MAX_DEST_RD_ATOMIC modify_qp (Kamal Heib) [RHEL-258544] {CVE-2026-80864}
+- redhat: fix parallel make race between sources-rh and its inputs (Jan Stancek)
 
 * Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.183.1.el8_10]
 - gfs2: keep glocks alive while AIL entries exist (Andreas Gruenbacher) [RHEL-291229]
