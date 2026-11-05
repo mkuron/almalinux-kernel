@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.65.1
+%define pkgrelease 687.66.1
 %define kversion 5
 %define tarfile_release 5.14.0-687.58.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.65.1%{?buildid}%{?dist}
+%define specrelease 687.66.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.58.1.el9_8
 
@@ -1153,6 +1153,25 @@ Patch1259: 1259-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 Patch1260: 1260-ethtool-coalesce-cap-profile-updates-at-net-dim-params-num-profiles.patch
 Patch1261: 1261-ethtool-cmis-require-exact-cdb-reply-length.patch
 
+# Backports for 5.14.0-687.66.1.el9_8
+Patch1262: 1262-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+Patch1263: 1263-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+Patch1264: 1264-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+Patch1265: 1265-sctp-validate-cookie-auth-state-before-use.patch
+Patch1266: 1266-openvswitch-fix-ct-limit-teardown-use-after-free.patch
+Patch1267: 1267-sctp-clear-new-transport-when-removing-a-peer.patch
+Patch1268: 1268-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
+Patch1269: 1269-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
+Patch1270: 1270-powerpc-pseries-papr-phy-attest-validate-cmd-length-plug-mem-leak.patch
+Patch1271: 1271-fs-resctrl-fix-use-after-free-during-unmount.patch
+Patch1272: 1272-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+Patch1273: 1273-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
+Patch1274: 1274-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
+Patch1275: 1275-s390-zcrypt-validate-length-for-cca-ecc-private-key-requests.patch
+Patch1276: 1276-s390-zcrypt-validate-length-for-cca-aes-cipher-key-requests.patch
+Patch1277: 1277-s390-vfio-ccw-cancel-existing-workqueues.patch
+Patch1278: 1278-s390-qeth-validate-user-buffer-length-in-snmp-and-arp-query-ioctls.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2095,6 +2114,25 @@ ApplyPatch 1259-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 # Applying backports for 5.14.0-687.65.1.el9_8
 ApplyPatch 1260-ethtool-coalesce-cap-profile-updates-at-net-dim-params-num-profiles.patch
 ApplyPatch 1261-ethtool-cmis-require-exact-cdb-reply-length.patch
+
+# Applying backports for 5.14.0-687.66.1.el9_8
+ApplyPatch 1262-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+ApplyPatch 1263-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+ApplyPatch 1264-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+ApplyPatch 1265-sctp-validate-cookie-auth-state-before-use.patch
+ApplyPatch 1266-openvswitch-fix-ct-limit-teardown-use-after-free.patch
+ApplyPatch 1267-sctp-clear-new-transport-when-removing-a-peer.patch
+ApplyPatch 1268-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
+ApplyPatch 1269-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
+ApplyPatch 1270-powerpc-pseries-papr-phy-attest-validate-cmd-length-plug-mem-leak.patch
+ApplyPatch 1271-fs-resctrl-fix-use-after-free-during-unmount.patch
+ApplyPatch 1272-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+ApplyPatch 1273-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
+ApplyPatch 1274-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
+ApplyPatch 1275-s390-zcrypt-validate-length-for-cca-ecc-private-key-requests.patch
+ApplyPatch 1276-s390-zcrypt-validate-length-for-cca-aes-cipher-key-requests.patch
+ApplyPatch 1277-s390-vfio-ccw-cancel-existing-workqueues.patch
+ApplyPatch 1278-s390-qeth-validate-user-buffer-length-in-snmp-and-arp-query-ioctls.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -4238,7 +4276,7 @@ fi
 #
 #
 %changelog
-* Mon Nov 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.65.1
+* Thu Nov 05 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.66.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4250,11 +4288,30 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Nov 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.65.1
+* Thu Nov 05 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-687.66.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Wed Nov 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.66.1.el9_8]
+- s390/qeth: validate user buffer length in SNMP and ARP query ioctls (Jan Polensky) [RHEL-295101] {CVE-2026-80584}
+- s390/vfio_ccw: Cancel existing workqueues (Jan Polensky) [RHEL-295162] {CVE-2026-80553}
+- s390/zcrypt: Validate length for CCA AES cipher key requests (Jan Polensky) [RHEL-297856] {CVE-2026-68452}
+- s390/zcrypt: Validate length for CCA ECC private key requests (Jan Polensky) [RHEL-297864] {CVE-2026-68451}
+- net/smc: fix UAF in smc_cdc_rx_handler() by pinning the socket (Jan Polensky) [RHEL-298271] {CVE-2026-64541}
+- sunrpc: wait for in-flight TLS handshake callback when cancel loses race (Olga Kornievskaia) [RHEL-283645] {CVE-2026-72221}
+- sunrpc: pin svc_xprt across the asynchronous TLS handshake callback (Olga Kornievskaia) [RHEL-283259] {CVE-2026-72222}
+- fs/resctrl: Fix use-after-free during unmount (Dennis Chen) [RHEL-296700] {CVE-2026-72080}
+- powerpc/pseries: papr-phy-attest - validate cmd.length, plug mem leak (Mamatha Inamdar) [RHEL-295113] {CVE-2026-80571}
+- s390/boot: Avoid IPL parameter append past command line (Jan Polensky) [RHEL-292349] {CVE-2026-98403}
+- s390/boot: Add sized_strscpy() to enable strscpy() usage (Jan Polensky) [RHEL-292349] {CVE-2026-98403}
+- sctp: clear new_transport when removing a peer (CKI Backport Bot) [RHEL-275363] {CVE-2026-74586}
+- openvswitch: Fix CT limit teardown use-after-free (Timothy Redaelli) [RHEL-263551] {CVE-2026-89488}
+- sctp: validate cookie AUTH state before use (Xin Long) [RHEL-254284] {CVE-2026-74752}
+- sctp: stop processing a packet once its association is deleted (Xin Long) [RHEL-263317] {CVE-2026-89479}
+- sctp: avoid auth_enable sysctl UAF during netns teardown (Xin Long) [RHEL-258776] {CVE-2026-68162}
+- sctp: keep chunk->transport in step with the list it is queued on (Xin Long) [RHEL-254364] {CVE-2026-74588}
 
 * Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-687.65.1.el9_8]
 - ethtool: cmis: require exact CDB reply length (CKI Backport Bot) [RHEL-229677] {CVE-2026-63996}
