@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.73.1
+%define pkgrelease 211.74.1
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.73.1%{?buildid}%{?dist}
+%define specrelease 211.74.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1645,6 +1645,17 @@ Patch1574: 1574-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 # Backports for 6.12.0-211.73.1.el10_2
 Patch1575: 1575-ethtool-cmis-require-exact-cdb-reply-length.patch
 
+# Backports for 6.12.0-211.74.1.el10_2
+Patch1576: 1576-pci-sysfs-add-lockdown-checks-to-legacy-i-o-and-memory-handlers.patch
+Patch1577: 1577-openvswitch-fix-ct-limit-teardown-use-after-free.patch
+Patch1578: 1578-writeback-fix-race-between-cgroup-writeback-umount-and-inode-switch-wbs.patch
+Patch1579: 1579-sctp-clear-new-transport-when-removing-a-peer.patch
+Patch1580: 1580-xfs-stop-exchanging-reflink-flags-when-exchanging-mappings.patch
+Patch1581: 1581-xfs-fix-exchange-range-to-eof-file-size-exchange.patch
+Patch1582: 1582-fs-resctrl-fix-use-after-free-during-unmount.patch
+Patch1583: 1583-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+Patch1584: 1584-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -3036,6 +3047,17 @@ ApplyPatch 1574-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 
 # Applying backports for 6.12.0-211.73.1.el10_2
 ApplyPatch 1575-ethtool-cmis-require-exact-cdb-reply-length.patch
+
+# Applying backports for 6.12.0-211.74.1.el10_2
+ApplyPatch 1576-pci-sysfs-add-lockdown-checks-to-legacy-i-o-and-memory-handlers.patch
+ApplyPatch 1577-openvswitch-fix-ct-limit-teardown-use-after-free.patch
+ApplyPatch 1578-writeback-fix-race-between-cgroup-writeback-umount-and-inode-switch-wbs.patch
+ApplyPatch 1579-sctp-clear-new-transport-when-removing-a-peer.patch
+ApplyPatch 1580-xfs-stop-exchanging-reflink-flags-when-exchanging-mappings.patch
+ApplyPatch 1581-xfs-fix-exchange-range-to-eof-file-size-exchange.patch
+ApplyPatch 1582-fs-resctrl-fix-use-after-free-during-unmount.patch
+ApplyPatch 1583-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+ApplyPatch 1584-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5641,14 +5663,14 @@ fi\
 #
 #
 %changelog
-* Mon Nov 02 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.73.1
+* Thu Nov 05 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.74.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Mon Nov 02 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.73.1
+* Thu Nov 05 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-211.74.1
 - Enable Btrfs support for all kernel variants
 
-* Mon Nov 02 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.73.1
+* Thu Nov 05 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.74.1
 - ceph: pass cred pointer to ceph_mds_auth_match()
 - ceph: fix cred leak in ceph_mds_check_access() {CVE-2024-56563}
 - ceph: fix memory leak in ceph_mds_auth_match() {CVE-2025-21737}
@@ -5664,6 +5686,17 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Nov 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.74.1.el10_2]
+- sunrpc: wait for in-flight TLS handshake callback when cancel loses race (Olga Kornievskaia) [RHEL-283649] {CVE-2026-72221}
+- sunrpc: pin svc_xprt across the asynchronous TLS handshake callback (Olga Kornievskaia) [RHEL-283263] {CVE-2026-72222}
+- fs/resctrl: Fix use-after-free during unmount (Dennis Chen) [RHEL-296708] {CVE-2026-72080}
+- xfs: fix exchange-range-to-eof file size exchange (Carlos Maiolino) [RHEL-292986] {CVE-2026-98974}
+- xfs: stop exchanging reflink flags when exchanging mappings (Carlos Maiolino) [RHEL-292986] {CVE-2026-98974}
+- sctp: clear new_transport when removing a peer (CKI Backport Bot) [RHEL-275369] {CVE-2026-74586}
+- writeback: fix race between cgroup_writeback_umount() and inode_switch_wbs() (Ian Kent) [RHEL-260509] {CVE-2026-64378}
+- openvswitch: Fix CT limit teardown use-after-free (Timothy Redaelli) [RHEL-263515] {CVE-2026-89488}
+- PCI/sysfs: Add lockdown checks to legacy I/O and memory handlers (Aristeu Rozanski) [RHEL-267082] {CVE-2026-90315}
 
 * Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-211.73.1.el10_2]
 - ethtool: cmis: require exact CDB reply length (CKI Backport Bot) [RHEL-229674] {CVE-2026-63996}
