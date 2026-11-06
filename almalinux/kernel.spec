@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 687.66.1
+%define pkgrelease 687.66.2
 %define kversion 5
 %define tarfile_release 5.14.0-687.58.1.el9_8
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 687.66.1%{?buildid}%{?dist}
+%define specrelease 687.66.2%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-687.58.1.el9_8
 
@@ -1186,6 +1186,7 @@ Patch2100: 2100-gve-Update-QPL-page-registration-logic.patch
 Patch2101: 2101-gve-Add-adminq-support-for-modifiable-ring-size.patch
 Patch2102: 2102-gve-Add-ethtool-support-for-changing-ring-size.patch
 Patch2103: 2103-gve-harden-modifiable-ring-size-support.patch
+Patch2104: 2104-net-lock-the-socket-in-sock_gettstamp.patch
 
 Patch11111: ppc64le-kvm-support.patch
 
@@ -2148,6 +2149,7 @@ ApplyPatch 2100-gve-Update-QPL-page-registration-logic.patch
 ApplyPatch 2101-gve-Add-adminq-support-for-modifiable-ring-size.patch
 ApplyPatch 2102-gve-Add-ethtool-support-for-changing-ring-size.patch
 ApplyPatch 2103-gve-harden-modifiable-ring-size-support.patch
+ApplyPatch 2104-net-lock-the-socket-in-sock_gettstamp.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -4276,6 +4278,10 @@ fi
 #
 #
 %changelog
+* Fri Nov 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.66.2
+- net: lock the socket in sock_gettstamp() {CVE-2026-98276}
+  (upstream 9ed55f3dbef4, backported from linux-5.15.y 88c804847dd8)
+
 * Thu Nov 05 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-687.66.1
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
