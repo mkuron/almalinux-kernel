@@ -176,13 +176,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 211.74.1
+%define pkgrelease 211.74.2
 %define kversion 6
 %define tarfile_release 6.12.0-211.56.1.el10_2
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 211.74.1%{?buildid}%{?dist}
+%define specrelease 211.74.2%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-211.56.1.el10_2
 
@@ -1673,6 +1673,7 @@ Patch2017: 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 Patch2018: 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 Patch2019: 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 Patch2020: 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
+Patch2021: 2021-net-lock-the-socket-in-sock_gettstamp.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -3076,6 +3077,7 @@ ApplyPatch 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 ApplyPatch 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 ApplyPatch 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 ApplyPatch 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
+ApplyPatch 2021-net-lock-the-socket-in-sock_gettstamp.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -5663,6 +5665,10 @@ fi\
 #
 #
 %changelog
+* Fri Nov 06 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-211.74.2
+- net: lock the socket in sock_gettstamp() {CVE-2026-98276}
+  (upstream 9ed55f3dbef4, backported from linux-6.12.y 1f73253add83)
+
 * Thu Nov 05 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-211.74.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
