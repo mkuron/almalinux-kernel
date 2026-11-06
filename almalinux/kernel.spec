@@ -49,10 +49,11 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.184.1.el8_10
+%define pkgrelease 553.184.2.el8_10
+%define tarfile_release 553.184.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.184.1%{?dist}
+%define specrelease 553.184.2%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -460,7 +461,7 @@ BuildRequires: xmlto
 BuildRequires: asciidoc
 %endif
 
-Source0: linux-%{specversion}-%{pkgrelease}.tar.xz
+Source0: linux-%{specversion}-%{tarfile_release}.tar.xz
 
 Source9: x509.genkey
 
@@ -569,6 +570,7 @@ Patch2005: 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 Patch2006: 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+Patch1104: 1104-net-lock-the-socket-in-sock_gettstamp.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1138,9 +1140,9 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n %{name}-%{specversion}-%{pkgrelease} -c
-cp -v %{SOURCE9000} linux-%{specversion}-%{pkgrelease}/certs/rhel.pem
-mv linux-%{specversion}-%{pkgrelease} linux-%{KVERREL}
+%setup -q -n %{name}-%{specversion}-%{tarfile_release} -c
+cp -v %{SOURCE9000} linux-%{specversion}-%{tarfile_release}/certs/rhel.pem
+mv linux-%{specversion}-%{tarfile_release} linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 
@@ -1157,6 +1159,7 @@ ApplyPatch 0005-Bring-back-deprecated-pci-ids-to-qla2xxx-driver.patch
 ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
+ApplyPatch 1104-net-lock-the-socket-in-sock_gettstamp.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -2805,6 +2808,10 @@ fi
 #
 #
 %changelog
+* Fri Nov 06 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.184.2
+- net: lock the socket in sock_gettstamp() {CVE-2026-98276}
+  (upstream 9ed55f3dbef4, adapted from linux-5.10.y 18899e2e4023)
+
 * Wed Nov 04 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.184.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
