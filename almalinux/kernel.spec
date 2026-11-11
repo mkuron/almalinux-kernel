@@ -179,13 +179,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 264.9.1
+%define pkgrelease 264.15.1
 %define kversion 6
 %define tarfile_release 6.12.0-264.9.1.el10_3
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 264.9.1%{?buildid}%{?dist}
+%define specrelease 264.15.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-264.9.1.el10_3
 
@@ -1124,6 +1124,7 @@ Source3002: Patchlist.changelog
 Source4000: README.rst
 Source4001: rpminspect.yaml
 Source4002: gating.yaml
+Source4003: plans.fmf
 
 # AlmaLinux Source
 Source100: almalinuxdup1.x509
@@ -1144,6 +1145,235 @@ Patch1: patch-%{patchversion}-redhat.patch
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
 
+# Backports for 6.12.0-264.14.1.el10_3
+Patch1100: 1100-can-bcm-add-locking-for-bcm-op-runtime-updates.patch
+Patch1101: 1101-can-bcm-fix-locking-for-bcm-op-runtime-updates.patch
+Patch1102: 1102-can-bcm-add-locking-when-updating-filter-and-timer-values.patch
+Patch1103: 1103-can-bcm-extend-bcm-tx-lock-usage-for-data-and-timer-updates.patch
+Patch1104: 1104-bnxt-en-fix-null-pointer-dereference.patch
+Patch1105: 1105-netfilter-flowtable-publish-gc-visible-tuple-last.patch
+Patch1106: 1106-net-slip-serialize-receive-against-buffer-reallocation.patch
+Patch1107: 1107-slip-reject-vj-receive-packets-on-instances-with-no-rstate-array.patch
+Patch1108: 1108-slip-bound-decode-reads-against-the-compressed-packet-length.patch
+Patch1109: 1109-slip-fix-use-after-free-in-sl-sync.patch
+Patch1110: 1110-slip-remove-slip-hangup-to-fix-use-after-free-in-slip-receive-buf.patch
+Patch1111: 1111-kvm-arm64-vgic-check-the-interrupt-is-still-ours-before-migrating-it.patch
+Patch1112: 1112-idpf-fix-preempt-rt-raw-bh-spinlock-nesting-for-async-vc-handling.patch
+Patch1113: 1113-idpf-fix-read-dev-clk-lock-spinlock-init-in-idpf-ptp-init.patch
+Patch1114: 1114-idpf-fix-double-free-and-use-after-free-in-aux-device-error-paths.patch
+Patch1115: 1115-idpf-fix-max-vport-related-crash-on-allocation-error-during-init.patch
+Patch1116: 1116-i2c-stub-reject-i2c-block-transfers-with-invalid-length.patch
+Patch1117: 1117-openvswitch-defer-tunnel-netdev-put-to-rcu-release.patch
+Patch1118: 1118-openvswitch-vport-fix-self-deadlock-on-release-of-tunnel-ports.patch
+Patch1119: 1119-kvm-svm-update-x2apic-msr-intercepts-if-avic-is-inhibited-while-l2-is-active.patch
+Patch1120: 1120-dmaengine-idxd-fix-fdev-setup-failure-cleanup-in-idxd-cdev-open.patch
+Patch1121: 1121-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq-init.patch
+Patch1122: 1122-alsa-usx2y-bound-the-hwdep-mmap-fault-offset.patch
+Patch1123: 1123-kvm-s390-vsie-zero-stale-crypto-bits.patch
+Patch1124: 1124-usb-typec-altmodes-displayport-validate-count-before-reading-status-update-vdo.patch
+Patch1125: 1125-usb-typec-tcpm-validate-vdo-count-in-discover-identity-ack-handlers.patch
+Patch1126: 1126-usb-typec-tcpm-bound-altmode-desc-per-iteration-in-svdm-consume-modes.patch
+Patch1127: 1127-usb-typec-ucsi-displayport-nak-dp-cmd-configure-without-a-payload-vdo.patch
+Patch1128: 1128-usb-typec-ucsi-validate-connector-number-in-ucsi-connector-change.patch
+Patch1129: 1129-usb-serial-mxuport-fix-memory-corruption-with-small-endpoint.patch
+Patch1130: 1130-usb-serial-omninet-fix-memory-corruption-with-small-endpoint.patch
+Patch1131: 1131-usb-serial-safe-serial-fix-memory-corruption-with-small-endpoint.patch
+Patch1132: 1132-usb-serial-cypress-m8-fix-memory-corruption-with-small-endpoint.patch
+Patch1133: 1133-af-unix-move-internal-definitions-to-net-unix.patch
+Patch1134: 1134-unix-fix-up-for-apparmor-add-fine-grained-af-unix-mediation.patch
+Patch1135: 1135-af-unix-sort-headers.patch
+Patch1136: 1136-af-unix-explicitly-include-headers-for-non-pointer-struct-fields.patch
+Patch1137: 1137-af-unix-clean-up-include-under-net-unix.patch
+Patch1138: 1138-af-unix-initialise-scc-index-in-unix-add-edge.patch
+Patch1139: 1139-af-unix-count-cyclic-scc.patch
+Patch1140: 1140-af-unix-simplify-gc-state.patch
+Patch1141: 1141-af-unix-don-t-trigger-gc-from-close-if-unnecessary.patch
+Patch1142: 1142-af-unix-don-t-call-wait-for-unix-gc-on-every-sendmsg.patch
+Patch1143: 1143-af-unix-refine-wait-for-unix-gc.patch
+Patch1144: 1144-af-unix-remove-unix-tot-inflight.patch
+Patch1145: 1145-af-unix-consolidate-unix-schedule-gc-and-wait-for-unix-gc.patch
+Patch1146: 1146-af-unix-give-up-gc-if-msg-peek-intervened.patch
+Patch1147: 1147-af-unix-set-gc-in-progress-to-true-in-unix-gc.patch
+Patch1148: 1148-vhost-move-vdpa-group-bound-check-to-vhost-vdpa.patch
+Patch1149: 1149-kvm-svm-fix-page-overflow-in-sev-dbg-crypt-for-encrypt-path.patch
+Patch1150: 1150-kvm-arm64-handle-negative-s1-walk-levels-in-vncr-tlb-size-evaluation.patch
+Patch1151: 1151-media-cx231xx-reject-geometry-changes-while-the-vbi-queue-is-busy.patch
+Patch1152: 1152-openvswitch-fix-gso-userspace-truncation-underflow.patch
+Patch1153: 1153-kvm-nsvm-raise-ud-if-unhandled-vmmcall-isn-t-intercepted-by-l1.patch
+Patch1154: 1154-net-tun-bound-receive-headroom.patch
+Patch1155: 1155-sunrpc-pin-upper-rpc-clnt-across-the-tls-connect-worker.patch
+Patch1156: 1156-nfsd-fix-secinfo-no-name-decode-error-cleanup.patch
+Patch1157: 1157-nfsd-fix-cpntf-publish-race-in-nfs4-init-cp-state.patch
+Patch1158: 1158-nfsd-check-client-ownership-when-cancelling-a-copy-notify-stateid.patch
+Patch1159: 1159-nfsd-revoke-copy-notify-stateids-before-dropping-their-reference.patch
+Patch1160: 1160-nfsd-initialize-copy-notify-stateid-before-publishing-it.patch
+Patch1161: 1161-nfsd-fix-uaf-in-async-copy-cancel-and-shutdown.patch
+Patch1162: 1162-nfsd-fix-stale-s2s-cp-stateids-idr-entry-for-async-copy.patch
+Patch1163: 1163-svcrdma-reject-inline-replies-that-overflow-the-pull-up-buffer.patch
+Patch1164: 1164-nfsd-defer-vfree-of-compound-ops-to-fix-rpc-status-uaf.patch
+Patch1165: 1165-vfio-pci-check-bar-resources-before-exporting-a-dmabuf.patch
+Patch1166: 1166-nvme-ioctl-check-submit-io-with-nvme-cmd-allowed.patch
+Patch1167: 1167-af-unix-unlink-scc-entry-in-unix-del-edge.patch
+Patch1168: 1168-net-iucv-filter-frames-in-afiucv-hs-rcv-by-ingress-device.patch
+Patch1169: 1169-netfilter-nfnetlink-log-wait-for-rcu-grace-period-before-freeing-pernet-state.patch
+Patch1170: 1170-udp-fix-potential-use-after-free-in-tunnel-segmentation.patch
+Patch1171: 1171-bpf-support-for-hardening-against-jit-spraying.patch
+Patch1172: 1172-x86-bugs-enable-ibpb-flush-on-bpf-jit-allocation.patch
+Patch1173: 1173-bpf-restrict-jit-predictor-flush-to-cbpf.patch
+Patch1174: 1174-nvmet-auth-synchronize-timeout-work-during-sq-teardown.patch
+Patch1175: 1175-vsock-virtio-fix-msg-zerocopy-pinned-pages-accounting.patch
+Patch1176: 1176-vsock-virtio-fix-zerocopy-completion-for-multi-skb-sends.patch
+Patch1177: 1177-vsock-virtio-bind-uarg-before-filling-zerocopy-skb.patch
+Patch1178: 1178-strparser-make-sure-strp-recv-isn-t-running-before-tearing-down-the-parser.patch
+Patch1179: 1179-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
+Patch1180: 1180-netfilter-flowtable-hold-reference-on-ct-until-flow-is-released.patch
+Patch1181: 1181-exec-cleanup-posix-timers-right-after-de-thread.patch
+Patch1182: 1182-posix-timers-target-group-sigqueue-to-current-task-only-if-not-exiting.patch
+Patch1183: 1183-signal-prevent-exec-race.patch
+Patch1184: 1184-calipso-don-t-call-calipso-functions-for-af-inet-sk.patch
+Patch1185: 1185-calipso-unlock-rcu-before-returning-eafnosupport.patch
+Patch1186: 1186-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
+Patch1187: 1187-fuse-re-lock-request-before-returning-from-fuse-ref-folio.patch
+Patch1188: 1188-smb-client-reject-a-tree-connect-response-whose-byte-count-is-too-small.patch
+Patch1189: 1189-alsa-hda-cs35l41-fix-firmware-load-work-teardown.patch
+Patch1190: 1190-perf-fix-addr-filter-ranges-lifetime.patch
+Patch1191: 1191-perf-fix-use-after-free-when-perf-mmap-revival-races-with-the-last-munmap.patch
+Patch1192: 1192-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+Patch1193: 1193-drm-amdkfd-add-tlb-flush-after-mes-queue-eviction-suspension.patch
+Patch1194: 1194-drm-amd-display-set-new-stream-to-null-after-release.patch
+Patch1195: 1195-drm-vmwgfx-use-check-add-overflow-for-shader-size-offset-bound.patch
+Patch1196: 1196-drm-amdgpu-fix-lifetime-issue-of-amdgpu-vm-get-task-info-pasid.patch
+Patch1197: 1197-drm-amdgpu-vce-fix-integer-overflow-in-image-size.patch
+Patch1198: 1198-drm-dp-mst-fix-buffer-overflows-in-sideband-chunk-accumulation.patch
+Patch1199: 1199-net-sched-act-ct-only-release-rcu-read-lock-after-ct-ft.patch
+Patch1200: 1200-net-sched-taprio-fix-use-after-free-in-advance-sched-on-schedule-switch.patch
+Patch1201: 1201-selftests-tc-testing-adapt-tc-police-action-tests-for-gb-rounding-changes.patch
+Patch1202: 1202-opp-add-index-check-to-assert-to-avoid-buffer-overflow-in-read-freq.patch
+Patch1203: 1203-idpf-update-idpf-up-complete-return-type-to-void.patch
+Patch1204: 1204-idpf-fix-kernel-doc-descriptions-to-avoid-warnings.patch
+Patch1205: 1205-idpf-introduce-local-idpf-structure-to-store-virtchnl-queue-chunks.patch
+Patch1206: 1206-idpf-introduce-idpf-q-vec-rsrc-struct-and-move-vector-resources-to-it.patch
+Patch1207: 1207-idpf-move-queue-resources-to-idpf-q-vec-rsrc-structure.patch
+Patch1208: 1208-idpf-move-some-iterator-declarations-inside-for-loops.patch
+Patch1209: 1209-idpf-reshuffle-idpf-vport-struct-members-to-avoid-holes.patch
+Patch1210: 1210-idpf-add-rss-data-field-to-rss-function-parameters.patch
+Patch1211: 1211-idpf-remove-vport-pointer-from-queue-sets.patch
+Patch1212: 1212-idpf-generalize-send-virtchnl-message-api.patch
+Patch1213: 1213-idpf-avoid-calling-get-rx-ptypes-for-each-vport.patch
+Patch1214: 1214-idpf-generalize-mailbox-api.patch
+Patch1215: 1215-idpf-increment-completion-queue-next-to-clean-in-sw-marker-wait-routine.patch
+Patch1216: 1216-idpf-skip-deallocating-bufq-sets-from-rx-qgrp-if-it-is-null.patch
+Patch1217: 1217-idpf-skip-deallocating-txq-group-s-txqs-if-it-is-null.patch
+Patch1218: 1218-idpf-nullify-pointers-after-they-are-freed.patch
+Patch1219: 1219-idpf-change-irq-naming-to-match-netdev-and-ethtool-queue-numbering.patch
+Patch1220: 1220-idpf-fix-flow-rule-delete-failure-due-to-invalid-validation.patch
+Patch1221: 1221-idpf-clear-stale-cdev-info-ptr.patch
+Patch1222: 1222-idpf-only-assign-num-refillqs-if-allocation-was-successful.patch
+Patch1223: 1223-idpf-improve-locking-around-idpf-vc-xn-push-free.patch
+Patch1224: 1224-idpf-set-the-payload-size-before-calling-the-async-handler.patch
+Patch1225: 1225-treewide-replace-kmalloc-with-kmalloc-obj-for-non-scalar-types-idpf.patch
+Patch1226: 1226-convert-alloc-obj-family-to-use-the-new-default-gfp-kernel-argument-idpf.patch
+Patch1227: 1227-convert-alloc-flex-family-to-use-the-new-default-gfp-kernel-argument-idpf.patch
+Patch1228: 1228-convert-more-alloc-obj-cases-to-default-gfp-kernel-arguments-idpf.patch
+Patch1229: 1229-convert-remaining-multi-line-kmalloc-obj-flex-gfp-kernel-uses-idpf.patch
+Patch1230: 1230-idpf-fix-mailbox-capability-for-set-device-clock-time.patch
+Patch1231: 1231-idpf-add-padding-to-ptp-virtchnl-structures.patch
+Patch1232: 1232-idpf-replace-use-of-system-unbound-wq-with-system-dfl-wq.patch
+Patch1233: 1233-idpf-bound-interrupt-vector-register-fill-to-the-allocated-array.patch
+Patch1234: 1234-idpf-adjust-txq-ring-count-minimum.patch
+Patch1235: 1235-idpf-fix-mailbox-irq-name-leak-on-request-failure.patch
+Patch1236: 1236-idpf-add-missing-cpu-to-le32-in-idpf-tx-splitq-build-flow-desc.patch
+Patch1237: 1237-idpf-remove-vport-params-reqd-field.patch
+Patch1238: 1238-idpf-remove-unused-code-for-getting-rss-info-from-device.patch
+Patch1239: 1239-smb-client-return-eopnotsupp-for-unsupported-o-tmpfile.patch
+Patch1240: 1240-smb-client-fix-multiuser-mount-with-krb5.patch
+Patch1241: 1241-scsi-megaraid-sas-limit-nvme-request-size-to-the-prp-chain-frame.patch
+Patch1242: 1242-fuse-re-lock-request-before-replacing-page-cache-folio.patch
+Patch1243: 1243-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
+Patch1244: 1244-i40e-skip-unnecessary-vf-reset-when-setting-trust.patch
+Patch1245: 1245-iavf-send-mac-change-request-synchronously.patch
+Patch1246: 1246-ice-skip-unnecessary-vf-reset-when-setting-trust.patch
+Patch1247: 1247-keys-encrypted-fix-integer-overflow-of-datablob-len.patch
+Patch1248: 1248-virt-vmgenid-remap-memory-as-decrypted.patch
+Patch1249: 1249-scsi-target-core-fix-iscsi-isid-use-after-free-in-register-and-move.patch
+Patch1250: 1250-scsi-target-iscsi-reserve-a-terminator-byte-for-the-login-payload.patch
+Patch1251: 1251-ipvs-stop-estimator-after-disabled-calc-phase.patch
+Patch1252: 1252-netfilter-ebt-nflog-pin-the-nflog-backend.patch
+Patch1253: 1253-netfilter-ipset-rework-cidr-bookkeeping.patch
+Patch1254: 1254-netfilter-ipset-switch-ext-size-to-atomic64-t.patch
+Patch1255: 1255-netfilter-ipset-add-small-wrappers-for-hash-and-bucket-sizes.patch
+Patch1256: 1256-netfilter-ipset-add-and-use-mtype-del-cidr-all-helper.patch
+Patch1257: 1257-netfilter-ipset-switch-to-rcu-work.patch
+Patch1258: 1258-ipvs-avoid-out-of-bounds-write-in-ip-vs-nat-icmp.patch
+Patch1259: 1259-ipvs-return-the-csum-validation-for-forward-hook.patch
+Patch1260: 1260-netfilter-nf-flow-table-drop-existing-skb-dst-before-skb-dst-set-noref.patch
+Patch1261: 1261-netfilter-ipset-fix-refcount-race-between-list-set-gc-and-swap.patch
+Patch1262: 1262-netfilter-bridge-release-template-ct-on-non-ip-path.patch
+Patch1263: 1263-ipvs-add-totalconns-for-dest.patch
+Patch1264: 1264-ipvs-properly-update-the-overload-flag-on-dest-edit.patch
+Patch1265: 1265-ipvs-separate-destination-availability-state.patch
+Patch1266: 1266-netfilter-nf-conntrack-defer-invalid-log-until-after-unlock.patch
+Patch1267: 1267-ipvs-clear-ipv4-options-after-rebasing-tunnel-icmp-errors.patch
+Patch1268: 1268-ipvs-revalidate-ihl-to-prevent-out-of-bounds-access.patch
+Patch1269: 1269-netfilter-nf-tables-offload-suppress-warn-on-once-for-enomem-in-abort-path.patch
+Patch1270: 1270-netfilter-ipset-fix-list-type-element-drift-bug.patch
+Patch1271: 1271-netfilter-ipset-let-destroy-callbacks-adjust-ext-mem-size.patch
+Patch1272: 1272-bpf-guard-conntrack-opts-error-writes.patch
+Patch1273: 1273-bpf-fix-netns-reference-imbalance-in-conntrack-kfuncs.patch
+Patch1274: 1274-netfilter-add-debug-net-warn-on-once-to-skb-set-nfct.patch
+Patch1275: 1275-netfilter-validate-l4-headers-after-userspace-packet-writes.patch
+Patch1276: 1276-netfilter-ipset-remove-need-to-allocate-memory-on-delete-operations.patch
+Patch1277: 1277-netfilter-nf-tables-don-t-queue-packet-path-object-notifications.patch
+Patch1278: 1278-ipvs-fix-integer-overflow-in-ftp-helper-port-address-parsing.patch
+Patch1279: 1279-netfilter-x-tables-remove-pr-debug.patch
+Patch1280: 1280-netfilter-x-tables-replace-pr-info-err-by-pr-info-ratelimited.patch
+Patch1281: 1281-netfilter-nf-tables-skip-double-clone-set-expressions-on-element-insert.patch
+Patch1282: 1282-usb-usbfs-fix-use-after-free-of-usb-device-in-usbdev-release.patch
+Patch1283: 1283-nvme-add-missing-srcu-grace-period-in-error-path.patch
+Patch1284: 1284-svcrdma-validate-read-chunk-positions-before-reconstruction.patch
+Patch1285: 1285-nfsd-prevent-client-use-after-free-during-delegation-revoke.patch
+Patch1286: 1286-nfsd-prevent-client-use-after-free-during-blocked-lock-reaping.patch
+Patch1287: 1287-nfsd-don-t-free-session-slots-that-are-still-in-use.patch
+Patch1288: 1288-svcrdma-reject-write-reply-chunks-with-segcount-0.patch
+Patch1289: 1289-sunrpc-zero-rpc-gss-wire-cred-at-svcauth-gss-decode-credbody-entry.patch
+Patch1290: 1290-virtio-fs-avoid-double-free-on-failed-queue-setup.patch
+Patch1291: 1291-vfio-pci-clear-vdev-msi-perm-after-freeing-it-on-init-failure.patch
+Patch1292: 1292-nvmet-auth-fix-out-of-bounds-write-in-nvmet-auth-challenge.patch
+Patch1293: 1293-virt-tdx-guest-just-leak-decrypted-memory-on-unrecoverable-errors.patch
+Patch1294: 1294-net-sched-act-api-use-rcu-with-deferred-freeing-for-action-lifecycle.patch
+Patch1296: 1296-bluetooth-mgmt-fix-uaf-in-pair-command-cancellation.patch
+Patch1297: 1297-bluetooth-hci-sync-fix-advertising-data-uafs.patch
+Patch1298: 1298-net-sched-act-tunnel-key-defer-dst-release-to-rcu-callback.patch
+Patch1299: 1299-sched-ext-fix-unsafe-locking-in-the-scx-dump-state.patch
+Patch1300: 1300-sched-ext-fix-possible-deadlock-in-the-deferred-irq-workfn.patch
+Patch1301: 1301-tipc-require-net-admin-for-tipcv2-netlink-mutators.patch
+Patch1302: 1302-vsock-vmci-fix-uaf-when-peer-resets-connection-during-handshake.patch
+Patch1303: 1303-entry-fix-seccomp-bypass-after-ptrace-with-tsync.patch
+Patch1304: 1304-fwctl-fix-class-init-ordering-to-avoid-null-pointer-dereference-on-device-remova.patch
+Patch1305: 1305-xfrm-hold-net-device-reference-under-rcu-in-bundle-creation.patch
+Patch1306: 1306-spi-fsl-lpspi-replace-dmaengine-terminate-all-with-dmaengine-terminate-sync.patch
+Patch1307: 1307-spi-fsl-lpspi-terminate-the-rx-channel-on-tx-prepare-failure-path.patch
+Patch1308: 1308-netfilter-report-nlm-f-dump-filtered-when-all-is-filtered-out.patch
+Patch1309: 1309-netlink-specs-fix-the-conntrack-filter-type.patch
+Patch1310: 1310-selftests-netfilter-conntrack-dump-flush-remove-unused-variables-and-fix-typo.patch
+Patch1311: 1311-netfilter-conntrack-make-filtering-by-zone-discoverable.patch
+Patch1312: 1312-selftests-netfilter-use-khdr-includes-in-cflags.patch
+Patch1313: 1313-xfs-stop-exchanging-reflink-flags-when-exchanging-mappings.patch
+Patch1314: 1314-xfs-fix-exchange-range-to-eof-file-size-exchange.patch
+Patch1315: 1315-net-skbuff-propagate-shared-frag-marker-in-skb-zerocopy.patch
+Patch1316: 1316-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
+Patch1317: 1317-replace-kernel-qe-ci-gating-with-osci-tier0-plans.patch
+
+# Backports for 6.12.0-264.15.1.el10_3
+Patch1318: 1318-net-mlx5-fix-mcia-register-buffer-overflow-on-32-dword-reads.patch
+Patch1319: 1319-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+Patch1320: 1320-pci-sysfs-add-lockdown-checks-to-legacy-i-o-and-memory-handlers.patch
+Patch1321: 1321-openvswitch-fix-ct-limit-teardown-use-after-free.patch
+Patch1322: 1322-sctp-stream-fully-roll-back-denied-add-stream-state.patch
+Patch1323: 1323-watchdog-fix-hrtimer-start-when-pretimeout-is-zero.patch
+Patch1324: 1324-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+Patch1325: 1325-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1154,6 +1384,14 @@ Patch2007: 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 Patch2009: 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
+Patch2014: 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
+Patch2015: 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
+Patch2016: 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
+Patch2017: 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
+Patch2018: 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
+Patch2019: 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
+Patch2020: 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
+Patch2021: 2021-net-lock-the-socket-in-sock_gettstamp.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -2066,6 +2304,235 @@ ApplyOptionalPatch patch-%{patchversion}-redhat.patch
 
 ApplyOptionalPatch linux-kernel-test.patch
 
+# Applying backports for 6.12.0-264.14.1.el10_3
+ApplyPatch 1100-can-bcm-add-locking-for-bcm-op-runtime-updates.patch
+ApplyPatch 1101-can-bcm-fix-locking-for-bcm-op-runtime-updates.patch
+ApplyPatch 1102-can-bcm-add-locking-when-updating-filter-and-timer-values.patch
+ApplyPatch 1103-can-bcm-extend-bcm-tx-lock-usage-for-data-and-timer-updates.patch
+ApplyPatch 1104-bnxt-en-fix-null-pointer-dereference.patch
+ApplyPatch 1105-netfilter-flowtable-publish-gc-visible-tuple-last.patch
+ApplyPatch 1106-net-slip-serialize-receive-against-buffer-reallocation.patch
+ApplyPatch 1107-slip-reject-vj-receive-packets-on-instances-with-no-rstate-array.patch
+ApplyPatch 1108-slip-bound-decode-reads-against-the-compressed-packet-length.patch
+ApplyPatch 1109-slip-fix-use-after-free-in-sl-sync.patch
+ApplyPatch 1110-slip-remove-slip-hangup-to-fix-use-after-free-in-slip-receive-buf.patch
+ApplyPatch 1111-kvm-arm64-vgic-check-the-interrupt-is-still-ours-before-migrating-it.patch
+ApplyPatch 1112-idpf-fix-preempt-rt-raw-bh-spinlock-nesting-for-async-vc-handling.patch
+ApplyPatch 1113-idpf-fix-read-dev-clk-lock-spinlock-init-in-idpf-ptp-init.patch
+ApplyPatch 1114-idpf-fix-double-free-and-use-after-free-in-aux-device-error-paths.patch
+ApplyPatch 1115-idpf-fix-max-vport-related-crash-on-allocation-error-during-init.patch
+ApplyPatch 1116-i2c-stub-reject-i2c-block-transfers-with-invalid-length.patch
+ApplyPatch 1117-openvswitch-defer-tunnel-netdev-put-to-rcu-release.patch
+ApplyPatch 1118-openvswitch-vport-fix-self-deadlock-on-release-of-tunnel-ports.patch
+ApplyPatch 1119-kvm-svm-update-x2apic-msr-intercepts-if-avic-is-inhibited-while-l2-is-active.patch
+ApplyPatch 1120-dmaengine-idxd-fix-fdev-setup-failure-cleanup-in-idxd-cdev-open.patch
+ApplyPatch 1121-rdma-mlx5-fix-error-path-fall-through-in-mlx5-ib-dev-res-srq-init.patch
+ApplyPatch 1122-alsa-usx2y-bound-the-hwdep-mmap-fault-offset.patch
+ApplyPatch 1123-kvm-s390-vsie-zero-stale-crypto-bits.patch
+ApplyPatch 1124-usb-typec-altmodes-displayport-validate-count-before-reading-status-update-vdo.patch
+ApplyPatch 1125-usb-typec-tcpm-validate-vdo-count-in-discover-identity-ack-handlers.patch
+ApplyPatch 1126-usb-typec-tcpm-bound-altmode-desc-per-iteration-in-svdm-consume-modes.patch
+ApplyPatch 1127-usb-typec-ucsi-displayport-nak-dp-cmd-configure-without-a-payload-vdo.patch
+ApplyPatch 1128-usb-typec-ucsi-validate-connector-number-in-ucsi-connector-change.patch
+ApplyPatch 1129-usb-serial-mxuport-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1130-usb-serial-omninet-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1131-usb-serial-safe-serial-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1132-usb-serial-cypress-m8-fix-memory-corruption-with-small-endpoint.patch
+ApplyPatch 1133-af-unix-move-internal-definitions-to-net-unix.patch
+ApplyPatch 1134-unix-fix-up-for-apparmor-add-fine-grained-af-unix-mediation.patch
+ApplyPatch 1135-af-unix-sort-headers.patch
+ApplyPatch 1136-af-unix-explicitly-include-headers-for-non-pointer-struct-fields.patch
+ApplyPatch 1137-af-unix-clean-up-include-under-net-unix.patch
+ApplyPatch 1138-af-unix-initialise-scc-index-in-unix-add-edge.patch
+ApplyPatch 1139-af-unix-count-cyclic-scc.patch
+ApplyPatch 1140-af-unix-simplify-gc-state.patch
+ApplyPatch 1141-af-unix-don-t-trigger-gc-from-close-if-unnecessary.patch
+ApplyPatch 1142-af-unix-don-t-call-wait-for-unix-gc-on-every-sendmsg.patch
+ApplyPatch 1143-af-unix-refine-wait-for-unix-gc.patch
+ApplyPatch 1144-af-unix-remove-unix-tot-inflight.patch
+ApplyPatch 1145-af-unix-consolidate-unix-schedule-gc-and-wait-for-unix-gc.patch
+ApplyPatch 1146-af-unix-give-up-gc-if-msg-peek-intervened.patch
+ApplyPatch 1147-af-unix-set-gc-in-progress-to-true-in-unix-gc.patch
+ApplyPatch 1148-vhost-move-vdpa-group-bound-check-to-vhost-vdpa.patch
+ApplyPatch 1149-kvm-svm-fix-page-overflow-in-sev-dbg-crypt-for-encrypt-path.patch
+ApplyPatch 1150-kvm-arm64-handle-negative-s1-walk-levels-in-vncr-tlb-size-evaluation.patch
+ApplyPatch 1151-media-cx231xx-reject-geometry-changes-while-the-vbi-queue-is-busy.patch
+ApplyPatch 1152-openvswitch-fix-gso-userspace-truncation-underflow.patch
+ApplyPatch 1153-kvm-nsvm-raise-ud-if-unhandled-vmmcall-isn-t-intercepted-by-l1.patch
+ApplyPatch 1154-net-tun-bound-receive-headroom.patch
+ApplyPatch 1155-sunrpc-pin-upper-rpc-clnt-across-the-tls-connect-worker.patch
+ApplyPatch 1156-nfsd-fix-secinfo-no-name-decode-error-cleanup.patch
+ApplyPatch 1157-nfsd-fix-cpntf-publish-race-in-nfs4-init-cp-state.patch
+ApplyPatch 1158-nfsd-check-client-ownership-when-cancelling-a-copy-notify-stateid.patch
+ApplyPatch 1159-nfsd-revoke-copy-notify-stateids-before-dropping-their-reference.patch
+ApplyPatch 1160-nfsd-initialize-copy-notify-stateid-before-publishing-it.patch
+ApplyPatch 1161-nfsd-fix-uaf-in-async-copy-cancel-and-shutdown.patch
+ApplyPatch 1162-nfsd-fix-stale-s2s-cp-stateids-idr-entry-for-async-copy.patch
+ApplyPatch 1163-svcrdma-reject-inline-replies-that-overflow-the-pull-up-buffer.patch
+ApplyPatch 1164-nfsd-defer-vfree-of-compound-ops-to-fix-rpc-status-uaf.patch
+ApplyPatch 1165-vfio-pci-check-bar-resources-before-exporting-a-dmabuf.patch
+ApplyPatch 1166-nvme-ioctl-check-submit-io-with-nvme-cmd-allowed.patch
+ApplyPatch 1167-af-unix-unlink-scc-entry-in-unix-del-edge.patch
+ApplyPatch 1168-net-iucv-filter-frames-in-afiucv-hs-rcv-by-ingress-device.patch
+ApplyPatch 1169-netfilter-nfnetlink-log-wait-for-rcu-grace-period-before-freeing-pernet-state.patch
+ApplyPatch 1170-udp-fix-potential-use-after-free-in-tunnel-segmentation.patch
+ApplyPatch 1171-bpf-support-for-hardening-against-jit-spraying.patch
+ApplyPatch 1172-x86-bugs-enable-ibpb-flush-on-bpf-jit-allocation.patch
+ApplyPatch 1173-bpf-restrict-jit-predictor-flush-to-cbpf.patch
+ApplyPatch 1174-nvmet-auth-synchronize-timeout-work-during-sq-teardown.patch
+ApplyPatch 1175-vsock-virtio-fix-msg-zerocopy-pinned-pages-accounting.patch
+ApplyPatch 1176-vsock-virtio-fix-zerocopy-completion-for-multi-skb-sends.patch
+ApplyPatch 1177-vsock-virtio-bind-uarg-before-filling-zerocopy-skb.patch
+ApplyPatch 1178-strparser-make-sure-strp-recv-isn-t-running-before-tearing-down-the-parser.patch
+ApplyPatch 1179-md-raid5-ppl-fix-use-after-free-in-ppl-do-flush.patch
+ApplyPatch 1180-netfilter-flowtable-hold-reference-on-ct-until-flow-is-released.patch
+ApplyPatch 1181-exec-cleanup-posix-timers-right-after-de-thread.patch
+ApplyPatch 1182-posix-timers-target-group-sigqueue-to-current-task-only-if-not-exiting.patch
+ApplyPatch 1183-signal-prevent-exec-race.patch
+ApplyPatch 1184-calipso-don-t-call-calipso-functions-for-af-inet-sk.patch
+ApplyPatch 1185-calipso-unlock-rcu-before-returning-eafnosupport.patch
+ApplyPatch 1186-alsa-seq-close-a-re-opened-queue-timer-in-the-destructor.patch
+ApplyPatch 1187-fuse-re-lock-request-before-returning-from-fuse-ref-folio.patch
+ApplyPatch 1188-smb-client-reject-a-tree-connect-response-whose-byte-count-is-too-small.patch
+ApplyPatch 1189-alsa-hda-cs35l41-fix-firmware-load-work-teardown.patch
+ApplyPatch 1190-perf-fix-addr-filter-ranges-lifetime.patch
+ApplyPatch 1191-perf-fix-use-after-free-when-perf-mmap-revival-races-with-the-last-munmap.patch
+ApplyPatch 1192-xfs-bounds-check-buffer-log-item-s-dirty-bitmap.patch
+ApplyPatch 1193-drm-amdkfd-add-tlb-flush-after-mes-queue-eviction-suspension.patch
+ApplyPatch 1194-drm-amd-display-set-new-stream-to-null-after-release.patch
+ApplyPatch 1195-drm-vmwgfx-use-check-add-overflow-for-shader-size-offset-bound.patch
+ApplyPatch 1196-drm-amdgpu-fix-lifetime-issue-of-amdgpu-vm-get-task-info-pasid.patch
+ApplyPatch 1197-drm-amdgpu-vce-fix-integer-overflow-in-image-size.patch
+ApplyPatch 1198-drm-dp-mst-fix-buffer-overflows-in-sideband-chunk-accumulation.patch
+ApplyPatch 1199-net-sched-act-ct-only-release-rcu-read-lock-after-ct-ft.patch
+ApplyPatch 1200-net-sched-taprio-fix-use-after-free-in-advance-sched-on-schedule-switch.patch
+ApplyPatch 1201-selftests-tc-testing-adapt-tc-police-action-tests-for-gb-rounding-changes.patch
+ApplyPatch 1202-opp-add-index-check-to-assert-to-avoid-buffer-overflow-in-read-freq.patch
+ApplyPatch 1203-idpf-update-idpf-up-complete-return-type-to-void.patch
+ApplyPatch 1204-idpf-fix-kernel-doc-descriptions-to-avoid-warnings.patch
+ApplyPatch 1205-idpf-introduce-local-idpf-structure-to-store-virtchnl-queue-chunks.patch
+ApplyPatch 1206-idpf-introduce-idpf-q-vec-rsrc-struct-and-move-vector-resources-to-it.patch
+ApplyPatch 1207-idpf-move-queue-resources-to-idpf-q-vec-rsrc-structure.patch
+ApplyPatch 1208-idpf-move-some-iterator-declarations-inside-for-loops.patch
+ApplyPatch 1209-idpf-reshuffle-idpf-vport-struct-members-to-avoid-holes.patch
+ApplyPatch 1210-idpf-add-rss-data-field-to-rss-function-parameters.patch
+ApplyPatch 1211-idpf-remove-vport-pointer-from-queue-sets.patch
+ApplyPatch 1212-idpf-generalize-send-virtchnl-message-api.patch
+ApplyPatch 1213-idpf-avoid-calling-get-rx-ptypes-for-each-vport.patch
+ApplyPatch 1214-idpf-generalize-mailbox-api.patch
+ApplyPatch 1215-idpf-increment-completion-queue-next-to-clean-in-sw-marker-wait-routine.patch
+ApplyPatch 1216-idpf-skip-deallocating-bufq-sets-from-rx-qgrp-if-it-is-null.patch
+ApplyPatch 1217-idpf-skip-deallocating-txq-group-s-txqs-if-it-is-null.patch
+ApplyPatch 1218-idpf-nullify-pointers-after-they-are-freed.patch
+ApplyPatch 1219-idpf-change-irq-naming-to-match-netdev-and-ethtool-queue-numbering.patch
+ApplyPatch 1220-idpf-fix-flow-rule-delete-failure-due-to-invalid-validation.patch
+ApplyPatch 1221-idpf-clear-stale-cdev-info-ptr.patch
+ApplyPatch 1222-idpf-only-assign-num-refillqs-if-allocation-was-successful.patch
+ApplyPatch 1223-idpf-improve-locking-around-idpf-vc-xn-push-free.patch
+ApplyPatch 1224-idpf-set-the-payload-size-before-calling-the-async-handler.patch
+ApplyPatch 1225-treewide-replace-kmalloc-with-kmalloc-obj-for-non-scalar-types-idpf.patch
+ApplyPatch 1226-convert-alloc-obj-family-to-use-the-new-default-gfp-kernel-argument-idpf.patch
+ApplyPatch 1227-convert-alloc-flex-family-to-use-the-new-default-gfp-kernel-argument-idpf.patch
+ApplyPatch 1228-convert-more-alloc-obj-cases-to-default-gfp-kernel-arguments-idpf.patch
+ApplyPatch 1229-convert-remaining-multi-line-kmalloc-obj-flex-gfp-kernel-uses-idpf.patch
+ApplyPatch 1230-idpf-fix-mailbox-capability-for-set-device-clock-time.patch
+ApplyPatch 1231-idpf-add-padding-to-ptp-virtchnl-structures.patch
+ApplyPatch 1232-idpf-replace-use-of-system-unbound-wq-with-system-dfl-wq.patch
+ApplyPatch 1233-idpf-bound-interrupt-vector-register-fill-to-the-allocated-array.patch
+ApplyPatch 1234-idpf-adjust-txq-ring-count-minimum.patch
+ApplyPatch 1235-idpf-fix-mailbox-irq-name-leak-on-request-failure.patch
+ApplyPatch 1236-idpf-add-missing-cpu-to-le32-in-idpf-tx-splitq-build-flow-desc.patch
+ApplyPatch 1237-idpf-remove-vport-params-reqd-field.patch
+ApplyPatch 1238-idpf-remove-unused-code-for-getting-rss-info-from-device.patch
+ApplyPatch 1239-smb-client-return-eopnotsupp-for-unsupported-o-tmpfile.patch
+ApplyPatch 1240-smb-client-fix-multiuser-mount-with-krb5.patch
+ApplyPatch 1241-scsi-megaraid-sas-limit-nvme-request-size-to-the-prp-chain-frame.patch
+ApplyPatch 1242-fuse-re-lock-request-before-replacing-page-cache-folio.patch
+ApplyPatch 1243-ovl-check-access-to-copy-file-range-source-with-src-mounter-creds.patch
+ApplyPatch 1244-i40e-skip-unnecessary-vf-reset-when-setting-trust.patch
+ApplyPatch 1245-iavf-send-mac-change-request-synchronously.patch
+ApplyPatch 1246-ice-skip-unnecessary-vf-reset-when-setting-trust.patch
+ApplyPatch 1247-keys-encrypted-fix-integer-overflow-of-datablob-len.patch
+ApplyPatch 1248-virt-vmgenid-remap-memory-as-decrypted.patch
+ApplyPatch 1249-scsi-target-core-fix-iscsi-isid-use-after-free-in-register-and-move.patch
+ApplyPatch 1250-scsi-target-iscsi-reserve-a-terminator-byte-for-the-login-payload.patch
+ApplyPatch 1251-ipvs-stop-estimator-after-disabled-calc-phase.patch
+ApplyPatch 1252-netfilter-ebt-nflog-pin-the-nflog-backend.patch
+ApplyPatch 1253-netfilter-ipset-rework-cidr-bookkeeping.patch
+ApplyPatch 1254-netfilter-ipset-switch-ext-size-to-atomic64-t.patch
+ApplyPatch 1255-netfilter-ipset-add-small-wrappers-for-hash-and-bucket-sizes.patch
+ApplyPatch 1256-netfilter-ipset-add-and-use-mtype-del-cidr-all-helper.patch
+ApplyPatch 1257-netfilter-ipset-switch-to-rcu-work.patch
+ApplyPatch 1258-ipvs-avoid-out-of-bounds-write-in-ip-vs-nat-icmp.patch
+ApplyPatch 1259-ipvs-return-the-csum-validation-for-forward-hook.patch
+ApplyPatch 1260-netfilter-nf-flow-table-drop-existing-skb-dst-before-skb-dst-set-noref.patch
+ApplyPatch 1261-netfilter-ipset-fix-refcount-race-between-list-set-gc-and-swap.patch
+ApplyPatch 1262-netfilter-bridge-release-template-ct-on-non-ip-path.patch
+ApplyPatch 1263-ipvs-add-totalconns-for-dest.patch
+ApplyPatch 1264-ipvs-properly-update-the-overload-flag-on-dest-edit.patch
+ApplyPatch 1265-ipvs-separate-destination-availability-state.patch
+ApplyPatch 1266-netfilter-nf-conntrack-defer-invalid-log-until-after-unlock.patch
+ApplyPatch 1267-ipvs-clear-ipv4-options-after-rebasing-tunnel-icmp-errors.patch
+ApplyPatch 1268-ipvs-revalidate-ihl-to-prevent-out-of-bounds-access.patch
+ApplyPatch 1269-netfilter-nf-tables-offload-suppress-warn-on-once-for-enomem-in-abort-path.patch
+ApplyPatch 1270-netfilter-ipset-fix-list-type-element-drift-bug.patch
+ApplyPatch 1271-netfilter-ipset-let-destroy-callbacks-adjust-ext-mem-size.patch
+ApplyPatch 1272-bpf-guard-conntrack-opts-error-writes.patch
+ApplyPatch 1273-bpf-fix-netns-reference-imbalance-in-conntrack-kfuncs.patch
+ApplyPatch 1274-netfilter-add-debug-net-warn-on-once-to-skb-set-nfct.patch
+ApplyPatch 1275-netfilter-validate-l4-headers-after-userspace-packet-writes.patch
+ApplyPatch 1276-netfilter-ipset-remove-need-to-allocate-memory-on-delete-operations.patch
+ApplyPatch 1277-netfilter-nf-tables-don-t-queue-packet-path-object-notifications.patch
+ApplyPatch 1278-ipvs-fix-integer-overflow-in-ftp-helper-port-address-parsing.patch
+ApplyPatch 1279-netfilter-x-tables-remove-pr-debug.patch
+ApplyPatch 1280-netfilter-x-tables-replace-pr-info-err-by-pr-info-ratelimited.patch
+ApplyPatch 1281-netfilter-nf-tables-skip-double-clone-set-expressions-on-element-insert.patch
+ApplyPatch 1282-usb-usbfs-fix-use-after-free-of-usb-device-in-usbdev-release.patch
+ApplyPatch 1283-nvme-add-missing-srcu-grace-period-in-error-path.patch
+ApplyPatch 1284-svcrdma-validate-read-chunk-positions-before-reconstruction.patch
+ApplyPatch 1285-nfsd-prevent-client-use-after-free-during-delegation-revoke.patch
+ApplyPatch 1286-nfsd-prevent-client-use-after-free-during-blocked-lock-reaping.patch
+ApplyPatch 1287-nfsd-don-t-free-session-slots-that-are-still-in-use.patch
+ApplyPatch 1288-svcrdma-reject-write-reply-chunks-with-segcount-0.patch
+ApplyPatch 1289-sunrpc-zero-rpc-gss-wire-cred-at-svcauth-gss-decode-credbody-entry.patch
+ApplyPatch 1290-virtio-fs-avoid-double-free-on-failed-queue-setup.patch
+ApplyPatch 1291-vfio-pci-clear-vdev-msi-perm-after-freeing-it-on-init-failure.patch
+ApplyPatch 1292-nvmet-auth-fix-out-of-bounds-write-in-nvmet-auth-challenge.patch
+ApplyPatch 1293-virt-tdx-guest-just-leak-decrypted-memory-on-unrecoverable-errors.patch
+ApplyPatch 1294-net-sched-act-api-use-rcu-with-deferred-freeing-for-action-lifecycle.patch
+ApplyPatch 1296-bluetooth-mgmt-fix-uaf-in-pair-command-cancellation.patch
+ApplyPatch 1297-bluetooth-hci-sync-fix-advertising-data-uafs.patch
+ApplyPatch 1298-net-sched-act-tunnel-key-defer-dst-release-to-rcu-callback.patch
+ApplyPatch 1299-sched-ext-fix-unsafe-locking-in-the-scx-dump-state.patch
+ApplyPatch 1300-sched-ext-fix-possible-deadlock-in-the-deferred-irq-workfn.patch
+ApplyPatch 1301-tipc-require-net-admin-for-tipcv2-netlink-mutators.patch
+ApplyPatch 1302-vsock-vmci-fix-uaf-when-peer-resets-connection-during-handshake.patch
+ApplyPatch 1303-entry-fix-seccomp-bypass-after-ptrace-with-tsync.patch
+ApplyPatch 1304-fwctl-fix-class-init-ordering-to-avoid-null-pointer-dereference-on-device-remova.patch
+ApplyPatch 1305-xfrm-hold-net-device-reference-under-rcu-in-bundle-creation.patch
+ApplyPatch 1306-spi-fsl-lpspi-replace-dmaengine-terminate-all-with-dmaengine-terminate-sync.patch
+ApplyPatch 1307-spi-fsl-lpspi-terminate-the-rx-channel-on-tx-prepare-failure-path.patch
+ApplyPatch 1308-netfilter-report-nlm-f-dump-filtered-when-all-is-filtered-out.patch
+ApplyPatch 1309-netlink-specs-fix-the-conntrack-filter-type.patch
+ApplyPatch 1310-selftests-netfilter-conntrack-dump-flush-remove-unused-variables-and-fix-typo.patch
+ApplyPatch 1311-netfilter-conntrack-make-filtering-by-zone-discoverable.patch
+ApplyPatch 1312-selftests-netfilter-use-khdr-includes-in-cflags.patch
+ApplyPatch 1313-xfs-stop-exchanging-reflink-flags-when-exchanging-mappings.patch
+ApplyPatch 1314-xfs-fix-exchange-range-to-eof-file-size-exchange.patch
+ApplyPatch 1315-net-skbuff-propagate-shared-frag-marker-in-skb-zerocopy.patch
+ApplyPatch 1316-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
+ApplyPatch 1317-replace-kernel-qe-ci-gating-with-osci-tier0-plans.patch
+
+# Applying backports for 6.12.0-264.15.1.el10_3
+ApplyPatch 1318-net-mlx5-fix-mcia-register-buffer-overflow-on-32-dword-reads.patch
+ApplyPatch 1319-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+ApplyPatch 1320-pci-sysfs-add-lockdown-checks-to-legacy-i-o-and-memory-handlers.patch
+ApplyPatch 1321-openvswitch-fix-ct-limit-teardown-use-after-free.patch
+ApplyPatch 1322-sctp-stream-fully-roll-back-denied-add-stream-state.patch
+ApplyPatch 1323-watchdog-fix-hrtimer-start-when-pretimeout-is-zero.patch
+ApplyPatch 1324-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+ApplyPatch 1325-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2076,6 +2543,14 @@ ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-megaraid_sas-driver.patch
 ApplyPatch 0009-Bring-back-deprecated-pci-ids-to-mpt3sas-driver.patch
 ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
+ApplyPatch 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
+ApplyPatch 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
+ApplyPatch 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
+ApplyPatch 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
+ApplyPatch 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
+ApplyPatch 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
+ApplyPatch 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
+ApplyPatch 2021-net-lock-the-socket-in-sock_gettstamp.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -4696,14 +5171,22 @@ fi\
 #
 #
 %changelog
-* Wed Oct 14 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.9.1
+* Wed Nov 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.15.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Oct 14 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.9.1
+* Wed Nov 11 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.15.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Oct 14 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.9.1
+* Wed Nov 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.15.1
+- net: lock the socket in sock_gettstamp() {CVE-2026-98276}
+- ceph: pass cred pointer to ceph_mds_auth_match()
+- ceph: fix cred leak in ceph_mds_check_access() {CVE-2024-56563}
+- ceph: fix memory leak in ceph_mds_auth_match() {CVE-2025-21737}
+- bnxt_en: fix DMA mapping length for padded small packets
+- ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
+- ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
+- ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4712,6 +5195,243 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Nov 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.15.1.el10_3]
+- sunrpc: wait for in-flight TLS handshake callback when cancel loses race (Olga Kornievskaia) [RHEL-283651] {CVE-2026-72221}
+- sunrpc: pin svc_xprt across the asynchronous TLS handshake callback (Olga Kornievskaia) [RHEL-283267] {CVE-2026-72222}
+- watchdog: fix hrtimer start when pretimeout is zero (David Arcari) [RHEL-255346]
+- sctp: stream: fully roll back denied add-stream state (CKI Backport Bot) [RHEL-277070] {CVE-2026-52929}
+- openvswitch: Fix CT limit teardown use-after-free (Timothy Redaelli) [RHEL-263518] {CVE-2026-89488}
+- PCI/sysfs: Add lockdown checks to legacy I/O and memory handlers (Aristeu Rozanski) [RHEL-267085] {CVE-2026-90315}
+- smb: client: clear setuid/setgid bit on write with cifsacl/modefromsid/posix extensions (CKI Backport Bot) [RHEL-271261] {CVE-2026-89638}
+- net/mlx5: Fix MCIA register buffer overflow on 32 dword reads (CKI Backport Bot) [RHEL-236793] {CVE-2026-68293}
+
+* Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.14.1.el10_3]
+- ipv4: free inet_opt and ireq_opt after an RCU grace period (CKI Backport Bot) [RHEL-295611] {CVE-2026-98432}
+- net: skbuff: propagate shared-frag marker in skb_zerocopy() (Xin Long) [RHEL-291169]
+- xfs: fix exchange-range-to-eof file size exchange (CKI Backport Bot) [RHEL-292984] {CVE-2026-98974}
+- xfs: stop exchanging reflink flags when exchanging mappings (CKI Backport Bot) [RHEL-292984] {CVE-2026-98974}
+- selftests: netfilter: use KHDR_INCLUDES in CFLAGS (CKI Backport Bot) [RHEL-291349]
+- netfilter: conntrack: make filtering by zone discoverable (CKI Backport Bot) [RHEL-291349]
+- selftests: netfilter: conntrack_dump_flush: remove unused variables and fix typo (CKI Backport Bot) [RHEL-291349]
+- netlink: specs: fix the conntrack filter type (CKI Backport Bot) [RHEL-291349]
+- netfilter: report NLM_F_DUMP_FILTERED when all is filtered out (CKI Backport Bot) [RHEL-291349]
+- spi: fsl-lpspi: terminate the RX channel on TX prepare failure path (Iker Pedrosa) [RHEL-234302] {CVE-2026-64303}
+- spi: fsl-lpspi: replace dmaengine_terminate_all() with dmaengine_terminate_sync() (Iker Pedrosa) [RHEL-234302] {CVE-2026-64303}
+- xfrm: hold net_device reference under RCU in bundle creation (Abhishek Rawal) [RHEL-277964] {CVE-2026-98364}
+- fwctl: Fix class init ordering to avoid NULL pointer dereference on device removal (CKI Backport Bot) [RHEL-284384] {CVE-2026-53042}
+- entry: Fix seccomp bypass after ptrace with TSYNC (Audra Mitchell) [RHEL-271402] {CVE-2026-89603}
+- vsock/vmci: fix UAF when peer resets connection during handshake (CKI Backport Bot) [RHEL-232277] {CVE-2026-64115}
+- tipc: require net admin for TIPCv2 netlink mutators (CKI Backport Bot) [RHEL-273187] {CVE-2026-74283}
+- sched_ext: Fix possible deadlock in the deferred_irq_workfn() (CKI Backport Bot) [RHEL-259938]
+- sched_ext: Fix unsafe locking in the scx_dump_state() (CKI Backport Bot) [RHEL-259938]
+- net/sched: act_tunnel_key: Defer dst_release to RCU callback (Michal Schmidt) [RHEL-240918] {CVE-2026-68377}
+- Bluetooth: hci_sync: Fix advertising data UAFs (CKI Backport Bot) [RHEL-254668] {CVE-2026-74509}
+- Bluetooth: mgmt: fix UAF in pair command cancellation (CKI Backport Bot) [RHEL-254651] {CVE-2026-74510}
+- selftests/tc-testing: Adapt tc police action tests for Gb rounding changes (Ivan Vecera) [RHEL-218186]
+- net/sched: act_api: use RCU with deferred freeing for action lifecycle (CKI Backport Bot) [RHEL-218186] {CVE-2026-53264}
+
+* Wed Oct 28 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.13.1.el10_3]
+- virt: tdx-guest: Just leak decrypted memory on unrecoverable errors (Luigi Leonardi) [RHEL-287439] {CVE-2024-57793}
+- nvmet-auth: fix out-of-bounds write in nvmet_auth_challenge() (CKI Backport Bot) [RHEL-290608] {CVE-2026-98725}
+- vfio/pci: clear vdev->msi_perm after freeing it on init failure (Rodolfo Vick) [RHEL-270928] {CVE-2026-89777}
+- virtio-fs: avoid double-free on failed queue setup (CKI Backport Bot) [RHEL-278138] {CVE-2026-93827}
+- SUNRPC: Zero rpc_gss_wire_cred at svcauth_gss_decode_credbody() entry (Olga Kornievskaia) [RHEL-275064] {CVE-2026-93207}
+- svcrdma: Reject Write/Reply chunks with segcount 0 (Olga Kornievskaia) [RHEL-275082] {CVE-2026-93228}
+- nfsd: don't free session slots that are still in use (Olga Kornievskaia) [RHEL-270861] {CVE-2026-89689}
+- NFSD: Prevent client use-after-free during blocked-lock reaping (Olga Kornievskaia) [RHEL-270794] {CVE-2026-90036}
+- NFSD: Prevent client use-after-free during delegation revoke (Olga Kornievskaia) [RHEL-270794] {CVE-2026-89659}
+- svcrdma: Validate Read chunk positions before reconstruction (Olga Kornievskaia) [RHEL-271458] {CVE-2026-89526}
+- nvme: add missing SRCU grace period in error path (CKI Backport Bot) [RHEL-270923] {CVE-2026-89972}
+- usb: usbfs: fix use-after-free of usb_device in usbdev_release() (CKI Backport Bot) [RHEL-258592] {CVE-2026-80824}
+
+* Mon Oct 26 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.12.1.el10_3]
+- netfilter: nf_tables: skip double clone set expressions on element insert (Florian Westphal) [RHEL-242582]
+- netfilter: x_tables: replace pr_{info,err}() by pr_info_ratelimited() (Florian Westphal) [RHEL-242582]
+- netfilter: x_tables: remove pr_debug (Florian Westphal) [RHEL-242582]
+- ipvs: fix integer overflow in ftp helper port/address parsing (Florian Westphal) [RHEL-242582]
+- netfilter: nf_tables: don't queue packet path object notifications (Florian Westphal) [RHEL-242582]
+- netfilter: ipset: remove need to allocate memory on delete operations (Florian Westphal) [RHEL-242582]
+- netfilter: validate L4 headers after userspace packet writes (Florian Westphal) [RHEL-242582]
+- netfilter: add DEBUG_NET_WARN_ON_ONCE to skb_set_nfct() (Florian Westphal) [RHEL-242582]
+- bpf: Fix netns reference imbalance in conntrack kfuncs (Florian Westphal) [RHEL-242582] {CVE-2026-74715}
+- bpf: Guard conntrack opts error writes (Florian Westphal) [RHEL-242582] {CVE-2026-72423}
+- netfilter: ipset: let destroy callbacks adjust ext mem size (Florian Westphal) [RHEL-242582]
+- netfilter: ipset: fix list type element drift bug (Florian Westphal) [RHEL-242582]
+- netfilter: nf_tables_offload: suppress WARN_ON_ONCE for ENOMEM in abort path (Florian Westphal) [RHEL-242582] {CVE-2026-80744}
+- ipvs: revalidate ihl to prevent out-of-bounds access (Florian Westphal) [RHEL-242582] {CVE-2026-74747}
+- ipvs: clear IPv4 options after rebasing tunnel ICMP errors (Florian Westphal) [RHEL-242582] {CVE-2026-74669}
+- netfilter: nf_conntrack: defer invalid log until after unlock (Florian Westphal) [RHEL-242582] {CVE-2026-74624}
+- ipvs: separate destination availability state (Florian Westphal) [RHEL-242582]
+- ipvs: properly update the overload flag on dest edit (Florian Westphal) [RHEL-242582]
+- ipvs: add totalconns for dest (Florian Westphal) [RHEL-242582]
+- netfilter: bridge: release template ct on non-IP path (Florian Westphal) [RHEL-242582] {CVE-2026-74625}
+- netfilter: ipset: fix refcount race between list:set GC and swap (Florian Westphal) [RHEL-242582] {CVE-2026-74748}
+- netfilter: nf_flow_table: drop existing skb dst before skb_dst_set_noref() (Florian Westphal) [RHEL-242582] {CVE-2026-74695}
+- ipvs: return the csum validation for forward hook (Florian Westphal) [RHEL-242582]
+- ipvs: avoid out-of-bounds write in ip_vs_nat_icmp (Florian Westphal) [RHEL-242582] {CVE-2026-74724}
+- netfilter: ipset: switch to rcu work (Florian Westphal) [RHEL-242582]
+- netfilter: ipset: add and use mtype_del_cidr_all helper (Florian Westphal) [RHEL-242582]
+- netfilter: ipset: add small wrappers for hash and bucket sizes (Florian Westphal) [RHEL-242582]
+- netfilter: ipset: switch ext_size to atomic64_t (Florian Westphal) [RHEL-242582]
+- netfilter: ipset: rework cidr bookkeeping (Florian Westphal) [RHEL-242582]
+- netfilter: ebt_nflog: pin the NFLOG backend (Florian Westphal) [RHEL-242582] {CVE-2026-74660}
+- ipvs: stop estimator after disabled calc phase (Florian Westphal) [RHEL-242582] {CVE-2026-74670}
+- scsi: target: iscsi: Reserve a terminator byte for the login payload (CKI Backport Bot) [RHEL-285629] {CVE-2026-90011}
+- scsi: target: core: Fix iSCSI ISID use-after-free in REGISTER AND MOVE (CKI Backport Bot) [RHEL-283523] {CVE-2026-72083}
+- virt: vmgenid: remap memory as decrypted (Vitaly Kuznetsov) [RHEL-283382]
+- KEYS: encrypted: fix integer overflow of datablob_len (CKI Backport Bot) [RHEL-279484] {CVE-2026-98222}
+- ice: skip unnecessary VF reset when setting trust (Jose Ignacio Tornos Martinez) [RHEL-276751]
+- iavf: send MAC change request synchronously (Jose Ignacio Tornos Martinez) [RHEL-276751]
+- i40e: skip unnecessary VF reset when setting trust (Jose Ignacio Tornos Martinez) [RHEL-276751]
+- ovl: check access to copy_file_range source with src mounter creds (Miklos Szeredi) [RHEL-238871] {CVE-2026-68448}
+- fuse: re-lock request before replacing page cache folio (Miklos Szeredi) [RHEL-226099] {CVE-2026-53388}
+- scsi: megaraid_sas: Limit NVMe request size to the PRP chain frame (CKI Backport Bot) [RHEL-262087] {CVE-2026-90008}
+- smb: client: fix multiuser mount with krb5 (Jorge San Emeterio Villalain) [RHEL-254106]
+- smb/client: return EOPNOTSUPP for unsupported O_TMPFILE (Jorge San Emeterio Villalain) [RHEL-254106]
+- idpf: remove unused code for getting RSS info from device (Michal Schmidt) [RHEL-248077]
+- idpf: remove 'vport_params_reqd' field (Michal Schmidt) [RHEL-248077]
+- idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc (Michal Schmidt) [RHEL-248077]
+- idpf: Fix mailbox IRQ name leak on request failure (Michal Schmidt) [RHEL-248077]
+- idpf: adjust TxQ ring count minimum (Michal Schmidt) [RHEL-248077]
+- idpf: bound interrupt-vector register fill to the allocated array (Michal Schmidt) [RHEL-248077]
+- idpf: Replace use of system_unbound_wq with system_dfl_wq (Michal Schmidt) [RHEL-248077]
+- idpf: add padding to PTP virtchnl structures (Michal Schmidt) [RHEL-248077]
+- idpf: fix mailbox capability for set device clock time (Michal Schmidt) [RHEL-248077]
+- Convert remaining multi-line kmalloc_obj/flex GFP_KERNEL uses [idpf] (Michal Schmidt) [RHEL-248077]
+- Convert more 'alloc_obj' cases to default GFP_KERNEL arguments [idpf] (Michal Schmidt) [RHEL-248077]
+- Convert 'alloc_flex' family to use the new default GFP_KERNEL argument [idpf] (Michal Schmidt) [RHEL-248077]
+- Convert 'alloc_obj' family to use the new default GFP_KERNEL argument [idpf] (Michal Schmidt) [RHEL-248077]
+- treewide: Replace kmalloc with kmalloc_obj for non-scalar types [idpf] (Michal Schmidt) [RHEL-248077]
+- idpf: set the payload size before calling the async handler (Michal Schmidt) [RHEL-248077]
+- idpf: improve locking around idpf_vc_xn_push_free() (Michal Schmidt) [RHEL-248077]
+- idpf: only assign num refillqs if allocation was successful (Michal Schmidt) [RHEL-248077]
+- idpf: clear stale cdev_info ptr (Michal Schmidt) [RHEL-248077]
+- idpf: Fix flow rule delete failure due to invalid validation (Michal Schmidt) [RHEL-248077]
+- idpf: change IRQ naming to match netdev and ethtool queue numbering (Michal Schmidt) [RHEL-248077]
+- idpf: nullify pointers after they are freed (Michal Schmidt) [RHEL-248077]
+- idpf: skip deallocating txq group's txqs if it is NULL (Michal Schmidt) [RHEL-248077]
+- idpf: skip deallocating bufq_sets from rx_qgrp if it is NULL (Michal Schmidt) [RHEL-248077]
+- idpf: increment completion queue next_to_clean in sw marker wait routine (Michal Schmidt) [RHEL-248077]
+- idpf: generalize mailbox API (Michal Schmidt) [RHEL-248077]
+- idpf: avoid calling get_rx_ptypes for each vport (Michal Schmidt) [RHEL-248077]
+- idpf: generalize send virtchnl message API (Michal Schmidt) [RHEL-248077]
+- idpf: remove vport pointer from queue sets (Michal Schmidt) [RHEL-248077]
+- idpf: add rss_data field to RSS function parameters (Michal Schmidt) [RHEL-248077]
+- idpf: reshuffle idpf_vport struct members to avoid holes (Michal Schmidt) [RHEL-248077]
+- idpf: move some iterator declarations inside for loops (Michal Schmidt) [RHEL-248077]
+- idpf: move queue resources to idpf_q_vec_rsrc structure (Michal Schmidt) [RHEL-248077]
+- idpf: introduce idpf_q_vec_rsrc struct and move vector resources to it (Michal Schmidt) [RHEL-248077]
+- idpf: introduce local idpf structure to store virtchnl queue chunks (Michal Schmidt) [RHEL-248077]
+- idpf: Fix kernel-doc descriptions to avoid warnings (Michal Schmidt) [RHEL-248077]
+- idpf: update idpf_up_complete() return type to void (Michal Schmidt) [RHEL-248077]
+- OPP: add index check to assert to avoid buffer overflow in _read_freq() (Jared Kangas) [RHEL-81436] {CVE-2024-57998}
+- selftests/tc-testing: Adapt tc police action tests for Gb rounding changes (Ivan Vecera) [RHEL-226496]
+- net/sched: taprio: fix use-after-free in advance_sched() on schedule switch (CKI Backport Bot) [RHEL-226496] {CVE-2026-53011}
+- net/sched: act_ct: Only release RCU read lock after ct_ft (CKI Backport Bot) [RHEL-229660] {CVE-2026-46319}
+
+* Wed Oct 21 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.11.1.el10_3]
+- drm/dp/mst: fix buffer overflows in sideband chunk accumulation (CKI Backport Bot) [RHEL-240856] {CVE-2026-68278}
+- drm/amdgpu/vce: fix integer overflow in image size (CKI Backport Bot) [RHEL-257137] {CVE-2026-68108}
+- drm/amdgpu: fix lifetime issue of amdgpu_vm_get_task_info_pasid() (CKI Backport Bot) [RHEL-236247] {CVE-2026-68245}
+- drm/vmwgfx: use check_add_overflow for shader size+offset bound (CKI Backport Bot) [RHEL-258170] {CVE-2026-80887}
+- drm/amd/display: set new_stream to NULL after release (CKI Backport Bot) [RHEL-260485] {CVE-2026-68236}
+- drm/amdkfd: Add TLB flush after MES queue eviction/suspension (CKI Backport Bot) [RHEL-262100] {CVE-2026-89811}
+- xfs: bounds-check buffer log item's dirty bitmap (Pavel Reichl) [RHEL-253379] {CVE-2026-80536}
+- perf: Fix use-after-free when perf mmap() revival races with the last munmap() (Vratislav Bendel) [RHEL-270841] {CVE-2026-89791}
+- perf: Fix addr_filter_ranges lifetime (Vratislav Bendel) [RHEL-271848] {CVE-2026-93817}
+- ALSA: hda/cs35l41: Fix firmware load work teardown (CKI Backport Bot) [RHEL-234103] {CVE-2026-64481}
+- smb: client: reject a tree connect response whose byte count is too small (CKI Backport Bot) [RHEL-271297] {CVE-2026-89631}
+- fuse: re-lock request before returning from fuse_ref_folio() (CKI Backport Bot) [RHEL-234248] {CVE-2026-64266}
+- ALSA: seq: close a re-opened queue timer in the destructor (CKI Backport Bot) [RHEL-263704] {CVE-2026-68202}
+- calipso: unlock rcu before returning -EAFNOSUPPORT (CKI Backport Bot) [RHEL-257681] {CVE-2025-38147}
+- calipso: Don't call calipso functions for AF_INET sk. (CKI Backport Bot) [RHEL-257681] {CVE-2025-38147}
+
+* Mon Oct 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.10.1.el10_3]
+- signal: Prevent exec() race (Phil Auld) [RHEL-282049] {CVE-2026-98256}
+- posix-timers: Target group sigqueue to current task only if not exiting (Phil Auld) [RHEL-282049]
+- exec: Cleanup POSIX timers right after de_thread() (Luiz Capitulino) [RHEL-282065] {CVE-2026-98260}
+- netfilter: flowtable: hold reference on ct until flow is released (CKI Backport Bot) [RHEL-280058] {CVE-2026-98320}
+- md/raid5-ppl: fix use-after-free in ppl_do_flush() (CKI Backport Bot) [RHEL-278128] {CVE-2026-93262}
+- strparser: make sure __strp_recv isn't running before tearing down the parser (Sabrina Dubroca) [RHEL-270726]
+- vsock/virtio: bind uarg before filling zerocopy skb (Jon Maloy) [RHEL-229035] {CVE-2026-63970}
+- vsock/virtio: fix zerocopy completion for multi-skb sends (Jon Maloy) [RHEL-232861] {CVE-2026-53365}
+- vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting (Jon Maloy) [RHEL-232861] {CVE-2026-53365}
+- nvmet-auth: Synchronize timeout work during SQ teardown (CKI Backport Bot) [RHEL-276366] {CVE-2026-89970}
+- bpf: Restrict JIT predictor flush to cBPF (Viktor Malik) [RHEL-273846] {CVE-2026-64508}
+- x86/bugs: Enable IBPB flush on BPF JIT allocation (Viktor Malik) [RHEL-274001] {CVE-2026-64507}
+- bpf: Support for hardening against JIT spraying (Viktor Malik) [RHEL-273846] {CVE-2026-64508}
+- udp: fix potential use-after-free in tunnel segmentation (Antoine Tenart) [RHEL-268134] {CVE-2026-74705}
+- netfilter: nfnetlink_log: wait for rcu grace period before freeing pernet state (CKI Backport Bot) [RHEL-271655] {CVE-2026-93288}
+- net/iucv: filter frames in afiucv_hs_rcv() by ingress device (CKI Backport Bot) [RHEL-270924] {CVE-2026-81003}
+- af_unix: Unlink scc_entry in unix_del_edge(). (CKI Backport Bot) [RHEL-270653] {CVE-2026-80521}
+- nvme/ioctl: check SUBMIT_IO with nvme_cmd_allowed() (CKI Backport Bot) [RHEL-269477] {CVE-2026-90227}
+- vfio/pci: Check BAR resources before exporting a DMABUF (CKI Backport Bot) [RHEL-227135] {CVE-2026-64042}
+- nfsd: defer vfree of compound ops to fix rpc_status UAF (Roberto Bergantinos Corpas) [RHEL-264935] {CVE-2026-89690}
+- svcrdma: Reject inline replies that overflow the pull-up buffer (Roberto Bergantinos Corpas) [RHEL-187735] {CVE-2026-89530}
+- nfsd: fix stale s2s_cp_stateids IDR entry for async COPY (Roberto Bergantinos Corpas) [RHEL-264802] {CVE-2026-89676}
+- nfsd: fix UAF in async copy cancel and shutdown (Roberto Bergantinos Corpas) [RHEL-264753] {CVE-2026-89675}
+- nfsd: initialize copy-notify stateid before publishing it (Roberto Bergantinos Corpas) [RHEL-264171] {CVE-2026-89669}
+- nfsd: revoke copy-notify stateids before dropping their reference (Roberto Bergantinos Corpas) [RHEL-264137] {CVE-2026-89663}
+- nfsd: check client ownership when cancelling a copy-notify stateid (Roberto Bergantinos Corpas) [RHEL-264137]
+- nfsd: fix cpntf publish race in nfs4_init_cp_state (Roberto Bergantinos Corpas) [RHEL-264137]
+- NFSD: Fix SECINFO_NO_NAME decode error cleanup (Roberto Bergantinos Corpas) [RHEL-259237] {CVE-2026-53398}
+- SUNRPC: pin upper rpc_clnt across the TLS connect_worker (Roberto Bergantinos Corpas) [RHEL-261486] {CVE-2026-72317}
+- net: tun: bound receive headroom (CKI Backport Bot) [RHEL-264375] {CVE-2026-81000}
+- KVM: nSVM: Raise #UD if unhandled VMMCALL isn't intercepted by L1 (CKI Backport Bot) [RHEL-227376] {CVE-2026-46076}
+- openvswitch: fix GSO userspace truncation underflow (CKI Backport Bot) [RHEL-263779] {CVE-2026-68123}
+- media: cx231xx: reject geometry changes while the VBI queue is busy (CKI Backport Bot) [RHEL-262507] {CVE-2026-89894}
+- KVM: arm64: Handle negative S1 walk levels in VNCR TLB size evaluation (CKI Backport Bot) [RHEL-261953] {CVE-2026-89775}
+- KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path (CKI Backport Bot) [RHEL-214943] {CVE-2026-63794}
+- vhost: move vdpa group bound check to vhost_vdpa (CKI Backport Bot) [RHEL-174284] {CVE-2026-43248}
+- af_unix: Set gc_in_progress to true in unix_gc(). (Davide Caratti) [RHEL-227542] {CVE-2026-53361}
+- af_unix: Give up GC if MSG_PEEK intervened. (Davide Caratti) [RHEL-227542] {CVE-2026-23394}
+- af_unix: Consolidate unix_schedule_gc() and wait_for_unix_gc(). (Davide Caratti) [RHEL-227542]
+- af_unix: Remove unix_tot_inflight. (Davide Caratti) [RHEL-227542]
+- af_unix: Refine wait_for_unix_gc(). (Davide Caratti) [RHEL-227542]
+- af_unix: Don't call wait_for_unix_gc() on every sendmsg(). (Davide Caratti) [RHEL-227542]
+- af_unix: Don't trigger GC from close() if unnecessary. (Davide Caratti) [RHEL-227542]
+- af_unix: Simplify GC state. (Davide Caratti) [RHEL-227542]
+- af_unix: Count cyclic SCC. (Davide Caratti) [RHEL-227542]
+- af_unix: Initialise scc_index in unix_add_edge(). (Davide Caratti) [RHEL-227542]
+- af_unix: Clean up #include under net/unix/. (Davide Caratti) [RHEL-227542]
+- af_unix: Explicitly include headers for non-pointer struct fields. (Davide Caratti) [RHEL-227542]
+- af_unix: Sort headers. (Davide Caratti) [RHEL-227542]
+- unix: fix up for "apparmor: add fine grained af_unix mediation" (Davide Caratti) [RHEL-227542]
+- af_unix: Move internal definitions to net/unix/. (Davide Caratti) [RHEL-227542]
+- USB: serial: cypress_m8: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259324] {CVE-2026-63956}
+- USB: serial: safe_serial: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259324] {CVE-2026-63957}
+- USB: serial: omninet: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259324] {CVE-2026-63928}
+- USB: serial: mxuport: fix memory corruption with small endpoint (Desnes Nunes) [RHEL-259324] {CVE-2026-63899}
+- usb: typec: ucsi: validate connector number in ucsi_connector_change() (Desnes Nunes) [RHEL-259403] {CVE-2026-63958}
+- usb: typec: ucsi: displayport: NAK DP_CMD_CONFIGURE without a payload VDO (Desnes Nunes) [RHEL-259403]
+- usb: typec: tcpm: bound altmode_desc[] per iteration in svdm_consume_modes() (Desnes Nunes) [RHEL-259403] {CVE-2026-63962}
+- usb: typec: tcpm: validate VDO count in Discover Identity ACK handlers (Desnes Nunes) [RHEL-259403] {CVE-2026-63963}
+- usb: typec: altmodes/displayport: validate count before reading Status Update VDO (Desnes Nunes) [RHEL-259403] {CVE-2026-63961}
+- KVM: s390: vsie: zero stale crypto bits (CKI Backport Bot) [RHEL-258153] {CVE-2026-80921}
+- ALSA: usx2y: bound the hwdep mmap fault offset (CKI Backport Bot) [RHEL-256451] {CVE-2026-74641}
+- RDMA/mlx5: Fix error path fall-through in mlx5_ib_dev_res_srq_init() (CKI Backport Bot) [RHEL-179998] {CVE-2026-46176}
+- dmaengine: idxd: fix fdev setup failure cleanup in idxd_cdev_open() (CKI Backport Bot) [RHEL-254617] {CVE-2026-74574}
+- KVM: SVM: Update x2APIC MSR intercepts if AVIC is inhibited while L2 is active (CKI Backport Bot) [RHEL-254518] {CVE-2026-74516}
+- openvswitch: vport: fix self-deadlock on release of tunnel ports (CKI Backport Bot) [RHEL-253868] {CVE-2026-31678}
+- openvswitch: defer tunnel netdev_put to RCU release (CKI Backport Bot) [RHEL-253868] {CVE-2026-31678}
+- i2c: stub: Reject I2C block transfers with invalid length (Tony Camuso) [RHEL-232123] {CVE-2026-64191}
+- idpf: fix max_vport related crash on allocation error during init (Michal Schmidt) [RHEL-243407] {CVE-2026-68291}
+- idpf: fix double free and use-after-free in aux device error paths (Michal Schmidt) [RHEL-243407] {CVE-2026-53286}
+- idpf: fix read_dev_clk_lock spinlock init in idpf_ptp_init() (Michal Schmidt) [RHEL-243407] {CVE-2026-64162}
+- idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling (Michal Schmidt) [RHEL-243407] {CVE-2026-31647}
+- KVM: arm64: vgic: Check the interrupt is still ours before migrating it (CKI Backport Bot) [RHEL-252478] {CVE-2026-72289}
+- slip: remove slip_hangup() to fix use-after-free in slip_receive_buf() (Michal Schmidt) [RHEL-241019]
+- slip: fix use-after-free in sl_sync() (Michal Schmidt) [RHEL-241019]
+- slip: bound decode() reads against the compressed packet length (Michal Schmidt) [RHEL-241019] {CVE-2026-45843}
+- slip: reject VJ receive packets on instances with no rstate array (Michal Schmidt) [RHEL-241019] {CVE-2026-45842}
+- net: slip: serialize receive against buffer reallocation (CKI Backport Bot) [RHEL-241019] {CVE-2026-68143}
+- netfilter: flowtable: publish GC-visible tuple last (CKI Backport Bot) [RHEL-250532] {CVE-2026-74746}
+- bnxt_en: Fix NULL pointer dereference (CKI Backport Bot) [RHEL-185083]
+- can: bcm: extend bcm_tx_lock usage for data and timer updates (Paolo Abeni) [RHEL-216702] {CVE-2025-38004}
+- can: bcm: add locking when updating filter and timer values (Paolo Abeni) [RHEL-216702] {CVE-2025-38004}
+- can: bcm: fix locking for bcm_op runtime updates (Paolo Abeni) [RHEL-216702] {CVE-2025-38004}
+- can: bcm: add locking for bcm_op runtime updates (Paolo Abeni) [RHEL-216702] {CVE-2025-38004}
 
 * Wed Sep 30 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.9.1.el10_3]
 - wifi: iwlwifi: mld: validate sta_mask before ffs() in BA session handlers (Izabela Bakollari) [RHEL-232017] {CVE-2026-64255}
