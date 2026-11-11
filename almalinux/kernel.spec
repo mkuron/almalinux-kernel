@@ -49,11 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.184.2.el8_10
-%define tarfile_release 553.184.1.el8_10
+%define pkgrelease 553.185.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.184.2%{?dist}
+%define specrelease 553.185.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -461,7 +460,7 @@ BuildRequires: xmlto
 BuildRequires: asciidoc
 %endif
 
-Source0: linux-%{specversion}-%{tarfile_release}.tar.xz
+Source0: linux-%{specversion}-%{pkgrelease}.tar.xz
 
 Source9: x509.genkey
 
@@ -1140,9 +1139,9 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n %{name}-%{specversion}-%{tarfile_release} -c
-cp -v %{SOURCE9000} linux-%{specversion}-%{tarfile_release}/certs/rhel.pem
-mv linux-%{specversion}-%{tarfile_release} linux-%{KVERREL}
+%setup -q -n %{name}-%{specversion}-%{pkgrelease} -c
+cp -v %{SOURCE9000} linux-%{specversion}-%{pkgrelease}/certs/rhel.pem
+mv linux-%{specversion}-%{pkgrelease} linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 
@@ -2808,11 +2807,8 @@ fi
 #
 #
 %changelog
-* Fri Nov 06 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.184.2
+* Wed Nov 11 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.185.1
 - net: lock the socket in sock_gettstamp() {CVE-2026-98276}
-  (upstream 9ed55f3dbef4, adapted from linux-5.10.y 18899e2e4023)
-
-* Wed Nov 04 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.184.1
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
 - megaraid_sas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2823,9 +2819,26 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Nov 04 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.184.1
+* Wed Nov 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.185.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Nov 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.185.1.el8_10]
+- scsi: libiscsi: Validate the task named by a management response (CKI Backport Bot) [RHEL-298434] {CVE-2026-99152}
+- scsi: libiscsi: Validate the ITT reflected in a Reject PDU (CKI Backport Bot) [RHEL-298485] {CVE-2026-99153}
+- s390/boot: Avoid IPL parameter append past command line (CKI Backport Bot) [RHEL-292341] {CVE-2026-98403}
+- ppp: defer channel free to an RCU grace period to fix pppol2tp RX UAF (Abhishek Rawal) [RHEL-237021] {CVE-2026-68398}
+- ALSA: seq: midi: Replace scoped_guard(rcu) with explicit rcu_read_lock (Jaroslav Kysela) [RHEL-282910]
+- ALSA: seq: midi: Serialize input teardown with event_input (Jaroslav Kysela) [RHEL-282910]
+- ALSA: seq: midi: Optimize event_input locking with RCU (Jaroslav Kysela) [RHEL-282910] {CVE-2026-90207}
+- ALSA: seq: midi: Serialize output teardown with event_input (Jaroslav Kysela) [RHEL-282910]
+- ALSA: pcm: Serialize PCM mmap with buffer reallocation to fix page UAF (CKI Backport Bot) [RHEL-276104] {CVE-2026-98116}
+- openvswitch: fix GSO userspace truncation underflow (CKI Backport Bot) [RHEL-263792] {CVE-2026-68123}
+- net: bridge: mcast: fix use-after-free of a master VLAN's multicast context (CKI Backport Bot) [RHEL-258677] {CVE-2026-80842}
+- Bluetooth: mgmt: fix UAF in pair command cancellation (CKI Backport Bot) [RHEL-254633] {CVE-2026-74510}
+- net/smc: Fix build errors after TCP ULP revert (Jan Polensky) [RHEL-227557] {CVE-2026-46330}
+- libsubcmd: Fix use-after-free for realloc(..., 0) (Jan Polensky) [RHEL-227557] {CVE-2026-46330}
+- Revert "net/smc: Introduce TCP ULP support" (Jan Polensky) [RHEL-227557] {CVE-2026-46330}
 
 * Wed Nov 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.184.1.el8_10]
 - net/smc: fix UAF in smc_cdc_rx_handler() by pinning the socket (Jan Polensky) [RHEL-298266] {CVE-2026-64541}
