@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.185.1.el8_10
+%define pkgrelease 553.186.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.185.1%{?dist}
+%define specrelease 553.186.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2807,7 +2807,7 @@ fi
 #
 #
 %changelog
-* Wed Nov 11 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.185.1
+* Wed Nov 11 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.186.1
 - net: lock the socket in sock_gettstamp() {CVE-2026-98276}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2819,9 +2819,26 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Nov 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.185.1
+* Wed Nov 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.186.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Nov 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.186.1.el8_10]
+- net/smc: protect clcsock lifetime in smc_getname (CKI Backport Bot) [RHEL-303989] {CVE-2026-99032}
+- scsi: st: Fix use-after-free race between st_remove() and st_open() (CKI Backport Bot) [RHEL-303904] {CVE-2026-99156}
+- gfs2: Minor error message improvement (Andreas Gruenbacher) [RHEL-298310]
+- gfs2: Don't BUG during a withdraw (Andreas Gruenbacher) [RHEL-298310]
+- gfs2: Move state2str (Andreas Gruenbacher) [RHEL-298310]
+- drm/amdkfd: fix SMI event cross-process information leak (Anusha Srivatsa) [RHEL-287311] {CVE-2026-97422}
+- drm/amdgpu: fix buffer overflow during vBIOS update (CKI Backport Bot) [RHEL-278271] {CVE-2026-97425}
+- drm/amdgpu: Bound GPIO I2C table entry count from VBIOS (CKI Backport Bot) [RHEL-278259] {CVE-2026-97493}
+- drm/amdgpu/atombios: drop empty function (CKI Backport Bot) [RHEL-278259] {CVE-2026-97493}
+- drm/amdkfd: Check bounds on allocate_doorbell (CKI Backport Bot) [RHEL-278229] {CVE-2026-97495}
+- drm/amdgpu: validate and share PSP fw_pri_buf copies via psp_copy_fw (CKI Backport Bot) [RHEL-278226] {CVE-2026-97494}
+- drm/amdkfd: Check bounds for allocate_sdma_queue restore_sdma_id (CKI Backport Bot) [RHEL-278208] {CVE-2026-97497}
+- drm/amd/pm: bound pp_dpm_set_pp_table() memcpy (CKI Backport Bot) [RHEL-278186] {CVE-2026-97427}
+- drm/amdkfd: hold event_mutex while checkpointing CRIU events (CKI Backport Bot) [RHEL-273848] {CVE-2026-74446}
+- xfs, iomap: limit individual ioend chain lengths in writeback (Brian Foster) [RHEL-258946]
 
 * Mon Nov 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.185.1.el8_10]
 - scsi: libiscsi: Validate the task named by a management response (CKI Backport Bot) [RHEL-298434] {CVE-2026-99152}
