@@ -355,6 +355,18 @@ unsigned int cpumask_next_wrap(int n, const struct cpumask *src)
 }
 
 /**
+ * cpumask_random - get random cpu in *src.
+ * @src: cpumask pointer
+ *
+ * Return: random set bit, or >= nr_cpu_ids if @src is empty.
+ */
+static __always_inline
+unsigned int cpumask_random(const struct cpumask *src)
+{
+	return find_random_bit(cpumask_bits(src), nr_cpu_ids);
+}
+
+/**
  * for_each_cpu - iterate over every cpu in a mask
  * @cpu: the (optionally unsigned) integer iterator
  * @mask: the cpumask pointer
@@ -607,22 +619,6 @@ static __always_inline void cpumask_clear_cpu(int cpu, struct cpumask *dstp)
 static __always_inline void __cpumask_clear_cpu(int cpu, struct cpumask *dstp)
 {
 	__clear_bit(cpumask_check(cpu), cpumask_bits(dstp));
-}
-
-/**
- * cpumask_assign_cpu - assign a cpu in a cpumask
- * @cpu: cpu number (< nr_cpu_ids)
- * @dstp: the cpumask pointer
- * @bool: the value to assign
- */
-static __always_inline void cpumask_assign_cpu(int cpu, struct cpumask *dstp, bool value)
-{
-	assign_bit(cpumask_check(cpu), cpumask_bits(dstp), value);
-}
-
-static __always_inline void __cpumask_assign_cpu(int cpu, struct cpumask *dstp, bool value)
-{
-	__assign_bit(cpumask_check(cpu), cpumask_bits(dstp), value);
 }
 
 /**
@@ -1013,6 +1009,7 @@ static __always_inline unsigned int cpumask_size(void)
 
 #define this_cpu_cpumask_var_ptr(x)	this_cpu_read(x)
 #define __cpumask_var_read_mostly	__read_mostly
+#define CPUMASK_VAR_NULL		NULL
 
 bool alloc_cpumask_var_node(cpumask_var_t *mask, gfp_t flags, int node);
 
@@ -1059,6 +1056,7 @@ static __always_inline bool cpumask_available(cpumask_var_t mask)
 
 #define this_cpu_cpumask_var_ptr(x) this_cpu_ptr(x)
 #define __cpumask_var_read_mostly
+#define CPUMASK_VAR_NULL {}
 
 static __always_inline bool alloc_cpumask_var(cpumask_var_t *mask, gfp_t flags)
 {
@@ -1141,6 +1139,9 @@ void init_cpu_online(const struct cpumask *src);
 
 #define assign_cpu(cpu, mask, val)	\
 	assign_bit(cpumask_check(cpu), cpumask_bits(mask), (val))
+
+#define __assign_cpu(cpu, mask, val)	\
+	__assign_bit(cpumask_check(cpu), cpumask_bits(mask), (val))
 
 #define set_cpu_possible(cpu, possible)	assign_cpu((cpu), &__cpu_possible_mask, (possible))
 #define set_cpu_enabled(cpu, enabled)	assign_cpu((cpu), &__cpu_enabled_mask, (enabled))

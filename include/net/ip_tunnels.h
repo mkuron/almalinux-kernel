@@ -17,6 +17,7 @@
 #include <net/rtnetlink.h>
 #include <net/lwtunnel.h>
 #include <net/dst_cache.h>
+#include <net/netdev_lock.h>
 
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ipv6.h>
@@ -370,17 +371,26 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
 	fl4->flowi4_flags = flow_flags;
 }
 
-int ip_tunnel_init(struct net_device *dev);
+int __ip_tunnel_init(struct net_device *dev);
+#define ip_tunnel_init(DEV)			\
+({						\
+	struct net_device *__dev = (DEV);	\
+	int __res = __ip_tunnel_init(__dev);	\
+						\
+	if (!__res)				\
+		netdev_lockdep_set_classes(__dev);\
+	__res;					\
+})
+
 void ip_tunnel_uninit(struct net_device *dev);
 void  ip_tunnel_dellink(struct net_device *dev, struct list_head *head);
 struct net *ip_tunnel_get_link_net(const struct net_device *dev);
 int ip_tunnel_get_iflink(const struct net_device *dev);
 int ip_tunnel_init_net(struct net *net, unsigned int ip_tnl_net_id,
 		       struct rtnl_link_ops *ops, char *devname);
-
-void ip_tunnel_delete_nets(struct list_head *list_net, unsigned int id,
-			   struct rtnl_link_ops *ops,
-			   struct list_head *dev_to_kill);
+void ip_tunnel_delete_net(struct net *net, unsigned int id,
+			  struct rtnl_link_ops *ops,
+			  struct list_head *dev_to_kill);
 
 void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
 		    const struct iphdr *tnl_params, const u8 protocol);
@@ -407,8 +417,9 @@ int ip_tunnel_rcv(struct ip_tunnel *tunnel, struct sk_buff *skb,
 		  bool log_ecn_error);
 int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
 			 struct ip_tunnel_parm_kern *p, __u32 fwmark);
-int ip_tunnel_newlink(struct net_device *dev, struct nlattr *tb[],
-		      struct ip_tunnel_parm_kern *p, __u32 fwmark);
+int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
+		      __u32 fwmark);
 void ip_tunnel_setup(struct net_device *dev, unsigned int net_id);
 
 bool ip_tunnel_netlink_encap_parms(struct nlattr *data[],

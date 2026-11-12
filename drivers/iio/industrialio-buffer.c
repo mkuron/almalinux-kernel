@@ -1160,7 +1160,7 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
 	int ret;
 
 	indio_dev->active_scan_mask = config->scan_mask;
-	indio_dev->scan_timestamp = config->scan_timestamp;
+	ACCESS_PRIVATE(indio_dev, scan_timestamp) = config->scan_timestamp;
 	indio_dev->scan_bytes = config->scan_bytes;
 	ACCESS_PRIVATE(indio_dev, scan_timestamp_offset) = config->scan_timestamp_offset;
 	iio_dev_opaque->currentmode = config->mode;
@@ -1587,9 +1587,7 @@ static void iio_buffer_dmabuf_release(struct kref *ref)
 	struct iio_buffer *buffer = priv->buffer;
 	struct dma_buf *dmabuf = attach->dmabuf;
 
-	dma_resv_lock(dmabuf->resv, NULL);
-	dma_buf_unmap_attachment(attach, priv->sgt, priv->dir);
-	dma_resv_unlock(dmabuf->resv);
+	dma_buf_unmap_attachment_unlocked(attach, priv->sgt, priv->dir);
 
 	buffer->access->detach_dmabuf(buffer, priv->block);
 
@@ -1647,19 +1645,28 @@ static int iio_dma_resv_lock(struct dma_buf *dmabuf, bool nonblock)
 	return 0;
 }
 
+static struct device *iio_buffer_get_dma_dev(const struct iio_dev *indio_dev,
+					     struct iio_buffer *buffer)
+{
+	if (buffer->access->get_dma_dev)
+		return buffer->access->get_dma_dev(buffer);
+
+	return indio_dev->dev.parent;
+}
+
 static struct dma_buf_attachment *
 iio_buffer_find_attachment(struct iio_dev_buffer_pair *ib,
 			   struct dma_buf *dmabuf, bool nonblock)
 {
-	struct device *dev = ib->indio_dev->dev.parent;
 	struct iio_buffer *buffer = ib->buffer;
+	struct device *dma_dev = iio_buffer_get_dma_dev(ib->indio_dev, buffer);
 	struct dma_buf_attachment *attach = NULL;
 	struct iio_dmabuf_priv *priv;
 
 	guard(mutex)(&buffer->dmabufs_mutex);
 
 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
-		if (priv->attach->dev == dev
+		if (priv->attach->dev == dma_dev
 		    && priv->attach->dmabuf == dmabuf) {
 			attach = priv->attach;
 			break;
@@ -1677,6 +1684,7 @@ static int iio_buffer_attach_dmabuf(struct iio_dev_buffer_pair *ib,
 {
 	struct iio_dev *indio_dev = ib->indio_dev;
 	struct iio_buffer *buffer = ib->buffer;
+	struct device *dma_dev = iio_buffer_get_dma_dev(indio_dev, buffer);
 	struct dma_buf_attachment *attach;
 	struct iio_dmabuf_priv *priv, *each;
 	struct dma_buf *dmabuf;
@@ -1703,7 +1711,7 @@ static int iio_buffer_attach_dmabuf(struct iio_dev_buffer_pair *ib,
 		goto err_free_priv;
 	}
 
-	attach = dma_buf_attach(dmabuf, indio_dev->dev.parent);
+	attach = dma_buf_attach(dmabuf, dma_dev);
 	if (IS_ERR(attach)) {
 		err = PTR_ERR(attach);
 		goto err_dmabuf_put;
@@ -1743,7 +1751,7 @@ static int iio_buffer_attach_dmabuf(struct iio_dev_buffer_pair *ib,
 	 * combo. If we do, refuse to attach.
 	 */
 	list_for_each_entry(each, &buffer->dmabufs, entry) {
-		if (each->attach->dev == indio_dev->dev.parent
+		if (each->attach->dev == dma_dev
 		    && each->attach->dmabuf == dmabuf) {
 			/*
 			 * We unlocked the reservation object, so going through
@@ -1782,6 +1790,7 @@ static int iio_buffer_detach_dmabuf(struct iio_dev_buffer_pair *ib,
 {
 	struct iio_buffer *buffer = ib->buffer;
 	struct iio_dev *indio_dev = ib->indio_dev;
+	struct device *dma_dev = iio_buffer_get_dma_dev(indio_dev, buffer);
 	struct iio_dmabuf_priv *priv;
 	struct dma_buf *dmabuf;
 	int dmabuf_fd, ret = -EPERM;
@@ -1796,7 +1805,7 @@ static int iio_buffer_detach_dmabuf(struct iio_dev_buffer_pair *ib,
 	guard(mutex)(&buffer->dmabufs_mutex);
 
 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
-		if (priv->attach->dev == indio_dev->dev.parent
+		if (priv->attach->dev == dma_dev
 		    && priv->attach->dmabuf == dmabuf) {
 			list_del(&priv->entry);
 
@@ -2397,6 +2406,9 @@ static int iio_push_to_buffer(struct iio_buffer *buffer, const void *data)
  * iio_push_to_buffers() - push to a registered buffer.
  * @indio_dev:		iio_dev structure for device.
  * @data:		Full scan.
+ *
+ * Context: Any context.
+ * Return: 0 on success, negative error code on failure.
  */
 int iio_push_to_buffers(struct iio_dev *indio_dev, const void *data)
 {
@@ -2426,6 +2438,9 @@ EXPORT_SYMBOL_GPL(iio_push_to_buffers);
  * not require space for the timestamp, or 8 byte alignment of data.
  * It does however require an allocation on first call and additional
  * copies on all calls, so should be avoided if possible.
+ *
+ * Context: May sleep.
+ * Return: 0 on success, negative error code on failure.
  */
 int iio_push_to_buffers_with_ts_unaligned(struct iio_dev *indio_dev,
 					  const void *data,
@@ -2433,6 +2448,8 @@ int iio_push_to_buffers_with_ts_unaligned(struct iio_dev *indio_dev,
 					  s64 timestamp)
 {
 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+
+	might_sleep();
 
 	/*
 	 * Conservative estimate - we can always safely copy the minimum

@@ -15,8 +15,8 @@ static int autofs_dir_symlink(struct mnt_idmap *, struct inode *,
 			      struct dentry *, const char *);
 static int autofs_dir_unlink(struct inode *, struct dentry *);
 static int autofs_dir_rmdir(struct inode *, struct dentry *);
-static int autofs_dir_mkdir(struct mnt_idmap *, struct inode *,
-			    struct dentry *, umode_t);
+static struct dentry *autofs_dir_mkdir(struct mnt_idmap *, struct inode *,
+				       struct dentry *, umode_t);
 static long autofs_root_ioctl(struct file *, unsigned int, unsigned long);
 #ifdef CONFIG_COMPAT
 static long autofs_root_compat_ioctl(struct file *,
@@ -340,6 +340,14 @@ static struct vfsmount *autofs_d_automount(struct path *path)
 	/* The daemon never triggers a mount. */
 	if (autofs_oz_mode(sbi))
 		return NULL;
+
+	/* Refuse to trigger mount if current namespace is not the owner
+	 * and the mount is propagation private.
+	 */
+	if (sbi->mnt_ns_id != current->nsproxy->mnt_ns->seq) {
+		if (vfsmount_to_propagation_flags(path->mnt) & MS_PRIVATE)
+			return ERR_PTR(-EPERM);
+	}
 
 	/*
 	 * If an expire request is pending everyone must wait.
@@ -720,9 +728,9 @@ static int autofs_dir_rmdir(struct inode *dir, struct dentry *dentry)
 	return 0;
 }
 
-static int autofs_dir_mkdir(struct mnt_idmap *idmap,
-			    struct inode *dir, struct dentry *dentry,
-			    umode_t mode)
+static struct dentry *autofs_dir_mkdir(struct mnt_idmap *idmap,
+				       struct inode *dir, struct dentry *dentry,
+				       umode_t mode)
 {
 	struct autofs_sb_info *sbi = autofs_sbi(dir->i_sb);
 	struct autofs_info *ino = autofs_dentry_ino(dentry);
@@ -739,7 +747,7 @@ static int autofs_dir_mkdir(struct mnt_idmap *idmap,
 
 	inode = autofs_get_inode(dir->i_sb, S_IFDIR | mode);
 	if (!inode)
-		return -ENOMEM;
+		return ERR_PTR(-ENOMEM);
 	d_add(dentry, inode);
 
 	if (sbi->version < 5)
@@ -751,7 +759,7 @@ static int autofs_dir_mkdir(struct mnt_idmap *idmap,
 	inc_nlink(dir);
 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
 
-	return 0;
+	return NULL;
 }
 
 /* Get/set timeout ioctl() operation */

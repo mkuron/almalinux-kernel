@@ -289,6 +289,7 @@ static void batch_clear(struct pfn_batch *batch)
 	batch->end = 0;
 	batch->pfns[0] = 0;
 	batch->npfns[0] = 0;
+	batch->kind = 0;
 }
 
 /*
@@ -1077,7 +1078,7 @@ static int pfn_reader_user_update_pinned(struct pfn_reader_user *user,
 }
 
 struct pfn_reader_dmabuf {
-	struct dma_buf_phys_vec phys;
+	struct phys_vec phys;
 	unsigned long start_offset;
 };
 
@@ -1460,7 +1461,7 @@ static struct dma_buf_attach_ops iopt_dmabuf_attach_revoke_ops = {
  */
 static int
 sym_vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
-				 struct dma_buf_phys_vec *phys)
+				 struct phys_vec *phys)
 {
 	typeof(&vfio_pci_dma_buf_iommufd_map) fn;
 	int rc;
@@ -1649,10 +1650,6 @@ void iopt_release_pages(struct kref *kref)
 	WARN_ON(!RB_EMPTY_ROOT(&pages->domains_itree.rb_root));
 	WARN_ON(pages->npinned);
 	WARN_ON(!xa_empty(&pages->pinned_pfns));
-	mmdrop(pages->source_mm);
-	mutex_destroy(&pages->mutex);
-	put_task_struct(pages->source_task);
-	free_uid(pages->source_user);
 	if (iopt_is_dmabuf(pages) && pages->dmabuf.attach) {
 		struct dma_buf *dmabuf = pages->dmabuf.attach->dmabuf;
 
@@ -1662,6 +1659,10 @@ void iopt_release_pages(struct kref *kref)
 	} else if (pages->type == IOPT_ADDRESS_FILE) {
 		fput(pages->file);
 	}
+	mmdrop(pages->source_mm);
+	mutex_destroy(&pages->mutex);
+	put_task_struct(pages->source_task);
+	free_uid(pages->source_user);
 	kfree(pages);
 }
 

@@ -25,11 +25,11 @@ static void hci_cmd_sync_complete(struct hci_dev *hdev, u8 result, u16 opcode,
 {
 	bt_dev_dbg(hdev, "result 0x%2.2x", result);
 
-	if (hdev->req_status != HCI_REQ_PEND)
+	if (READ_ONCE(hdev->req_status) != HCI_REQ_PEND)
 		return;
 
 	hdev->req_result = result;
-	hdev->req_status = HCI_REQ_DONE;
+	WRITE_ONCE(hdev->req_status, HCI_REQ_DONE);
 
 	/* Free the request command so it is not used as response */
 	kfree_skb(hdev->req_skb);
@@ -167,20 +167,20 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
 
 	hci_cmd_sync_add(&req, opcode, plen, param, event, sk);
 
-	hdev->req_status = HCI_REQ_PEND;
+	WRITE_ONCE(hdev->req_status, HCI_REQ_PEND);
 
 	err = hci_req_sync_run(&req);
 	if (err < 0)
 		return ERR_PTR(err);
 
 	err = wait_event_interruptible_timeout(hdev->req_wait_q,
-					       hdev->req_status != HCI_REQ_PEND,
+					       READ_ONCE(hdev->req_status) != HCI_REQ_PEND,
 					       timeout);
 
 	if (err == -ERESTARTSYS)
 		return ERR_PTR(-EINTR);
 
-	switch (hdev->req_status) {
+	switch (READ_ONCE(hdev->req_status)) {
 	case HCI_REQ_DONE:
 		err = -bt_to_errno(hdev->req_result);
 		break;
@@ -194,7 +194,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
 		break;
 	}
 
-	hdev->req_status = 0;
+	WRITE_ONCE(hdev->req_status, 0);
 	hdev->req_result = 0;
 	skb = hdev->req_rsp;
 	hdev->req_rsp = NULL;
@@ -665,9 +665,9 @@ void hci_cmd_sync_cancel(struct hci_dev *hdev, int err)
 {
 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
 
-	if (hdev->req_status == HCI_REQ_PEND) {
+	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
 		hdev->req_result = err;
-		hdev->req_status = HCI_REQ_CANCELED;
+		WRITE_ONCE(hdev->req_status, HCI_REQ_CANCELED);
 
 		queue_work(hdev->workqueue, &hdev->cmd_sync_cancel_work);
 	}
@@ -683,12 +683,12 @@ void hci_cmd_sync_cancel_sync(struct hci_dev *hdev, int err)
 {
 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
 
-	if (hdev->req_status == HCI_REQ_PEND) {
+	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
 		/* req_result is __u32 so error must be positive to be properly
 		 * propagated.
 		 */
 		hdev->req_result = err < 0 ? -err : err;
-		hdev->req_status = HCI_REQ_CANCELED;
+		WRITE_ONCE(hdev->req_status, HCI_REQ_CANCELED);
 
 		wake_up_interruptible(&hdev->req_wait_q);
 	}
@@ -801,8 +801,15 @@ int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
 		return -ENETDOWN;
 
 	/* If on cmd_sync_work then run immediately otherwise queue */
-	if (current_work() == &hdev->cmd_sync_work)
-		return func(hdev, data);
+	if (current_work() == &hdev->cmd_sync_work) {
+		int err;
+
+		err = func(hdev, data);
+		if (destroy)
+			destroy(hdev, data, err);
+
+		return 0;
+	}
 
 	return hci_cmd_sync_submit(hdev, func, data, destroy);
 }
@@ -818,7 +825,7 @@ int hci_cmd_sync_run_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
 			  void *data, hci_cmd_sync_work_destroy_t destroy)
 {
 	if (hci_cmd_sync_lookup_entry(hdev, func, data, destroy))
-		return 0;
+		return -EEXIST;
 
 	return hci_cmd_sync_run(hdev, func, data, destroy);
 }
@@ -1047,13 +1054,18 @@ static int hci_set_random_addr_sync(struct hci_dev *hdev, bdaddr_t *rpa)
 	 * In this kind of scenario skip the update and let the random
 	 * address be updated at the next cycle.
 	 */
+	rcu_read_lock();
+
 	if (bacmp(&hdev->random_addr, BDADDR_ANY) &&
 	    (hci_dev_test_flag(hdev, HCI_LE_ADV) ||
 	    hci_lookup_le_connect(hdev))) {
 		bt_dev_dbg(hdev, "Deferring random address update");
 		hci_dev_set_flag(hdev, HCI_RPA_EXPIRED);
+		rcu_read_unlock();
 		return 0;
 	}
+
+	rcu_read_unlock();
 
 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_RANDOM_ADDR,
 				     6, rpa, HCI_CMD_TIMEOUT);
@@ -2640,11 +2652,16 @@ static int hci_pause_addr_resolution(struct hci_dev *hdev)
 	/* Cannot disable addr resolution if scanning is enabled or
 	 * when initiating an LE connection.
 	 */
+	rcu_read_lock();
+
 	if (hci_dev_test_flag(hdev, HCI_LE_SCAN) ||
 	    hci_lookup_le_connect(hdev)) {
+		rcu_read_unlock();
 		bt_dev_err(hdev, "Command not allowed when scan/LE connect");
 		return -EPERM;
 	}
+
+	rcu_read_unlock();
 
 	/* Cannot disable addr resolution if advertising is enabled. */
 	err = hci_pause_advertising_sync(hdev);
@@ -2783,6 +2800,8 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
 	if (hci_dev_test_flag(hdev, HCI_PA_SYNC)) {
 		struct hci_conn *conn;
 
+		rcu_read_lock();
+
 		conn = hci_conn_hash_lookup_create_pa_sync(hdev);
 		if (conn) {
 			struct conn_params pa;
@@ -2791,6 +2810,8 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
 
 			bacpy(&pa.addr, &conn->dst);
 			pa.addr_type = conn->dst_type;
+
+			rcu_read_unlock();
 
 			/* Clear first since there could be addresses left
 			 * behind.
@@ -2801,6 +2822,8 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
 			err = hci_le_add_accept_list_sync(hdev, &pa,
 							  &num_entries);
 			goto done;
+		} else {
+			rcu_read_unlock();
 		}
 	}
 
@@ -2811,16 +2834,21 @@ static u8 hci_update_accept_list_sync(struct hci_dev *hdev)
 	 * the controller.
 	 */
 	list_for_each_entry_safe(b, t, &hdev->le_accept_list, list) {
-		if (hci_conn_hash_lookup_le(hdev, &b->bdaddr, b->bdaddr_type))
-			continue;
+		rcu_read_lock();
 
-		/* Pointers not dereferenced, no locks needed */
+		if (hci_conn_hash_lookup_le(hdev, &b->bdaddr, b->bdaddr_type)) {
+			rcu_read_unlock();
+			continue;
+		}
+
 		pend_conn = hci_pend_le_action_lookup(&hdev->pend_le_conns,
 						      &b->bdaddr,
 						      b->bdaddr_type);
 		pend_report = hci_pend_le_action_lookup(&hdev->pend_le_reports,
 							&b->bdaddr,
 							b->bdaddr_type);
+
+		rcu_read_unlock();
 
 		/* If the device is not likely to connect or report,
 		 * remove it from the acceptlist.
@@ -2948,13 +2976,15 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
 		if (sent) {
 			struct hci_conn *conn;
 
+			rcu_read_lock();
+
 			conn = hci_conn_hash_lookup_ba(hdev, PA_LINK,
 						       &sent->bdaddr);
 			if (conn) {
 				struct bt_iso_qos *qos = &conn->iso_qos;
 
-				if (qos->bcast.in.phy & BT_ISO_PHY_1M ||
-				    qos->bcast.in.phy & BT_ISO_PHY_2M) {
+				if (qos->bcast.in.phys & BT_ISO_PHY_1M ||
+				    qos->bcast.in.phys & BT_ISO_PHY_2M) {
 					cp->scanning_phys |= LE_SCAN_PHY_1M;
 					hci_le_scan_phy_params(phy, type,
 							       interval,
@@ -2963,7 +2993,7 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
 					phy++;
 				}
 
-				if (qos->bcast.in.phy & BT_ISO_PHY_CODED) {
+				if (qos->bcast.in.phys & BT_ISO_PHY_CODED) {
 					cp->scanning_phys |= LE_SCAN_PHY_CODED;
 					hci_le_scan_phy_params(phy, type,
 							       interval * 3,
@@ -2972,8 +3002,12 @@ static int hci_le_set_ext_scan_param_sync(struct hci_dev *hdev, u8 type,
 					phy++;
 				}
 
+				rcu_read_unlock();
+
 				if (num_phy)
 					goto done;
+			} else {
+				rcu_read_unlock();
 			}
 		}
 	}
@@ -3224,12 +3258,16 @@ int hci_update_passive_scan_sync(struct hci_dev *hdev)
 		/* If there is at least one pending LE connection, we should
 		 * keep the background scan running.
 		 */
+		bool exists;
 
 		/* If controller is connecting, we should not start scanning
 		 * since some controllers are not able to scan and connect at
 		 * the same time.
 		 */
-		if (hci_lookup_le_connect(hdev))
+		rcu_read_lock();
+		exists = hci_lookup_le_connect(hdev);
+		rcu_read_unlock();
+		if (exists)
 			return 0;
 
 		bt_dev_dbg(hdev, "start background scanning");
@@ -3447,6 +3485,7 @@ int hci_write_fast_connectable_sync(struct hci_dev *hdev, bool enable)
 }
 
 static bool disconnected_accept_list_entries(struct hci_dev *hdev)
+	__must_hold(&hdev->lock)
 {
 	struct bdaddr_list *b;
 
@@ -3487,11 +3526,15 @@ int hci_update_scan_sync(struct hci_dev *hdev)
 	if (hdev->scanning_paused)
 		return 0;
 
+	hci_dev_lock(hdev);
+
 	if (hci_dev_test_flag(hdev, HCI_CONNECTABLE) ||
 	    disconnected_accept_list_entries(hdev))
 		scan = SCAN_PAGE;
 	else
 		scan = SCAN_DISABLED;
+
+	hci_dev_unlock(hdev);
 
 	if (hci_dev_test_flag(hdev, HCI_DISCOVERABLE))
 		scan |= SCAN_INQUIRY;
@@ -4343,6 +4386,10 @@ static int hci_le_set_event_mask_sync(struct hci_dev *hdev)
 	if (ll_privacy_capable(hdev))
 		hdev->conn_flags |= HCI_CONN_FLAG_ADDRESS_RESOLUTION;
 
+	/* Mark PAST if supported */
+	if (past_capable(hdev))
+		hdev->conn_flags |= HCI_CONN_FLAG_PAST;
+
 	/* If the controller supports Extended Scanner Filter
 	 * Policies, enable the corresponding event.
 	 */
@@ -4432,6 +4479,20 @@ static int hci_le_set_event_mask_sync(struct hci_dev *hdev)
 		events[4] |= 0x02;	/* LE BIG Info Advertising Report */
 	}
 
+	if (ll_ext_feature_capable(hdev))
+		events[5] |= BIT(2);
+
+	if (le_cs_capable(hdev)) {
+		/* Channel Sounding events */
+		events[5] |= 0x08;	/* LE CS Read Remote Supported Cap Complete event */
+		events[5] |= 0x10;	/* LE CS Read Remote FAE Table Complete event */
+		events[5] |= 0x20;	/* LE CS Security Enable Complete event */
+		events[5] |= 0x40;	/* LE CS Config Complete event */
+		events[5] |= 0x80;	/* LE CS Procedure Enable Complete event */
+		events[6] |= 0x01;	/* LE CS Subevent Result event */
+		events[6] |= 0x02;	/* LE CS Subevent Result Continue event */
+		events[6] |= 0x04;	/* LE CS Test End Complete event */
+	}
 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EVENT_MASK,
 				     sizeof(events), events, HCI_CMD_TIMEOUT);
 }
@@ -4564,21 +4625,41 @@ static int hci_set_le_support_sync(struct hci_dev *hdev)
 }
 
 /* LE Set Host Feature */
-static int hci_le_set_host_feature_sync(struct hci_dev *hdev)
+static int hci_le_set_host_feature_sync(struct hci_dev *hdev, u8 bit, u8 value)
 {
 	struct hci_cp_le_set_host_feature cp;
-
-	if (!iso_capable(hdev))
-		return 0;
 
 	memset(&cp, 0, sizeof(cp));
 
 	/* Connected Isochronous Channels (Host Support) */
-	cp.bit_number = 32;
-	cp.bit_value = iso_enabled(hdev) ? 0x01 : 0x00;
+	cp.bit_number = bit;
+	cp.bit_value = value;
 
 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_HOST_FEATURE,
 				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
+}
+
+/* Set Host Features, each feature needs to be sent separately since
+ * HCI_OP_LE_SET_HOST_FEATURE doesn't support setting all of them at once.
+ */
+static int hci_le_set_host_features_sync(struct hci_dev *hdev)
+{
+	int err;
+
+	if (cis_capable(hdev)) {
+		/* Connected Isochronous Channels (Host Support) */
+		err = hci_le_set_host_feature_sync(hdev, 32,
+						   (iso_enabled(hdev) ? 0x01 :
+						    0x00));
+		if (err)
+			return err;
+	}
+
+	if (le_cs_capable(hdev))
+		/* Channel Sounding (Host Support) */
+		err = hci_le_set_host_feature_sync(hdev, 47, 0x01);
+
+	return err;
 }
 
 /* LE Controller init stage 3 command sequence */
@@ -4608,7 +4689,7 @@ static const struct hci_init_stage le_init3[] = {
 	/* HCI_OP_WRITE_LE_HOST_SUPPORTED */
 	HCI_INIT(hci_set_le_support_sync),
 	/* HCI_OP_LE_SET_HOST_FEATURE */
-	HCI_INIT(hci_le_set_host_feature_sync),
+	HCI_INIT(hci_le_set_host_features_sync),
 	{}
 };
 
@@ -5261,6 +5342,12 @@ int hci_dev_close_sync(struct hci_dev *hdev)
 
 	bt_dev_dbg(hdev, "");
 
+	/* Set HCI_DRAIN_WORKQUEUE flag to prevent queuing work during
+	 * reset/close. See hci_cmd_work() and handle_cmd_cnt_and_timer().
+	 */
+	hci_dev_set_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
+	synchronize_rcu();
+
 	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
 		disable_delayed_work(&hdev->power_off);
 		disable_delayed_work(&hdev->ncmd_timer);
@@ -5284,6 +5371,7 @@ int hci_dev_close_sync(struct hci_dev *hdev)
 
 	if (!test_and_clear_bit(HCI_UP, &hdev->flags)) {
 		cancel_delayed_work_sync(&hdev->cmd_timer);
+		hci_dev_clear_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
 		return err;
 	}
 
@@ -5346,6 +5434,10 @@ int hci_dev_close_sync(struct hci_dev *hdev)
 	/* Reset device */
 	skb_queue_purge(&hdev->cmd_q);
 	atomic_set(&hdev->cmd_cnt, 1);
+	hdev->acl_cnt = 0;
+	hdev->sco_cnt = 0;
+	hdev->le_cnt = 0;
+	hdev->iso_cnt = 0;
 	if (hci_test_quirk(hdev, HCI_QUIRK_RESET_ON_CLOSE) &&
 	    !auto_off && !hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
 		set_bit(HCI_INIT, &hdev->flags);
@@ -5383,6 +5475,7 @@ int hci_dev_close_sync(struct hci_dev *hdev)
 	/* Clear flags */
 	hdev->flags &= BIT(HCI_RAW);
 	hci_dev_clear_volatile_flags(hdev);
+	hci_dev_clear_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
 
 	memset(hdev->eir, 0, sizeof(hdev->eir));
 	memset(hdev->dev_class, 0, sizeof(hdev->dev_class));
@@ -6580,6 +6673,8 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
 	if (!hci_dev_test_flag(hdev, HCI_LE_SIMULTANEOUS_ROLES))
 		hci_pause_advertising_sync(hdev);
 
+	hci_dev_lock(hdev);
+
 	params = hci_conn_params_lookup(hdev, &conn->dst, conn->dst_type);
 	if (params) {
 		conn->le_conn_min_interval = params->conn_min_interval;
@@ -6593,6 +6688,8 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
 		conn->le_supv_timeout = hdev->le_supv_timeout;
 	}
 
+	hci_dev_unlock(hdev);
+
 	/* If controller is scanning, we stop it since some controllers are
 	 * not able to scan and connect at the same time. Also set the
 	 * HCI_LE_SCAN_INTERRUPTED flag so that the command complete
@@ -6600,8 +6697,8 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
 	 * state.
 	 */
 	if (hci_dev_test_flag(hdev, HCI_LE_SCAN)) {
-		hci_scan_disable_sync(hdev);
 		hci_dev_set_flag(hdev, HCI_LE_SCAN_INTERRUPTED);
+		hci_scan_disable_sync(hdev);
 	}
 
 	/* Update random address, but set require_privacy to false so
@@ -6903,8 +7000,6 @@ static int hci_acl_create_conn_sync(struct hci_dev *hdev, void *data)
 
 	conn->attempt++;
 
-	conn->link_policy = hdev->link_policy;
-
 	memset(&cp, 0, sizeof(cp));
 	bacpy(&cp.bdaddr, &conn->dst);
 	cp.pscan_rep_mode = 0x02;
@@ -7037,7 +7132,7 @@ static void create_pa_complete(struct hci_dev *hdev, void *data, int err)
 		goto unlock;
 
 	/* Add connection to indicate PA sync error */
-	pa_sync = hci_conn_add_unset(hdev, PA_LINK, BDADDR_ANY,
+	pa_sync = hci_conn_add_unset(hdev, PA_LINK, BDADDR_ANY, 0,
 				     HCI_ROLE_SLAVE);
 
 	if (IS_ERR(pa_sync))
@@ -7052,10 +7147,41 @@ unlock:
 	hci_dev_unlock(hdev);
 }
 
+static int hci_le_past_params_sync(struct hci_dev *hdev, struct hci_conn *conn,
+				   u16 acl_handle, struct bt_iso_qos *qos)
+{
+	struct hci_cp_le_past_params cp;
+	int err;
+
+	memset(&cp, 0, sizeof(cp));
+	cp.handle = cpu_to_le16(acl_handle);
+	/* An HCI_LE_Periodic_Advertising_Sync_Transfer_Received event is sent
+	 * to the Host. HCI_LE_Periodic_Advertising_Report events will be
+	 * enabled with duplicate filtering enabled.
+	 */
+	cp.mode = 0x03;
+	cp.skip = cpu_to_le16(qos->bcast.skip);
+	cp.sync_timeout = cpu_to_le16(qos->bcast.sync_timeout);
+	cp.cte_type = qos->bcast.sync_cte_type;
+
+	/* HCI_LE_PAST_PARAMS command returns a command complete event so it
+	 * cannot wait for HCI_EV_LE_PAST_RECEIVED.
+	 */
+	err = __hci_cmd_sync_status(hdev, HCI_OP_LE_PAST_PARAMS,
+				    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
+	if (err)
+		return err;
+
+	/* Wait for HCI_EV_LE_PAST_RECEIVED event */
+	return __hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
+					HCI_EV_LE_PAST_RECEIVED,
+					conn->conn_timeout, NULL);
+}
+
 static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
 {
 	struct hci_cp_le_pa_create_sync cp;
-	struct hci_conn *conn = data;
+	struct hci_conn *conn = data, *le;
 	struct bt_iso_qos *qos = &conn->iso_qos;
 	int err;
 
@@ -7086,6 +7212,36 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
 	set_bit(HCI_CONN_CREATE_PA_SYNC, &conn->flags);
 
 	hci_update_passive_scan_sync(hdev);
+
+	/* Check if PAST is possible:
+	 *
+	 * 1. Check if an ACL connection with the destination address exists
+	 * 2. Check if that HCI_CONN_FLAG_PAST has been set which indicates that
+	 *    user really intended to use PAST.
+	 */
+	hci_dev_lock(hdev);
+
+	le = hci_conn_hash_lookup_le(hdev, &conn->dst, conn->dst_type);
+	if (le) {
+		struct hci_conn_params *params;
+		hci_conn_flags_t flags = 0;
+		u16 le_handle = le->handle;
+
+		params = hci_conn_params_lookup(hdev, &le->dst, le->dst_type);
+		if (params)
+			flags = params->flags;
+
+		hci_dev_unlock(hdev);
+
+		if (flags & HCI_CONN_FLAG_PAST) {
+			err = hci_le_past_params_sync(hdev, conn, le_handle,
+						      qos);
+			if (!err)
+				goto done;
+		}
+	} else {
+		hci_dev_unlock(hdev);
+	}
 
 	/* SID has not been set listen for HCI_EV_LE_EXT_ADV_REPORT to update
 	 * it.
@@ -7331,9 +7487,6 @@ static int hci_le_read_all_remote_features_sync(struct hci_dev *hdev,
 					sizeof(cp), &cp,
 					HCI_EVT_LE_ALL_REMOTE_FEATURES_COMPLETE,
 					HCI_CMD_TIMEOUT, NULL);
-
-	return __hci_cmd_sync_status(hdev, HCI_OP_LE_READ_ALL_REMOTE_FEATURES,
-				     sizeof(cp), &cp, HCI_CMD_TIMEOUT);
 }
 
 static int hci_le_read_remote_features_sync(struct hci_dev *hdev, void *data)

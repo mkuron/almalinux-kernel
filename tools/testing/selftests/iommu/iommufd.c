@@ -13,9 +13,6 @@
 
 static unsigned long HUGEPAGE_SIZE;
 
-#define MOCK_PAGE_SIZE (PAGE_SIZE / 2)
-#define MOCK_HUGE_PAGE_SIZE (512 * MOCK_PAGE_SIZE)
-
 static unsigned long get_huge_page_size(void)
 {
 	char buf[80];
@@ -559,6 +556,21 @@ TEST_F(iommufd_ioas, alloc_hwpt_nested)
 					 1, &num_inv);
 		assert(!num_inv);
 
+		/* Negative test: entry_len is bounded by PAGE_SIZE */
+		num_inv = 1;
+		test_err_hwpt_invalidate(EINVAL, nested_hwpt_id[0], inv_reqs,
+					 IOMMU_HWPT_INVALIDATE_DATA_SELFTEST,
+					 PAGE_SIZE + 1, &num_inv);
+		assert(!num_inv);
+
+		/* Negative test: entry_num is bounded */
+#define IOMMU_HWPT_INVALIDATE_ENTRY_NUM_MAX (1U << 19)
+		num_inv = IOMMU_HWPT_INVALIDATE_ENTRY_NUM_MAX + 1;
+		test_err_hwpt_invalidate(EINVAL, nested_hwpt_id[0], inv_reqs,
+					 IOMMU_HWPT_INVALIDATE_DATA_SELFTEST,
+					 sizeof(*inv_reqs), &num_inv);
+		assert(!num_inv);
+
 		/* Negative test: invalid flag is passed */
 		num_inv = 1;
 		inv_reqs[0].flags = 0xffffffff;
@@ -758,9 +770,6 @@ TEST_F(iommufd_ioas, get_hw_info)
 		struct iommu_test_hw_info info;
 		uint64_t trailing_bytes;
 	} buffer_larger;
-	struct iommu_test_hw_info_buffer_smaller {
-		__u32 flags;
-	} buffer_smaller;
 
 	if (self->device_id) {
 		uint8_t max_pasid = 0;
@@ -792,8 +801,9 @@ TEST_F(iommufd_ioas, get_hw_info)
 		 * the fields within the size range still gets updated.
 		 */
 		test_cmd_get_hw_info(self->device_id,
-				     IOMMU_HW_INFO_TYPE_DEFAULT,
-				     &buffer_smaller, sizeof(buffer_smaller));
+				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_exact,
+				     offsetofend(struct iommu_test_hw_info,
+						 flags));
 		test_cmd_get_hw_info_pasid(self->device_id, &max_pasid);
 		ASSERT_EQ(0, max_pasid);
 		if (variant->pasid_capable) {
@@ -2101,6 +2111,12 @@ FIXTURE_VARIANT(iommufd_dirty_tracking)
 
 FIXTURE_SETUP(iommufd_dirty_tracking)
 {
+	struct iommu_option cmd = {
+		.size = sizeof(cmd),
+		.option_id = IOMMU_OPTION_HUGE_PAGES,
+		.op = IOMMU_OPTION_OP_SET,
+		.val64 = 0,
+	};
 	size_t mmap_buffer_size;
 	unsigned long size;
 	int mmap_flags;
@@ -2109,7 +2125,7 @@ FIXTURE_SETUP(iommufd_dirty_tracking)
 
 	if (variant->buffer_size < MOCK_PAGE_SIZE) {
 		SKIP(return,
-		     "Skipping buffer_size=%lu, less than MOCK_PAGE_SIZE=%lu",
+		     "Skipping buffer_size=%lu, less than MOCK_PAGE_SIZE=%u",
 		     variant->buffer_size, MOCK_PAGE_SIZE);
 	}
 
@@ -2157,16 +2173,18 @@ FIXTURE_SETUP(iommufd_dirty_tracking)
 	assert((uintptr_t)self->bitmap % PAGE_SIZE == 0);
 
 	test_ioctl_ioas_alloc(&self->ioas_id);
-	/* Enable 1M mock IOMMU hugepages */
-	if (variant->hugepages) {
-		test_cmd_mock_domain_flags(self->ioas_id,
-					   MOCK_FLAGS_DEVICE_HUGE_IOVA,
-					   &self->stdev_id, &self->hwpt_id,
-					   &self->idev_id);
-	} else {
-		test_cmd_mock_domain(self->ioas_id, &self->stdev_id,
-				     &self->hwpt_id, &self->idev_id);
-	}
+
+	/*
+	 * For dirty testing it is important that the page size fed into
+	 * the iommu page tables matches the size the dirty logic
+	 * expects, or set_dirty can touch too much stuff.
+	 */
+	cmd.object_id = self->ioas_id;
+	if (!variant->hugepages)
+		ASSERT_EQ(0, ioctl(self->fd, IOMMU_OPTION, &cmd));
+
+	test_cmd_mock_domain(self->ioas_id, &self->stdev_id, &self->hwpt_id,
+			     &self->idev_id);
 }
 
 FIXTURE_TEARDOWN(iommufd_dirty_tracking)
@@ -2291,18 +2309,23 @@ TEST_F(iommufd_dirty_tracking, device_dirty_capability)
 TEST_F(iommufd_dirty_tracking, get_dirty_bitmap)
 {
 	uint32_t page_size = MOCK_PAGE_SIZE;
+	uint32_t ioas_id = self->ioas_id;
 	uint32_t hwpt_id;
-	uint32_t ioas_id;
 
 	if (variant->hugepages)
 		page_size = MOCK_HUGE_PAGE_SIZE;
 
-	test_ioctl_ioas_alloc(&ioas_id);
 	test_ioctl_ioas_map_fixed_id(ioas_id, self->buffer,
 				     variant->buffer_size, MOCK_APERTURE_START);
 
-	test_cmd_hwpt_alloc(self->idev_id, ioas_id,
-			    IOMMU_HWPT_ALLOC_DIRTY_TRACKING, &hwpt_id);
+	if (variant->hugepages)
+		test_cmd_hwpt_alloc_iommupt(self->idev_id, ioas_id,
+					    IOMMU_HWPT_ALLOC_DIRTY_TRACKING,
+					    MOCK_IOMMUPT_HUGE, &hwpt_id);
+	else
+		test_cmd_hwpt_alloc_iommupt(self->idev_id, ioas_id,
+					    IOMMU_HWPT_ALLOC_DIRTY_TRACKING,
+					    MOCK_IOMMUPT_DEFAULT, &hwpt_id);
 
 	test_cmd_set_dirty_tracking(hwpt_id, true);
 
@@ -2328,18 +2351,24 @@ TEST_F(iommufd_dirty_tracking, get_dirty_bitmap)
 TEST_F(iommufd_dirty_tracking, get_dirty_bitmap_no_clear)
 {
 	uint32_t page_size = MOCK_PAGE_SIZE;
+	uint32_t ioas_id = self->ioas_id;
 	uint32_t hwpt_id;
-	uint32_t ioas_id;
 
 	if (variant->hugepages)
 		page_size = MOCK_HUGE_PAGE_SIZE;
 
-	test_ioctl_ioas_alloc(&ioas_id);
 	test_ioctl_ioas_map_fixed_id(ioas_id, self->buffer,
 				     variant->buffer_size, MOCK_APERTURE_START);
 
-	test_cmd_hwpt_alloc(self->idev_id, ioas_id,
-			    IOMMU_HWPT_ALLOC_DIRTY_TRACKING, &hwpt_id);
+
+	if (variant->hugepages)
+		test_cmd_hwpt_alloc_iommupt(self->idev_id, ioas_id,
+					    IOMMU_HWPT_ALLOC_DIRTY_TRACKING,
+					    MOCK_IOMMUPT_HUGE, &hwpt_id);
+	else
+		test_cmd_hwpt_alloc_iommupt(self->idev_id, ioas_id,
+					    IOMMU_HWPT_ALLOC_DIRTY_TRACKING,
+					    MOCK_IOMMUPT_DEFAULT, &hwpt_id);
 
 	test_cmd_set_dirty_tracking(hwpt_id, true);
 
@@ -2681,6 +2710,8 @@ TEST_F(vfio_compat_mock_domain, map)
 	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_MAP_DMA, &map_cmd));
 	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_UNMAP_DMA, &unmap_cmd));
 	ASSERT_EQ(BUFFER_SIZE, unmap_cmd.size);
+	/* Unmap of empty is success */
+	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_UNMAP_DMA, &unmap_cmd));
 
 	/* UNMAP_FLAG_ALL requires 0 iova/size */
 	ASSERT_EQ(0, ioctl(self->fd, VFIO_IOMMU_MAP_DMA, &map_cmd));
@@ -2937,22 +2968,54 @@ TEST_F(iommufd_viommu, vdevice_alloc)
 	uint32_t veventq_id;
 	uint32_t veventq_fd;
 	int prev_seq = -1;
+	size_t hdr_size = sizeof(struct iommufd_vevent_header);
+	char vbuf[64];
 
 	if (dev_id) {
 		/* Must allocate vdevice before attaching to a nested hwpt */
 		test_err_mock_domain_replace(ENOENT, self->stdev_id,
 					     self->nested_hwpt_id);
 
+		/* Test depth lower and upper bounds (mirrors kernel cap) */
+#define VEVENTQ_MAX_DEPTH (1U << 19)
+		test_err_veventq_alloc(EINVAL, viommu_id,
+				       IOMMU_VEVENTQ_TYPE_SELFTEST, 0, NULL,
+				       NULL);
+		test_err_veventq_alloc(EINVAL, viommu_id,
+				       IOMMU_VEVENTQ_TYPE_SELFTEST,
+				       VEVENTQ_MAX_DEPTH + 1, NULL, NULL);
+		test_cmd_veventq_alloc(viommu_id, IOMMU_VEVENTQ_TYPE_SELFTEST,
+				       VEVENTQ_MAX_DEPTH, &veventq_id,
+				       &veventq_fd);
+		close(veventq_fd);
+		test_ioctl_destroy(veventq_id);
+
 		/* Allocate a vEVENTQ with veventq_depth=2 */
 		test_cmd_veventq_alloc(viommu_id, IOMMU_VEVENTQ_TYPE_SELFTEST,
-				       &veventq_id, &veventq_fd);
+				       2, &veventq_id, &veventq_fd);
 		test_err_veventq_alloc(EEXIST, viommu_id,
-				       IOMMU_VEVENTQ_TYPE_SELFTEST, NULL, NULL);
+				       IOMMU_VEVENTQ_TYPE_SELFTEST, 2, NULL,
+				       NULL);
+
+		/* Invalid read counts on an empty vEVENTQ */
+		ASSERT_EQ(-1, read(veventq_fd, vbuf, 0));
+		ASSERT_EQ(EINVAL, errno);
+		ASSERT_EQ(-1, read(veventq_fd, vbuf, hdr_size - 1));
+		ASSERT_EQ(EINVAL, errno);
+
 		/* Set vdev_id to 0x99, unset it, and set to 0x88 */
 		test_cmd_vdevice_alloc(viommu_id, dev_id, 0x99, &vdev_id);
 		test_cmd_mock_domain_replace(self->stdev_id,
 					     self->nested_hwpt_id);
 		test_cmd_trigger_vevents(dev_id, 1);
+
+		/* Invalid read counts on a non-empty vEVENTQ */
+		ASSERT_EQ(-1, read(veventq_fd, vbuf, 0));
+		ASSERT_EQ(EINVAL, errno);
+		/* header fits but the event's payload doesn't */
+		ASSERT_EQ(-1, read(veventq_fd, vbuf, hdr_size));
+		ASSERT_EQ(EINVAL, errno);
+
 		test_cmd_read_vevents(veventq_fd, 1, 0x99, &prev_seq);
 		test_err_vdevice_alloc(EEXIST, viommu_id, dev_id, 0x99,
 				       &vdev_id);

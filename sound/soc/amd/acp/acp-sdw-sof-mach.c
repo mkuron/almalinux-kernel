@@ -220,13 +220,14 @@ static int create_sdw_dailink(struct snd_soc_card *card,
 
 static int create_sdw_dailinks(struct snd_soc_card *card,
 			       struct snd_soc_dai_link **dai_links, int *be_id,
-			       struct asoc_sdw_dailink *sof_dais,
+			       struct asoc_sdw_dailink *sof_dais, int num_dais,
 			       struct snd_soc_codec_conf **codec_conf)
 {
+	int i;
 	int ret;
 
 	/* generate DAI links by each sdw link */
-	while (sof_dais->initialised) {
+	for (i = 0; i < num_dais && sof_dais->initialised; i++) {
 		int current_be_id = 0;
 
 		ret = create_sdw_dailink(card, sof_dais, dai_links,
@@ -270,8 +271,6 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 	int sdw_be_num = 0, dmic_num = 0;
 	struct asoc_sdw_mc_private *ctx = snd_soc_card_get_drvdata(card);
 	struct snd_soc_acpi_mach_params *mach_params = &mach->mach_params;
-	struct asoc_sdw_endpoint *sof_ends __free(kfree) = NULL;
-	struct asoc_sdw_dailink *sof_dais __free(kfree) = NULL;
 	struct snd_soc_aux_dev *sof_aux;
 	struct snd_soc_codec_conf *codec_conf;
 	struct snd_soc_dai_link *dai_links;
@@ -289,12 +288,14 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 	}
 
 	/* One per DAI link, worst case is a DAI link for every endpoint */
-	sof_dais = kcalloc(num_ends, sizeof(*sof_dais), GFP_KERNEL);
+	struct asoc_sdw_dailink *sof_dais __free(kfree) =
+		kzalloc_objs(*sof_dais, num_ends);
 	if (!sof_dais)
 		return -ENOMEM;
 
 	/* One per endpoint, ie. each DAI on each codec/amp */
-	sof_ends = kcalloc(num_ends, sizeof(*sof_ends), GFP_KERNEL);
+	struct asoc_sdw_endpoint *sof_ends __free(kfree) =
+		kzalloc_objs(*sof_ends, num_ends);
 	if (!sof_ends)
 		return -ENOMEM;
 
@@ -334,7 +335,7 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
 	/* SDW */
 	if (sdw_be_num) {
 		ret = create_sdw_dailinks(card, &dai_links, &be_id,
-					  sof_dais, &codec_conf);
+					  sof_dais, num_ends, &codec_conf);
 		if (ret)
 			return ret;
 	}

@@ -398,7 +398,7 @@ static int ice_alloc_tstamp_ring(struct ice_tx_ring *tx_ring)
 	struct ice_tstamp_ring *tstamp_ring;
 
 	/* allocate with kzalloc(), free with kfree_rcu() */
-	tstamp_ring = kzalloc(sizeof(*tstamp_ring), GFP_KERNEL);
+	tstamp_ring = kzalloc_obj(*tstamp_ring);
 	if (!tstamp_ring)
 		return -ENOMEM;
 
@@ -2169,9 +2169,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
 
 	/* record the location of the first descriptor for this packet */
 	first = &tx_ring->tx_buf[tx_ring->next_to_use];
-
-	if (unlikely(ipv6_hopopt_jumbo_remove(skb)))
-		goto out_drop;
 
 	count = ice_xmit_desc_count(skb);
 	if (ice_chk_linearize(skb, count)) {

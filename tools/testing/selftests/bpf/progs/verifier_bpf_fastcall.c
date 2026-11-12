@@ -12,7 +12,7 @@ SEC("raw_tp")
 __arch_x86_64
 __log_level(4) __msg("stack depth 8")
 __xlated("4: r5 = 5")
-__xlated("5: w0 = ")
+__xlated("5: r0 = ")
 __xlated("6: r0 = &(void __percpu *)(r0)")
 __xlated("7: r0 = *(u32 *)(r0 +0)")
 __xlated("8: exit")
@@ -660,19 +660,24 @@ __naked void may_goto_interaction_x86_64(void)
 
 SEC("raw_tp")
 __arch_arm64
-__log_level(4) __msg("stack depth 16")
-/* may_goto counter at -16 */
-__xlated("0: *(u64 *)(r10 -16) =")
-__xlated("1: r1 = 1")
-__xlated("2: call bpf_get_smp_processor_id")
+__log_level(4) __msg("stack depth 24")
+/* may_goto counter at -24 */
+__xlated("0: *(u64 *)(r10 -24) =")
+/* may_goto timestamp at -16 */
+__xlated("1: *(u64 *)(r10 -16) =")
+__xlated("2: r1 = 1")
+__xlated("3: call bpf_get_smp_processor_id")
 /* may_goto expansion starts */
-__xlated("3: r11 = *(u64 *)(r10 -16)")
-__xlated("4: if r11 == 0x0 goto pc+3")
-__xlated("5: r11 -= 1")
-__xlated("6: *(u64 *)(r10 -16) = r11")
+__xlated("4: r11 = *(u64 *)(r10 -24)")
+__xlated("5: if r11 == 0x0 goto pc+6")
+__xlated("6: r11 -= 1")
+__xlated("7: if r11 != 0x0 goto pc+2")
+__xlated("8: r11 = -24")
+__xlated("9: call unknown")
+__xlated("10: *(u64 *)(r10 -24) = r11")
 /* may_goto expansion ends */
-__xlated("7: *(u64 *)(r10 -8) = r1")
-__xlated("8: exit")
+__xlated("11: *(u64 *)(r10 -8) = r1")
+__xlated("12: exit")
 __success
 __naked void may_goto_interaction_arm64(void)
 {
@@ -704,7 +709,7 @@ SEC("raw_tp")
 __arch_x86_64
 __log_level(4) __msg("stack depth 32+0")
 __xlated("2: r1 = 1")
-__xlated("3: w0 =")
+__xlated("3: r0 =")
 __xlated("4: r0 = &(void __percpu *)(r0)")
 __xlated("5: r0 = *(u32 *)(r0 +0)")
 /* bpf_loop params setup */
@@ -753,7 +758,7 @@ __arch_x86_64
 __log_level(4) __msg("stack depth 40+0")
 /* call bpf_get_smp_processor_id */
 __xlated("2: r1 = 42")
-__xlated("3: w0 =")
+__xlated("3: r0 =")
 __xlated("4: r0 = &(void __percpu *)(r0)")
 __xlated("5: r0 = *(u32 *)(r0 +0)")
 /* call bpf_get_prandom_u32 */

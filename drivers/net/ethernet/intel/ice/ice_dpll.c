@@ -3643,7 +3643,7 @@ static int ice_dpll_pin_notify(struct notifier_block *nb, unsigned long action,
 	if (info->src_clock_id == pin->pf->dplls.clock_id)
 		return NOTIFY_DONE;
 
-	work = kzalloc(sizeof(*work), GFP_KERNEL);
+	work = kzalloc_obj(*work);
 	if (!work)
 		return NOTIFY_DONE;
 
@@ -4674,7 +4674,7 @@ static int ice_dpll_init_info_e825c(struct ice_pf *pf)
 	dt->mode = DPLL_MODE_MANUAL;
 	dt->dpll_idx = pf->ptp.port.port_num;
 
-	d->inputs = kcalloc(d->num_inputs, sizeof(*d->inputs), GFP_KERNEL);
+	d->inputs = kzalloc_objs(*d->inputs, d->num_inputs);
 	if (!d->inputs)
 		return -ENOMEM;
 

@@ -17,6 +17,7 @@
 #include <linux/rh_kabi.h>
 
 #include <linux/cache.h>
+#include <linux/futex_types.h>
 #include <linux/irqflags_types.h>
 #include <linux/smp_types.h>
 #include <linux/pid_types.h>
@@ -62,7 +63,6 @@ struct bpf_net_context;
 struct capture_control;
 struct cfs_rq;
 struct fs_struct;
-struct futex_pi_state;
 struct io_context;
 struct io_uring_task;
 struct mempolicy;
@@ -74,7 +74,6 @@ struct pid_namespace;
 struct pipe_inode_info;
 struct rcu_node;
 struct reclaim_state;
-struct robust_list_head;
 struct root_domain;
 struct rq;
 struct sched_attr;
@@ -573,6 +572,7 @@ struct sched_entity {
 	u64				deadline;
 	u64				min_vruntime;
 	u64				min_slice;
+	u64				max_slice;
 
 	struct list_head		group_node;
 	unsigned char			on_rq;
@@ -639,8 +639,8 @@ struct sched_rt_entity {
 #endif
 } __randomize_layout;
 
-typedef bool (*dl_server_has_tasks_f)(struct sched_dl_entity *);
-typedef struct task_struct *(*dl_server_pick_f)(struct sched_dl_entity *);
+struct rq_flags;
+typedef struct task_struct *(*dl_server_pick_f)(struct sched_dl_entity *, struct rq_flags *rf);
 
 struct sched_dl_entity {
 	struct rb_node			rb_node;
@@ -687,20 +687,22 @@ struct sched_dl_entity {
 	 *
 	 * @dl_server tells if this is a server entity.
 	 *
-	 * @dl_defer tells if this is a deferred or regular server. For
-	 * now only defer server exists.
-	 *
-	 * @dl_defer_armed tells if the deferrable server is waiting
-	 * for the replenishment timer to activate it.
-	 *
 	 * @dl_server_active tells if the dlserver is active(started).
 	 * dlserver is started on first cfs enqueue on an idle runqueue
 	 * and is stopped when a dequeue results in 0 cfs tasks on the
 	 * runqueue. In other words, dlserver is active only when cpu's
 	 * runqueue has atleast one cfs task.
 	 *
+	 * @dl_defer tells if this is a deferred or regular server. For
+	 * now only defer server exists.
+	 *
+	 * @dl_defer_armed tells if the deferrable server is waiting
+	 * for the replenishment timer to activate it.
+	 *
 	 * @dl_defer_running tells if the deferrable server is actually
 	 * running, skipping the defer phase.
+	 *
+	 * @dl_defer_idle tracks idle state
 	 */
 	unsigned int			dl_throttled      : 1;
 	unsigned int			dl_yielded        : 1;
@@ -711,6 +713,7 @@ struct sched_dl_entity {
 	unsigned int			dl_defer	  : 1;
 	unsigned int			dl_defer_armed	  : 1;
 	unsigned int			dl_defer_running  : 1;
+	unsigned int			dl_defer_idle     : 1;
 
 	/*
 	 * Bandwidth enforcement timer. Each -deadline task has its
@@ -732,9 +735,6 @@ struct sched_dl_entity {
 	 * dl_server_update().
 	 *
 	 * @rq the runqueue this server is for
-	 *
-	 * @server_has_tasks() returns true if @server_pick return a
-	 * runnable task.
 	 */
 	struct rq			*rq;
 	dl_server_pick_f		server_pick_task;
@@ -981,9 +981,6 @@ struct task_struct {
 	unsigned			sched_migrated:1;
 	unsigned			sched_task_hot:1;
 
-	/* Save user-dumpable when mm goes away */
-	RH_KABI_FILL_HOLE(unsigned user_dumpable:1)
-
 	/* Force alignment to the next boundary: */
 	unsigned			:0;
 
@@ -1006,6 +1003,9 @@ struct task_struct {
 #ifdef CONFIG_RT_MUTEXES
 	unsigned			sched_rt_mutex:1;
 #endif
+
+	/* Save user-dumpable when mm goes away */
+	unsigned			user_dumpable:1;
 
 	/* Bit to tell TOMOYO we're in execve(): */
 	unsigned			in_execve:1;
@@ -1054,6 +1054,7 @@ struct task_struct {
 	/* delay due to memory thrashing */
 	unsigned                        in_thrashing:1;
 #endif
+	unsigned			in_nf_duplicate:1;
 #ifdef CONFIG_PREEMPT_RT
 	struct netdev_xmit		net_xmit;
 #endif
@@ -1244,9 +1245,14 @@ struct task_struct {
 	struct rt_mutex_waiter		*pi_blocked_on;
 #endif
 
-#ifdef CONFIG_DEBUG_MUTEXES
-	/* Mutex deadlock detection: */
-	struct mutex_waiter		*blocked_on;
+	struct mutex			*blocked_on;	/* lock we're blocked on */
+
+#ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
+	/*
+	 * Encoded lock address causing task block (lower 2 bits = type from
+	 * <linux/hung_task.h>). Accessed via hung_task_*() helpers.
+	 */
+	unsigned long			blocker;
 #endif
 
 #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
@@ -1328,16 +1334,9 @@ struct task_struct {
 	u32				closid;
 	u32				rmid;
 #endif
-#ifdef CONFIG_FUTEX
-	struct robust_list_head __user	*robust_list;
-#ifdef CONFIG_COMPAT
-	struct compat_robust_list_head __user *compat_robust_list;
-#endif
-	struct list_head		pi_state_list;
-	struct futex_pi_state		*pi_state_cache;
-	struct mutex			futex_exit_mutex;
-	unsigned int			futex_state;
-#endif
+
+	struct futex_sched_data		futex;
+
 #ifdef CONFIG_PERF_EVENTS
 	u8				perf_recursion[PERF_NR_CONTEXTS];
 	struct perf_event_context	*perf_event_ctxp;
@@ -1671,6 +1670,19 @@ struct task_struct {
 	 */
 };
 
+#ifdef CONFIG_SCHED_PROXY_EXEC
+DECLARE_STATIC_KEY_TRUE(__sched_proxy_exec);
+static inline bool sched_proxy_exec(void)
+{
+	return static_branch_likely(&__sched_proxy_exec);
+}
+#else
+static inline bool sched_proxy_exec(void)
+{
+	return false;
+}
+#endif
+
 #define TASK_REPORT_IDLE	(TASK_REPORT + 1)
 #define TASK_REPORT_MAX		(TASK_REPORT_IDLE << 1)
 
@@ -1789,6 +1801,11 @@ static __always_inline bool is_percpu_thread(void)
 		(current->nr_cpus_allowed  == 1);
 }
 
+static __always_inline bool is_user_task(struct task_struct *task)
+{
+	return task->mm && !(task->flags & (PF_KTHREAD | PF_USER_WORKER));
+}
+
 /* Per-process atomic flags. */
 #define PFA_NO_NEW_PRIVS		0	/* May not gain new privileges. */
 #define PFA_SPREAD_PAGE			1	/* Spread page cache over cpuset */
@@ -1852,8 +1869,8 @@ extern int task_can_attach(struct task_struct *p);
 extern int dl_bw_alloc(int cpu, u64 dl_bw);
 extern void dl_bw_free(int cpu, u64 dl_bw);
 
-/* do_set_cpus_allowed() - consider using set_cpus_allowed_ptr() instead */
-extern void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask);
+/* set_cpus_allowed_force() - consider using set_cpus_allowed_ptr() instead */
+extern void set_cpus_allowed_force(struct task_struct *p, const struct cpumask *new_mask);
 
 /**
  * set_cpus_allowed_ptr - set CPU affinity mask of a task
@@ -1887,7 +1904,6 @@ static inline int task_nice(const struct task_struct *p)
 extern int can_nice(const struct task_struct *p, const int nice);
 extern int task_curr(const struct task_struct *p);
 extern int idle_cpu(int cpu);
-extern int available_idle_cpu(int cpu);
 extern int sched_setscheduler(struct task_struct *, int, const struct sched_param *);
 extern int sched_setscheduler_nocheck(struct task_struct *, int, const struct sched_param *);
 extern void sched_set_fifo(struct task_struct *p);

@@ -991,13 +991,22 @@ int dump_user_range(struct coredump_params *cprm, unsigned long start,
 {
 	unsigned long addr;
 	struct page *dump_page;
+	int locked, ret;
 
 	dump_page = dump_page_alloc();
 	if (!dump_page)
 		return 0;
 
+	ret = 0;
+	locked = 0;
 	for (addr = start; addr < start + len; addr += PAGE_SIZE) {
 		struct page *page;
+
+		if (!locked) {
+			if (mmap_read_lock_killable(current->mm))
+				goto out;
+			locked = 1;
+		}
 
 		/*
 		 * To avoid having to allocate page tables for virtual address
@@ -1006,20 +1015,38 @@ int dump_user_range(struct coredump_params *cprm, unsigned long start,
 		 * NULL when encountering an empty page table entry that would
 		 * otherwise have been filled with the zero page.
 		 */
-		page = get_dump_page(addr);
+		page = get_dump_page(addr, &locked);
 		if (page) {
+			if (locked) {
+				mmap_read_unlock(current->mm);
+				locked = 0;
+			}
 			int stop = !dump_emit_page(cprm, dump_page_copy(page, dump_page));
 			put_page(page);
-			if (stop) {
-				dump_page_free(dump_page);
-				return 0;
-			}
+			if (stop)
+				goto out;
 		} else {
 			dump_skip(cprm, PAGE_SIZE);
 		}
+
+		if (dump_interrupted())
+			goto out;
+
+		if (!need_resched())
+			continue;
+		if (locked) {
+			mmap_read_unlock(current->mm);
+			locked = 0;
+		}
+		cond_resched();
 	}
+	ret = 1;
+out:
+	if (locked)
+		mmap_read_unlock(current->mm);
+
 	dump_page_free(dump_page);
-	return 1;
+	return ret;
 }
 #endif
 
@@ -1060,7 +1087,7 @@ static int proc_dostring_coredump(const struct ctl_table *table, int write,
 static const unsigned int core_file_note_size_min = CORE_FILE_NOTE_SIZE_DEFAULT;
 static const unsigned int core_file_note_size_max = CORE_FILE_NOTE_SIZE_MAX;
 
-static struct ctl_table coredump_sysctls[] = {
+static const struct ctl_table coredump_sysctls[] = {
 	{
 		.procname	= "core_uses_pid",
 		.data		= &core_uses_pid,

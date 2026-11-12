@@ -2,6 +2,7 @@
 #ifndef _LINUX_FS_H
 #define _LINUX_FS_H
 
+#include <linux/vfsdebug.h>
 #include <linux/linkage.h>
 #include <linux/wait_bit.h>
 #include <linux/kdev_t.h>
@@ -46,6 +47,7 @@
 #include <linux/maple_tree.h>
 #include <linux/rw_hint.h>
 #include <linux/file_ref.h>
+#include <linux/unicode.h>
 
 #include <asm/byteorder.h>
 #include <uapi/linux/fs.h>
@@ -173,13 +175,20 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
 
 #define	FMODE_NOREUSE		((__force fmode_t)(1 << 23))
 
-/* FMODE_* bit 24 */
-
 /* File is embedded in backing_file object */
-#define FMODE_BACKING		((__force fmode_t)(1 << 25))
+#define FMODE_BACKING		((__force fmode_t)(1 << 24))
 
-/* File was opened by fanotify and shouldn't generate fanotify events */
-#define FMODE_NONOTIFY		((__force fmode_t)(1 << 26))
+/*
+ * Together with FMODE_NONOTIFY_PERM defines which fsnotify events shouldn't be
+ * generated (see below)
+ */
+#define FMODE_NONOTIFY		((__force fmode_t)(1 << 25))
+
+/*
+ * Together with FMODE_NONOTIFY defines which fsnotify events shouldn't be
+ * generated (see below)
+ */
+#define FMODE_NONOTIFY_PERM	((__force fmode_t)(1 << 26))
 
 /* File is capable of returning -EAGAIN if I/O will block */
 #define FMODE_NOWAIT		((__force fmode_t)(1 << 27))
@@ -189,6 +198,32 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
 
 /* File does not contribute to nr_files count */
 #define FMODE_NOACCOUNT		((__force fmode_t)(1 << 29))
+
+/*
+ * The two FMODE_NONOTIFY* define which fsnotify events should not be generated
+ * for a file. These are the possible values of (f->f_mode &
+ * FMODE_FSNOTIFY_MASK) and their meaning:
+ *
+ * FMODE_NONOTIFY - suppress all (incl. non-permission) events.
+ * FMODE_NONOTIFY_PERM - suppress permission (incl. pre-content) events.
+ * FMODE_NONOTIFY | FMODE_NONOTIFY_PERM - suppress only pre-content events.
+ */
+#define FMODE_FSNOTIFY_MASK \
+	(FMODE_NONOTIFY | FMODE_NONOTIFY_PERM)
+
+#define FMODE_FSNOTIFY_NONE(mode) \
+	((mode & FMODE_FSNOTIFY_MASK) == FMODE_NONOTIFY)
+#ifdef CONFIG_FANOTIFY_ACCESS_PERMISSIONS
+#define FMODE_FSNOTIFY_PERM(mode) \
+	((mode & FMODE_FSNOTIFY_MASK) == 0 || \
+	 (mode & FMODE_FSNOTIFY_MASK) == (FMODE_NONOTIFY | FMODE_NONOTIFY_PERM))
+#define FMODE_FSNOTIFY_HSM(mode) \
+	((mode & FMODE_FSNOTIFY_MASK) == 0)
+#else
+#define FMODE_FSNOTIFY_PERM(mode)	0
+#define FMODE_FSNOTIFY_HSM(mode)	0
+#endif
+
 
 /*
  * Attribute flags.  These should be or-ed together to figure out what
@@ -402,7 +437,6 @@ static inline bool is_sync_kiocb(struct kiocb *kiocb)
 }
 
 struct address_space_operations {
-	int (*writepage)(struct page *page, struct writeback_control *wbc);
 	int (*read_folio)(struct file *, struct folio *);
 
 	/* Write back some dirty pages from this mapping. */
@@ -413,10 +447,10 @@ struct address_space_operations {
 
 	void (*readahead)(struct readahead_control *);
 
-	int (*write_begin)(struct file *, struct address_space *mapping,
+	int (*write_begin)(const struct kiocb *, struct address_space *mapping,
 				loff_t pos, unsigned len,
 				struct folio **foliop, void **fsdata);
-	int (*write_end)(struct file *, struct address_space *mapping,
+	int (*write_end)(const struct kiocb *, struct address_space *mapping,
 				loff_t pos, unsigned len, unsigned copied,
 				struct folio *folio, void *fsdata);
 
@@ -493,7 +527,7 @@ struct address_space {
 	/*
 	 * On most architectures that alignment is already the case; but
 	 * must be enforced here for CRIS, to let the least significant bit
-	 * of struct page's "mapping" pointer be used for PAGE_MAPPING_ANON.
+	 * of struct folio's "mapping" pointer be used for FOLIO_MAPPING_ANON.
 	 */
 
 /* XArray tags, for tagging dirty and writeback pages in the pagecache. */
@@ -759,6 +793,8 @@ struct inode {
 
 static inline void inode_set_cached_link(struct inode *inode, char *link, int linklen)
 {
+	VFS_WARN_ON_INODE(strlen(link) != linklen, inode);
+	VFS_WARN_ON_INODE(inode->i_opflags & IOP_CACHED_LINK, inode);
 	inode->i_link = link;
 	inode->i_linklen = linklen;
 	inode->i_opflags |= IOP_CACHED_LINK;
@@ -1007,6 +1043,7 @@ struct fown_struct {
  *      and so were/are genuinely "ahead".  Start next readahead when
  *      the first of these pages is accessed.
  * @ra_pages: Maximum size of a readahead request, copied from the bdi.
+ * @order: Preferred folio order used for most recent readahead.
  * @mmap_miss: How many mmap accesses missed in the page cache.
  * @prev_pos: The last byte in the most recent read request.
  *
@@ -1018,7 +1055,8 @@ struct file_ra_state {
 	unsigned int size;
 	unsigned int async_size;
 	unsigned int ra_pages;
-	unsigned int mmap_miss;
+	unsigned short order;
+	unsigned short mmap_miss;
 	loff_t prev_pos;
 };
 
@@ -2144,6 +2182,7 @@ struct file_operations {
 	int (*uring_cmd)(struct io_uring_cmd *ioucmd, unsigned int issue_flags);
 	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,
 				unsigned int poll_flags);
+	int (*mmap_prepare)(struct vm_area_desc *);
 } __randomize_layout;
 
 /* Supports async buffered reads */
@@ -2159,9 +2198,9 @@ struct file_operations {
 /* Treat loff_t as unsigned (e.g., /dev/mem) */
 #define FOP_UNSIGNED_OFFSET	((__force fop_flags_t)(1 << 5))
 /* Supports asynchronous lock callbacks */
-#define FOP_ASYNC_LOCK         ((__force fop_flags_t)(1 << 6))
+#define FOP_ASYNC_LOCK		((__force fop_flags_t)(1 << 6))
 /* File system supports uncached read/write buffered IO */
-#define FOP_DONTCACHE          ((__force fop_flags_t)(1 << 7))
+#define FOP_DONTCACHE		((__force fop_flags_t)(1 << 7))
 
 /* Wrap a directory iterator that needs exclusive inode access */
 int wrap_directory_iterator(struct file *, struct dir_context *,
@@ -2184,8 +2223,8 @@ struct inode_operations {
 	int (*unlink) (struct inode *,struct dentry *);
 	int (*symlink) (struct mnt_idmap *, struct inode *,struct dentry *,
 			const char *);
-	int (*mkdir) (struct mnt_idmap *, struct inode *,struct dentry *,
-		      umode_t);
+	struct dentry *(*mkdir) (struct mnt_idmap *, struct inode *,
+				 struct dentry *, umode_t);
 	int (*rmdir) (struct inode *,struct dentry *);
 	int (*mknod) (struct mnt_idmap *, struct inode *,struct dentry *,
 		      umode_t,dev_t);
@@ -2213,9 +2252,35 @@ struct inode_operations {
 	struct offset_ctx *(*get_offset_ctx)(struct inode *inode);
 } ____cacheline_aligned;
 
+/* Did the driver provide valid mmap hook configuration? */
+static inline bool can_mmap_file(struct file *file)
+{
+	bool has_mmap = file->f_op->mmap;
+	bool has_mmap_prepare = file->f_op->mmap_prepare;
+
+	/* Hooks are mutually exclusive. */
+	if (WARN_ON_ONCE(has_mmap && has_mmap_prepare))
+		return false;
+	if (!has_mmap && !has_mmap_prepare)
+		return false;
+
+	return true;
+}
+
+int compat_vma_mmap_prepare(struct file *file, struct vm_area_struct *vma);
+
 static inline int call_mmap(struct file *file, struct vm_area_struct *vma)
 {
+	if (file->f_op->mmap_prepare)
+		return compat_vma_mmap_prepare(file, vma);
+
 	return file->f_op->mmap(file, vma);
+}
+
+static inline int __call_mmap_prepare(struct file *file,
+		struct vm_area_desc *desc)
+{
+	return file->f_op->mmap_prepare(desc);
 }
 
 extern ssize_t vfs_read(struct file *, char __user *, size_t, loff_t *);
@@ -2852,6 +2917,12 @@ static inline struct filename *getname_maybe_null(const char __user *name, int f
 extern void putname(struct filename *name);
 DEFINE_FREE(putname, struct filename *, if (!IS_ERR_OR_NULL(_T)) putname(_T))
 
+static inline struct filename *refname(struct filename *name)
+{
+	atomic_inc(&name->refcnt);
+	return name;
+}
+
 extern int finish_open(struct file *file, struct dentry *dentry,
 			int (*open)(struct inode *, struct file *));
 extern int finish_no_open(struct file *file, struct dentry *dentry);
@@ -2925,6 +2996,8 @@ extern int __must_check file_fdatawait_range(struct file *file, loff_t lstart,
 extern int __must_check file_check_and_advance_wb_err(struct file *file);
 extern int __must_check file_write_and_wait_range(struct file *file,
 						loff_t start, loff_t end);
+int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
+		loff_t end);
 
 static inline int file_write_and_wait(struct file *file)
 {
@@ -2957,6 +3030,11 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
 				(iocb->ki_flags & IOCB_SYNC) ? 0 : 1);
 		if (ret)
 			return ret;
+	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
+		struct address_space *mapping = iocb->ki_filp->f_mapping;
+
+		filemap_fdatawrite_range_kick(mapping, iocb->ki_pos - count,
+					      iocb->ki_pos - 1);
 	}
 
 	return count;
@@ -3145,6 +3223,7 @@ extern struct file * open_exec(const char *);
 /* fs/dcache.c -- generic fs support functions */
 extern bool is_subdir(struct dentry *, struct dentry *);
 extern bool path_is_under(const struct path *, const struct path *);
+u64 vfsmount_to_propagation_flags(struct vfsmount *mnt);
 
 extern char *file_path(struct file *, char *, int);
 
@@ -3280,11 +3359,13 @@ static inline void remove_inode_hash(struct inode *inode)
 extern void inode_sb_list_add(struct inode *inode);
 extern void inode_add_lru(struct inode *inode);
 
-extern int sb_set_blocksize(struct super_block *, int);
-extern int sb_min_blocksize(struct super_block *, int);
+int sb_set_blocksize(struct super_block *sb, int size);
+int __must_check sb_min_blocksize(struct super_block *sb, int size);
 
-extern int generic_file_mmap(struct file *, struct vm_area_struct *);
-extern int generic_file_readonly_mmap(struct file *, struct vm_area_struct *);
+int generic_file_mmap(struct file *, struct vm_area_struct *);
+int generic_file_mmap_prepare(struct vm_area_desc *desc);
+int generic_file_readonly_mmap(struct file *, struct vm_area_struct *);
+int generic_file_readonly_mmap_prepare(struct vm_area_desc *desc);
 extern ssize_t generic_write_checks(struct kiocb *, struct iov_iter *);
 int generic_write_checks_count(struct kiocb *iocb, loff_t *count);
 extern int generic_write_check_limits(struct file *file, loff_t pos,
@@ -3484,9 +3565,10 @@ extern void simple_recursive_removal(struct dentry *,
 extern int noop_fsync(struct file *, loff_t, loff_t, int);
 extern ssize_t noop_direct_IO(struct kiocb *iocb, struct iov_iter *iter);
 extern int simple_empty(struct dentry *);
-extern int simple_write_begin(struct file *file, struct address_space *mapping,
-			loff_t pos, unsigned len,
-			struct folio **foliop, void **fsdata);
+extern int simple_write_begin(const struct kiocb *iocb,
+			      struct address_space *mapping,
+			      loff_t pos, unsigned len,
+			      struct folio **foliop, void **fsdata);
 extern const struct address_space_operations ram_aops;
 extern int always_delete_dentry(const struct dentry *);
 extern struct inode *alloc_anon_inode(struct super_block *);
@@ -3521,7 +3603,6 @@ struct offset_ctx {
 void simple_offset_init(struct offset_ctx *octx);
 int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry);
 void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry);
-int simple_offset_empty(struct dentry *dentry);
 void simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
 			 struct inode *new_dir, struct dentry *new_dentry);
 int simple_offset_rename_exchange(struct inode *old_dir,
@@ -3543,6 +3624,54 @@ extern int generic_ci_match(const struct inode *parent,
 			    const struct qstr *folded_name,
 			    const u8 *de_name, u32 de_name_len);
 
+#if IS_ENABLED(CONFIG_UNICODE)
+int generic_ci_d_hash(const struct dentry *dentry, struct qstr *str);
+int generic_ci_d_compare(const struct dentry *dentry, unsigned int len,
+			 const char *str, const struct qstr *name);
+
+/**
+ * generic_ci_validate_strict_name - Check if a given name is suitable
+ * for a directory
+ *
+ * This functions checks if the proposed filename is valid for the
+ * parent directory. That means that only valid UTF-8 filenames will be
+ * accepted for casefold directories from filesystems created with the
+ * strict encoding flag.  That also means that any name will be
+ * accepted for directories that doesn't have casefold enabled, or
+ * aren't being strict with the encoding.
+ *
+ * @dir: inode of the directory where the new file will be created
+ * @name: name of the new file
+ *
+ * Return:
+ * * True: if the filename is suitable for this directory. It can be
+ *   true if a given name is not suitable for a strict encoding
+ *   directory, but the directory being used isn't strict
+ * * False if the filename isn't suitable for this directory. This only
+ *   happens when a directory is casefolded and the filesystem is strict
+ *   about its encoding.
+ */
+static inline bool generic_ci_validate_strict_name(struct inode *dir, struct qstr *name)
+{
+	if (!IS_CASEFOLDED(dir) || !sb_has_strict_encoding(dir->i_sb))
+		return true;
+
+	/*
+	 * A casefold dir must have a encoding set, unless the filesystem
+	 * is corrupted
+	 */
+	if (WARN_ON_ONCE(!dir->i_sb->s_encoding))
+		return true;
+
+	return !utf8_validate(dir->i_sb->s_encoding, name);
+}
+#else
+static inline bool generic_ci_validate_strict_name(struct inode *dir, struct qstr *name)
+{
+	return true;
+}
+#endif
+
 static inline bool sb_has_encoding(const struct super_block *sb)
 {
 #if IS_ENABLED(CONFIG_UNICODE)
@@ -3561,9 +3690,14 @@ void setattr_copy(struct mnt_idmap *, struct inode *inode,
 
 extern int file_update_time(struct file *file);
 
+static inline bool file_is_dax(const struct file *file)
+{
+	return file && IS_DAX(file->f_mapping->host);
+}
+
 static inline bool vma_is_dax(const struct vm_area_struct *vma)
 {
-	return vma->vm_file && IS_DAX(vma->vm_file->f_mapping->host);
+	return file_is_dax(vma->vm_file);
 }
 
 static inline bool vma_is_fsdax(struct vm_area_struct *vma)

@@ -472,6 +472,12 @@ static void nvme_ns_head_submit_bio(struct bio *bio)
 	ns = nvme_find_path(head);
 	if (likely(ns)) {
 		bio_set_dev(bio, ns->disk->part0);
+		/*
+		 * Use BIO_REMAPPED to skip bio_check_eod() when this bio
+		 * enters submit_bio_noacct() for the per-path device. The EOD
+		 * check already passed on the multipath head.
+		 */
+		bio_set_flag(bio, BIO_REMAPPED);
 		bio->bi_opf |= REQ_NVME_MPATH;
 		trace_block_bio_remap(bio, disk_devt(ns->head->disk),
 				      bio->bi_iter.bi_sector);
@@ -520,7 +526,7 @@ static int nvme_ns_head_get_unique_id(struct gendisk *disk, u8 id[16],
 
 #ifdef CONFIG_BLK_DEV_ZONED
 static int nvme_ns_head_report_zones(struct gendisk *disk, sector_t sector,
-		unsigned int nr_zones, report_zones_cb cb, void *data)
+		unsigned int nr_zones, struct blk_report_zones_args *args)
 {
 	struct nvme_ns_head *head = disk->private_data;
 	struct nvme_ns *ns;
@@ -529,7 +535,7 @@ static int nvme_ns_head_report_zones(struct gendisk *disk, sector_t sector,
 	srcu_idx = srcu_read_lock(&head->srcu);
 	ns = nvme_find_path(head);
 	if (ns)
-		ret = nvme_ns_report_zones(ns, sector, nr_zones, cb, data);
+		ret = nvme_ns_report_zones(ns, sector, nr_zones, args);
 	srcu_read_unlock(&head->srcu, srcu_idx);
 	return ret;
 }
@@ -578,18 +584,21 @@ static const struct file_operations nvme_ns_head_chr_fops = {
 	.uring_cmd_iopoll = nvme_ns_chr_uring_cmd_iopoll,
 };
 
-static int nvme_add_ns_head_cdev(struct nvme_ns_head *head)
+static void nvme_add_ns_head_cdev(struct nvme_ns_head *head)
 {
-	int ret;
+	char name[32];
 
 	head->cdev_device.parent = &head->subsys->dev;
-	ret = dev_set_name(&head->cdev_device, "ng%dn%d",
-			   head->subsys->instance, head->instance);
-	if (ret)
-		return ret;
-	ret = nvme_cdev_add(&head->cdev, &head->cdev_device,
-			    &nvme_ns_head_chr_fops, THIS_MODULE);
-	return ret;
+	snprintf(name, sizeof(name), "ng%dn%d", head->subsys->instance,
+		 head->instance);
+
+	if (nvme_cdev_add(name, &head->cdev, &head->cdev_device,
+			&nvme_ns_head_chr_fops, THIS_MODULE)) {
+		dev_err(disk_to_dev(head->disk),
+			"Unable to create the %s device\n", name);
+		return;
+	}
+	set_bit(NVME_NSHEAD_CDEV_LIVE, &head->flags);
 }
 
 static void nvme_partition_scan_work(struct work_struct *work)
@@ -633,7 +642,8 @@ static void nvme_remove_head(struct nvme_ns_head *head)
 		 */
 		kblockd_schedule_work(&head->requeue_work);
 
-		nvme_cdev_del(&head->cdev, &head->cdev_device);
+		if (test_and_clear_bit(NVME_NSHEAD_CDEV_LIVE, &head->flags))
+			nvme_cdev_del(&head->cdev, &head->cdev_device);
 		synchronize_srcu(&head->srcu);
 		del_gendisk(head->disk);
 	}
@@ -730,7 +740,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
 			return;
 		}
 		nvme_add_ns_head_cdev(head);
-		kblockd_schedule_work(&head->partition_scan_work);
+		queue_work(nvme_wq, &head->partition_scan_work);
 	}
 
 	nvme_mpath_add_sysfs_link(ns->head);

@@ -13,25 +13,6 @@
 #include <net/netfilter/nf_tables_offload.h>
 #include <net/netfilter/nf_dup_netdev.h>
 
-#define NF_RECURSION_LIMIT	2
-
-static DEFINE_PER_CPU(u8, nf_dup_skb_recursion);
-
-static bool nf_dev_xmit_recursion(void)
-{
-	return unlikely(__this_cpu_read(nf_dup_skb_recursion) > NF_RECURSION_LIMIT);
-}
-
-static void nf_dev_xmit_recursion_inc(void)
-{
-	__this_cpu_inc(nf_dup_skb_recursion);
-}
-
-static void nf_dev_xmit_recursion_dec(void)
-{
-	__this_cpu_dec(nf_dup_skb_recursion);
-}
-
 static void nf_do_netdev_egress(struct sk_buff *skb, struct net_device *dev,
 				enum nf_dev_hooks hook)
 {
@@ -94,13 +75,18 @@ int nft_fwd_dup_netdev_offload(struct nft_offload_ctx *ctx,
 	struct flow_action_entry *entry;
 	struct net_device *dev;
 
-	/* nft_flow_rule_destroy() releases the reference on this device. */
 	dev = dev_get_by_index(ctx->net, oif);
 	if (!dev)
 		return -EOPNOTSUPP;
 
-	entry = &flow->rule->action.entries[ctx->num_actions++];
+	entry = nft_flow_action_entry_next(ctx, flow);
+	if (!entry) {
+		dev_put(dev);
+		return -E2BIG;
+	}
+
 	entry->id = id;
+	/* nft_flow_rule_destroy() releases the reference on this device. */
 	entry->dev = dev;
 
 	return 0;

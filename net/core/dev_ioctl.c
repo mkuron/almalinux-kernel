@@ -66,7 +66,7 @@ int dev_ifconf(struct net *net, struct ifconf __user *uifc)
 	}
 
 	/* Loop over the interfaces, and write an info block for each. */
-	rtnl_lock();
+	rtnl_net_lock(net);
 	for_each_netdev(net, dev) {
 		if (!pos)
 			done = inet_gifconf(dev, NULL, 0, size);
@@ -74,12 +74,12 @@ int dev_ifconf(struct net *net, struct ifconf __user *uifc)
 			done = inet_gifconf(dev, pos + total,
 					    len - total, size);
 		if (done < 0) {
-			rtnl_unlock();
+			rtnl_net_unlock(net);
 			return -EFAULT;
 		}
 		total += done;
 	}
-	rtnl_unlock();
+	rtnl_net_unlock(net);
 
 	return put_user(total, &uifc->ifc_len);
 }
@@ -147,7 +147,7 @@ static int dev_ifsioc_locked(struct net *net, struct ifreq *ifr, unsigned int cm
 
 	switch (cmd) {
 	case SIOCGIFFLAGS:	/* Get interface flags */
-		ifr->ifr_flags = (short) dev_get_flags(dev);
+		ifr->ifr_flags = (short)netif_get_flags(dev);
 		return 0;
 
 	case SIOCGIFMETRIC:	/* Get the metric on the interface
@@ -564,7 +564,7 @@ static int dev_siocwandev(struct net_device *dev, struct if_settings *ifs)
 }
 
 /*
- *	Perform the SIOCxIFxxx calls, inside rtnl_lock()
+ *	Perform the SIOCxIFxxx calls, inside rtnl_net_lock()
  */
 static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
 		      unsigned int cmd)
@@ -612,24 +612,26 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
 		return err;
 
 	case SIOCADDMULTI:
-		if (!ops->ndo_set_rx_mode ||
+		if ((!ops->ndo_set_rx_mode && !ops->ndo_set_rx_mode_async) ||
 		    ifr->ifr_hwaddr.sa_family != AF_UNSPEC)
 			return -EINVAL;
 		if (!netif_device_present(dev))
 			return -ENODEV;
 		netdev_lock_ops(dev);
 		err = dev_mc_add_global(dev, ifr->ifr_hwaddr.sa_data);
+		netif_rx_mode_sync(dev);
 		netdev_unlock_ops(dev);
 		return err;
 
 	case SIOCDELMULTI:
-		if (!ops->ndo_set_rx_mode ||
+		if ((!ops->ndo_set_rx_mode && !ops->ndo_set_rx_mode_async) ||
 		    ifr->ifr_hwaddr.sa_family != AF_UNSPEC)
 			return -EINVAL;
 		if (!netif_device_present(dev))
 			return -ENODEV;
 		netdev_lock_ops(dev);
 		err = dev_mc_del_global(dev, ifr->ifr_hwaddr.sa_data);
+		netif_rx_mode_sync(dev);
 		netdev_unlock_ops(dev);
 		return err;
 
@@ -744,7 +746,8 @@ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
 	switch (cmd) {
 	case SIOCGIFHWADDR:
 		dev_load(net, ifr->ifr_name);
-		ret = dev_get_mac_address(&ifr->ifr_hwaddr, net, ifr->ifr_name);
+		ret = netif_get_mac_address(&ifr->ifr_hwaddr, net,
+					    ifr->ifr_name);
 		if (colon)
 			*colon = ':';
 		return ret;
@@ -788,9 +791,11 @@ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
 		dev_load(net, ifr->ifr_name);
 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
 			return -EPERM;
-		rtnl_lock();
+
+		rtnl_net_lock(net);
 		ret = dev_ifsioc(net, ifr, data, cmd);
-		rtnl_unlock();
+		rtnl_net_unlock(net);
+
 		if (colon)
 			*colon = ':';
 		return ret;
@@ -832,9 +837,11 @@ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
 	case SIOCBONDSLAVEINFOQUERY:
 	case SIOCBONDINFOQUERY:
 		dev_load(net, ifr->ifr_name);
-		rtnl_lock();
+
+		rtnl_net_lock(net);
 		ret = dev_ifsioc(net, ifr, data, cmd);
-		rtnl_unlock();
+		rtnl_net_unlock(net);
+
 		if (need_copyout)
 			*need_copyout = false;
 		return ret;
@@ -857,9 +864,10 @@ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
 		    (cmd >= SIOCDEVPRIVATE &&
 		     cmd <= SIOCDEVPRIVATE + 15)) {
 			dev_load(net, ifr->ifr_name);
-			rtnl_lock();
+
+			rtnl_net_lock(net);
 			ret = dev_ifsioc(net, ifr, data, cmd);
-			rtnl_unlock();
+			rtnl_net_unlock(net);
 			return ret;
 		}
 		return -ENOTTY;

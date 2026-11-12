@@ -320,9 +320,11 @@ static int virt_wifi_disconnect(struct wiphy *wiphy, struct net_device *netdev,
 }
 
 /* Called with the rtnl lock held. */
-static int virt_wifi_get_station(struct wiphy *wiphy, struct net_device *dev,
-				 const u8 *mac, struct station_info *sinfo)
+static int virt_wifi_get_station(struct wiphy *wiphy,
+				 struct wireless_dev *wdev, const u8 *mac,
+				 struct station_info *sinfo)
 {
+	struct net_device *dev = wdev->netdev;
 	struct virt_wifi_netdev_priv *priv = netdev_priv(dev);
 
 	wiphy_debug(wiphy, "get_station\n");
@@ -345,10 +347,10 @@ static int virt_wifi_get_station(struct wiphy *wiphy, struct net_device *dev,
 }
 
 /* Called with the rtnl lock held. */
-static int virt_wifi_dump_station(struct wiphy *wiphy, struct net_device *dev,
+static int virt_wifi_dump_station(struct wiphy *wiphy, struct wireless_dev *wdev,
 				  int idx, u8 *mac, struct station_info *sinfo)
 {
-	struct virt_wifi_netdev_priv *priv = netdev_priv(dev);
+	struct virt_wifi_netdev_priv *priv = netdev_priv(wdev->netdev);
 
 	wiphy_debug(wiphy, "dump_station\n");
 
@@ -356,7 +358,7 @@ static int virt_wifi_dump_station(struct wiphy *wiphy, struct net_device *dev,
 		return -ENOENT;
 
 	ether_addr_copy(mac, fake_router_bssid);
-	return virt_wifi_get_station(wiphy, dev, fake_router_bssid, sinfo);
+	return virt_wifi_get_station(wiphy, wdev, fake_router_bssid, sinfo);
 }
 
 static const struct cfg80211_ops virt_wifi_cfg80211_ops = {
@@ -521,11 +523,13 @@ static rx_handler_result_t virt_wifi_rx_handler(struct sk_buff **pskb)
 }
 
 /* Called with rtnl lock held. */
-static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
-			     struct nlattr *tb[], struct nlattr *data[],
+static int virt_wifi_newlink(struct net_device *dev,
+			     struct rtnl_newlink_params *params,
 			     struct netlink_ext_ack *extack)
 {
 	struct virt_wifi_netdev_priv *priv = netdev_priv(dev);
+	struct net *link_net = rtnl_newlink_link_net(params);
+	struct nlattr **tb = params->tb;
 	int err;
 
 	if (!tb[IFLA_LINK])
@@ -534,7 +538,7 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
 	netif_carrier_off(dev);
 
 	priv->upperdev = dev;
-	priv->lowerdev = __dev_get_by_index(src_net,
+	priv->lowerdev = __dev_get_by_index(link_net,
 					    nla_get_u32(tb[IFLA_LINK]));
 
 	if (!priv->lowerdev)
@@ -555,8 +559,7 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
 	eth_hw_addr_inherit(dev, priv->lowerdev);
 	netif_stacked_transfer_operstate(priv->lowerdev, dev);
 
-	SET_NETDEV_DEV(dev, &priv->lowerdev->dev);
-	dev->ieee80211_ptr = kzalloc(sizeof(*dev->ieee80211_ptr), GFP_KERNEL);
+	dev->ieee80211_ptr = kzalloc_obj(*dev->ieee80211_ptr);
 
 	if (!dev->ieee80211_ptr) {
 		err = -ENOMEM;

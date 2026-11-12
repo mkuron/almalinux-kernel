@@ -73,8 +73,13 @@
  * If no ancestor relationship:
  * arbitrary, since it's serialized on rename_lock
  */
-int sysctl_vfs_cache_pressure __read_mostly = 100;
-EXPORT_SYMBOL_GPL(sysctl_vfs_cache_pressure);
+static int sysctl_vfs_cache_pressure __read_mostly = 100;
+
+unsigned long vfs_pressure_ratio(unsigned long val)
+{
+	return mult_frac(val, sysctl_vfs_cache_pressure, 100);
+}
+EXPORT_SYMBOL_GPL(vfs_pressure_ratio);
 
 __cacheline_aligned_in_smp DEFINE_SEQLOCK(rename_lock);
 
@@ -191,7 +196,7 @@ static int proc_nr_dentry(const struct ctl_table *table, int write, void *buffer
 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
 }
 
-static struct ctl_table fs_dcache_sysctls[] = {
+static const struct ctl_table fs_dcache_sysctls[] = {
 	{
 		.procname	= "dentry-state",
 		.data		= &dentry_stat,
@@ -201,8 +206,20 @@ static struct ctl_table fs_dcache_sysctls[] = {
 	},
 };
 
+static const struct ctl_table vm_dcache_sysctls[] = {
+	{
+		.procname	= "vfs_cache_pressure",
+		.data		= &sysctl_vfs_cache_pressure,
+		.maxlen		= sizeof(sysctl_vfs_cache_pressure),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec_minmax,
+		.extra1		= SYSCTL_ZERO,
+	},
+};
+
 static int __init init_fs_dcache_sysctls(void)
 {
+	register_sysctl_init("vm", vm_dcache_sysctls);
 	register_sysctl_init("fs", fs_dcache_sysctls);
 	return 0;
 }
@@ -3056,6 +3073,29 @@ void d_mark_tmpfile(struct file *file, struct inode *inode)
 	spin_unlock(&dentry->d_parent->d_lock);
 }
 EXPORT_SYMBOL(d_mark_tmpfile);
+
+int d_mark_tmpfile_name(struct file *file, const struct qstr *name)
+{
+	struct dentry *dentry = file->f_path.dentry;
+	char *dname = dentry->d_iname;
+
+	if (unlikely(dname_external(dentry) ||
+		     d_really_is_positive(dentry) ||
+		     !d_unlinked(dentry)))
+		return -EINVAL;
+	if (unlikely(name->len > DNAME_INLINE_LEN - 1))
+		return -ENAMETOOLONG;
+
+	spin_lock(&dentry->d_parent->d_lock);
+	spin_lock_nested(&dentry->d_lock, DENTRY_D_LOCK_NESTED);
+	dentry->d_name.len = name->len;
+	memcpy(dname, name->name, name->len);
+	dname[name->len] = '\0';
+	spin_unlock(&dentry->d_lock);
+	spin_unlock(&dentry->d_parent->d_lock);
+	return 0;
+}
+EXPORT_SYMBOL(d_mark_tmpfile_name);
 
 void d_tmpfile(struct file *file, struct inode *inode)
 {

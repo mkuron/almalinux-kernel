@@ -51,6 +51,7 @@
 #include <asm/fpsimd.h>
 #include <asm/gcs.h>
 #include <asm/mmu_context.h>
+#include <asm/mpam.h>
 #include <asm/mte.h>
 #include <asm/processor.h>
 #include <asm/pointer_auth.h>
@@ -292,6 +293,7 @@ static void flush_gcs(void)
 	current->thread.gcs_base = 0;
 	current->thread.gcs_size = 0;
 	current->thread.gcs_el0_mode = 0;
+	current->thread.gcs_el0_locked = 0;
 	write_sysreg_s(GCSCRE0_EL1_nTR, SYS_GCSCRE0_EL1);
 	write_sysreg_s(0, SYS_GCSPR_EL0);
 }
@@ -737,6 +739,12 @@ struct task_struct *__switch_to(struct task_struct *prev,
 	if (prev->thread.sctlr_user != next->thread.sctlr_user)
 		update_sctlr_el1(next->thread.sctlr_user);
 
+	/*
+	 * MPAM thread switch happens after the DSB to ensure prev's accesses
+	 * use prev's MPAM settings.
+	 */
+	mpam_thread_switch(next);
+
 	/* the actual thread switch */
 	last = cpu_switch_to(prev, next);
 
@@ -903,7 +911,7 @@ long get_tagged_addr_ctrl(struct task_struct *task)
  * disable it for tasks that already opted in to the relaxed ABI.
  */
 
-static struct ctl_table tagged_addr_sysctl_table[] = {
+static const struct ctl_table tagged_addr_sysctl_table[] = {
 	{
 		.procname	= "tagged_addr_disabled",
 		.mode		= 0644,

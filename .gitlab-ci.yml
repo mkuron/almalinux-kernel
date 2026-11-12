@@ -10,11 +10,7 @@ workflow: !reference [.workflow]
   variables:
     srpm_make_target: dist-srpm
     native_tools: 'true'
-    disttag_override: '.el10_2'
-
-.10_automotive_common:
-  variables:
-    disttag_override: '.el10_2iv'
+    disttag_override: '.el10_3'
 
 .trigger_trusted_pipeline:
   extends: [.trusted, .10_common]
@@ -30,8 +26,8 @@ workflow: !reference [.workflow]
   trigger:
     branch: rhel10
   variables:
-    kcidb_tree_name: rhel-10.2
-    builder_image: quay.io/cki/builder-rhel10.2
+    kcidb_tree_name: rhel-10.3
+    builder_image: quay.io/cki/builder-rhel10
 
 .trigger_internal_compat_build_pipeline:
   extends: [.trigger_internal_pipeline, .centos_stream_rhel_internal]
@@ -45,12 +41,16 @@ workflow: !reference [.workflow]
 .gcov:
   extends: [.only_build_and_publish, .coverage]
 
+.with_riscv64:
+  variables:
+    architectures: x86_64 aarch64 s390x ppc64le riscv64
+
 # c10s CI
 c10s_merge_request:
-  extends: [.trigger_trusted_pipeline, .merge_request, .variant_up]
+  extends: [.trigger_trusted_pipeline, .merge_request, .variant_up, .with_riscv64]
 
 c10s_debug_merge_request:
-  extends: [.trigger_trusted_pipeline, .merge_request, .variant_up_debug]
+  extends: [.trigger_trusted_pipeline, .merge_request, .variant_up_debug, .with_riscv64]
 
 c10s_rt_merge_request:
   extends: [.trigger_trusted_pipeline, .merge_request, .variant_rt]
@@ -77,17 +77,17 @@ c10s_64k_debug_merge_request:
   extends: [.trigger_trusted_pipeline, .merge_request, .variant_64k_debug]
 
 c10s_rhel10_compat_merge_request:
-  extends: [.trigger_internal_compat_build_pipeline, .merge_request, .variant_up]
+  extends: [.trigger_internal_compat_build_pipeline, .merge_request, .variant_up, .with_riscv64]
 
 c10s_baseline_coverage_build:
-  extends: [.trigger_trusted_pipeline, .baseline, .variant_up, .gcov]
+  extends: [.trigger_trusted_pipeline, .baseline, .variant_up, .gcov, .with_riscv64]
 
 # RHEL10 CI
 rhel10_merge_request:
-  extends: [.trigger_internal_pipeline, .merge_request, .variant_up]
+  extends: [.trigger_internal_pipeline, .merge_request, .variant_up, .with_riscv64]
 
 rhel10_debug_merge_request:
-  extends: [.trigger_internal_pipeline, .merge_request, .variant_up_debug]
+  extends: [.trigger_internal_pipeline, .merge_request, .variant_up_debug, .with_riscv64]
 
 rhel10_rt_merge_request:
   extends: [.trigger_internal_pipeline, .merge_request, .variant_rt]
@@ -102,10 +102,10 @@ rhel10_rt_64k_debug_merge_request:
   extends: [.trigger_internal_pipeline, .merge_request, .variant_rt_64k_debug]
 
 rhel10_automotive_merge_request:
-  extends: [.trigger_internal_pipeline, .merge_request, .standard_automotive, .rhel10_automotive_build, .10_automotive_common]
+  extends: [.trigger_internal_pipeline, .merge_request, .standard_automotive, .rhel10_automotive_build]
 
 rhel10_automotive_debug_merge_request:
-  extends: [.trigger_internal_pipeline, .merge_request, .standard_automotive_debug, .rhel10_automotive_build, .10_automotive_common]
+  extends: [.trigger_internal_pipeline, .merge_request, .standard_automotive_debug, .rhel10_automotive_build]
 
 rhel10_64k_merge_request:
   extends: [.trigger_internal_pipeline, .merge_request, .variant_64k]
@@ -114,14 +114,14 @@ rhel10_64k_debug_merge_request:
   extends: [.trigger_internal_pipeline, .merge_request, .variant_64k_debug]
 
 rhel10_baseline_coverage_build:
-  extends: [.trigger_internal_pipeline, .baseline, .variant_up, .gcov]
+  extends: [.trigger_internal_pipeline, .baseline, .variant_up, .gcov, .with_riscv64]
 
 # RHEL10 private CI (including RT branches)
 rhel10_merge_request_private:
-  extends: [.trigger_scratch_pipeline, .merge_request, .variant_up]
+  extends: [.trigger_scratch_pipeline, .merge_request, .variant_up, .with_riscv64]
 
 rhel10_debug_merge_request_private:
-  extends: [.trigger_scratch_pipeline, .merge_request, .variant_up_debug]
+  extends: [.trigger_scratch_pipeline, .merge_request, .variant_up_debug, .with_riscv64]
 
 rhel10_rt_merge_request_private:
   extends: [.trigger_scratch_pipeline, .merge_request, .variant_rt]
@@ -136,10 +136,10 @@ rhel10_rt_64k_debug_merge_request_private:
   extends: [.trigger_scratch_pipeline, .merge_request, .variant_rt_64k_debug]
 
 rhel10_automotive_merge_request_private:
-  extends: [.trigger_scratch_pipeline, .merge_request, .standard_automotive, .rhel10_automotive_build, .10_automotive_common]
+  extends: [.trigger_scratch_pipeline, .merge_request, .standard_automotive, .rhel10_automotive_build]
 
 rhel10_automotive_debug_merge_request_private:
-  extends: [.trigger_scratch_pipeline, .merge_request, .standard_automotive_debug, .rhel10_automotive_build, .10_automotive_common]
+  extends: [.trigger_scratch_pipeline, .merge_request, .standard_automotive_debug, .rhel10_automotive_build]
 
 rhel10_64k_merge_request_private:
   extends: [.trigger_scratch_pipeline, .merge_request, .variant_64k]

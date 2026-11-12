@@ -13,7 +13,6 @@
 #include <linux/ptrace.h>
 #include <linux/audit_arch.h>
 #include <uapi/linux/audit.h>
-#include <uapi/linux/netfilter/nf_tables.h>
 #include <uapi/linux/fanotify.h>
 
 #define AUDIT_INO_UNSET ((unsigned long)-1)
@@ -37,6 +36,8 @@ struct audit_watch;
 struct audit_tree;
 struct sk_buff;
 struct kern_ipc_perm;
+struct lsm_id;
+struct lsm_prop;
 
 struct audit_krule {
 	u32			pflags;
@@ -147,6 +148,10 @@ extern unsigned compat_signal_class[];
 #define AUDIT_TTY_ENABLE	BIT(0)
 #define AUDIT_TTY_LOG_PASSWD	BIT(1)
 
+/* bit values for audit_cfg_lsm */
+#define AUDIT_CFG_LSM_SECCTX_SUBJECT	BIT(0)
+#define AUDIT_CFG_LSM_SECCTX_OBJECT	BIT(1)
+
 struct filename;
 
 #define AUDIT_OFF	0
@@ -185,8 +190,12 @@ extern void		    audit_log_path_denied(int type,
 						  const char *operation);
 extern void		    audit_log_lost(const char *message);
 
+extern int audit_log_subj_ctx(struct audit_buffer *ab, struct lsm_prop *prop);
+extern int audit_log_obj_ctx(struct audit_buffer *ab, struct lsm_prop *prop);
 extern int audit_log_task_context(struct audit_buffer *ab);
 extern void audit_log_task_info(struct audit_buffer *ab);
+extern int audit_log_nf_skb(struct audit_buffer *ab,
+			    const struct sk_buff *skb, u8 nfproto);
 
 extern int		    audit_update_lsm_rules(void);
 
@@ -209,6 +218,8 @@ static inline unsigned int audit_get_sessionid(struct task_struct *tsk)
 extern u32 audit_enabled;
 
 extern int audit_signal_info(int sig, struct task_struct *t);
+
+extern void audit_cfg_lsm(const struct lsm_id *lsmid, int flags);
 
 #else /* CONFIG_AUDIT */
 static inline __printf(4, 5)
@@ -245,12 +256,28 @@ static inline void audit_log_key(struct audit_buffer *ab, char *key)
 { }
 static inline void audit_log_path_denied(int type, const char *operation)
 { }
+static inline int audit_log_subj_ctx(struct audit_buffer *ab,
+				     struct lsm_prop *prop)
+{
+	return 0;
+}
+static inline int audit_log_obj_ctx(struct audit_buffer *ab,
+				    struct lsm_prop *prop)
+{
+	return 0;
+}
 static inline int audit_log_task_context(struct audit_buffer *ab)
 {
 	return 0;
 }
 static inline void audit_log_task_info(struct audit_buffer *ab)
 { }
+
+static inline int audit_log_nf_skb(struct audit_buffer *ab,
+				   const struct sk_buff *skb, u8 nfproto)
+{
+	return 0;
+}
 
 static inline kuid_t audit_get_loginuid(struct task_struct *tsk)
 {
@@ -268,6 +295,9 @@ static inline int audit_signal_info(int sig, struct task_struct *t)
 {
 	return 0;
 }
+
+static inline void audit_cfg_lsm(const struct lsm_id *lsmid, int flags)
+{ }
 
 #endif /* CONFIG_AUDIT */
 

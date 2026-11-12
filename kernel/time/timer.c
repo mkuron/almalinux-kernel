@@ -281,7 +281,7 @@ DEFINE_STATIC_KEY_FALSE(timers_migration_enabled);
 
 static void timers_update_migration(void)
 {
-	if (sysctl_timer_migration && tick_nohz_active)
+	if (sysctl_timer_migration && tick_nohz_is_active())
 		static_branch_enable(&timers_migration_enabled);
 	else
 		static_branch_disable(&timers_migration_enabled);
@@ -301,7 +301,7 @@ static int timer_migration_handler(const struct ctl_table *table, int write,
 	return ret;
 }
 
-static struct ctl_table timer_sysctl[] = {
+static const struct ctl_table timer_sysctl[] = {
 	{
 		.procname	= "timer_migration",
 		.data		= &sysctl_timer_migration,

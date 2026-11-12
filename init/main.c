@@ -50,6 +50,7 @@
 #include <linux/writeback.h>
 #include <linux/cpu.h>
 #include <linux/cpuset.h>
+#include <linux/memcontrol.h>
 #include <linux/cgroup.h>
 #include <linux/efi.h>
 #include <linux/tick.h>
@@ -640,15 +641,11 @@ static void __init setup_command_line(char *command_line)
 
 	len = xlen + strlen(boot_command_line) + ilen + 1;
 
-	saved_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
-	if (!saved_command_line)
-		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
+	saved_command_line = memblock_alloc_or_panic(len, SMP_CACHE_BYTES);
 
 	len = xlen + strlen(command_line) + 1;
 
-	static_command_line = memblock_alloc(len, SMP_CACHE_BYTES);
-	if (!static_command_line)
-		panic("%s: Failed to allocate %zu bytes\n", __func__, len);
+	static_command_line = memblock_alloc_or_panic(len, SMP_CACHE_BYTES);
 
 	if (xlen) {
 		/*
@@ -823,7 +820,14 @@ static inline void initcall_debug_enable(void)
 #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
 DEFINE_STATIC_KEY_MAYBE_RO(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
 			   randomize_kstack_offset);
-DEFINE_PER_CPU(u32, kstack_offset);
+DEFINE_PER_CPU(struct rnd_state, kstack_rnd_state);
+
+static int __init random_kstack_init(void)
+{
+	prandom_seed_full_state(&kstack_rnd_state);
+	return 0;
+}
+late_initcall(random_kstack_init);
 
 static int __init early_randomize_kstack_offset(char *buf)
 {
@@ -962,6 +966,7 @@ void start_kernel(void)
 	sort_main_extable();
 	trap_init();
 	mm_core_init();
+	maple_tree_init();
 	poking_init();
 	ftrace_init();
 
@@ -979,7 +984,6 @@ void start_kernel(void)
 		 "Interrupts were enabled *very* early, fixing it\n"))
 		local_irq_disable();
 	radix_tree_init();
-	maple_tree_init();
 
 	/*
 	 * Set up housekeeping before setting up workqueues to allow the unbound
@@ -1094,6 +1098,7 @@ void start_kernel(void)
 	nsfs_init();
 	pidfs_init();
 	cpuset_init();
+	mem_cgroup_init();
 	cgroup_init();
 	taskstats_init_early();
 	delayacct_init();
@@ -1149,16 +1154,10 @@ static int __init initcall_blacklist(char *str)
 		str_entry = strsep(&str, ",");
 		if (str_entry) {
 			pr_debug("blacklisting initcall %s\n", str_entry);
-			entry = memblock_alloc(sizeof(*entry),
+			entry = memblock_alloc_or_panic(sizeof(*entry),
 					       SMP_CACHE_BYTES);
-			if (!entry)
-				panic("%s: Failed to allocate %zu bytes\n",
-				      __func__, sizeof(*entry));
-			entry->buf = memblock_alloc(strlen(str_entry) + 1,
+			entry->buf = memblock_alloc_or_panic(strlen(str_entry) + 1,
 						    SMP_CACHE_BYTES);
-			if (!entry->buf)
-				panic("%s: Failed to allocate %zu bytes\n",
-				      __func__, strlen(str_entry) + 1);
 			strcpy(entry->buf, str_entry);
 			list_add(&entry->next, &blacklisted_initcalls);
 		}

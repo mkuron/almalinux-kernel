@@ -413,13 +413,7 @@ static int dpll_msg_add_ffo(struct sk_buff *msg, struct dpll_pin *pin,
 	struct dpll_ffo_param ffo = { .type = type };
 	int ret;
 
-	/* RHEL: To maintain backward compatibility with older binary modules,
-	 * we must accept a value of zero for .supported_ffo when the type is
-	 * DPLL_FFO_PORT_RXTX_RATE.
-	 */
-	if (!ops->ffo_get ||
-	    !((ops->supported_ffo & BIT(type)) ||
-	      (!ops->supported_ffo && type == DPLL_FFO_PORT_RXTX_RATE)))
+	if (!ops->ffo_get || !(ops->supported_ffo & BIT(type)))
 		return 0;
 	ret = ops->ffo_get(pin, dpll_pin_on_dpll_priv(ref->dpll, pin),
 			   ref->dpll, dpll_priv(ref->dpll), &ffo, extack);

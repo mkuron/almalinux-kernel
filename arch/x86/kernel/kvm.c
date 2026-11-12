@@ -29,6 +29,7 @@
 #include <linux/syscore_ops.h>
 #include <linux/cc_platform.h>
 #include <linux/efi.h>
+#include <linux/kvm_types.h>
 #include <asm/timer.h>
 #include <asm/cpu.h>
 #include <asm/traps.h>
@@ -86,6 +87,7 @@ struct kvm_task_sleep_node {
 	struct swait_queue_head wq;
 	u32 token;
 	int cpu;
+	bool dummy;
 };
 
 static struct kvm_task_sleep_head {
@@ -117,15 +119,26 @@ static bool kvm_async_pf_queue_task(u32 token, struct kvm_task_sleep_node *n)
 	raw_spin_lock(&b->lock);
 	e = _find_apf_task(b, token);
 	if (e) {
-		/* dummy entry exist -> wake up was delivered ahead of PF */
-		hlist_del(&e->link);
+		struct kvm_task_sleep_node *dummy = NULL;
+
+		/*
+		 * The entry can either be a 'dummy' entry (which is put on the
+		 * list when wake-up happens ahead of APF handling completion)
+		 * or a token from another task which should not be touched.
+		 */
+		if (e->dummy) {
+			hlist_del(&e->link);
+			dummy = e;
+		}
+
 		raw_spin_unlock(&b->lock);
-		kfree(e);
+		kfree(dummy);
 		return false;
 	}
 
 	n->token = token;
 	n->cpu = smp_processor_id();
+	n->dummy = false;
 	init_swait_queue_head(&n->wq);
 	hlist_add_head(&n->link, &b->list);
 	raw_spin_unlock(&b->lock);
@@ -160,7 +173,7 @@ void kvm_async_pf_task_wait_schedule(u32 token)
 	}
 	finish_swait(&n.wq, &wait);
 }
-EXPORT_SYMBOL_GPL(kvm_async_pf_task_wait_schedule);
+EXPORT_SYMBOL_FOR_KVM(kvm_async_pf_task_wait_schedule);
 
 static void apf_task_wake_one(struct kvm_task_sleep_node *n)
 {
@@ -228,6 +241,7 @@ again:
 		}
 		dummy->token = token;
 		dummy->cpu = smp_processor_id();
+		dummy->dummy = true;
 		init_swait_queue_head(&dummy->wq);
 		hlist_add_head(&dummy->link, &b->list);
 		dummy = NULL;
@@ -251,7 +265,7 @@ noinstr u32 kvm_read_and_reset_apf_flags(void)
 
 	return flags;
 }
-EXPORT_SYMBOL_GPL(kvm_read_and_reset_apf_flags);
+EXPORT_SYMBOL_FOR_KVM(kvm_read_and_reset_apf_flags);
 
 noinstr bool __kvm_handle_async_pf(struct pt_regs *regs, u32 token)
 {
@@ -836,7 +850,6 @@ static void __init kvm_guest_init(void)
 #ifdef CONFIG_SMP
 	if (pv_tlb_flush_supported()) {
 		pv_ops.mmu.flush_tlb_multi = kvm_flush_tlb_multi;
-		pv_ops.mmu.tlb_remove_table = tlb_remove_table;
 		pr_info("KVM setup pv remote TLB flush\n");
 	}
 

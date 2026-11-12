@@ -42,6 +42,7 @@
 #include <net/dst.h>
 #include <net/mptcp.h>
 #include <net/xfrm.h>
+#include <net/secure_seq.h>
 
 #include <linux/seq_file.h>
 #include <linux/memcontrol.h>
@@ -52,8 +53,6 @@ extern struct inet_hashinfo tcp_hashinfo;
 
 DECLARE_PER_CPU(unsigned int, tcp_orphan_count);
 int tcp_orphan_count_sum(void);
-
-DECLARE_PER_CPU(u32, tcp_tw_isn);
 
 void tcp_time_wait(struct sock *sk, int state, int timeo);
 
@@ -967,10 +966,13 @@ struct tcp_skb_cb {
 	__u32		seq;		/* Starting sequence number	*/
 	__u32		end_seq;	/* SEQ + FIN + SYN + datalen	*/
 	union {
-		/* Note :
+		/* Notes :
+		 *	tcp_tw_isn is used in input path only
+		 *	(isn chosen by tcp_timewait_state_process())
 		 * 	  tcp_gso_segs/size are used in write queue only,
 		 *	  cf tcp_skb_pcount()/tcp_skb_mss()
 		 */
+		u32		tcp_tw_isn;
 		struct {
 			u16	tcp_gso_segs;
 			u16	tcp_gso_size;
@@ -2316,8 +2318,9 @@ struct tcp_request_sock_ops {
 				       struct flowi *fl,
 				       struct request_sock *req,
 				       u32 tw_isn);
-	u32 (*init_seq)(const struct sk_buff *skb);
-	u32 (*init_ts_off)(const struct net *net, const struct sk_buff *skb);
+	union tcp_seq_and_ts_off (*init_seq_and_ts_off)(
+					const struct net *net,
+					const struct sk_buff *skb);
 	int (*send_synack)(const struct sock *sk, struct dst_entry *dst,
 			   struct flowi *fl, struct request_sock *req,
 			   struct tcp_fastopen_cookie *foc,
@@ -2568,7 +2571,7 @@ static inline void tcp_segs_in(struct tcp_sock *tp, const struct sk_buff *skb)
  */
 static inline void tcp_listendrop(const struct sock *sk)
 {
-	atomic_inc(&((struct sock *)sk)->sk_drops);
+	sk_drops_inc((struct sock *)sk);
 	__NET_INC_STATS(sock_net(sk), LINUX_MIB_LISTENDROPS);
 }
 
@@ -2760,9 +2763,9 @@ extern struct static_key_false tcp_have_smc;
 #endif
 
 #if IS_ENABLED(CONFIG_TLS_DEVICE)
-void clean_acked_data_enable(struct inet_connection_sock *icsk,
+void clean_acked_data_enable(struct tcp_sock *tp,
 			     void (*cad)(struct sock *sk, u32 ack_seq));
-void clean_acked_data_disable(struct inet_connection_sock *icsk);
+void clean_acked_data_disable(struct tcp_sock *tp);
 void clean_acked_data_flush(void);
 #endif
 

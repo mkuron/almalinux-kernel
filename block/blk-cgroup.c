@@ -24,6 +24,7 @@
 #include <linux/backing-dev.h>
 #include <linux/slab.h>
 #include <linux/delay.h>
+#include <linux/wait_bit.h>
 #include <linux/atomic.h>
 #include <linux/ctype.h>
 #include <linux/resume_user_mode.h>
@@ -110,12 +111,6 @@ static struct cgroup_subsys_state *blkcg_css(void)
 	return task_css(current, io_cgrp_id);
 }
 
-static bool blkcg_policy_enabled(struct request_queue *q,
-				 const struct blkcg_policy *pol)
-{
-	return pol && test_bit(pol->plid, q->blkcg_pols);
-}
-
 static void blkg_free_workfn(struct work_struct *work)
 {
 	struct blkcg_gq *blkg = container_of(work, struct blkcg_gq,
@@ -141,6 +136,11 @@ static void blkg_free_workfn(struct work_struct *work)
 	spin_unlock_irq(&q->queue_lock);
 	mutex_unlock(&q->blkcg_mutex);
 
+	/*
+	 * Release blkcg css ref only after blkg is removed from q->blkg_list,
+	 * so concurrent iterators won't see a blkg with a freed blkcg.
+	 */
+	css_put(&blkg->blkcg->css);
 	blk_put_queue(q);
 	free_percpu(blkg->iostat_cpu);
 	percpu_ref_exit(&blkg->refcnt);
@@ -169,23 +169,11 @@ static void blkg_free(struct blkcg_gq *blkg)
 static void __blkg_release(struct rcu_head *rcu)
 {
 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
-	struct blkcg *blkcg = blkg->blkcg;
-	int cpu;
 
 #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
 	WARN_ON(!bio_list_empty(&blkg->async_bios));
 #endif
-	/*
-	 * Flush all the non-empty percpu lockless lists before releasing
-	 * us, given these stat belongs to us.
-	 *
-	 * blkg_stat_lock is for serializing blkg stat update
-	 */
-	for_each_possible_cpu(cpu)
-		__blkcg_rstat_flush(blkcg, cpu);
 
-	/* release the blkcg and parent blkg refs this blkg has been holding */
-	css_put(&blkg->blkcg->css);
 	blkg_free(blkg);
 }
 
@@ -200,6 +188,17 @@ static void __blkg_release(struct rcu_head *rcu)
 static void blkg_release(struct percpu_ref *ref)
 {
 	struct blkcg_gq *blkg = container_of(ref, struct blkcg_gq, refcnt);
+	struct blkcg *blkcg = blkg->blkcg;
+	int cpu;
+
+	/*
+	 * Flush all the non-empty percpu lockless lists before releasing
+	 * us, given these stat belongs to us.
+	 *
+	 * blkg_stat_lock is for serializing blkg stat update
+	 */
+	for_each_possible_cpu(cpu)
+		__blkcg_rstat_flush(blkcg, cpu);
 
 	call_rcu(&blkg->rcu_head, __blkg_release);
 }
@@ -318,6 +317,9 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
 		goto out_exit_refcnt;
 	if (!blk_get_queue(disk->queue))
 		goto out_free_iostat;
+	/* blkg holds a reference to blkcg */
+	if (!css_tryget_online(&blkcg->css))
+		goto out_put_queue;
 
 	blkg->q = disk->queue;
 	INIT_LIST_HEAD(&blkg->q_node);
@@ -358,6 +360,8 @@ out_free_pds:
 	while (--i >= 0)
 		if (blkg->pd[i])
 			blkcg_policy[i]->pd_free_fn(blkg->pd[i]);
+	css_put(&blkcg->css);
+out_put_queue:
 	blk_put_queue(disk->queue);
 out_free_iostat:
 	free_percpu(blkg->iostat_cpu);
@@ -386,18 +390,12 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg, struct gendisk *disk,
 		goto err_free_blkg;
 	}
 
-	/* blkg holds a reference to blkcg */
-	if (!css_tryget_online(&blkcg->css)) {
-		ret = -ENODEV;
-		goto err_free_blkg;
-	}
-
 	/* allocate */
 	if (!new_blkg) {
-		new_blkg = blkg_alloc(blkcg, disk, GFP_NOWAIT | __GFP_NOWARN);
+		new_blkg = blkg_alloc(blkcg, disk, GFP_NOWAIT);
 		if (unlikely(!new_blkg)) {
 			ret = -ENOMEM;
-			goto err_put_css;
+			goto err_free_blkg;
 		}
 	}
 	blkg = new_blkg;
@@ -407,7 +405,7 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg, struct gendisk *disk,
 		blkg->parent = blkg_lookup(blkcg_parent(blkcg), disk->queue);
 		if (WARN_ON_ONCE(!blkg->parent)) {
 			ret = -ENODEV;
-			goto err_put_css;
+			goto err_free_blkg;
 		}
 		blkg_get(blkg->parent);
 	}
@@ -447,8 +445,6 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg, struct gendisk *disk,
 	blkg_put(blkg);
 	return ERR_PTR(ret);
 
-err_put_css:
-	css_put(&blkcg->css);
 err_free_blkg:
 	if (new_blkg)
 		blkg_free(new_blkg);
@@ -617,6 +613,8 @@ restart:
 
 	q->root_blkg = NULL;
 	spin_unlock_irq(&q->queue_lock);
+
+	wake_up_var(&q->root_blkg);
 }
 
 static void blkg_iostat_set(struct blkg_iostat *dst, struct blkg_iostat *src)
@@ -659,6 +657,7 @@ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
 	struct blkcg_gq *blkg;
 	int i;
 
+	pr_info_once("blkio.%s is deprecated\n", cftype->name);
 	mutex_lock(&blkcg_pol_mutex);
 	spin_lock_irq(&blkcg->lock);
 
@@ -796,7 +795,7 @@ int blkg_conf_open_bdev(struct blkg_conf_ctx *ctx)
 		return -EINVAL;
 	input = skip_spaces(input);
 
-	bdev = blkdev_get_no_open(MKDEV(major, minor));
+	bdev = blkdev_get_no_open(MKDEV(major, minor), true);
 	if (!bdev)
 		return -ENODEV;
 	if (bdev_is_partition(bdev)) {
@@ -817,8 +816,7 @@ int blkg_conf_open_bdev(struct blkg_conf_ctx *ctx)
 }
 /*
  * Similar to blkg_conf_open_bdev, but additionally freezes the queue,
- * acquires q->elevator_lock, and ensures the correct locking order
- * between q->elevator_lock and q->rq_qos_mutex.
+ * ensures the correct locking order between freeze queue and q->rq_qos_mutex.
  *
  * This function returns negative error on failure. On success it returns
  * memflags which must be saved and later passed to blkg_conf_exit_frozen
@@ -839,13 +837,11 @@ unsigned long __must_check blkg_conf_open_bdev_frozen(struct blkg_conf_ctx *ctx)
 	 * At this point, we haven’t started protecting anything related to QoS,
 	 * so we release q->rq_qos_mutex here, which was first acquired in blkg_
 	 * conf_open_bdev. Later, we re-acquire q->rq_qos_mutex after freezing
-	 * the queue and acquiring q->elevator_lock to maintain the correct
-	 * locking order.
+	 * the queue to maintain the correct locking order.
 	 */
 	mutex_unlock(&ctx->bdev->bd_queue->rq_qos_mutex);
 
 	memflags = blk_mq_freeze_queue(ctx->bdev->bd_queue);
-	mutex_lock(&ctx->bdev->bd_queue->elevator_lock);
 	mutex_lock(&ctx->bdev->bd_queue->rq_qos_mutex);
 
 	return memflags;
@@ -1000,9 +996,8 @@ void blkg_conf_exit(struct blkg_conf_ctx *ctx)
 EXPORT_SYMBOL_GPL(blkg_conf_exit);
 
 /*
- * Similar to blkg_conf_exit, but also unfreezes the queue and releases
- * q->elevator_lock. Should be used when blkg_conf_open_bdev_frozen
- * is used to open the bdev.
+ * Similar to blkg_conf_exit, but also unfreezes the queue. Should be used
+ * when blkg_conf_open_bdev_frozen is used to open the bdev.
  */
 void blkg_conf_exit_frozen(struct blkg_conf_ctx *ctx, unsigned long memflags)
 {
@@ -1010,7 +1005,6 @@ void blkg_conf_exit_frozen(struct blkg_conf_ctx *ctx, unsigned long memflags)
 		struct request_queue *q = ctx->bdev->bd_queue;
 
 		blkg_conf_exit(ctx);
-		mutex_unlock(&q->elevator_lock);
 		blk_mq_unfreeze_queue(q, memflags);
 	}
 }
@@ -1066,8 +1060,8 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
 	/*
 	 * For covering concurrent parent blkg update from blkg_release().
 	 *
-	 * When flushing from cgroup, cgroup_rstat_lock is always held, so
-	 * this lock won't cause contention most of time.
+	 * When flushing from cgroup, the subsystem rstat lock is always held,
+	 * so this lock won't cause contention most of time.
 	 */
 	raw_spin_lock_irqsave(&blkg_stat_lock, flags);
 
@@ -1136,7 +1130,7 @@ static void blkcg_rstat_flush(struct cgroup_subsys_state *css, int cpu)
 /*
  * We source root cgroup stats from the system-wide stats to avoid
  * tracking the same information twice and incurring overhead when no
- * cgroups are defined. For that reason, cgroup_rstat_flush in
+ * cgroups are defined. For that reason, css_rstat_flush in
  * blkcg_print_stat does not actually fill out the iostat in the root
  * cgroup's blkcg_gq.
  *
@@ -1245,7 +1239,7 @@ static int blkcg_print_stat(struct seq_file *sf, void *v)
 	if (!seq_css(sf)->parent)
 		blkcg_fill_root_iostats();
 	else
-		cgroup_rstat_flush(blkcg->css.cgroup);
+		css_rstat_flush(&blkcg->css);
 
 	rcu_read_lock();
 	hlist_for_each_entry_rcu(blkg, &blkcg->blkg_list, blkcg_node) {
@@ -1459,7 +1453,7 @@ blkcg_css_alloc(struct cgroup_subsys_state *parent_css)
 
 	spin_lock_init(&blkcg->lock);
 	refcount_set(&blkcg->online_pin, 1);
-	INIT_RADIX_TREE(&blkcg->blkg_tree, GFP_NOWAIT | __GFP_NOWARN);
+	INIT_RADIX_TREE(&blkcg->blkg_tree, GFP_NOWAIT);
 	INIT_HLIST_HEAD(&blkcg->blkg_list);
 #ifdef CONFIG_CGROUP_WRITEBACK
 	INIT_LIST_HEAD(&blkcg->cgwb_list);
@@ -1507,6 +1501,18 @@ int blkcg_init_disk(struct gendisk *disk)
 	struct request_queue *q = disk->queue;
 	struct blkcg_gq *new_blkg, *blkg;
 	bool preloaded;
+
+	/*
+	 * If the queue is shared across disk rebind (e.g., SCSI), the
+	 * previous disk's blkcg state is cleaned up asynchronously via
+	 * disk_release() -> blkcg_exit_disk(). Wait for that cleanup to
+	 * finish (indicated by root_blkg becoming NULL) before setting up
+	 * new blkcg state. Otherwise, we may overwrite q->root_blkg while
+	 * the old one is still alive, and radix_tree_insert() in
+	 * blkg_create() will fail with -EEXIST because the old entries
+	 * still occupy the same queue id slot in blkcg->blkg_tree.
+	 */
+	wait_var_event(&q->root_blkg, !READ_ONCE(q->root_blkg));
 
 	new_blkg = blkg_alloc(&blkcg_root, disk, GFP_KERNEL);
 	if (!new_blkg)
@@ -1622,7 +1628,7 @@ retry:
 			pd_prealloc = NULL;
 		} else {
 			pd = pol->pd_alloc_fn(disk, blkg->blkcg,
-					      GFP_NOWAIT | __GFP_NOWARN);
+					      GFP_NOWAIT);
 		}
 
 		if (!pd) {
@@ -1816,12 +1822,15 @@ int blkcg_policy_register(struct blkcg_policy *pol)
 	mutex_unlock(&blkcg_pol_mutex);
 
 	/* everything is in place, add intf files for the new policy */
-	if (pol->dfl_cftypes)
+	if (pol->dfl_cftypes == pol->legacy_cftypes) {
+		WARN_ON(cgroup_add_cftypes(&io_cgrp_subsys,
+					   pol->dfl_cftypes));
+	} else {
 		WARN_ON(cgroup_add_dfl_cftypes(&io_cgrp_subsys,
 					       pol->dfl_cftypes));
-	if (pol->legacy_cftypes)
 		WARN_ON(cgroup_add_legacy_cftypes(&io_cgrp_subsys,
 						  pol->legacy_cftypes));
+	}
 	mutex_unlock(&blkcg_pol_register_mutex);
 	return 0;
 
@@ -2232,7 +2241,7 @@ void blk_cgroup_bio_start(struct bio *bio)
 	}
 
 	u64_stats_update_end_irqrestore(&bis->sync, flags);
-	cgroup_rstat_updated(blkcg->css.cgroup, cpu);
+	css_rstat_updated(&blkcg->css, cpu);
 	put_cpu();
 }
 

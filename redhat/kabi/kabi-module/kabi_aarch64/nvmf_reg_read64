@@ -1,3 +1,3 @@
-#2-
-0x4f6ff974	nvmf_reg_read64	drivers/nvme/host/nvme-fabrics	EXPORT_SYMBOL_GPL	
+#3-
+0x68be436b	nvmf_reg_read64	drivers/nvme/host/nvme-fabrics	EXPORT_SYMBOL_GPL	
 

@@ -233,7 +233,7 @@ static struct wwan_device *wwan_create_dev(struct device *parent)
 		goto done_unlock;
 	}
 
-	wwandev = kzalloc(sizeof(*wwandev), GFP_KERNEL);
+	wwandev = kzalloc_obj(*wwandev);
 	if (!wwandev) {
 		wwandev = ERR_PTR(-ENOMEM);
 		ida_free(&wwan_dev_ids, id);
@@ -470,7 +470,7 @@ struct wwan_port *wwan_create_port(struct device *parent,
 		goto error_wwandev_remove;
 	}
 
-	port = kzalloc(sizeof(*port), GFP_KERNEL);
+	port = kzalloc_obj(*port);
 	if (!port) {
 		err = -ENOMEM;
 		ida_free(&minors, minor);
@@ -967,14 +967,17 @@ out:
 	return dev;
 }
 
-static int wwan_rtnl_newlink(struct net *src_net, struct net_device *dev,
-			     struct nlattr *tb[], struct nlattr *data[],
+static int wwan_rtnl_newlink(struct net_device *dev,
+			     struct rtnl_newlink_params *params,
 			     struct netlink_ext_ack *extack)
 {
 	struct wwan_device *wwandev = wwan_dev_get_by_parent(dev->dev.parent);
-	u32 link_id = nla_get_u32(data[IFLA_WWAN_LINK_ID]);
 	struct wwan_netdev_priv *priv = netdev_priv(dev);
+	struct nlattr **data = params->data;
+	u32 link_id;
 	int ret;
+
+	link_id = nla_get_u32(data[IFLA_WWAN_LINK_ID]);
 
 	if (IS_ERR(wwandev))
 		return PTR_ERR(wwandev);
@@ -1061,6 +1064,11 @@ static void wwan_create_default_link(struct wwan_device *wwandev,
 {
 	struct nlattr *tb[IFLA_MAX + 1], *linkinfo[IFLA_INFO_MAX + 1];
 	struct nlattr *data[IFLA_WWAN_MAX + 1];
+	struct rtnl_newlink_params params = {
+		.src_net = &init_net,
+		.tb = tb,
+		.data = data,
+	};
 	struct net_device *dev;
 	struct nlmsghdr *nlh;
 	struct sk_buff *msg;
@@ -1105,7 +1113,7 @@ static void wwan_create_default_link(struct wwan_device *wwandev,
 	if (WARN_ON(IS_ERR(dev)))
 		goto unlock;
 
-	if (WARN_ON(wwan_rtnl_newlink(&init_net, dev, tb, data, NULL))) {
+	if (WARN_ON(wwan_rtnl_newlink(dev, &params, NULL))) {
 		free_netdev(dev);
 		goto unlock;
 	}

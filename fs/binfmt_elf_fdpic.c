@@ -109,7 +109,7 @@ static int is_elf(struct elfhdr *hdr, struct file *file)
 		return 0;
 	if (!elf_check_arch(hdr))
 		return 0;
-	if (!file->f_op->mmap)
+	if (!can_mmap_file(file))
 		return 0;
 	return 1;
 }
@@ -394,6 +394,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
 			goto error;
 		}
 
+		allow_write_access(interpreter);
 		fput(interpreter);
 		interpreter = NULL;
 	}
@@ -465,8 +466,10 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
 	retval = 0;
 
 error:
-	if (interpreter)
+	if (interpreter) {
+		allow_write_access(interpreter);
 		fput(interpreter);
+	}
 	kfree(interpreter_name);
 	kfree(exec_params.phdrs);
 	kfree(exec_params.loadmap);

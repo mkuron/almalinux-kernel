@@ -18,6 +18,7 @@
 #define KMSG_COMPONENT "cpu"
 #define pr_fmt(fmt) KMSG_COMPONENT ": " fmt
 
+#include <linux/cpufeature.h>
 #include <linux/workqueue.h>
 #include <linux/memblock.h>
 #include <linux/export.h>
@@ -561,10 +562,10 @@ int smp_store_status(int cpu)
 	if (__pcpu_sigp_relax(pcpu->address, SIGP_STORE_STATUS_AT_ADDRESS,
 			      pa) != SIGP_CC_ORDER_CODE_ACCEPTED)
 		return -EIO;
-	if (!cpu_has_vx() && !MACHINE_HAS_GS)
+	if (!cpu_has_vx() && !cpu_has_gs())
 		return 0;
 	pa = lc->mcesad & MCESA_ORIGIN_MASK;
-	if (MACHINE_HAS_GS)
+	if (cpu_has_gs())
 		pa |= lc->mcesad & MCESA_LC_MASK;
 	if (__pcpu_sigp_relax(pcpu->address, SIGP_STORE_ADDITIONAL_STATUS,
 			      pa) != SIGP_CC_ORDER_CODE_ACCEPTED)
@@ -611,9 +612,7 @@ void __init smp_save_dump_ipl_cpu(void)
 	if (!dump_available())
 		return;
 	sa = save_area_alloc(true);
-	regs = memblock_alloc(512, 8);
-	if (!sa || !regs)
-		panic("could not allocate memory for boot CPU save area\n");
+	regs = memblock_alloc_or_panic(512, 8);
 	copy_oldmem_kernel(regs, __LC_FPREGS_SAVE_AREA, 512);
 	save_area_add_regs(sa, regs);
 	memblock_free(regs, 512);
@@ -646,8 +645,6 @@ void __init smp_save_dump_secondary_cpus(void)
 		    SIGP_CC_NOT_OPERATIONAL)
 			continue;
 		sa = save_area_alloc(false);
-		if (!sa)
-			panic("could not allocate memory for save area\n");
 		__pcpu_sigp_relax(addr, SIGP_STORE_STATUS_AT_ADDRESS, __pa(page));
 		save_area_add_regs(sa, page);
 		if (cpu_has_vx()) {
@@ -792,10 +789,7 @@ void __init smp_detect_cpus(void)
 	u16 address;
 
 	/* Get CPU information */
-	info = memblock_alloc(sizeof(*info), 8);
-	if (!info)
-		panic("%s: Failed to allocate %zu bytes align=0x%x\n",
-		      __func__, sizeof(*info), 8);
+	info = memblock_alloc_or_panic(sizeof(*info), 8);
 	smp_get_core_info(info, 1);
 	/* Find boot CPU type */
 	if (sclp.has_core_type) {

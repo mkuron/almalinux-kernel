@@ -27,19 +27,33 @@ EXPORT_SYMBOL(cgroup_bpf_enabled_key);
 /*
  * cgroup bpf destruction makes heavy use of work items and there can be a lot
  * of concurrent destructions.  Use a separate workqueue so that cgroup bpf
- * destruction work items don't end up filling up max_active of system_wq
+ * destruction work items don't end up filling up max_active of system_percpu_wq
  * which may lead to deadlock.
  */
 static struct workqueue_struct *cgroup_bpf_destroy_wq;
 
 static int __init cgroup_bpf_wq_init(void)
 {
-	cgroup_bpf_destroy_wq = alloc_workqueue("cgroup_bpf_destroy", 0, 1);
+	cgroup_bpf_destroy_wq = alloc_workqueue("cgroup_bpf_destroy",
+						WQ_PERCPU, 1);
 	if (!cgroup_bpf_destroy_wq)
 		panic("Failed to alloc workqueue for cgroup bpf destroy.\n");
 	return 0;
 }
 core_initcall(cgroup_bpf_wq_init);
+
+static int cgroup_bpf_lifetime_notify(struct notifier_block *nb,
+				      unsigned long action, void *data);
+
+static struct notifier_block cgroup_bpf_lifetime_nb = {
+	.notifier_call = cgroup_bpf_lifetime_notify,
+};
+
+void __init cgroup_bpf_lifetime_notifier_init(void)
+{
+	BUG_ON(blocking_notifier_chain_register(&cgroup_lifetime_notifier,
+						&cgroup_bpf_lifetime_nb));
+}
 
 /* __always_inline is necessary to prevent indirect call through run_prog
  * function pointer.
@@ -58,8 +72,7 @@ bpf_prog_run_array_cg(const struct cgroup_bpf *cgrp,
 	u32 func_ret;
 
 	run_ctx.retval = retval;
-	migrate_disable();
-	rcu_read_lock();
+	rcu_read_lock_dont_migrate();
 	array = rcu_dereference(cgrp->effective[atype]);
 	item = &array->items[0];
 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
@@ -75,8 +88,7 @@ bpf_prog_run_array_cg(const struct cgroup_bpf *cgrp,
 		item++;
 	}
 	bpf_reset_run_ctx(old_run_ctx);
-	rcu_read_unlock();
-	migrate_enable();
+	rcu_read_unlock_migrate();
 	return run_ctx.retval;
 }
 
@@ -206,7 +218,7 @@ bpf_cgroup_atype_find(enum bpf_attach_type attach_type, u32 attach_btf_id)
 }
 #endif /* CONFIG_BPF_LSM */
 
-void cgroup_bpf_offline(struct cgroup *cgrp)
+static void cgroup_bpf_offline(struct cgroup *cgrp)
 {
 	cgroup_get(cgrp);
 	percpu_ref_kill(&cgrp->bpf.refcnt);
@@ -491,7 +503,7 @@ static void activate_effective_progs(struct cgroup *cgrp,
  * cgroup_bpf_inherit() - inherit effective programs from parent
  * @cgrp: the cgroup to modify
  */
-int cgroup_bpf_inherit(struct cgroup *cgrp)
+static int cgroup_bpf_inherit(struct cgroup *cgrp)
 {
 /* has to use marco instead of const int, since compiler thinks
  * that array below is variable length
@@ -532,6 +544,27 @@ cleanup:
 	percpu_ref_exit(&cgrp->bpf.refcnt);
 
 	return -ENOMEM;
+}
+
+static int cgroup_bpf_lifetime_notify(struct notifier_block *nb,
+				      unsigned long action, void *data)
+{
+	struct cgroup *cgrp = data;
+	int ret = 0;
+
+	if (cgrp->root != &cgrp_dfl_root)
+		return NOTIFY_OK;
+
+	switch (action) {
+	case CGROUP_LIFETIME_ONLINE:
+		ret = cgroup_bpf_inherit(cgrp);
+		break;
+	case CGROUP_LIFETIME_OFFLINE:
+		cgroup_bpf_offline(cgrp);
+		break;
+	}
+
+	return notifier_from_errno(ret);
 }
 
 static int update_effective_progs(struct cgroup *cgrp,

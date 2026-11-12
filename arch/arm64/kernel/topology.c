@@ -23,55 +23,6 @@
 #include <asm/cputype.h>
 #include <asm/topology.h>
 
-#ifdef CONFIG_ACPI
-static bool __init acpi_cpu_is_threaded(int cpu)
-{
-	int is_threaded = acpi_pptt_cpu_is_thread(cpu);
-
-	/*
-	 * if the PPTT doesn't have thread information, assume a homogeneous
-	 * machine and return the current CPU's thread state.
-	 */
-	if (is_threaded < 0)
-		is_threaded = read_cpuid_mpidr() & MPIDR_MT_BITMASK;
-
-	return !!is_threaded;
-}
-
-/*
- * Propagate the topology information of the processor_topology_node tree to the
- * cpu_topology array.
- */
-int __init parse_acpi_topology(void)
-{
-	int cpu, topology_id;
-
-	if (acpi_disabled)
-		return 0;
-
-	for_each_possible_cpu(cpu) {
-		topology_id = find_acpi_cpu_topology(cpu, 0);
-		if (topology_id < 0)
-			return topology_id;
-
-		if (acpi_cpu_is_threaded(cpu)) {
-			cpu_topology[cpu].thread_id = topology_id;
-			topology_id = find_acpi_cpu_topology(cpu, 1);
-			cpu_topology[cpu].core_id   = topology_id;
-		} else {
-			cpu_topology[cpu].thread_id  = -1;
-			cpu_topology[cpu].core_id    = topology_id;
-		}
-		topology_id = find_acpi_cpu_topology_cluster(cpu);
-		cpu_topology[cpu].cluster_id = topology_id;
-		topology_id = find_acpi_cpu_topology_package(cpu);
-		cpu_topology[cpu].package_id = topology_id;
-	}
-
-	return 0;
-}
-#endif
-
 #ifdef CONFIG_ARM64_AMU_EXTN
 #define read_corecnt()	read_sysreg_s(SYS_AMEVCNTR0_CORE_EL0)
 #define read_constcnt()	read_sysreg_s(SYS_AMEVCNTR0_CONST_EL0)
@@ -387,16 +338,25 @@ static inline
 int counters_read_on_cpu(int cpu, smp_call_func_t func, u64 *val)
 {
 	/*
-	 * Abort call on counterless CPU or when interrupts are
-	 * disabled - can lead to deadlock in smp sync call.
+	 * Abort call on counterless CPU.
 	 */
 	if (!cpu_has_amu_feat(cpu))
 		return -EOPNOTSUPP;
 
-	if (WARN_ON_ONCE(irqs_disabled()))
-		return -EPERM;
-
-	smp_call_function_single(cpu, func, val, 1);
+	if (irqs_disabled()) {
+		/*
+		 * When IRQs are disabled (tick path: sched_tick ->
+		 * topology_scale_freq_tick or cppc_scale_freq_tick), only local
+		 * CPU counter reads are allowed. Remote CPU counter read would
+		 * require smp_call_function_single() which is unsafe with IRQs
+		 * disabled.
+		 */
+		if (WARN_ON_ONCE(cpu != smp_processor_id()))
+			return -EPERM;
+		func(val);
+	} else {
+		smp_call_function_single(cpu, func, val, 1);
+	}
 
 	return 0;
 }

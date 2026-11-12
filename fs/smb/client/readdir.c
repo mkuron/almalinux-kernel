@@ -12,7 +12,6 @@
 #include <linux/pagemap.h>
 #include <linux/slab.h>
 #include <linux/stat.h>
-#include "cifspdu.h"
 #include "cifsglob.h"
 #include "cifsproto.h"
 #include "cifs_unicode.h"
@@ -143,7 +142,8 @@ retry:
 						fattr->cf_rdev = inode->i_rdev;
 						fattr->cf_uid = inode->i_uid;
 						fattr->cf_gid = inode->i_gid;
-						fattr->cf_eof = CIFS_I(inode)->netfs.remote_i_size;
+						fattr->cf_eof =
+							netfs_read_remote_i_size(inode);
 						fattr->cf_symlink_target = NULL;
 					} else {
 						CIFS_I(inode)->time = 0;
@@ -360,7 +360,7 @@ _initiate_cifs_search(const unsigned int xid, struct file *file,
 		if (IS_ERR(tlink))
 			return PTR_ERR(tlink);
 
-		cifsFile = kzalloc(sizeof(struct cifsFileInfo), GFP_KERNEL);
+		cifsFile = kzalloc_obj(struct cifsFileInfo);
 		if (cifsFile == NULL) {
 			rc = -ENOMEM;
 			goto error_exit;
@@ -415,7 +415,7 @@ ffirst_retry:
 	if (rc == 0) {
 		cifsFile->invalidHandle = false;
 	} else if (rc == -EOPNOTSUPP && (sbflags & CIFS_MOUNT_SERVER_INUM)) {
-		cifs_autodisable_serverino(cifs_sb);
+		cifs_autodisable_serverino(cifs_sb, "Cannot retrieve inode number via query_dir_first", rc);
 		goto ffirst_retry;
 	}
 error_exit:
@@ -732,6 +732,8 @@ find_cifs_entry(const unsigned int xid, struct cifs_tcon *tcon, loff_t pos,
 			if (cfile->srch_inf.smallBuf)
 				cifs_small_buf_release(cfile->srch_inf.
 						ntwrk_buf_start);
+			else if (cfile->srch_inf.is_dynamic_buf)
+				kfree(cfile->srch_inf.ntwrk_buf_start);
 			else
 				cifs_buf_release(cfile->srch_inf.
 						ntwrk_buf_start);
@@ -890,7 +892,7 @@ static bool add_cached_dirent(struct cached_dirents *cde,
 		cde->is_failed = 1;
 		return false;
 	}
-	de = kzalloc(sizeof(*de), GFP_ATOMIC);
+	de = kzalloc_obj(*de, GFP_ATOMIC);
 	if (de == NULL) {
 		cde->is_failed = 1;
 		return false;
@@ -950,7 +952,7 @@ static bool cifs_dir_emit(struct dir_context *ctx,
 static int cifs_filldir(char *find_entry, struct file *file,
 			struct dir_context *ctx,
 			char *scratch_buf, unsigned int max_len,
-			struct cached_fid *cfid)
+			char *end_of_smb, struct cached_fid *cfid)
 {
 	struct cifsFileInfo *file_info = file->private_data;
 	struct super_block *sb = file_inode(file)->i_sb;
@@ -969,6 +971,11 @@ static int cifs_filldir(char *find_entry, struct file *file,
 	if (de.namelen > max_len) {
 		cifs_dbg(VFS, "bad search response length %zd past smb end\n",
 			 de.namelen);
+		return -EINVAL;
+	}
+
+	if (de.name + de.namelen > end_of_smb) {
+		cifs_dbg(VFS, "search entry name extends past end of SMB\n");
 		return -EINVAL;
 	}
 
@@ -1027,7 +1034,7 @@ static int cifs_filldir(char *find_entry, struct file *file,
 		fattr.cf_uniqueid = de.ino;
 	} else {
 		fattr.cf_uniqueid = iunique(sb, ROOT_I);
-		cifs_autodisable_serverino(cifs_sb);
+		cifs_autodisable_serverino(cifs_sb, "Cannot retrieve inode number from readdir", 0);
 	}
 
 	if ((sbflags & CIFS_MOUNT_MF_SYMLINKS) && couldbe_mf_symlink(&fattr))
@@ -1192,7 +1199,7 @@ int cifs_readdir(struct file *file, struct dir_context *ctx)
 		 */
 		*tmp_buf = 0;
 		rc = cifs_filldir(current_entry, file, ctx,
-				  tmp_buf, max_len, cfid);
+				  tmp_buf, max_len, end_of_smb, cfid);
 		if (rc) {
 			if (rc > 0)
 				rc = 0;

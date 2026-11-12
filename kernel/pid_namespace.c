@@ -143,7 +143,7 @@ static void destroy_pid_namespace(struct pid_namespace *ns)
 	call_rcu(&ns->rcu, delayed_free_pidns);
 }
 
-struct pid_namespace *copy_pid_ns(unsigned long flags,
+struct pid_namespace *copy_pid_ns(u64 flags,
 	struct user_namespace *user_ns, struct pid_namespace *old_ns)
 {
 	if (!(flags & CLONE_NEWPID))
@@ -282,7 +282,7 @@ static int pid_ns_ctl_handler(const struct ctl_table *table, int write,
 }
 
 extern int pid_max;
-static struct ctl_table pid_ns_ctl_table[] = {
+static const struct ctl_table pid_ns_ctl_table[] = {
 	{
 		.procname = "ns_last_pid",
 		.maxlen = sizeof(int),

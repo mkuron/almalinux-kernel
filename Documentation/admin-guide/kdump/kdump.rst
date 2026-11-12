@@ -180,10 +180,6 @@ Dump-capture kernel config options (Arch Dependent, i386 and x86_64)
 1) On i386, enable high memory support under "Processor type and
    features"::
 
-	CONFIG_HIGHMEM64G=y
-
-   or::
-
 	CONFIG_HIGHMEM4G
 
 2) With CONFIG_SMP=y, usually nr_cpus=1 need specified on the kernel
@@ -314,6 +310,27 @@ crashkernel syntax
       3) Specified value 0 will disable low memory allocation::
 
             crashkernel=0,low
+
+4) crashkernel=size,cma
+
+	Reserve additional crash kernel memory from CMA. This reservation is
+	usable by the first system's userspace memory and kernel movable
+	allocations (memory balloon, zswap). Pages allocated from this memory
+	range will not be included in the vmcore so this should not be used if
+	dumping of userspace memory is intended and it has to be expected that
+	some movable kernel pages may be missing from the dump.
+
+	A standard crashkernel reservation, as described above, is still needed
+	to hold the crash kernel and initrd.
+
+	This option increases the risk of a kdump failure: DMA transfers
+	configured by the first kernel may end up corrupting the second
+	kernel's memory.
+
+	This reservation method is intended for systems that can't afford to
+	sacrifice enough memory for standard crashkernel reservation and where
+	less reliable and possibly incomplete kdump is preferable to no kdump at
+	all.
 
 Boot into System Kernel
 -----------------------

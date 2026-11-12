@@ -16,11 +16,20 @@
 
 #include <asm/orc_types.h>
 #include <objtool/check.h>
+#include <objtool/disas.h>
 #include <objtool/elf.h>
 #include <objtool/arch.h>
 #include <objtool/warn.h>
 #include <objtool/builtin.h>
 #include <arch/elf.h>
+
+const char *arch_reg_name[CFI_NUM_REGS] = {
+	"rax", "rcx", "rdx", "rbx",
+	"rsp", "rbp", "rsi", "rdi",
+	"r8",  "r9",  "r10", "r11",
+	"r12", "r13", "r14", "r15",
+	"ra"
+};
 
 int arch_ftrace_match(const char *name)
 {
@@ -395,52 +404,36 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
 		if (!rex_w)
 			break;
 
-		if (modrm_reg == CFI_SP) {
-
-			if (mod_is_reg()) {
-				/* mov %rsp, reg */
-				ADD_OP(op) {
-					op->src.type = OP_SRC_REG;
-					op->src.reg = CFI_SP;
-					op->dest.type = OP_DEST_REG;
-					op->dest.reg = modrm_rm;
-				}
-				break;
-
-			} else {
-				/* skip RIP relative displacement */
-				if (is_RIP())
-					break;
-
-				/* skip nontrivial SIB */
-				if (have_SIB()) {
-					modrm_rm = sib_base;
-					if (sib_index != CFI_SP)
-						break;
-				}
-
-				/* mov %rsp, disp(%reg) */
-				ADD_OP(op) {
-					op->src.type = OP_SRC_REG;
-					op->src.reg = CFI_SP;
-					op->dest.type = OP_DEST_REG_INDIRECT;
-					op->dest.reg = modrm_rm;
-					op->dest.offset = ins.displacement.value;
-				}
-				break;
-			}
-
-			break;
-		}
-
-		if (rm_is_reg(CFI_SP)) {
-
-			/* mov reg, %rsp */
+		if (mod_is_reg()) {
+			/* mov reg, reg */
 			ADD_OP(op) {
 				op->src.type = OP_SRC_REG;
 				op->src.reg = modrm_reg;
 				op->dest.type = OP_DEST_REG;
-				op->dest.reg = CFI_SP;
+				op->dest.reg = modrm_rm;
+			}
+			break;
+		}
+
+		/* skip RIP relative displacement */
+		if (is_RIP())
+			break;
+
+		/* skip nontrivial SIB */
+		if (have_SIB()) {
+			modrm_rm = sib_base;
+			if (sib_index != CFI_SP)
+				break;
+		}
+
+		/* mov %rsp, disp(%reg) */
+		if (modrm_reg == CFI_SP) {
+			ADD_OP(op) {
+				op->src.type = OP_SRC_REG;
+				op->src.reg = CFI_SP;
+				op->dest.type = OP_DEST_REG_INDIRECT;
+				op->dest.reg = modrm_rm;
+				op->dest.offset = ins.displacement.value;
 			}
 			break;
 		}
@@ -558,6 +551,12 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
 		break;
 
 	case 0x90:
+		if (rex_b) /* XCHG %r8, %rax */
+			break;
+
+		if (prefix == 0xf3) /* REP NOP := PAUSE */
+			break;
+
 		insn->type = INSN_NOP;
 		break;
 
@@ -611,13 +610,14 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
 
 		} else if (op2 == 0x0b || op2 == 0xb9) {
 
-			/* ud2 */
+			/* ud2, ud1 */
 			insn->type = INSN_BUG;
 
-		} else if (op2 == 0x0d || op2 == 0x1f) {
+		} else if (op2 == 0x1f) {
 
-			/* nopl/nopw */
-			insn->type = INSN_NOP;
+			/* 0f 1f /0 := NOPL */
+			if (modrm_reg == 0)
+				insn->type = INSN_NOP;
 
 		} else if (op2 == 0x1e) {
 
@@ -745,6 +745,10 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
 	case 0xca: /* retf */
 	case 0xcb: /* retf */
 		insn->type = INSN_SYSRET;
+		break;
+
+	case 0xd6: /* udb */
+		insn->type = INSN_BUG;
 		break;
 
 	case 0xe0: /* loopne */
@@ -876,14 +880,20 @@ int arch_decode_hint_reg(u8 sp_reg, int *base)
 	case ORC_REG_UNDEFINED:
 		*base = CFI_UNDEFINED;
 		break;
+	case ORC_REG_AX:
+		*base = CFI_AX;
+		break;
+	case ORC_REG_DX:
+		*base = CFI_DX;
+		break;
 	case ORC_REG_SP:
 		*base = CFI_SP;
 		break;
 	case ORC_REG_BP:
 		*base = CFI_BP;
 		break;
-	case ORC_REG_SP_INDIRECT:
-		*base = CFI_SP_INDIRECT;
+	case ORC_REG_DI:
+		*base = CFI_DI;
 		break;
 	case ORC_REG_R10:
 		*base = CFI_R10;
@@ -891,11 +901,11 @@ int arch_decode_hint_reg(u8 sp_reg, int *base)
 	case ORC_REG_R13:
 		*base = CFI_R13;
 		break;
-	case ORC_REG_DI:
-		*base = CFI_DI;
+	case ORC_REG_SP_INDIRECT:
+		*base = CFI_SP_INDIRECT;
 		break;
-	case ORC_REG_DX:
-		*base = CFI_DX;
+	case ORC_REG_BP_INDIRECT:
+		*base = CFI_BP_INDIRECT;
 		break;
 	default:
 		return -1;
@@ -906,12 +916,14 @@ int arch_decode_hint_reg(u8 sp_reg, int *base)
 
 bool arch_is_retpoline(struct symbol *sym)
 {
-	return !strncmp(sym->name, "__x86_indirect_", 15);
+	return !strncmp(sym->name, "__x86_indirect_", 15) ||
+	       !strncmp(sym->name, "__pi___x86_indirect_", 20);
 }
 
 bool arch_is_rethunk(struct symbol *sym)
 {
-	return !strcmp(sym->name, "__x86_return_thunk");
+	return !strcmp(sym->name, "__x86_return_thunk") ||
+	       !strcmp(sym->name, "__pi___x86_return_thunk");
 }
 
 bool arch_is_embedded_insn(struct symbol *sym)
@@ -945,3 +957,14 @@ bool arch_absolute_reloc(struct elf *elf, struct reloc *reloc)
 		return false;
 	}
 }
+
+#ifdef DISAS
+
+int arch_disas_info_init(struct disassemble_info *dinfo)
+{
+	return disas_info_init(dinfo, bfd_arch_i386,
+			       bfd_mach_i386_i386, bfd_mach_x86_64,
+			       "att");
+}
+
+#endif /* DISAS */

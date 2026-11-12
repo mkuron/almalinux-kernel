@@ -9,7 +9,6 @@
 #include <linux/string.h>
 #include <linux/slab.h>
 #include <linux/file.h>
-#include <linux/fdtable.h>
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/fs.h>
@@ -131,7 +130,7 @@ static int proc_nr_files(const struct ctl_table *table, int write, void *buffer,
 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
 }
 
-static struct ctl_table fs_stat_sysctls[] = {
+static const struct ctl_table fs_stat_sysctls[] = {
 	{
 		.procname	= "file-nr",
 		.data		= &files_stat,

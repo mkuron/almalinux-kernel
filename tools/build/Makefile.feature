@@ -91,7 +91,6 @@ FEATURE_TESTS_BASIC :=                  \
         timerfd                         \
         zlib                            \
         lzma                            \
-        get_cpuid                       \
         bpf                             \
         scandirat			\
         sched_getcpu			\
@@ -101,7 +100,8 @@ FEATURE_TESTS_BASIC :=                  \
         libzstd				\
         disassembler-four-args		\
         disassembler-init-styled	\
-        file-handle
+        file-handle			\
+        libopenssl
 
 # FEATURE_TESTS_BASIC + FEATURE_TESTS_EXTRA is the complete list
 # of all feature tests
@@ -116,6 +116,7 @@ FEATURE_TESTS_EXTRA :=                  \
          hello                          \
          libbabeltrace                  \
          libcapstone                    \
+         libcheck                       \
          libbfd-liberty                 \
          libbfd-liberty-z               \
          libopencsd                     \
@@ -147,10 +148,10 @@ FEATURE_DISPLAY ?=              \
          llvm-perf              \
          zlib                   \
          lzma                   \
-         get_cpuid              \
          bpf			\
          libaio			\
-         libzstd
+         libzstd		\
+         libopenssl
 
 #
 # Declare group members of a feature to display the logical OR of the detection
@@ -175,6 +176,8 @@ endef
 ifneq ($(PKG_CONFIG),)
   $(foreach package,$(FEATURE_PKG_CONFIG),$(call feature_pkg_config,$(package)))
 endif
+
+FEATURE_CHECK_LDFLAGS-libcheck = -lcheck
 
 # Set FEATURE_CHECK_(C|LD)FLAGS-all for all FEATURE_TESTS features.
 # If in the future we need per-feature checks/flags for features not
@@ -316,5 +319,7 @@ endef
 
 ifeq ($(FEATURE_DISPLAY_DEFERRED),)
   $(call feature_display_entries)
-  $(info )
+  ifeq ($(feature_display),1)
+    $(info )
+  endif
 endif

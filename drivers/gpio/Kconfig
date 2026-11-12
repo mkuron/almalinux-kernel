@@ -653,6 +653,15 @@ config GPIO_SNPS_CREG
 	  where only several fields in register belong to GPIO lines and
 	  each GPIO line owns a field with different length and on/off value.
 
+config GPIO_SPACEMIT_K1
+	tristate "SPACEMIT K1 GPIO support"
+	depends on ARCH_SPACEMIT || COMPILE_TEST
+	depends on OF_GPIO
+	select GPIO_GENERIC
+	select GPIOLIB_IRQCHIP
+	help
+	  Say yes here to support the SpacemiT's K1 GPIO device.
+
 config GPIO_SPEAR_SPICS
 	bool "ST SPEAr13xx SPI Chip Select as GPIO support"
 	depends on PLAT_SPEAR
@@ -1021,6 +1030,32 @@ config GPIO_SCH
 	  The Intel Quark X1000 SoC has 2 GPIOs powered by the core
 	  power well and 6 from the suspend power well.
 
+config GPIO_NOVALAKE
+	tristate "Intel Nova Lake GPIO-signaled ACPI events support"
+	depends on (X86 || COMPILE_TEST) && ACPI
+	select GPIOLIB_IRQCHIP
+	help
+	  Select this to enable GPIO-signaled ACPI events support on platforms
+	  with the following SoCs:
+
+	  - Intel Nova Lake
+
+	  This driver adds support for new mode of handling platform events,
+	  through the use of GPIO-signaled ACPI events. Main purpose is to
+	  handle platform IRQs that originate in PCH components, for example
+	  interrupt triggered by Power Management Event (PME).
+
+	  This driver, at this time, is not required to handle platform events.
+	  Listed platform(s) will stay in legacy mode, handling ACPI events as
+	  in previous generations. However, future platforms will eventually
+	  switch to new handling mode, requiring this driver to run events
+	  properly.
+
+	  Driver supports up to 128 GPIO pins per GPE block.
+
+	  To compile this driver as a module, choose M here: the module will
+	  be called gpio-novalake-events.
+
 config GPIO_SCH311X
 	tristate "SMSC SCH311x SuperI/O GPIO"
 	help
@@ -1156,14 +1191,18 @@ config GPIO_PCA953X
 	  4 bits:       pca9536, pca9537
 
 	  8 bits:       max7310, max7315, pca6107, pca9534, pca9538, pca9554,
-	                pca9556, pca9557, pca9574, tca6408, tca9554, xra1202
+	                pca9556, pca9557, pca9574, tca6408, tca9554, xra1202,
+			pcal6408, pcal9554b, tca9538, tcal6408
 
 	  16 bits:      max7312, max7313, pca9535, pca9539, pca9555, pca9575,
-	                tca6416
+	                tca6416, pca6416, pcal6416, pcal9535, pcal9555a, max7318,
+			tca9539, tcal6416
 
-	  24 bits:      tca6424
+	  18 bits:	tca6418
 
-	  40 bits:      pca9505, pca9698
+	  24 bits:      tca6424, pcal6524
+
+	  40 bits:      pca9505, pca9698, pca9506
 
 config GPIO_PCA953X_IRQ
 	bool "Interrupt controller support for PCA953x"

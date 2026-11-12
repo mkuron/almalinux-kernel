@@ -47,7 +47,7 @@ int rdmsr_on_cpu(unsigned int cpu, u32 msr_no, u32 *l, u32 *h)
 }
 EXPORT_SYMBOL(rdmsr_on_cpu);
 
-int rdmsrl_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
+int rdmsrq_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
 {
 	int err;
 	struct msr_info rv;
@@ -60,7 +60,7 @@ int rdmsrl_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
 
 	return err;
 }
-EXPORT_SYMBOL(rdmsrl_on_cpu);
+EXPORT_SYMBOL(rdmsrq_on_cpu);
 
 int wrmsr_on_cpu(unsigned int cpu, u32 msr_no, u32 l, u32 h)
 {
@@ -220,7 +220,7 @@ int wrmsrl_safe_on_cpu(unsigned int cpu, u32 msr_no, u64 q)
 }
 EXPORT_SYMBOL(wrmsrl_safe_on_cpu);
 
-int rdmsrl_safe_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
+int rdmsrq_safe_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
 {
 	u32 low, high;
 	int err;
@@ -230,7 +230,7 @@ int rdmsrl_safe_on_cpu(unsigned int cpu, u32 msr_no, u64 *q)
 
 	return err;
 }
-EXPORT_SYMBOL(rdmsrl_safe_on_cpu);
+EXPORT_SYMBOL(rdmsrq_safe_on_cpu);
 
 /*
  * These variants are significantly slower, but allows control over

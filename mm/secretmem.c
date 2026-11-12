@@ -54,7 +54,6 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
 	pgoff_t offset = vmf->pgoff;
 	gfp_t gfp = vmf->gfp_mask;
 	unsigned long addr;
-	struct page *page;
 	struct folio *folio;
 	vm_fault_t ret;
 	int err;
@@ -65,16 +64,15 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
 	filemap_invalidate_lock_shared(mapping);
 
 retry:
-	page = find_lock_page(mapping, offset);
-	if (!page) {
+	folio = filemap_lock_folio(mapping, offset);
+	if (IS_ERR(folio)) {
 		folio = folio_alloc(gfp | __GFP_ZERO, 0);
 		if (!folio) {
 			ret = VM_FAULT_OOM;
 			goto out;
 		}
 
-		page = &folio->page;
-		err = set_direct_map_invalid_noflush(page);
+		err = set_direct_map_invalid_noflush(folio_page(folio, 0));
 		if (err) {
 			folio_put(folio);
 			ret = vmf_error(err);
@@ -90,7 +88,7 @@ retry:
 			 * already happened when we marked the page invalid
 			 * which guarantees that this call won't fail
 			 */
-			set_direct_map_default_noflush(page);
+			set_direct_map_default_noflush(folio_page(folio, 0));
 			if (err == -EEXIST)
 				goto retry;
 
@@ -98,11 +96,11 @@ retry:
 			goto out;
 		}
 
-		addr = (unsigned long)page_address(page);
+		addr = (unsigned long)folio_address(folio);
 		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
 	}
 
-	vmf->page = page;
+	vmf->page = folio_file_page(folio, vmf->pgoff);
 	ret = VM_FAULT_LOCKED;
 
 out:
@@ -120,18 +118,18 @@ static int secretmem_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static int secretmem_mmap(struct file *file, struct vm_area_struct *vma)
+static int secretmem_mmap_prepare(struct vm_area_desc *desc)
 {
-	unsigned long len = vma->vm_end - vma->vm_start;
+	const unsigned long len = desc->end - desc->start;
 
-	if ((vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) == 0)
+	if ((desc->vm_flags & (VM_SHARED | VM_MAYSHARE)) == 0)
 		return -EINVAL;
 
-	if (!mlock_future_ok(vma->vm_mm, vma->vm_flags | VM_LOCKED, len))
+	if (!mlock_future_ok(desc->mm, desc->vm_flags | VM_LOCKED, len))
 		return -EAGAIN;
 
-	vm_flags_set(vma, VM_LOCKED | VM_DONTDUMP);
-	vma->vm_ops = &secretmem_vm_ops;
+	desc->vm_flags |= VM_LOCKED | VM_DONTDUMP;
+	desc->vm_ops = &secretmem_vm_ops;
 
 	return 0;
 }
@@ -143,7 +141,7 @@ bool vma_is_secretmem(struct vm_area_struct *vma)
 
 static const struct file_operations secretmem_fops = {
 	.release	= secretmem_release,
-	.mmap		= secretmem_mmap,
+	.mmap_prepare	= secretmem_mmap_prepare,
 };
 
 static int secretmem_migrate_folio(struct address_space *mapping,
@@ -154,7 +152,7 @@ static int secretmem_migrate_folio(struct address_space *mapping,
 
 static void secretmem_free_folio(struct folio *folio)
 {
-	set_direct_map_default_noflush(&folio->page);
+	set_direct_map_default_noflush(folio_page(folio, 0));
 	folio_zero_segment(folio, 0, folio_size(folio));
 }
 
@@ -261,7 +259,15 @@ err_put_fd:
 
 static int secretmem_init_fs_context(struct fs_context *fc)
 {
-	return init_pseudo(fc, SECRETMEM_MAGIC) ? 0 : -ENOMEM;
+	struct pseudo_fs_context *ctx;
+
+	ctx = init_pseudo(fc, SECRETMEM_MAGIC);
+	if (!ctx)
+		return -ENOMEM;
+
+	fc->s_iflags |= SB_I_NOEXEC;
+	fc->s_iflags |= SB_I_NODEV;
+	return 0;
 }
 
 static struct file_system_type secretmem_fs = {
@@ -278,9 +284,6 @@ static int __init secretmem_init(void)
 	secretmem_mnt = kern_mount(&secretmem_fs);
 	if (IS_ERR(secretmem_mnt))
 		return PTR_ERR(secretmem_mnt);
-
-	/* prevent secretmem mappings from ever getting PROT_EXEC */
-	secretmem_mnt->mnt_flags |= MNT_NOEXEC;
 
 	return 0;
 }

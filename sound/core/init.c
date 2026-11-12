@@ -129,7 +129,7 @@ int snd_device_alloc(struct device **dev_p, struct snd_card *card)
 	struct device *dev;
 
 	*dev_p = NULL;
-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+	dev = kzalloc_obj(*dev);
 	if (!dev)
 		return -ENOMEM;
 	device_initialize(dev);
@@ -363,6 +363,11 @@ static int snd_card_init(struct snd_card *card, struct device *parent,
 	card->debugfs_root = debugfs_create_dir(dev_name(&card->card_dev),
 						sound_debugfs_root);
 #endif
+#ifdef CONFIG_SND_CTL_DEBUG
+	card->value_buf = kmalloc(sizeof(*card->value_buf), GFP_KERNEL);
+	if (!card->value_buf)
+		return -ENOMEM;
+#endif
 	return 0;
 
       __error_ctl:
@@ -587,6 +592,9 @@ static int snd_card_do_free(struct snd_card *card)
 	snd_device_free_all(card);
 	if (card->private_free)
 		card->private_free(card);
+#ifdef CONFIG_SND_CTL_DEBUG
+	kfree(card->value_buf);
+#endif
 	if (snd_info_card_free(card) < 0) {
 		dev_warn(card->dev, "unable to free card info\n");
 		/* Not fatal error */
@@ -1060,7 +1068,7 @@ int snd_card_file_add(struct snd_card *card, struct file *file)
 {
 	struct snd_monitor_file *mfile;
 
-	mfile = kmalloc(sizeof(*mfile), GFP_KERNEL);
+	mfile = kmalloc_obj(*mfile);
 	if (mfile == NULL)
 		return -ENOMEM;
 	mfile->file = file;
@@ -1131,7 +1139,7 @@ EXPORT_SYMBOL(snd_card_file_remove);
  * typically around calling control ops.
  *
  * The caller needs to pull down the refcount via snd_power_unref() later
- * no matter whether the error is returned from this function or not.
+ * when this function returns 0.
  *
  * Return: Zero if successful, or a negative error code.
  */
@@ -1144,7 +1152,11 @@ int snd_power_ref_and_wait(struct snd_card *card)
 		       card->shutdown ||
 		       snd_power_get_state(card) == SNDRV_CTL_POWER_D0,
 		       snd_power_unref(card), snd_power_ref(card));
-	return card->shutdown ? -ENODEV : 0;
+	if (card->shutdown) {
+		snd_power_unref(card);
+		return  -ENODEV;
+	}
+	return 0;
 }
 EXPORT_SYMBOL_GPL(snd_power_ref_and_wait);
 
@@ -1161,7 +1173,8 @@ int snd_power_wait(struct snd_card *card)
 	int ret;
 
 	ret = snd_power_ref_and_wait(card);
-	snd_power_unref(card);
+	if (!ret)
+		snd_power_unref(card);
 	return ret;
 }
 EXPORT_SYMBOL(snd_power_wait);

@@ -51,7 +51,6 @@
 #include <linux/sched/signal.h>
 #include <linux/fs.h>
 #include <linux/file.h>
-#include <linux/fdtable.h>
 #include <linux/mm.h>
 #include <linux/mman.h>
 #include <linux/percpu.h>
@@ -159,7 +158,7 @@ static int __read_mostly sysctl_io_uring_disabled = 2;
 static int __read_mostly sysctl_io_uring_group = -1;
 
 #ifdef CONFIG_SYSCTL
-static struct ctl_table kernel_io_uring_disabled_table[] = {
+static const struct ctl_table kernel_io_uring_disabled_table[] = {
 	{
 		.procname	= "io_uring_disabled",
 		.data		= &sysctl_io_uring_disabled,

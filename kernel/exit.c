@@ -25,7 +25,6 @@
 #include <linux/acct.h>
 #include <linux/tsacct_kern.h>
 #include <linux/file.h>
-#include <linux/fdtable.h>
 #include <linux/freezer.h>
 #include <linux/binfmts.h>
 #include <linux/nsproxy.h>
@@ -87,7 +86,7 @@
 static unsigned int oops_limit = 10000;
 
 #ifdef CONFIG_SYSCTL
-static struct ctl_table kern_exit_table[] = {
+static const struct ctl_table kern_exit_table[] = {
 	{
 		.procname       = "oops_limit",
 		.data           = &oops_limit,
@@ -971,8 +970,8 @@ void __noreturn do_exit(long code)
 	proc_exit_connector(tsk);
 	mpol_put_task_policy(tsk);
 #ifdef CONFIG_FUTEX
-	if (unlikely(current->pi_state_cache))
-		kfree(current->pi_state_cache);
+	if (unlikely(current->futex.pi_state_cache))
+		kfree(current->futex.pi_state_cache);
 #endif
 	/*
 	 * Make sure we are holding no locks:

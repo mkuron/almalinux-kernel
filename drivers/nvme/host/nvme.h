@@ -69,7 +69,7 @@ enum nvme_quirks {
 	NVME_QUIRK_IDENTIFY_CNS			= (1 << 1),
 
 	/*
-	 * The controller deterministically returns O's on reads to
+	 * The controller deterministically returns 0's on reads to
 	 * logical blocks that deallocate was called on.
 	 */
 	NVME_QUIRK_DEALLOCATE_ZEROES		= (1 << 2),
@@ -370,6 +370,8 @@ struct nvme_ctrl {
 	u16 mtfa;
 	u32 ctrl_config;
 	u32 queue_count;
+	u32 admin_timeout;
+	u32 io_timeout;
 
 	u64 cap;
 	u32 max_hw_sectors;
@@ -564,6 +566,7 @@ struct nvme_ns_head {
 	unsigned int		delayed_removal_secs;
 #define NVME_NSHEAD_DISK_LIVE		0
 #define NVME_NSHEAD_QUEUE_IF_NO_PATH	1
+#define NVME_NSHEAD_CDEV_LIVE		2
 	struct nvme_ns __rcu	*current_path[];
 #endif
 };
@@ -599,6 +602,7 @@ struct nvme_ns {
 #define NVME_NS_FORCE_RO		3
 #define NVME_NS_READY			4
 #define NVME_NS_SYSFS_ATTR_LINK	5
+#define NVME_NS_CDEV_LIVE		6
 
 	struct cdev		cdev;
 	struct device		cdev_device;
@@ -610,6 +614,12 @@ struct nvme_ns {
 static inline bool nvme_ns_has_pi(struct nvme_ns_head *head)
 {
 	return head->pi_type && head->ms == head->pi_size;
+}
+
+static inline unsigned long nvme_get_virt_boundary(struct nvme_ctrl *ctrl,
+						   bool is_admin)
+{
+	return NVME_CTRL_PAGE_SIZE - 1;
 }
 
 struct nvme_ctrl_ops {
@@ -632,6 +642,7 @@ struct nvme_ctrl_ops {
 	int (*get_address)(struct nvme_ctrl *ctrl, char *buf, int size);
 	void (*print_device_info)(struct nvme_ctrl *ctrl);
 	bool (*supports_pci_p2pdma)(struct nvme_ctrl *ctrl);
+	unsigned long (*get_virt_boundary)(struct nvme_ctrl *ctrl, bool is_admin);
 };
 
 /*
@@ -886,7 +897,7 @@ void nvme_sync_queues(struct nvme_ctrl *ctrl);
 void nvme_sync_io_queues(struct nvme_ctrl *ctrl);
 void nvme_unfreeze(struct nvme_ctrl *ctrl);
 void nvme_wait_freeze(struct nvme_ctrl *ctrl);
-int nvme_wait_freeze_timeout(struct nvme_ctrl *ctrl, long timeout);
+int nvme_wait_freeze_timeout(struct nvme_ctrl *ctrl);
 void nvme_start_freeze(struct nvme_ctrl *ctrl);
 
 static inline enum req_op nvme_req_op(struct nvme_command *cmd)
@@ -970,7 +981,8 @@ int nvme_get_log(struct nvme_ctrl *ctrl, u32 nsid, u8 log_page, u8 lsp, u8 csi,
 		void *log, size_t size, u64 offset);
 bool nvme_tryget_ns_head(struct nvme_ns_head *head);
 void nvme_put_ns_head(struct nvme_ns_head *head);
-int nvme_cdev_add(struct cdev *cdev, struct device *cdev_device,
+int nvme_cdev_add(const char *name, struct cdev *cdev,
+		struct device *cdev_device,
 		const struct file_operations *fops, struct module *owner);
 void nvme_cdev_del(struct cdev *cdev, struct device *cdev_device);
 int nvme_ioctl(struct block_device *bdev, blk_mode_t mode,
@@ -990,7 +1002,7 @@ int nvme_ns_head_chr_uring_cmd(struct io_uring_cmd *ioucmd,
 		unsigned int issue_flags);
 int nvme_identify_ns(struct nvme_ctrl *ctrl, unsigned nsid,
 		struct nvme_id_ns **id);
-int nvme_getgeo(struct block_device *bdev, struct hd_geometry *geo);
+int nvme_getgeo(struct gendisk *disk, struct hd_geometry *geo);
 int nvme_dev_uring_cmd(struct io_uring_cmd *ioucmd, unsigned int issue_flags);
 
 extern const struct attribute_group *nvme_ns_attr_groups[];
@@ -1160,7 +1172,7 @@ struct nvme_zone_info {
 };
 
 int nvme_ns_report_zones(struct nvme_ns *ns, sector_t sector,
-		unsigned int nr_zones, report_zones_cb cb, void *data);
+		unsigned int nr_zones, struct blk_report_zones_args *args);
 int nvme_query_zone_info(struct nvme_ns *ns, unsigned lbaf,
 		struct nvme_zone_info *zi);
 void nvme_update_zone_info(struct nvme_ns *ns, struct queue_limits *lim,
