@@ -179,13 +179,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 264.15.1
+%define pkgrelease 264.17.1
 %define kversion 6
 %define tarfile_release 6.12.0-264.9.1.el10_3
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 264.15.1%{?buildid}%{?dist}
+%define specrelease 264.17.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-264.9.1.el10_3
 
@@ -1374,6 +1374,97 @@ Patch1323: 1323-watchdog-fix-hrtimer-start-when-pretimeout-is-zero.patch
 Patch1324: 1324-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
 Patch1325: 1325-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
 
+# Backports for 6.12.0-264.16.1.el10_3
+Patch1326: 1326-mptcp-options-reset-dss-fields-in-case-of-unexpected-size.patch
+Patch1327: 1327-mpls-set-rt-rt-nhn-just-before-returning-from-mpls-nh-build-multi.patch
+Patch1328: 1328-i3c-master-svc-bound-ibi-payload-to-the-requested-max-payload-len.patch
+Patch1329: 1329-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+Patch1330: 1330-s390-cpum-cf-handle-cpu-hotplug-via-prepare-dead-callbacks.patch
+Patch1331: 1331-smb-client-validate-absolute-native-symlink-targets-before-nt-fixups.patch
+Patch1332: 1332-ipv4-validate-checksum-start-before-completing-checksum.patch
+Patch1333: 1333-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
+Patch1334: 1334-alsa-seq-midi-optimize-event-input-locking-with-rcu.patch
+Patch1335: 1335-alsa-seq-midi-serialize-input-teardown-with-event-input.patch
+Patch1336: 1336-sctp-validate-cookie-auth-state-before-use.patch
+Patch1337: 1337-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+Patch1338: 1338-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+Patch1339: 1339-sctp-close-udp-tunnel-sockets-during-netns-teardown.patch
+Patch1340: 1340-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+Patch1341: 1341-sctp-clear-new-transport-when-removing-a-peer.patch
+Patch1342: 1342-scsi-libiscsi-validate-the-itt-reflected-in-a-reject-pdu.patch
+Patch1343: 1343-scsi-libiscsi-validate-the-task-named-by-a-management-response.patch
+Patch1344: 1344-s390-vfio-ap-fix-missing-lock-required-to-access-list-of-ap-matrix-mdev-objects.patch
+Patch1345: 1345-s390-vfio-ccw-cancel-existing-workqueues.patch
+Patch1346: 1346-s390-qeth-validate-user-buffer-length-in-snmp-and-arp-query-ioctls.patch
+Patch1347: 1347-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-link.patch
+Patch1348: 1348-net-smc-bound-the-peer-rkey-counts-in-smc-rv2-llc-messages.patch
+Patch1349: 1349-net-smc-carry-oversized-smc-rv2-llc-messages-in-the-queue-entry.patch
+Patch1350: 1350-powerpc-pseries-papr-phy-attest-validate-cmd-length-plug-mem-leak.patch
+
+# Backports for 6.12.0-264.17.1.el10_3
+Patch1351: 1351-net-bridge-stop-fast-leave-after-deleting-a-port-group.patch
+Patch1352: 1352-alsa-pcm-serialize-pcm-mmap-with-buffer-reallocation-to-fix-page-uaf.patch
+Patch1353: 1353-alsa-ua101-reject-mismatched-capture-playback-packet-sizes.patch
+Patch1354: 1354-ipv6-fix-use-after-free-in-ip6-finish-output2.patch
+Patch1355: 1355-wifi-mt76-add-wcid-publish-check-in-mt76-sta-add.patch
+Patch1356: 1356-wifi-ath11k-cancel-ssr-work-items-during-pci-shutdown.patch
+Patch1357: 1357-wifi-ath9k-fix-oob-access-from-firmware-tx-status-queue-id.patch
+Patch1358: 1358-wifi-rtw89-add-bounds-check-on-firmware-mac-id-in-link-lookup.patch
+Patch1359: 1359-wifi-rtw89-correct-data-type-for-scan-index-to-avoid-infinite-loop.patch
+Patch1360: 1360-wifi-rtw88-fix-wrong-pci-get-drvdata-type-in-aer-handlers.patch
+Patch1361: 1361-wifi-rtw89-fix-wrong-pci-get-drvdata-type-in-aer-handlers.patch
+Patch1362: 1362-wifi-ath11k-add-msdu-length-validation-for-tkip-mic-error.patch
+Patch1363: 1363-wifi-ath11k-fix-invalid-data-access-in-ath11k-dp-rx-h-undecap-nwifi.patch
+Patch1364: 1364-net-qrtr-fix-32-bit-integer-overflow-in-qrtr-endpoint-post.patch
+Patch1365: 1365-wifi-rtw88-fix-oob-read-from-firmware-rx-descriptor-exceeding-dma-buffer.patch
+Patch1366: 1366-wifi-mt76-use-kfree-rcu-for-offchannel-link-in-mt76-put-vif-phy-link.patch
+Patch1367: 1367-wifi-iwlwifi-mld-don-t-flush-async-handlers-wk-when-canceling-notifications.patch
+Patch1368: 1368-wifi-iwlwifi-mld-purge-async-notifications-upon-nic-error.patch
+Patch1369: 1369-net-wwan-iosm-bound-device-offsets-in-the-mux-downlink-decoder.patch
+Patch1370: 1370-wifi-cfg80211-derive-s1g-beacon-tsf-from-s1g-fields.patch
+Patch1371: 1371-wifi-mac80211-validate-extension-frame-layout-before-rx.patch
+Patch1372: 1372-wifi-ieee80211-validate-mle-common-info-length.patch
+Patch1373: 1373-wifi-brcmfmac-cyw-fix-heap-overflow-on-a-short-auth-frame.patch
+Patch1374: 1374-wifi-cfg80211-validate-rx-tx-mlme-callback-frame-lengths-before-access.patch
+Patch1375: 1375-wifi-cfg80211-validate-assoc-response-length-before-status-and-ie-access.patch
+Patch1376: 1376-wifi-cfg80211-validate-eht-mle-before-mld-id-read.patch
+Patch1377: 1377-wifi-mac80211-fix-unsol-bcast-probe-resp-double-free-on-alloc-failure.patch
+Patch1378: 1378-wifi-mac80211-fix-fils-discovery-double-free-on-alloc-failure.patch
+Patch1379: 1379-wifi-cfg80211-convert-pmsr-free-wk-to-wiphy-work-to-fix-deadlock.patch
+Patch1380: 1380-wifi-cfg80211-use-wiphy-work-for-socket-owner-autodisconnect.patch
+Patch1381: 1381-wifi-rt2x00-avoid-full-teardown-before-work-setup-in-probe.patch
+Patch1382: 1382-wifi-cfg80211-cancel-sched-scan-results-work-on-unregister.patch
+Patch1383: 1383-wifi-cfg80211-bound-element-id-read-when-checking-non-inheritance.patch
+Patch1384: 1384-wifi-brcmfmac-drain-bus-reset-work-on-device-removal.patch
+Patch1385: 1385-wifi-brcmfmac-make-release-scratchbuffers-idempotent.patch
+Patch1386: 1386-wifi-mwifiex-bound-uap-association-event-ies-to-the-event-buffer.patch
+Patch1387: 1387-wifi-iwlwifi-mvm-fix-out-of-bounds-tid-data-access-in-ba-notif.patch
+Patch1388: 1388-wifi-iwlwifi-mvm-validate-tx-cmd-response-layout.patch
+Patch1389: 1389-wifi-iwlwifi-mvm-validate-sta-id-in-ba-window-status-notif.patch
+Patch1390: 1390-wifi-mac80211-tear-down-new-links-on-vif-update-error-path.patch
+Patch1391: 1391-wifi-iwlwifi-mvm-fix-sched-scan-ie-sizing.patch
+Patch1392: 1392-wifi-iwlwifi-pcie-null-rx-pointers-after-free.patch
+Patch1393: 1393-wifi-mwifiex-use-the-subframe-length-when-parsing-a-msdu-tdls-frames.patch
+Patch1394: 1394-wifi-mac80211-fix-tid-tx-use-after-free-on-ba-session-stop.patch
+Patch1395: 1395-wifi-ath12k-fix-out-of-bounds-clear-bit-in-ath12k-mac-dp-peer-cleanup.patch
+Patch1396: 1396-wifi-mac80211-validate-individual-twt-params-before-driver-setup.patch
+Patch1397: 1397-drm-amdkfd-fix-oob-memory-exposure-in-get-wave-state.patch
+Patch1398: 1398-drm-amdkfd-hold-event-mutex-while-checkpointing-criu-events.patch
+Patch1399: 1399-drm-amdkfd-fix-smi-event-cross-process-information-leak.patch
+Patch1400: 1400-drm-amdgpu-fix-buffer-overflow-during-vbios-update.patch
+Patch1401: 1401-drm-amd-pm-bound-pp-dpm-set-pp-table-memcpy.patch
+Patch1402: 1402-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
+Patch1403: 1403-drm-amdgpu-validate-and-share-psp-fw-pri-buf-copies-via-psp-copy-fw.patch
+Patch1404: 1404-drm-amdkfd-check-bounds-on-allocate-doorbell.patch
+Patch1405: 1405-drm-amdkfd-check-bounds-for-allocate-sdma-queue-restore-sdma-id.patch
+Patch1406: 1406-s390-zcrypt-validate-length-for-cca-ecc-private-key-requests.patch
+Patch1407: 1407-s390-zcrypt-validate-length-for-cca-aes-cipher-key-requests.patch
+Patch1408: 1408-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
+Patch1409: 1409-net-smc-fix-socket-use-after-free-during-link-group-termination.patch
+Patch1410: 1410-net-smc-protect-clcsock-lifetime-in-smc-getname.patch
+Patch1411: 1411-netfilter-conntrack-tcp-use-unack-timeout-for-non-closing-rst-packets.patch
+Patch1412: 1412-netfilter-conntrack-always-lower-timeout-for-non-closing-rst-packets.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1392,6 +1483,50 @@ Patch2018: 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 Patch2019: 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 Patch2020: 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
 Patch2021: 2021-net-lock-the-socket-in-sock_gettstamp.patch
+Patch2022: 2022-can-j1939-j1939-session-new-fix-skb-reference-counting.patch
+Patch2023: 2023-wifi-mt76-mt7925-fix-crash-in-reset-link-replay.patch
+Patch2024: 2024-wifi-mt76-mt7925-drop-txrx-notify-on-non-mmio-buses.patch
+Patch2026: 2026-drm-xe-issue-ggtt-invalidation-under-lock-in-ggtt-node-remove.patch
+Patch2027: 2027-alsa-timer-clear-sndrv-timer-iflg-dead-once-the-close-completes.patch
+Patch2028: 2028-net-wwan-t7xx-fix-potential-skb-frags-overflow-in-rx-path.patch
+Patch2029: 2029-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
+Patch2030: 2030-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
+Patch2031: 2031-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
+Patch2032: 2032-libceph-reset-sparse-read-state-in-osd-fault.patch
+Patch2033: 2033-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
+Patch2034: 2034-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icmp.patch
+Patch2036: 2036-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
+Patch2037: 2037-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+Patch2038: 2038-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+Patch2039: 2039-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+Patch2040: 2040-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+Patch2041: 2041-kvm-sev-ignore-mmio-requests-of-length-0.patch
+Patch2042: 2042-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+Patch2043: 2043-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+Patch2044: 2044-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-reque.patch
+Patch2045: 2045-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+Patch2046: 2046-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+Patch2047: 2047-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+Patch2048: 2048-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
+Patch2049: 2049-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+Patch2050: 2050-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
+Patch2051: 2051-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
+Patch2052: 2052-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
+Patch2053: 2053-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+Patch2054: 2054-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+Patch2055: 2055-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
+Patch2056: 2056-net-smc-reject-chid-0-accept-that-matches-an-empty-ism-dev-slot.patch
+Patch2057: 2057-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+Patch2059: 2059-net-smc-fix-splice-entry-lifetime-imbalance-in-smc-rx-splice.patch
+Patch2060: 2060-tcp-restrict-so-attach-filter-to-priv-users.patch
+Patch2061: 2061-net-gro-fix-double-aggregation-of-flush-marked-skbs.patch
+Patch2062: 2062-net-packet-avoid-fanout-hook-re-registration-after-unregister.patch
+Patch2063: 2063-kvm-s390-pci-reject-adapter-interrupt-forwarding-if-already-enabled.patch
+Patch2064: 2064-kvm-nvmx-always-flush-vpid02-on-first-use.patch
+Patch2065: 2065-kvm-nvmx-decouple-invvpid-operand-checks-from-flushing-of-vpid02.patch
+Patch2066: 2066-kvm-nvm-ensure-invvpid-is-emulated-on-the-correct-physical-cpu.patch
+Patch2067: 2067-writeback-fix-race-between-cgroup-writeback-umount-and-inode-switch-wbs.patch
+Patch2068: 2068-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -2533,6 +2668,97 @@ ApplyPatch 1323-watchdog-fix-hrtimer-start-when-pretimeout-is-zero.patch
 ApplyPatch 1324-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
 ApplyPatch 1325-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
 
+# Applying backports for 6.12.0-264.16.1.el10_3
+ApplyPatch 1326-mptcp-options-reset-dss-fields-in-case-of-unexpected-size.patch
+ApplyPatch 1327-mpls-set-rt-rt-nhn-just-before-returning-from-mpls-nh-build-multi.patch
+ApplyPatch 1328-i3c-master-svc-bound-ibi-payload-to-the-requested-max-payload-len.patch
+ApplyPatch 1329-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+ApplyPatch 1330-s390-cpum-cf-handle-cpu-hotplug-via-prepare-dead-callbacks.patch
+ApplyPatch 1331-smb-client-validate-absolute-native-symlink-targets-before-nt-fixups.patch
+ApplyPatch 1332-ipv4-validate-checksum-start-before-completing-checksum.patch
+ApplyPatch 1333-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
+ApplyPatch 1334-alsa-seq-midi-optimize-event-input-locking-with-rcu.patch
+ApplyPatch 1335-alsa-seq-midi-serialize-input-teardown-with-event-input.patch
+ApplyPatch 1336-sctp-validate-cookie-auth-state-before-use.patch
+ApplyPatch 1337-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+ApplyPatch 1338-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+ApplyPatch 1339-sctp-close-udp-tunnel-sockets-during-netns-teardown.patch
+ApplyPatch 1340-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+ApplyPatch 1341-sctp-clear-new-transport-when-removing-a-peer.patch
+ApplyPatch 1342-scsi-libiscsi-validate-the-itt-reflected-in-a-reject-pdu.patch
+ApplyPatch 1343-scsi-libiscsi-validate-the-task-named-by-a-management-response.patch
+ApplyPatch 1344-s390-vfio-ap-fix-missing-lock-required-to-access-list-of-ap-matrix-mdev-objects.patch
+ApplyPatch 1345-s390-vfio-ccw-cancel-existing-workqueues.patch
+ApplyPatch 1346-s390-qeth-validate-user-buffer-length-in-snmp-and-arp-query-ioctls.patch
+ApplyPatch 1347-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-link.patch
+ApplyPatch 1348-net-smc-bound-the-peer-rkey-counts-in-smc-rv2-llc-messages.patch
+ApplyPatch 1349-net-smc-carry-oversized-smc-rv2-llc-messages-in-the-queue-entry.patch
+ApplyPatch 1350-powerpc-pseries-papr-phy-attest-validate-cmd-length-plug-mem-leak.patch
+
+# Applying backports for 6.12.0-264.17.1.el10_3
+ApplyPatch 1351-net-bridge-stop-fast-leave-after-deleting-a-port-group.patch
+ApplyPatch 1352-alsa-pcm-serialize-pcm-mmap-with-buffer-reallocation-to-fix-page-uaf.patch
+ApplyPatch 1353-alsa-ua101-reject-mismatched-capture-playback-packet-sizes.patch
+ApplyPatch 1354-ipv6-fix-use-after-free-in-ip6-finish-output2.patch
+ApplyPatch 1355-wifi-mt76-add-wcid-publish-check-in-mt76-sta-add.patch
+ApplyPatch 1356-wifi-ath11k-cancel-ssr-work-items-during-pci-shutdown.patch
+ApplyPatch 1357-wifi-ath9k-fix-oob-access-from-firmware-tx-status-queue-id.patch
+ApplyPatch 1358-wifi-rtw89-add-bounds-check-on-firmware-mac-id-in-link-lookup.patch
+ApplyPatch 1359-wifi-rtw89-correct-data-type-for-scan-index-to-avoid-infinite-loop.patch
+ApplyPatch 1360-wifi-rtw88-fix-wrong-pci-get-drvdata-type-in-aer-handlers.patch
+ApplyPatch 1361-wifi-rtw89-fix-wrong-pci-get-drvdata-type-in-aer-handlers.patch
+ApplyPatch 1362-wifi-ath11k-add-msdu-length-validation-for-tkip-mic-error.patch
+ApplyPatch 1363-wifi-ath11k-fix-invalid-data-access-in-ath11k-dp-rx-h-undecap-nwifi.patch
+ApplyPatch 1364-net-qrtr-fix-32-bit-integer-overflow-in-qrtr-endpoint-post.patch
+ApplyPatch 1365-wifi-rtw88-fix-oob-read-from-firmware-rx-descriptor-exceeding-dma-buffer.patch
+ApplyPatch 1366-wifi-mt76-use-kfree-rcu-for-offchannel-link-in-mt76-put-vif-phy-link.patch
+ApplyPatch 1367-wifi-iwlwifi-mld-don-t-flush-async-handlers-wk-when-canceling-notifications.patch
+ApplyPatch 1368-wifi-iwlwifi-mld-purge-async-notifications-upon-nic-error.patch
+ApplyPatch 1369-net-wwan-iosm-bound-device-offsets-in-the-mux-downlink-decoder.patch
+ApplyPatch 1370-wifi-cfg80211-derive-s1g-beacon-tsf-from-s1g-fields.patch
+ApplyPatch 1371-wifi-mac80211-validate-extension-frame-layout-before-rx.patch
+ApplyPatch 1372-wifi-ieee80211-validate-mle-common-info-length.patch
+ApplyPatch 1373-wifi-brcmfmac-cyw-fix-heap-overflow-on-a-short-auth-frame.patch
+ApplyPatch 1374-wifi-cfg80211-validate-rx-tx-mlme-callback-frame-lengths-before-access.patch
+ApplyPatch 1375-wifi-cfg80211-validate-assoc-response-length-before-status-and-ie-access.patch
+ApplyPatch 1376-wifi-cfg80211-validate-eht-mle-before-mld-id-read.patch
+ApplyPatch 1377-wifi-mac80211-fix-unsol-bcast-probe-resp-double-free-on-alloc-failure.patch
+ApplyPatch 1378-wifi-mac80211-fix-fils-discovery-double-free-on-alloc-failure.patch
+ApplyPatch 1379-wifi-cfg80211-convert-pmsr-free-wk-to-wiphy-work-to-fix-deadlock.patch
+ApplyPatch 1380-wifi-cfg80211-use-wiphy-work-for-socket-owner-autodisconnect.patch
+ApplyPatch 1381-wifi-rt2x00-avoid-full-teardown-before-work-setup-in-probe.patch
+ApplyPatch 1382-wifi-cfg80211-cancel-sched-scan-results-work-on-unregister.patch
+ApplyPatch 1383-wifi-cfg80211-bound-element-id-read-when-checking-non-inheritance.patch
+ApplyPatch 1384-wifi-brcmfmac-drain-bus-reset-work-on-device-removal.patch
+ApplyPatch 1385-wifi-brcmfmac-make-release-scratchbuffers-idempotent.patch
+ApplyPatch 1386-wifi-mwifiex-bound-uap-association-event-ies-to-the-event-buffer.patch
+ApplyPatch 1387-wifi-iwlwifi-mvm-fix-out-of-bounds-tid-data-access-in-ba-notif.patch
+ApplyPatch 1388-wifi-iwlwifi-mvm-validate-tx-cmd-response-layout.patch
+ApplyPatch 1389-wifi-iwlwifi-mvm-validate-sta-id-in-ba-window-status-notif.patch
+ApplyPatch 1390-wifi-mac80211-tear-down-new-links-on-vif-update-error-path.patch
+ApplyPatch 1391-wifi-iwlwifi-mvm-fix-sched-scan-ie-sizing.patch
+ApplyPatch 1392-wifi-iwlwifi-pcie-null-rx-pointers-after-free.patch
+ApplyPatch 1393-wifi-mwifiex-use-the-subframe-length-when-parsing-a-msdu-tdls-frames.patch
+ApplyPatch 1394-wifi-mac80211-fix-tid-tx-use-after-free-on-ba-session-stop.patch
+ApplyPatch 1395-wifi-ath12k-fix-out-of-bounds-clear-bit-in-ath12k-mac-dp-peer-cleanup.patch
+ApplyPatch 1396-wifi-mac80211-validate-individual-twt-params-before-driver-setup.patch
+ApplyPatch 1397-drm-amdkfd-fix-oob-memory-exposure-in-get-wave-state.patch
+ApplyPatch 1398-drm-amdkfd-hold-event-mutex-while-checkpointing-criu-events.patch
+ApplyPatch 1399-drm-amdkfd-fix-smi-event-cross-process-information-leak.patch
+ApplyPatch 1400-drm-amdgpu-fix-buffer-overflow-during-vbios-update.patch
+ApplyPatch 1401-drm-amd-pm-bound-pp-dpm-set-pp-table-memcpy.patch
+ApplyPatch 1402-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
+ApplyPatch 1403-drm-amdgpu-validate-and-share-psp-fw-pri-buf-copies-via-psp-copy-fw.patch
+ApplyPatch 1404-drm-amdkfd-check-bounds-on-allocate-doorbell.patch
+ApplyPatch 1405-drm-amdkfd-check-bounds-for-allocate-sdma-queue-restore-sdma-id.patch
+ApplyPatch 1406-s390-zcrypt-validate-length-for-cca-ecc-private-key-requests.patch
+ApplyPatch 1407-s390-zcrypt-validate-length-for-cca-aes-cipher-key-requests.patch
+ApplyPatch 1408-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
+ApplyPatch 1409-net-smc-fix-socket-use-after-free-during-link-group-termination.patch
+ApplyPatch 1410-net-smc-protect-clcsock-lifetime-in-smc-getname.patch
+ApplyPatch 1411-netfilter-conntrack-tcp-use-unack-timeout-for-non-closing-rst-packets.patch
+ApplyPatch 1412-netfilter-conntrack-always-lower-timeout-for-non-closing-rst-packets.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2551,6 +2777,50 @@ ApplyPatch 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 ApplyPatch 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 ApplyPatch 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
 ApplyPatch 2021-net-lock-the-socket-in-sock_gettstamp.patch
+ApplyPatch 2022-can-j1939-j1939-session-new-fix-skb-reference-counting.patch
+ApplyPatch 2023-wifi-mt76-mt7925-fix-crash-in-reset-link-replay.patch
+ApplyPatch 2024-wifi-mt76-mt7925-drop-txrx-notify-on-non-mmio-buses.patch
+ApplyPatch 2026-drm-xe-issue-ggtt-invalidation-under-lock-in-ggtt-node-remove.patch
+ApplyPatch 2027-alsa-timer-clear-sndrv-timer-iflg-dead-once-the-close-completes.patch
+ApplyPatch 2028-net-wwan-t7xx-fix-potential-skb-frags-overflow-in-rx-path.patch
+ApplyPatch 2029-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
+ApplyPatch 2030-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
+ApplyPatch 2031-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
+ApplyPatch 2032-libceph-reset-sparse-read-state-in-osd-fault.patch
+ApplyPatch 2033-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
+ApplyPatch 2034-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icmp.patch
+ApplyPatch 2036-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
+ApplyPatch 2037-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+ApplyPatch 2038-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+ApplyPatch 2039-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+ApplyPatch 2040-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+ApplyPatch 2041-kvm-sev-ignore-mmio-requests-of-length-0.patch
+ApplyPatch 2042-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+ApplyPatch 2043-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+ApplyPatch 2044-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-reque.patch
+ApplyPatch 2045-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+ApplyPatch 2046-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+ApplyPatch 2047-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+ApplyPatch 2048-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
+ApplyPatch 2049-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+ApplyPatch 2050-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
+ApplyPatch 2051-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
+ApplyPatch 2052-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
+ApplyPatch 2053-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+ApplyPatch 2054-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+ApplyPatch 2055-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
+ApplyPatch 2056-net-smc-reject-chid-0-accept-that-matches-an-empty-ism-dev-slot.patch
+ApplyPatch 2057-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+ApplyPatch 2059-net-smc-fix-splice-entry-lifetime-imbalance-in-smc-rx-splice.patch
+ApplyPatch 2060-tcp-restrict-so-attach-filter-to-priv-users.patch
+ApplyPatch 2061-net-gro-fix-double-aggregation-of-flush-marked-skbs.patch
+ApplyPatch 2062-net-packet-avoid-fanout-hook-re-registration-after-unregister.patch
+ApplyPatch 2063-kvm-s390-pci-reject-adapter-interrupt-forwarding-if-already-enabled.patch
+ApplyPatch 2064-kvm-nvmx-always-flush-vpid02-on-first-use.patch
+ApplyPatch 2065-kvm-nvmx-decouple-invvpid-operand-checks-from-flushing-of-vpid02.patch
+ApplyPatch 2066-kvm-nvm-ensure-invvpid-is-emulated-on-the-correct-physical-cpu.patch
+ApplyPatch 2067-writeback-fix-race-between-cgroup-writeback-umount-and-inode-switch-wbs.patch
+ApplyPatch 2068-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -5171,14 +5441,95 @@ fi\
 #
 #
 %changelog
-* Wed Nov 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.15.1
+* Thu Nov 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.17.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Wed Nov 11 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.15.1
+* Thu Nov 19 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.17.1
 - Enable Btrfs support for all kernel variants
 
-* Wed Nov 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.15.1
+* Thu Nov 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.17.1
+- inet: reject unhashed sockets during established lookups {CVE-2026-99288}
+- can: j1939: j1939_session_new(): fix skb reference counting [RHEL-162260]
+  {CVE-2024-56645}
+- wifi: mt76: mt7925: fix crash in reset link replay [RHEL-237527]
+  {CVE-2026-68307}
+- wifi: mt76: mt7925: drop TXRX_NOTIFY on non-mmio buses [RHEL-237681]
+  {CVE-2026-68193}
+- drm/xe: Issue GGTT invalidation under lock in ggtt_node_remove [RHEL-222461]
+  {CVE-2026-23466}
+- ALSA: timer: Clear SNDRV_TIMER_IFLG_DEAD once the close completes
+  [RHEL-227086] {CVE-2026-53193}
+- net: wwan: t7xx: fix potential skb->frags overflow in RX path [RHEL-245528]
+  {CVE-2026-23172}
+- libceph: make decode_pool() more resilient against corrupted osdmaps
+  [RHEL-169064] {CVE-2025-71116}
+- libceph: prevent potential out-of-bounds reads in handle_auth_done()
+  [RHEL-169068] {CVE-2026-22984}
+- libceph: replace overzealous BUG_ON in osdmap_apply_incremental()
+  [RHEL-169072] {CVE-2026-22990}
+- libceph: reset sparse-read state in osd_fault() [RHEL-169079] {CVE-2026-23136}
+- Bluetooth: fix UAF in bt_accept_dequeue() [RHEL-229761] {CVE-2026-53357}
+- tunnels: load network headers after skb_cow() in
+  iptunnel_pmtud_build_icmp[v6]() [RHEL-259564] {CVE-2026-63994}
+- Bluetooth: hci_uart: clear HCI_UART_SENDING when write_work is canceled
+  [RHEL-232645] {CVE-2026-46275}
+- KVM: SEV: Require in-GHCB scratch area if GHCB v2+ is in use [RHEL-192289]
+  {CVE-2026-53360}
+- KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free [RHEL-192289]
+  {CVE-2026-53360}
+- KVM: x86: Dedup kvm_sev_es_mmio_{read,write}() [RHEL-192289] {CVE-2026-53360}
+- KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API
+  [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Ignore MMIO requests of length '0' [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Reject MMIO requests larger than 8 bytes with GHCB v2+ [RHEL-192289]
+  {CVE-2026-53360}
+- KVM: SEV: Ignore Port I/O requests of length '0' [RHEL-192289]
+  {CVE-2026-53360}
+- KVM: SEV: Use the size of the PSC header as the minimum size for PSC requests
+  [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Compute the correct max length of the in-GHCB scratch area
+  [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: WARN if KVM attempts to setup scratch area with min_len==0
+  [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Don't explicitly pass PSC buffer to snp_begin_psc() [RHEL-192289]
+  {CVE-2026-53360}
+- KVM: SEV: Check PSC request indices against the actual size of the buffer
+  [RHEL-192289] {CVE-2026-53360}
+- KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer
+  [RHEL-192289] {CVE-2026-53360}
+- ipvlan: inherit needed_headroom and needed_tailroom from phy_dev [RHEL-254268]
+  {CVE-2026-74744}
+- macvlan: inherit needed_headroom and needed_tailroom from lowerdev
+  [RHEL-254268]
+- vlan: fix skb_under_panic and races when toggling HW VLAN offload
+  [RHEL-254268]
+- bridge: mcast: Fix a possible use-after-free when removing a bridge port
+  [RHEL-232531] {CVE-2026-64032}
+- Bluetooth: hci_core: Fix queuing tx_work after workqueue is drained
+  [RHEL-244763] {CVE-2026-63974}
+- net/iucv: fix use-after-free of a severed iucv_path [RHEL-260529]
+  {CVE-2026-68140}
+- net/smc: reject CHID-0 ACCEPT that matches an empty ism_dev slot [RHEL-230097]
+  {CVE-2026-64048}
+- inet: frags: strip GSO state from fragments before reassembly [RHEL-254213]
+  {CVE-2026-80590}
+- net: smc: fix splice entry lifetime imbalance in smc_rx_splice [RHEL-253457]
+  {CVE-2026-74631}
+- tcp: restrict SO_ATTACH_FILTER to priv users [RHEL-257741] {CVE-2026-53236}
+- net: gro: fix double aggregation of flush-marked skbs [RHEL-242620]
+  {CVE-2026-68136}
+- net/packet: avoid fanout hook re-registration after unregister [RHEL-246967]
+  {CVE-2026-68338}
+- KVM: s390: pci: Reject adapter interrupt forwarding if already enabled
+  [RHEL-277647] {CVE-2026-74515}
+- KVM: nVMX: Always flush vpid02 on first use [RHEL-270935] {CVE-2026-89932}
+- KVM: nVMX: Decouple INVVPID operand checks from flushing of vpid02
+  [RHEL-270935] {CVE-2026-89932}
+- KVM: nVM: Ensure INVVPID is emulated on the correct physical CPU [RHEL-270935]
+  {CVE-2026-89932}
+- writeback: fix race between cgroup_writeback_umount() and inode_switch_wbs()
+  [RHEL-260509] {CVE-2026-64378}
 - net: lock the socket in sock_gettstamp() {CVE-2026-98276}
 - ceph: pass cred pointer to ceph_mds_auth_match()
 - ceph: fix cred leak in ceph_mds_check_access() {CVE-2024-56563}
@@ -5195,6 +5546,98 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Nov 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.17.1.el10_3]
+- netfilter: conntrack: always lower timeout for non-closing RST packets (CKI Backport Bot) [RHEL-303850] {CVE-2026-99283}
+- netfilter: conntrack: tcp: use UNACK timeout for non-closing RST packets (CKI Backport Bot) [RHEL-303850] {CVE-2026-99283}
+- net/smc: protect clcsock lifetime in smc_getname (CKI Backport Bot) [RHEL-303996] {CVE-2026-99032}
+- net/smc: fix socket use-after-free during link group termination (CKI Backport Bot) [RHEL-300328] {CVE-2026-74493}
+- net/smc: fix UAF in smc_cdc_rx_handler() by pinning the socket (CKI Backport Bot) [RHEL-298269] {CVE-2026-64541}
+- s390/zcrypt: Validate length for CCA AES cipher key requests (Jan Polensky) [RHEL-297855] {CVE-2026-68452}
+- s390/zcrypt: Validate length for CCA ECC private key requests (CKI Backport Bot) [RHEL-297862] {CVE-2026-68451}
+- drm/amdkfd: Check bounds for allocate_sdma_queue restore_sdma_id (CKI Backport Bot) [RHEL-278246] {CVE-2026-97497}
+- drm/amdkfd: Check bounds on allocate_doorbell (CKI Backport Bot) [RHEL-278287] {CVE-2026-97495}
+- drm/amdgpu: validate and share PSP fw_pri_buf copies via psp_copy_fw (CKI Backport Bot) [RHEL-278256] {CVE-2026-97494}
+- drm/amdgpu: Bound GPIO I2C table entry count from VBIOS (CKI Backport Bot) [RHEL-278267] {CVE-2026-97493}
+- drm/amd/pm: bound pp_dpm_set_pp_table() memcpy (CKI Backport Bot) [RHEL-278196] {CVE-2026-97427}
+- drm/amdgpu: fix buffer overflow during vBIOS update (CKI Backport Bot) [RHEL-278291] {CVE-2026-97425}
+- drm/amdkfd: fix SMI event cross-process information leak (CKI Backport Bot) [RHEL-278156] {CVE-2026-97422}
+- drm/amdkfd: hold event_mutex while checkpointing CRIU events (CKI Backport Bot) [RHEL-273841 RHEL-273866] {CVE-2026-74446}
+- drm/amdkfd: Fix OOB memory exposure in get_wave_state() (CKI Backport Bot) [RHEL-273385] {CVE-2026-97496}
+- wifi: mac80211: validate individual TWT params before driver setup (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74554}
+- wifi: ath12k: fix out-of-bounds clear_bit in ath12k_mac_dp_peer_cleanup() (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74554}
+- wifi: mac80211: fix tid_tx use-after-free on BA session stop (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74489}
+- wifi: mwifiex: use the subframe length when parsing A-MSDU TDLS frames (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74488}
+- wifi: iwlwifi: pcie: null RX pointers after free (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-93796}
+- wifi: iwlwifi: mvm: fix sched scan IE sizing (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-98889}
+- wifi: mac80211: tear down new links on vif update error path (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-64574}
+- wifi: iwlwifi: mvm: validate sta_id in BA window status notif (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-93799}
+- wifi: iwlwifi: mvm: validate TX_CMD response layout (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-93793}
+- wifi: iwlwifi: mvm: fix out-of-bounds tid_data access in BA notif (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-93790}
+- wifi: mwifiex: bound uAP association event IEs to the event buffer (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68326}
+- wifi: brcmfmac: make release_scratchbuffers idempotent (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68192}
+- wifi: brcmfmac: drain bus_reset work on device removal (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-64586}
+- wifi: cfg80211: bound element ID read when checking non-inheritance (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68402}
+- wifi: cfg80211: cancel sched scan results work on unregister (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68414}
+- wifi: rt2x00: avoid full teardown before work setup in probe (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-72005}
+- wifi: cfg80211: use wiphy work for socket owner autodisconnect (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68404}
+- wifi: cfg80211: convert pmsr_free_wk to wiphy_work to fix deadlock (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68404}
+- wifi: mac80211: fix fils_discovery double free on alloc failure (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-64570}
+- wifi: mac80211: fix unsol_bcast_probe_resp double free on alloc failure (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-64568}
+- wifi: cfg80211: validate EHT MLE before MLD ID read (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68472}
+- wifi: cfg80211: validate assoc response length before status and IE access (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-93806}
+- wifi: cfg80211: validate rx/tx MLME callback frame lengths before access (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-93806}
+- wifi: brcmfmac: cyw: fix heap overflow on a short auth frame (Jose Ignacio Tornos Martinez) [RHEL-283413 RHEL-291553] {CVE-2026-72003}
+- wifi: ieee80211: validate MLE common info length (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68471}
+- wifi: mac80211: validate extension-frame layout before RX (Jose Ignacio Tornos Martinez) [RHEL-289967 RHEL-291553] {CVE-2026-68470}
+- wifi: cfg80211: derive S1G beacon TSF from S1G fields (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-68470}
+- net: wwan: iosm: bound device offsets in the MUX downlink decoder (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-72029}
+- wifi: iwlwifi: mld: purge async notifications upon nic error (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-97474}
+- wifi: iwlwifi: mld: don't flush async_handlers_wk when canceling notifications (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-97474}
+- wifi: mt76: use kfree_rcu for offchannel link in mt76_put_vif_phy_link (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74325}
+- wifi: rtw88: fix OOB read from firmware RX descriptor exceeding DMA buffer (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74410}
+- net: qrtr: fix 32-bit integer overflow in qrtr_endpoint_post() (Jose Ignacio Tornos Martinez) [RHEL-283477 RHEL-291553] {CVE-2026-72298}
+- wifi: ath11k: fix invalid data access in ath11k_dp_rx_h_undecap_nwifi (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-97442}
+- wifi: ath11k: add MSDU length validation for TKIP MIC error (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-97442}
+- wifi: rtw89: fix wrong pci_get_drvdata type in AER handlers (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74413}
+- wifi: rtw88: fix wrong pci_get_drvdata type in AER handlers (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74412}
+- wifi: rtw89: Correct data type for scan index to avoid infinite loop (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74411}
+- wifi: rtw89: add bounds check on firmware mac_id in link lookup (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74409}
+- wifi: ath9k: fix OOB access from firmware tx status queue ID (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74408}
+- wifi: ath11k: cancel SSR work items during PCI shutdown (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-74407}
+- wifi: mt76: add wcid publish check in mt76_sta_add (Jose Ignacio Tornos Martinez) [RHEL-291553] {CVE-2026-63832}
+- ipv6: fix use-after-free in ip6_finish_output2() (Antoine Tenart) [RHEL-258695] {CVE-2026-80792}
+- ALSA: ua101: reject mismatched capture/playback packet sizes (CKI Backport Bot) [RHEL-290817] {CVE-2026-98741}
+- ALSA: pcm: Serialize PCM mmap with buffer reallocation to fix page UAF (CKI Backport Bot) [RHEL-276116] {CVE-2026-98116}
+- net: bridge: stop fast-leave after deleting a port group (CKI Backport Bot) [RHEL-246925] {CVE-2026-74480}
+
+* Mon Nov 09 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.16.1.el10_3]
+- gitlab-ci: add rhel10_baseline with ccache save (Tales da Aparecida)
+- powerpc/pseries: papr-phy-attest - validate cmd.length, plug mem leak (Mamatha Inamdar) [RHEL-295116] {CVE-2026-80571}
+- net/smc: carry oversized SMC-Rv2 LLC messages in the queue entry (Jan Polensky) [RHEL-294748] {CVE-2026-80981}
+- net/smc: bound the peer rkey counts in SMC-Rv2 LLC messages (Jan Polensky) [RHEL-294748] {CVE-2026-80981}
+- net/smc: fix use-after-free of the LLC qentry in smc_llc_srv_add_link() (Jan Polensky) [RHEL-294748] {CVE-2026-80981}
+- s390/qeth: validate user buffer length in SNMP and ARP query ioctls (Jan Polensky) [RHEL-295104] {CVE-2026-80584}
+- s390/vfio_ccw: Cancel existing workqueues (Jan Polensky) [RHEL-295167] {CVE-2026-80553}
+- s390/vfio-ap: Fix missing lock required to access list of ap_matrix_mdev objects (Ramesh Chhetri) [RHEL-293891] {CVE-2026-89956}
+- scsi: libiscsi: Validate the task named by a management response (CKI Backport Bot) [RHEL-298426] {CVE-2026-99152}
+- scsi: libiscsi: Validate the ITT reflected in a Reject PDU (CKI Backport Bot) [RHEL-298479] {CVE-2026-99153}
+- sctp: clear new_transport when removing a peer (Jamie Bainbridge) [RHEL-275366] {CVE-2026-74586}
+- sctp: stop processing a packet once its association is deleted (Jamie Bainbridge) [RHEL-263283] {CVE-2026-89479}
+- sctp: close UDP tunnel sockets during netns teardown (Jamie Bainbridge) [RHEL-258779]
+- sctp: avoid auth_enable sysctl UAF during netns teardown (Jamie Bainbridge) [RHEL-258779] {CVE-2026-68162}
+- sctp: keep chunk->transport in step with the list it is queued on (Jamie Bainbridge) [RHEL-254354] {CVE-2026-74588}
+- sctp: validate cookie AUTH state before use (Jamie Bainbridge) [RHEL-254287] {CVE-2026-74752}
+- ALSA: seq: midi: Serialize input teardown with event_input (CKI Backport Bot) [RHEL-282960] {CVE-2026-90207}
+- ALSA: seq: midi: Optimize event_input locking with RCU (CKI Backport Bot) [RHEL-282960] {CVE-2026-90207}
+- net: always dissect GSO packets in __virtio_net_hdr_to_skb() (Davide Caratti) [RHEL-280591]
+- ipv4: validate checksum_start before completing checksum (CKI Backport Bot) [RHEL-280591] {CVE-2026-99999}
+- smb: client: validate absolute native symlink targets before NT fixups (CKI Backport Bot) [RHEL-280049] {CVE-2026-98318}
+- s390/cpum_cf: Handle CPU hotplug via prepare/dead callbacks (Jan Polensky) [RHEL-270889]
+- smb: client: fix OOB read/write from unvalidated DataOffset in coalesce_t2() (CKI Backport Bot) [RHEL-271495] {CVE-2026-89633}
+- i3c: master: svc: bound IBI payload to the requested max_payload_len (CKI Backport Bot) [RHEL-262890] {CVE-2026-80951}
+- mpls: Set rt->rt_nhn just before returning from mpls_nh_build_multi(). (Guillaume Nault) [RHEL-222766]
+- mptcp: options: reset DSS fields in case of unexpected size (CKI Backport Bot) [RHEL-250581] {CVE-2026-80586}
 
 * Wed Nov 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.15.1.el10_3]
 - sunrpc: wait for in-flight TLS handshake callback when cancel loses race (Olga Kornievskaia) [RHEL-283651] {CVE-2026-72221}
