@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.186.1.el8_10
+%define pkgrelease 553.187.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.186.1%{?dist}
+%define specrelease 553.187.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -570,6 +570,7 @@ Patch2006: 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch1104: 1104-net-lock-the-socket-in-sock_gettstamp.patch
+Patch1105: 1105-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1159,6 +1160,7 @@ ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 1104-net-lock-the-socket-in-sock_gettstamp.patch
+ApplyPatch 1105-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -2807,7 +2809,8 @@ fi
 #
 #
 %changelog
-* Wed Nov 11 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.186.1
+* Thu Nov 19 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.187.1
+- inet: reject unhashed sockets during established lookups {CVE-2026-99288}
 - net: lock the socket in sock_gettstamp() {CVE-2026-98276}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2819,9 +2822,69 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Nov 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.186.1
+* Thu Nov 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.187.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Thu Nov 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.187.1.el8_10]
+- SUNRPC: Fix crasher in gss_unwrap_resp_integ() (Scott Mayhew) [RHEL-309171]
+- slip: remove slip_hangup() to fix use-after-free in slip_receive_buf() (Michal Schmidt) [RHEL-282009] {CVE-2026-90057}
+- slip: fix use-after-free in sl_sync() (Michal Schmidt) [RHEL-282009] {CVE-2026-81001}
+- slip: bound decode() reads against the compressed packet length (Michal Schmidt) [RHEL-282009] {CVE-2026-45843}
+- slip: reject VJ receive packets on instances with no rstate array (Michal Schmidt) [RHEL-282009] {CVE-2026-45842}
+- slip: make slhc_remember() more robust against malicious packets (Michal Schmidt) [RHEL-282009] {CVE-2024-50033}
+- net: delete "register" keyword [slip] (Michal Schmidt) [RHEL-282009]
+- kprobes: avoid crash when rmmod/insmod after ftrace killed (Jerome Marchand) [RHEL-284885]
+- kprobe/ftrace: fix build error due to bad function definition (Jerome Marchand) [RHEL-284885]
+- kprobe/ftrace: bail out if ftrace was killed (Jerome Marchand) [RHEL-284885]
+- wifi: mac80211: validate individual TWT params before driver setup (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-80722}
+- wifi: mwifiex: use the subframe length when parsing A-MSDU TDLS frames (Jose Ignacio Tornos Martinez) [RHEL-300371 RHEL-301737] {CVE-2026-74488}
+- wifi: iwlwifi: mvm: fix sched scan IE sizing (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-98889}
+- wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-98889}
+- wifi: mac80211: tear down new links on vif update error path (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-64574}
+- wifi: iwlwifi: mvm: validate sta_id in BA window status notif (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-93799}
+- wifi: iwlwifi: mvm: validate TX_CMD response layout (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-93793}
+- wifi: iwlwifi: mvm: fix out-of-bounds tid_data access in BA notif (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-93790}
+- wifi: iwlwifi: add some FW misbehaviour check infrastructure (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-93790}
+- wifi: mwifiex: bound uAP association event IEs to the event buffer (Jose Ignacio Tornos Martinez) [RHEL-298240 RHEL-300371] {CVE-2026-68326}
+- wifi: cfg80211: cancel sched scan results work on unregister (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-68414}
+- wifi: cfg80211: cancel rfkill_block work in wiphy_unregister() (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-23336}
+- wifi: rt2x00: avoid full teardown before work setup in probe (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-72005}
+- wifi: cfg80211: validate assoc response length before status and IE access (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-93806}
+- wifi: mac80211: validate extension-frame layout before RX (Jose Ignacio Tornos Martinez) [RHEL-289913 RHEL-300371] {CVE-2026-68470}
+- wifi: cfg80211/mac80211: correctly parse S1G beacon optional elements [helpers] (Jose Ignacio Tornos Martinez) [RHEL-289913 RHEL-300371] {CVE-2026-68470}
+- wifi: ath11k: fix warning when unbinding (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-63822}
+- wifi: ath11k: fix invalid data access in ath11k_dp_rx_h_undecap_nwifi (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-97442}
+- wifi: ath11k: add MSDU length validation for TKIP MIC error (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-97442}
+- wifi: rtw89: Correct data type for scan index to avoid infinite loop (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-74411}
+- wifi: ath9k: fix OOB access from firmware tx status queue ID (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-74408}
+- wifi: ath11k: cancel SSR work items during PCI shutdown (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-74407}
+- wifi: ath11k: do not process consecutive RDDM event (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-74407}
+- wifi: ath11k: mhi: add a warning message for MHI_CB_EE_RDDM crash (Jose Ignacio Tornos Martinez) [RHEL-300371] {CVE-2026-74407}
+- net/smc: fix socket use-after-free during link group termination (CKI Backport Bot) [RHEL-300330] {CVE-2026-74493}
+- perf/core: Fix group leader use-after-free after sibling detach (Anubhav Shelat) [RHEL-295235] {CVE-2026-74637}
+- perf: Fix cgroup state vs ERROR (Anubhav Shelat) [RHEL-295235] {CVE-2026-74637}
+- scsi: qla2xxx: Unlink NVMe unsol ctx before freeing on LS reject error (CKI Backport Bot) [RHEL-298315] {CVE-2026-97528}
+- cipso: adjust cached option offsets when removing CIPSO (CKI Backport Bot) [RHEL-292446] {CVE-2026-99064}
+- scsi: lpfc: Update correct ndlp refcnt when rejecting an unsolicited PLOGI (Ewan D. Milne) [RHEL-286158]
+- scsi: lpfc: Fix kernel oops when unmapping SCSI DMA buffers for an aborted cmd (Ewan D. Milne) [RHEL-286158]
+- scsi: lpfc: Early return out of lpfc_els_abort() when HBA_SETUP flag is not set (Ewan D. Milne) [RHEL-286158]
+- nvdimm/btt: reject an arena whose nfree is below the lane count (CKI Backport Bot) [RHEL-285581] {CVE-2026-89965}
+- Bluetooth: virtio_bt: avoid OOB read of build info string (CKI Backport Bot) [RHEL-284645] {CVE-2026-64549}
+- Bluetooth: bpa10x: avoid OOB read of revision string in bpa10x_setup() (CKI Backport Bot) [RHEL-284645] {CVE-2026-64549}
+- RDMA/siw: Bound fragmented header copies by the remaining length (CKI Backport Bot) [RHEL-280078] {CVE-2026-98323}
+- xfs: cancel dwork items unconditionally on blockgc stop (Brian Foster) [RHEL-247835]
+- proc: protect ptrace_may_access() with exec_update_lock (FD links) (CKI Backport Bot) [RHEL-259910] {CVE-2026-64375}
+- net: smc: fix splice entry lifetime imbalance in smc_rx_splice (CKI Backport Bot) [RHEL-253445] {CVE-2026-74631}
+- gfs2: Remove the glock lru list and shrinker (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Skip dlm unlocks earlier (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Don't cache unreferenced glocks (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Enable automatic glock hash table shrinking (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Introduce glock_{type,number,sbd} helpers (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Minor gfs2_glock_cb cleanup (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Clean up glock demote logic (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Get rid of demote_ok checks (Andreas Gruenbacher) [RHEL-220529]
+- gfs2: Remove freeze_go_demote_ok (Andreas Gruenbacher) [RHEL-220529]
 
 * Wed Nov 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.186.1.el8_10]
 - net/smc: protect clcsock lifetime in smc_getname (CKI Backport Bot) [RHEL-303989] {CVE-2026-99032}
