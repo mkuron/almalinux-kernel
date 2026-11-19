@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 741.20.1
+%define pkgrelease 741.24.1
 %define kversion 5
 %define tarfile_release 5.14.0-741.14.1.el9_9
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 741.20.1%{?buildid}%{?dist}
+%define specrelease 741.24.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-741.14.1.el9_9
 
@@ -1150,6 +1150,143 @@ Patch1264: 1264-net-skbuff-propagate-shared-frag-marker-in-skb-zerocopy.patch
 Patch1265: 1265-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 Patch1266: 1266-redhat-gating-migrate-to-osci-tier0-gating-plans.patch
 
+# Backports for 5.14.0-741.22.1.el9_9
+Patch1267: 1267-usb-serial-io-ti-fix-heap-overflow-in-get-manuf-info.patch
+Patch1268: 1268-usb-serial-io-ti-fix-heap-overflow-in-build-i2c-fw-hdr.patch
+Patch1269: 1269-watchdog-fix-hrtimer-start-when-pretimeout-is-zero.patch
+Patch1270: 1270-s390-vfio-ccw-cancel-existing-workqueues.patch
+Patch1271: 1271-s390-qeth-validate-user-buffer-length-in-snmp-and-arp-query-ioctls.patch
+Patch1272: 1272-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-link.patch
+Patch1273: 1273-sched-make-class-schedulers-avoid-pushing-current-and-get-rid-of-proxy-tag-curr-.patch
+Patch1274: 1274-sched-rt-dl-skip-migrate-disabled-tasks-when-picking-a-push-candidate.patch
+Patch1275: 1275-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
+Patch1276: 1276-mm-readahead-reintroduce-legacy-madvise-willneed-behavior-to-force-page-cache-re.patch
+Patch1277: 1277-revert-mm-memcg-refactor-try-charge-memcg-retry-logic-to-use-for-loop.patch
+Patch1278: 1278-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+Patch1279: 1279-s390-cpum-cf-handle-cpu-hotplug-via-prepare-dead-callbacks.patch
+Patch1280: 1280-dmaengine-idxd-fix-refcount-underflow-on-module-unload.patch
+Patch1281: 1281-alsa-pcm-serialize-pcm-mmap-with-buffer-reallocation-to-fix-page-uaf.patch
+Patch1282: 1282-nvmet-tcp-check-return-value-of-nvmet-tcp-set-queue-sock.patch
+Patch1283: 1283-smb-client-validate-absolute-native-symlink-targets-before-nt-fixups.patch
+Patch1284: 1284-af-unix-fix-peek-then-tail-dereference-uaf-in-unix-stream-data-wait.patch
+Patch1285: 1285-alsa-seq-midi-optimize-event-input-locking-with-rcu.patch
+Patch1286: 1286-alsa-seq-midi-serialize-input-teardown-with-event-input.patch
+Patch1287: 1287-ipv4-validate-checksum-start-before-completing-checksum.patch
+Patch1288: 1288-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
+Patch1289: 1289-netfilter-conntrack-remove-unused-function-declarations.patch
+Patch1290: 1290-net-openvswitch-conntrack-avoid-modifying-shared-unconfirmed-ct-entry.patch
+Patch1291: 1291-net-sched-act-ct-avoid-modifying-shared-unconfirmed-ct-entry.patch
+Patch1292: 1292-net-sched-act-ct-preserve-tc-skb-cb-across-defragmentation.patch
+Patch1293: 1293-net-sched-act-ct-fix-sk-buff-leak-when-the-header-checks-reject-a-packet.patch
+Patch1294: 1294-net-sched-act-ct-remove-add-helper-dead-code.patch
+Patch1295: 1295-net-sched-act-ct-fix-helper-uaf-due-to-extensions-realloc.patch
+Patch1296: 1296-signal-complete-signal-use-for-each-thread.patch
+Patch1297: 1297-alsa-ua101-reject-mismatched-capture-playback-packet-sizes.patch
+Patch1298: 1298-lib-objpool-added-ring-array-based-lockless-mpmc.patch
+Patch1299: 1299-lib-objpool-test-module-added.patch
+Patch1300: 1300-kprobes-kretprobe-scalability-improvement.patch
+Patch1301: 1301-kprobes-freelist-h-removed.patch
+Patch1302: 1302-lib-objpool-fix-head-overrun-on-rk3588-sbc.patch
+Patch1303: 1303-objpool-enable-inlining-objpool-push-and-objpool-pop-operations.patch
+Patch1304: 1304-objpool-cache-nr-possible-cpus-and-avoid-caching-nr-cpu-ids.patch
+Patch1305: 1305-objpool-fix-the-overestimation-of-object-pooling-metadata-size.patch
+Patch1306: 1306-objpool-fix-choosing-allocation-for-percpu-slots.patch
+Patch1307: 1307-objpool-fix-to-make-percpu-slot-allocation-more-robust.patch
+Patch1308: 1308-fprobe-fix-to-allocate-entry-data-size-buffer-with-rethook-instances.patch
+Patch1309: 1309-sctp-validate-cookie-auth-state-before-use.patch
+Patch1310: 1310-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+Patch1311: 1311-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+Patch1312: 1312-sctp-close-udp-tunnel-sockets-during-netns-teardown.patch
+Patch1313: 1313-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+Patch1314: 1314-sctp-clear-new-transport-when-removing-a-peer.patch
+Patch1315: 1315-ipv6-fix-use-after-free-in-ip6-finish-output2.patch
+Patch1316: 1316-scsi-libiscsi-validate-the-task-named-by-a-management-response.patch
+Patch1317: 1317-scsi-libiscsi-validate-the-itt-reflected-in-a-reject-pdu.patch
+Patch1318: 1318-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+Patch1319: 1319-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
+Patch1320: 1320-powerpc-pseries-papr-phy-attest-validate-cmd-length-plug-mem-leak.patch
+Patch1321: 1321-s390-vfio-ap-fix-missing-lock-required-to-access-list-of-ap-matrix-mdev-objects.patch
+Patch1322: 1322-mptcp-options-reset-dss-fields-in-case-of-unexpected-size.patch
+Patch1323: 1323-s390-zcrypt-validate-length-for-cca-ecc-private-key-requests.patch
+Patch1324: 1324-s390-zcrypt-validate-length-for-cca-aes-cipher-key-requests.patch
+Patch1325: 1325-net-smc-protect-clcsock-lifetime-in-smc-getname.patch
+
+# Backports for 5.14.0-741.24.1.el9_9
+Patch1326: 1326-net-bridge-stop-fast-leave-after-deleting-a-port-group.patch
+Patch1327: 1327-netfilter-x-tables-fix-percpu-counter-block-leak-on-error-path-when-creating-new.patch
+Patch1328: 1328-netfilter-conntrack-avoid-nf-ct-helper-hash-uses-after-free.patch
+Patch1329: 1329-ipvs-defer-ip-vs-ftp-unregister-during-netns-cleanup.patch
+Patch1330: 1330-ipvs-fix-ipv4-null-ptr-deref-in-route-error-path.patch
+Patch1331: 1331-ipvs-skip-ipv6-extension-headers-for-csum-checks.patch
+Patch1332: 1332-ipvs-do-not-keep-dest-dst-if-dev-is-going-down.patch
+Patch1333: 1333-netfilter-nf-tables-release-flowtable-after-rcu-grace-period-on-error.patch
+Patch1334: 1334-netfilter-arp-tables-fix-ieee1394-arp-payload-parsing.patch
+Patch1335: 1335-netfilter-reject-zero-shift-in-nft-bitwise.patch
+Patch1336: 1336-netfilter-nf-nat-avoid-invalid-nat-net-pointer-use-on-failed-nf-nat-init.patch
+Patch1337: 1337-netfilter-xt-u32-reject-invalid-shift-counts.patch
+Patch1338: 1338-netfilter-xt-rateest-fix-u64-truncation-in-xt-rateest-mt.patch
+Patch1339: 1339-netfilter-xt-connmark-reject-invalid-shift-parameters.patch
+Patch1340: 1340-netfilter-nf-conntrack-reasm-guard-mac-header-adjustment-after-ipv6-defrag.patch
+Patch1341: 1341-netfilter-ebtables-terminate-table-name-before-find-table-lock.patch
+Patch1342: 1342-netfilter-ebtables-zero-chainstack-array.patch
+Patch1343: 1343-netfilter-ebtables-module-names-must-be-null-terminated.patch
+Patch1344: 1344-netfilter-ipset-mark-the-rcu-locked-areas-properly.patch
+Patch1345: 1345-netfilter-ipset-exclude-gc-when-resize-is-in-progress.patch
+Patch1346: 1346-netfilter-ipset-cleanup-the-add-del-backlog-when-resize-failed.patch
+Patch1347: 1347-netfilter-ipset-allocate-the-proper-memory-for-the-generic-hash-structure.patch
+Patch1348: 1348-netfilter-xt-nat-reject-unsupported-target-families.patch
+Patch1349: 1349-netfilter-bridge-fix-stale-prevhdr-pointer-in-br-ip6-fragment.patch
+Patch1350: 1350-netfilter-nf-conncount-fix-zone-comparison-in-tuple-dedup.patch
+Patch1351: 1351-ipvs-reload-ip-header-after-head-reallocation.patch
+Patch1352: 1352-ipvs-fix-more-places-with-wrong-ipv6-transport-offsets.patch
+Patch1353: 1353-netfilter-ipset-do-not-update-comments-from-kernel-side-hash-adds.patch
+Patch1354: 1354-netfilter-nf-tables-make-nft-object-rhltable-per-table.patch
+Patch1355: 1355-netfilter-xt-hashlimit-validate-hashtable-supports-xt-hashlimit-rate-match.patch
+Patch1356: 1356-netfilter-nft-payload-fix-mask-build-for-partial-field-offload.patch
+Patch1357: 1357-netfilter-ebt-nflog-pin-the-nflog-backend.patch
+Patch1358: 1358-netfilter-nf-flow-table-drop-existing-skb-dst-before-skb-dst-set-noref.patch
+Patch1359: 1359-netfilter-ipset-fix-refcount-race-between-list-set-gc-and-swap.patch
+Patch1360: 1360-netfilter-bridge-release-template-ct-on-non-ip-path.patch
+Patch1361: 1361-netfilter-nf-conntrack-defer-invalid-log-until-after-unlock.patch
+Patch1362: 1362-netfilter-nf-tables-offload-suppress-warn-on-once-for-enomem-in-abort-path.patch
+Patch1363: 1363-netfilter-ipset-fix-list-type-element-drift-bug.patch
+Patch1364: 1364-netfilter-ipset-switch-ext-size-to-atomic64-t.patch
+Patch1365: 1365-netfilter-ipset-let-destroy-callbacks-adjust-ext-mem-size.patch
+Patch1366: 1366-netfilter-nfnetlink-queue-restrict-writes-to-network-header.patch
+Patch1367: 1367-netfilter-nftables-restrict-linklayer-and-network-header-writes.patch
+Patch1368: 1368-netfilter-nftables-restrict-checkum-update-offset.patch
+Patch1369: 1369-netfilter-validate-l4-headers-after-userspace-packet-writes.patch
+Patch1370: 1370-netfilter-nf-tables-don-t-queue-packet-path-object-notifications.patch
+Patch1371: 1371-netfilter-x-tables-remove-pr-debug.patch
+Patch1372: 1372-netfilter-ipset-do-not-update-comments-from-kernel-side-adds.patch
+Patch1373: 1373-gfs2-add-some-missing-log-locking.patch
+Patch1374: 1374-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+Patch1375: 1375-net-smc-fix-socket-use-after-free-during-link-group-termination.patch
+Patch1376: 1376-printk-postpone-kthread-startup.patch
+Patch1377: 1377-s390-smp-remove-conditional-emergency-signal-order-code-usage.patch
+Patch1378: 1378-bonding-alb-fix-uaf-in-rlb-arp-recv-during-bond-up-down.patch
+Patch1379: 1379-net-smc-fix-splice-entry-lifetime-imbalance-in-smc-rx-splice.patch
+Patch1380: 1380-gfs2-fix-slab-use-after-free-in-qd-put.patch
+Patch1381: 1381-fscrypt-add-missing-superblock-check-in-find-or-insert-direct-key.patch
+Patch1382: 1382-bluetooth-bpa10x-avoid-oob-read-of-revision-string-in-bpa10x-setup.patch
+Patch1383: 1383-bluetooth-virtio-bt-avoid-oob-read-of-build-info-string.patch
+Patch1384: 1384-tracing-add-test-for-user-space-strings-when-filtering-on-string-pointers.patch
+Patch1385: 1385-tracing-add-ustring-operation-to-filtering-string-pointers.patch
+Patch1386: 1386-tracing-fix-filter-string-testing.patch
+Patch1387: 1387-scsi-lpfc-fix-use-after-free-in-lpfc-cmpl-ct-cmd-vmid.patch
+Patch1388: 1388-scsi-lpfc-early-return-out-of-lpfc-els-abort-when-hba-setup-flag-is-not-set.patch
+Patch1389: 1389-scsi-lpfc-fix-kernel-oops-when-unmapping-scsi-dma-buffers-for-an-aborted-cmd.patch
+Patch1390: 1390-scsi-lpfc-check-fc4-xpt-flags-before-decrementing-ndlp-kref-on-fdisc-error.patch
+Patch1391: 1391-scsi-lpfc-rework-i-o-flush-ordering-when-unloading-driver.patch
+Patch1392: 1392-scsi-lpfc-refactor-calls-on-fc-disctmo-to-lpfc-set-disctmo-in-rscn-handler.patch
+Patch1393: 1393-scsi-lpfc-update-correct-ndlp-refcnt-when-rejecting-an-unsolicited-plogi.patch
+Patch1394: 1394-scsi-core-validate-mode-sense-lengths-in-scsi-cdl-enable.patch
+Patch1395: 1395-scsi-qla2xxx-unlink-nvme-unsol-ctx-before-freeing-on-ls-reject-error.patch
+Patch1396: 1396-perf-fix-cgroup-state-vs-error.patch
+Patch1397: 1397-perf-core-fix-group-leader-use-after-free-after-sibling-detach.patch
+Patch1398: 1398-arm64-ptrace-keep-orig-x0-in-sync-with-x0-on-syscall-entry.patch
+Patch1399: 1399-arm64-syscall-pass-orig-x0-as-first-argument-to-native-system-call.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1165,6 +1302,81 @@ Patch2101: 2101-gve-Add-adminq-support-for-modifiable-ring-size.patch
 Patch2102: 2102-gve-Add-ethtool-support-for-changing-ring-size.patch
 Patch2103: 2103-gve-harden-modifiable-ring-size-support.patch
 Patch2104: 2104-net-lock-the-socket-in-sock_gettstamp.patch
+Patch2105: 2105-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs-and-share.patch
+Patch2107: 2107-scsi-target-iscsi-fix-use-after-free-in-iscsit-dec-conn-usage-count.patch
+Patch2110: 2110-rtnetlink-peer-netns-series-veth-vxcan-cve-2026-31692.patch
+Patch2111: 2111-bluetooth-rfcomm-validate-skb-length-in-rfcomm-recv-frame.patch
+Patch2112: 2112-wifi-cfg80211-validate-pmsr-ftm-preamble-range.patch
+Patch2113: 2113-wifi-cfg80211-validate-pmsr-measurement-type-data.patch
+Patch2114: 2114-wifi-cfg80211-reject-unsupported-pmsr-ftm-location-requests.patch
+Patch2115: 2115-wifi-cfg80211-reject-empty-pmsr-peer-lists.patch
+Patch2118: 2118-alsa-timer-clear-sndrv-timer-iflg-dead-once-the-close-completes.patch
+Patch2119: 2119-net-wwan-t7xx-fix-potential-skb-frags-overflow-in-rx-path.patch
+Patch2120: 2120-bluetooth-mgmt-hold-reference-for-hci-conn-in-mgmt-pending-cmds.patch
+Patch2121: 2121-bluetooth-rfcomm-fix-session-uaf-in-set-termios.patch
+Patch2122: 2122-libceph-refresh-auth-authorizer-buf-len-after-authorizer-update.patch
+Patch2123: 2123-net-mlx5e-macsec-fix-use-after-free-of-metadata-dst-on-rx-sc-delete.patch
+Patch2124: 2124-rxrpc-fix-potential-uaf-after-skb-unshare-failure.patch
+Patch2125: 2125-rxrpc-fix-rxrpc-input-call-event-to-only-unshare-data-packets.patch
+Patch2128: 2128-netfilter-flowtable-publish-gc-visible-tuple-last.patch
+Patch2129: 2129-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
+Patch2130: 2130-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icm.patch
+Patch2132: 2132-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
+Patch2133: 2133-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+Patch2134: 2134-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+Patch2135: 2135-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+Patch2136: 2136-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+Patch2137: 2137-kvm-sev-ignore-mmio-requests-of-length-0.patch
+Patch2138: 2138-kvm-svm-convert-plain-error-code-numbers-to-defines.patch
+Patch2139: 2139-kvm-svm-provide-helpers-to-set-the-error-code.patch
+Patch2140: 2140-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+Patch2141: 2141-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+Patch2142: 2142-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-req.patch
+Patch2143: 2143-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+Patch2144: 2144-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+Patch2145: 2145-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+Patch2146: 2146-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffe.patch
+Patch2147: 2147-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+Patch2148: 2148-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
+Patch2149: 2149-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
+Patch2150: 2150-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
+Patch2153: 2153-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+Patch2154: 2154-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+Patch2160: 2160-smb-client-fix-in-place-encryption-corruption-in-smb2-write.patch
+Patch2161: 2161-cifs-add-fscache-resize-cookie-to-cifs-setsize.patch
+Patch2162: 2162-cifs-use-cifs-invalidate-cache-in-cifs-do-truncate-for-o-trunc.patch
+Patch2163: 2163-cifs-add-cifs-resize-file-locked-to-guard-fscache-resize-cookie-under-.patch
+Patch2164: 2164-cifs-remove-redundant-size-update-block-in-cifs-remap-file-range.patch
+Patch2165: 2165-cifs-remove-dead-size-update-blocks-in-cifs-setattr-unix-nounix.patch
+Patch2166: 2166-smb-client-fix-nlink-of-an-overwritten-open-file.patch
+Patch2167: 2167-smb-client-mark-missing-nlink-values-as-unknown.patch
+Patch2168: 2168-smb-client-preserve-open-info-type-across-compound-queries.patch
+Patch2169: 2169-smb-client-decode-reparse-metadata-using-its-payload-type.patch
+Patch2170: 2170-cifs-clear-tcon-after-cifsfileinfo-put-in-cifs-file-set-size.patch
+Patch2171: 2171-cifs-call-pagecache-isize-extended-in-cifs-setsize-when-extending.patch
+Patch2172: 2172-cifs-fix-loff-t-underflow-in-cifs-remap-file-range-when-len-0.patch
+Patch2173: 2173-cifs-add-revalidation-on-fsctl-failure-in-smb2-duplicate-extents.patch
+Patch2174: 2174-smb-client-validate-new-eof-for-insert-range.patch
+Patch2175: 2175-smb-client-validate-new-eof-for-zero-range.patch
+Patch2176: 2176-smb-client-mark-file-sparse-before-emulating-insert-range.patch
+Patch2177: 2177-smb-client-fix-data-corruption-in-emulated-insert-range.patch
+Patch2178: 2178-smb-client-fix-integer-truncation-in-collapse-range.patch
+Patch2179: 2179-smb-client-fix-stale-page-cache-in-insert-collapse-range.patch
+Patch2180: 2180-smb-client-invalidate-fscache-for-fallocate-range-operations.patch
+Patch2181: 2181-cifs-don-t-update-i-size-in-cifs-do-truncate-without-a-cached-handle.patch
+Patch2182: 2182-smb-client-fix-data-corruption-with-concurrent-writes-and-o-trunc.patch
+Patch2183: 2183-smb-client-avoid-leaking-refcount-in-cifs-queue-oplock-break.patch
+Patch2184: 2184-smb-client-avoid-leaking-refcount-when-cifs-sb-tlink-fails.patch
+Patch2185: 2185-smb-client-fix-cifsfileinfo-reference-leak-in-deferred-close.patch
+Patch2186: 2186-smb-client-send-lease-break-acks-thru-correct-session-for-multiuser-mo.patch
+Patch2187: 2187-smb-client-cancel-reconnect-work-in-clean-demultiplex-info.patch
+Patch2188: 2188-smb-client-fix-rlist-race-and-missing-initialization.patch
+Patch2189: 2189-smb-client-split-cifsfileinfo-bitfields-to-avoid-shared-byte-rmw-races.patch
+Patch2190: 2190-smb-client-guard-against-tailsz-underflow-in-wdata-send-pages.patch
+Patch2197: 2197-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
+Patch2198: 2198-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
+Patch2202: 2202-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
+Patch2207: 2207-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 Patch11111: ppc64le-kvm-support.patch
 
@@ -2121,6 +2333,143 @@ ApplyPatch 1264-net-skbuff-propagate-shared-frag-marker-in-skb-zerocopy.patch
 ApplyPatch 1265-ipv4-free-inet-opt-and-ireq-opt-after-an-rcu-grace-period.patch
 ApplyPatch 1266-redhat-gating-migrate-to-osci-tier0-gating-plans.patch
 
+# Applying backports for 5.14.0-741.22.1.el9_9
+ApplyPatch 1267-usb-serial-io-ti-fix-heap-overflow-in-get-manuf-info.patch
+ApplyPatch 1268-usb-serial-io-ti-fix-heap-overflow-in-build-i2c-fw-hdr.patch
+ApplyPatch 1269-watchdog-fix-hrtimer-start-when-pretimeout-is-zero.patch
+ApplyPatch 1270-s390-vfio-ccw-cancel-existing-workqueues.patch
+ApplyPatch 1271-s390-qeth-validate-user-buffer-length-in-snmp-and-arp-query-ioctls.patch
+ApplyPatch 1272-net-smc-fix-use-after-free-of-the-llc-qentry-in-smc-llc-srv-add-link.patch
+ApplyPatch 1273-sched-make-class-schedulers-avoid-pushing-current-and-get-rid-of-proxy-tag-curr-.patch
+ApplyPatch 1274-sched-rt-dl-skip-migrate-disabled-tasks-when-picking-a-push-candidate.patch
+ApplyPatch 1275-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
+ApplyPatch 1276-mm-readahead-reintroduce-legacy-madvise-willneed-behavior-to-force-page-cache-re.patch
+ApplyPatch 1277-revert-mm-memcg-refactor-try-charge-memcg-retry-logic-to-use-for-loop.patch
+ApplyPatch 1278-smb-client-fix-oob-read-write-from-unvalidated-dataoffset-in-coalesce-t2.patch
+ApplyPatch 1279-s390-cpum-cf-handle-cpu-hotplug-via-prepare-dead-callbacks.patch
+ApplyPatch 1280-dmaengine-idxd-fix-refcount-underflow-on-module-unload.patch
+ApplyPatch 1281-alsa-pcm-serialize-pcm-mmap-with-buffer-reallocation-to-fix-page-uaf.patch
+ApplyPatch 1282-nvmet-tcp-check-return-value-of-nvmet-tcp-set-queue-sock.patch
+ApplyPatch 1283-smb-client-validate-absolute-native-symlink-targets-before-nt-fixups.patch
+ApplyPatch 1284-af-unix-fix-peek-then-tail-dereference-uaf-in-unix-stream-data-wait.patch
+ApplyPatch 1285-alsa-seq-midi-optimize-event-input-locking-with-rcu.patch
+ApplyPatch 1286-alsa-seq-midi-serialize-input-teardown-with-event-input.patch
+ApplyPatch 1287-ipv4-validate-checksum-start-before-completing-checksum.patch
+ApplyPatch 1288-net-always-dissect-gso-packets-in-virtio-net-hdr-to-skb.patch
+ApplyPatch 1289-netfilter-conntrack-remove-unused-function-declarations.patch
+ApplyPatch 1290-net-openvswitch-conntrack-avoid-modifying-shared-unconfirmed-ct-entry.patch
+ApplyPatch 1291-net-sched-act-ct-avoid-modifying-shared-unconfirmed-ct-entry.patch
+ApplyPatch 1292-net-sched-act-ct-preserve-tc-skb-cb-across-defragmentation.patch
+ApplyPatch 1293-net-sched-act-ct-fix-sk-buff-leak-when-the-header-checks-reject-a-packet.patch
+ApplyPatch 1294-net-sched-act-ct-remove-add-helper-dead-code.patch
+ApplyPatch 1295-net-sched-act-ct-fix-helper-uaf-due-to-extensions-realloc.patch
+ApplyPatch 1296-signal-complete-signal-use-for-each-thread.patch
+ApplyPatch 1297-alsa-ua101-reject-mismatched-capture-playback-packet-sizes.patch
+ApplyPatch 1298-lib-objpool-added-ring-array-based-lockless-mpmc.patch
+ApplyPatch 1299-lib-objpool-test-module-added.patch
+ApplyPatch 1300-kprobes-kretprobe-scalability-improvement.patch
+ApplyPatch 1301-kprobes-freelist-h-removed.patch
+ApplyPatch 1302-lib-objpool-fix-head-overrun-on-rk3588-sbc.patch
+ApplyPatch 1303-objpool-enable-inlining-objpool-push-and-objpool-pop-operations.patch
+ApplyPatch 1304-objpool-cache-nr-possible-cpus-and-avoid-caching-nr-cpu-ids.patch
+ApplyPatch 1305-objpool-fix-the-overestimation-of-object-pooling-metadata-size.patch
+ApplyPatch 1306-objpool-fix-choosing-allocation-for-percpu-slots.patch
+ApplyPatch 1307-objpool-fix-to-make-percpu-slot-allocation-more-robust.patch
+ApplyPatch 1308-fprobe-fix-to-allocate-entry-data-size-buffer-with-rethook-instances.patch
+ApplyPatch 1309-sctp-validate-cookie-auth-state-before-use.patch
+ApplyPatch 1310-sctp-keep-chunk-transport-in-step-with-the-list-it-is-queued-on.patch
+ApplyPatch 1311-sctp-avoid-auth-enable-sysctl-uaf-during-netns-teardown.patch
+ApplyPatch 1312-sctp-close-udp-tunnel-sockets-during-netns-teardown.patch
+ApplyPatch 1313-sctp-stop-processing-a-packet-once-its-association-is-deleted.patch
+ApplyPatch 1314-sctp-clear-new-transport-when-removing-a-peer.patch
+ApplyPatch 1315-ipv6-fix-use-after-free-in-ip6-finish-output2.patch
+ApplyPatch 1316-scsi-libiscsi-validate-the-task-named-by-a-management-response.patch
+ApplyPatch 1317-scsi-libiscsi-validate-the-itt-reflected-in-a-reject-pdu.patch
+ApplyPatch 1318-sunrpc-pin-svc-xprt-across-the-asynchronous-tls-handshake-callback.patch
+ApplyPatch 1319-sunrpc-wait-for-in-flight-tls-handshake-callback-when-cancel-loses-race.patch
+ApplyPatch 1320-powerpc-pseries-papr-phy-attest-validate-cmd-length-plug-mem-leak.patch
+ApplyPatch 1321-s390-vfio-ap-fix-missing-lock-required-to-access-list-of-ap-matrix-mdev-objects.patch
+ApplyPatch 1322-mptcp-options-reset-dss-fields-in-case-of-unexpected-size.patch
+ApplyPatch 1323-s390-zcrypt-validate-length-for-cca-ecc-private-key-requests.patch
+ApplyPatch 1324-s390-zcrypt-validate-length-for-cca-aes-cipher-key-requests.patch
+ApplyPatch 1325-net-smc-protect-clcsock-lifetime-in-smc-getname.patch
+
+# Applying backports for 5.14.0-741.24.1.el9_9
+ApplyPatch 1326-net-bridge-stop-fast-leave-after-deleting-a-port-group.patch
+ApplyPatch 1327-netfilter-x-tables-fix-percpu-counter-block-leak-on-error-path-when-creating-new.patch
+ApplyPatch 1328-netfilter-conntrack-avoid-nf-ct-helper-hash-uses-after-free.patch
+ApplyPatch 1329-ipvs-defer-ip-vs-ftp-unregister-during-netns-cleanup.patch
+ApplyPatch 1330-ipvs-fix-ipv4-null-ptr-deref-in-route-error-path.patch
+ApplyPatch 1331-ipvs-skip-ipv6-extension-headers-for-csum-checks.patch
+ApplyPatch 1332-ipvs-do-not-keep-dest-dst-if-dev-is-going-down.patch
+ApplyPatch 1333-netfilter-nf-tables-release-flowtable-after-rcu-grace-period-on-error.patch
+ApplyPatch 1334-netfilter-arp-tables-fix-ieee1394-arp-payload-parsing.patch
+ApplyPatch 1335-netfilter-reject-zero-shift-in-nft-bitwise.patch
+ApplyPatch 1336-netfilter-nf-nat-avoid-invalid-nat-net-pointer-use-on-failed-nf-nat-init.patch
+ApplyPatch 1337-netfilter-xt-u32-reject-invalid-shift-counts.patch
+ApplyPatch 1338-netfilter-xt-rateest-fix-u64-truncation-in-xt-rateest-mt.patch
+ApplyPatch 1339-netfilter-xt-connmark-reject-invalid-shift-parameters.patch
+ApplyPatch 1340-netfilter-nf-conntrack-reasm-guard-mac-header-adjustment-after-ipv6-defrag.patch
+ApplyPatch 1341-netfilter-ebtables-terminate-table-name-before-find-table-lock.patch
+ApplyPatch 1342-netfilter-ebtables-zero-chainstack-array.patch
+ApplyPatch 1343-netfilter-ebtables-module-names-must-be-null-terminated.patch
+ApplyPatch 1344-netfilter-ipset-mark-the-rcu-locked-areas-properly.patch
+ApplyPatch 1345-netfilter-ipset-exclude-gc-when-resize-is-in-progress.patch
+ApplyPatch 1346-netfilter-ipset-cleanup-the-add-del-backlog-when-resize-failed.patch
+ApplyPatch 1347-netfilter-ipset-allocate-the-proper-memory-for-the-generic-hash-structure.patch
+ApplyPatch 1348-netfilter-xt-nat-reject-unsupported-target-families.patch
+ApplyPatch 1349-netfilter-bridge-fix-stale-prevhdr-pointer-in-br-ip6-fragment.patch
+ApplyPatch 1350-netfilter-nf-conncount-fix-zone-comparison-in-tuple-dedup.patch
+ApplyPatch 1351-ipvs-reload-ip-header-after-head-reallocation.patch
+ApplyPatch 1352-ipvs-fix-more-places-with-wrong-ipv6-transport-offsets.patch
+ApplyPatch 1353-netfilter-ipset-do-not-update-comments-from-kernel-side-hash-adds.patch
+ApplyPatch 1354-netfilter-nf-tables-make-nft-object-rhltable-per-table.patch
+ApplyPatch 1355-netfilter-xt-hashlimit-validate-hashtable-supports-xt-hashlimit-rate-match.patch
+ApplyPatch 1356-netfilter-nft-payload-fix-mask-build-for-partial-field-offload.patch
+ApplyPatch 1357-netfilter-ebt-nflog-pin-the-nflog-backend.patch
+ApplyPatch 1358-netfilter-nf-flow-table-drop-existing-skb-dst-before-skb-dst-set-noref.patch
+ApplyPatch 1359-netfilter-ipset-fix-refcount-race-between-list-set-gc-and-swap.patch
+ApplyPatch 1360-netfilter-bridge-release-template-ct-on-non-ip-path.patch
+ApplyPatch 1361-netfilter-nf-conntrack-defer-invalid-log-until-after-unlock.patch
+ApplyPatch 1362-netfilter-nf-tables-offload-suppress-warn-on-once-for-enomem-in-abort-path.patch
+ApplyPatch 1363-netfilter-ipset-fix-list-type-element-drift-bug.patch
+ApplyPatch 1364-netfilter-ipset-switch-ext-size-to-atomic64-t.patch
+ApplyPatch 1365-netfilter-ipset-let-destroy-callbacks-adjust-ext-mem-size.patch
+ApplyPatch 1366-netfilter-nfnetlink-queue-restrict-writes-to-network-header.patch
+ApplyPatch 1367-netfilter-nftables-restrict-linklayer-and-network-header-writes.patch
+ApplyPatch 1368-netfilter-nftables-restrict-checkum-update-offset.patch
+ApplyPatch 1369-netfilter-validate-l4-headers-after-userspace-packet-writes.patch
+ApplyPatch 1370-netfilter-nf-tables-don-t-queue-packet-path-object-notifications.patch
+ApplyPatch 1371-netfilter-x-tables-remove-pr-debug.patch
+ApplyPatch 1372-netfilter-ipset-do-not-update-comments-from-kernel-side-adds.patch
+ApplyPatch 1373-gfs2-add-some-missing-log-locking.patch
+ApplyPatch 1374-smb-client-clear-setuid-setgid-bit-on-write-with-cifsacl-modefromsid-posix-exten.patch
+ApplyPatch 1375-net-smc-fix-socket-use-after-free-during-link-group-termination.patch
+ApplyPatch 1376-printk-postpone-kthread-startup.patch
+ApplyPatch 1377-s390-smp-remove-conditional-emergency-signal-order-code-usage.patch
+ApplyPatch 1378-bonding-alb-fix-uaf-in-rlb-arp-recv-during-bond-up-down.patch
+ApplyPatch 1379-net-smc-fix-splice-entry-lifetime-imbalance-in-smc-rx-splice.patch
+ApplyPatch 1380-gfs2-fix-slab-use-after-free-in-qd-put.patch
+ApplyPatch 1381-fscrypt-add-missing-superblock-check-in-find-or-insert-direct-key.patch
+ApplyPatch 1382-bluetooth-bpa10x-avoid-oob-read-of-revision-string-in-bpa10x-setup.patch
+ApplyPatch 1383-bluetooth-virtio-bt-avoid-oob-read-of-build-info-string.patch
+ApplyPatch 1384-tracing-add-test-for-user-space-strings-when-filtering-on-string-pointers.patch
+ApplyPatch 1385-tracing-add-ustring-operation-to-filtering-string-pointers.patch
+ApplyPatch 1386-tracing-fix-filter-string-testing.patch
+ApplyPatch 1387-scsi-lpfc-fix-use-after-free-in-lpfc-cmpl-ct-cmd-vmid.patch
+ApplyPatch 1388-scsi-lpfc-early-return-out-of-lpfc-els-abort-when-hba-setup-flag-is-not-set.patch
+ApplyPatch 1389-scsi-lpfc-fix-kernel-oops-when-unmapping-scsi-dma-buffers-for-an-aborted-cmd.patch
+ApplyPatch 1390-scsi-lpfc-check-fc4-xpt-flags-before-decrementing-ndlp-kref-on-fdisc-error.patch
+ApplyPatch 1391-scsi-lpfc-rework-i-o-flush-ordering-when-unloading-driver.patch
+ApplyPatch 1392-scsi-lpfc-refactor-calls-on-fc-disctmo-to-lpfc-set-disctmo-in-rscn-handler.patch
+ApplyPatch 1393-scsi-lpfc-update-correct-ndlp-refcnt-when-rejecting-an-unsolicited-plogi.patch
+ApplyPatch 1394-scsi-core-validate-mode-sense-lengths-in-scsi-cdl-enable.patch
+ApplyPatch 1395-scsi-qla2xxx-unlink-nvme-unsol-ctx-before-freeing-on-ls-reject-error.patch
+ApplyPatch 1396-perf-fix-cgroup-state-vs-error.patch
+ApplyPatch 1397-perf-core-fix-group-leader-use-after-free-after-sibling-detach.patch
+ApplyPatch 1398-arm64-ptrace-keep-orig-x0-in-sync-with-x0-on-syscall-entry.patch
+ApplyPatch 1399-arm64-syscall-pass-orig-x0-as-first-argument-to-native-system-call.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2136,6 +2485,81 @@ ApplyPatch 2101-gve-Add-adminq-support-for-modifiable-ring-size.patch
 ApplyPatch 2102-gve-Add-ethtool-support-for-changing-ring-size.patch
 ApplyPatch 2103-gve-harden-modifiable-ring-size-support.patch
 ApplyPatch 2104-net-lock-the-socket-in-sock_gettstamp.patch
+ApplyPatch 2105-net-sched-only-allow-act-ct-to-bind-to-clsact-ingress-qdiscs-and-share.patch
+ApplyPatch 2107-scsi-target-iscsi-fix-use-after-free-in-iscsit-dec-conn-usage-count.patch
+ApplyPatch 2110-rtnetlink-peer-netns-series-veth-vxcan-cve-2026-31692.patch
+ApplyPatch 2111-bluetooth-rfcomm-validate-skb-length-in-rfcomm-recv-frame.patch
+ApplyPatch 2112-wifi-cfg80211-validate-pmsr-ftm-preamble-range.patch
+ApplyPatch 2113-wifi-cfg80211-validate-pmsr-measurement-type-data.patch
+ApplyPatch 2114-wifi-cfg80211-reject-unsupported-pmsr-ftm-location-requests.patch
+ApplyPatch 2115-wifi-cfg80211-reject-empty-pmsr-peer-lists.patch
+ApplyPatch 2118-alsa-timer-clear-sndrv-timer-iflg-dead-once-the-close-completes.patch
+ApplyPatch 2119-net-wwan-t7xx-fix-potential-skb-frags-overflow-in-rx-path.patch
+ApplyPatch 2120-bluetooth-mgmt-hold-reference-for-hci-conn-in-mgmt-pending-cmds.patch
+ApplyPatch 2121-bluetooth-rfcomm-fix-session-uaf-in-set-termios.patch
+ApplyPatch 2122-libceph-refresh-auth-authorizer-buf-len-after-authorizer-update.patch
+ApplyPatch 2123-net-mlx5e-macsec-fix-use-after-free-of-metadata-dst-on-rx-sc-delete.patch
+ApplyPatch 2124-rxrpc-fix-potential-uaf-after-skb-unshare-failure.patch
+ApplyPatch 2125-rxrpc-fix-rxrpc-input-call-event-to-only-unshare-data-packets.patch
+ApplyPatch 2128-netfilter-flowtable-publish-gc-visible-tuple-last.patch
+ApplyPatch 2129-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
+ApplyPatch 2130-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icm.patch
+ApplyPatch 2132-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
+ApplyPatch 2133-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+ApplyPatch 2134-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+ApplyPatch 2135-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+ApplyPatch 2136-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+ApplyPatch 2137-kvm-sev-ignore-mmio-requests-of-length-0.patch
+ApplyPatch 2138-kvm-svm-convert-plain-error-code-numbers-to-defines.patch
+ApplyPatch 2139-kvm-svm-provide-helpers-to-set-the-error-code.patch
+ApplyPatch 2140-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+ApplyPatch 2141-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+ApplyPatch 2142-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-req.patch
+ApplyPatch 2143-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+ApplyPatch 2144-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+ApplyPatch 2145-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+ApplyPatch 2146-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffe.patch
+ApplyPatch 2147-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+ApplyPatch 2148-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
+ApplyPatch 2149-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
+ApplyPatch 2150-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
+ApplyPatch 2153-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
+ApplyPatch 2154-inet-frags-strip-gso-state-from-fragments-before-reassembly.patch
+ApplyPatch 2160-smb-client-fix-in-place-encryption-corruption-in-smb2-write.patch
+ApplyPatch 2161-cifs-add-fscache-resize-cookie-to-cifs-setsize.patch
+ApplyPatch 2162-cifs-use-cifs-invalidate-cache-in-cifs-do-truncate-for-o-trunc.patch
+ApplyPatch 2163-cifs-add-cifs-resize-file-locked-to-guard-fscache-resize-cookie-under-.patch
+ApplyPatch 2164-cifs-remove-redundant-size-update-block-in-cifs-remap-file-range.patch
+ApplyPatch 2165-cifs-remove-dead-size-update-blocks-in-cifs-setattr-unix-nounix.patch
+ApplyPatch 2166-smb-client-fix-nlink-of-an-overwritten-open-file.patch
+ApplyPatch 2167-smb-client-mark-missing-nlink-values-as-unknown.patch
+ApplyPatch 2168-smb-client-preserve-open-info-type-across-compound-queries.patch
+ApplyPatch 2169-smb-client-decode-reparse-metadata-using-its-payload-type.patch
+ApplyPatch 2170-cifs-clear-tcon-after-cifsfileinfo-put-in-cifs-file-set-size.patch
+ApplyPatch 2171-cifs-call-pagecache-isize-extended-in-cifs-setsize-when-extending.patch
+ApplyPatch 2172-cifs-fix-loff-t-underflow-in-cifs-remap-file-range-when-len-0.patch
+ApplyPatch 2173-cifs-add-revalidation-on-fsctl-failure-in-smb2-duplicate-extents.patch
+ApplyPatch 2174-smb-client-validate-new-eof-for-insert-range.patch
+ApplyPatch 2175-smb-client-validate-new-eof-for-zero-range.patch
+ApplyPatch 2176-smb-client-mark-file-sparse-before-emulating-insert-range.patch
+ApplyPatch 2177-smb-client-fix-data-corruption-in-emulated-insert-range.patch
+ApplyPatch 2178-smb-client-fix-integer-truncation-in-collapse-range.patch
+ApplyPatch 2179-smb-client-fix-stale-page-cache-in-insert-collapse-range.patch
+ApplyPatch 2180-smb-client-invalidate-fscache-for-fallocate-range-operations.patch
+ApplyPatch 2181-cifs-don-t-update-i-size-in-cifs-do-truncate-without-a-cached-handle.patch
+ApplyPatch 2182-smb-client-fix-data-corruption-with-concurrent-writes-and-o-trunc.patch
+ApplyPatch 2183-smb-client-avoid-leaking-refcount-in-cifs-queue-oplock-break.patch
+ApplyPatch 2184-smb-client-avoid-leaking-refcount-when-cifs-sb-tlink-fails.patch
+ApplyPatch 2185-smb-client-fix-cifsfileinfo-reference-leak-in-deferred-close.patch
+ApplyPatch 2186-smb-client-send-lease-break-acks-thru-correct-session-for-multiuser-mo.patch
+ApplyPatch 2187-smb-client-cancel-reconnect-work-in-clean-demultiplex-info.patch
+ApplyPatch 2188-smb-client-fix-rlist-race-and-missing-initialization.patch
+ApplyPatch 2189-smb-client-split-cifsfileinfo-bitfields-to-avoid-shared-byte-rmw-races.patch
+ApplyPatch 2190-smb-client-guard-against-tailsz-underflow-in-wdata-send-pages.patch
+ApplyPatch 2197-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
+ApplyPatch 2198-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
+ApplyPatch 2202-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
+ApplyPatch 2207-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -4310,7 +4734,141 @@ fi
 #
 #
 %changelog
-* Wed Nov 11 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-741.20.1
+* Thu Nov 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-741.24.1
+- inet: reject unhashed sockets during established lookups {CVE-2026-99288}
+- Restore the el9_8 (kernel-5.14.0-687.66.x) security fixes missing from RHEL
+  9.9 kernel-5.14.0-741.24.1 (74 patches, 37 CVEs)
+- net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared
+  blocks [RHEL-157235] {CVE-2026-23270}
+- scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count()
+  [RHEL-165564] {CVE-2026-23216}
+- rtnetlink: peer netns series for veth/vxcan (6 el9_8 patches) [RHEL-172532]
+  {CVE-2026-31692}
+- Bluetooth: RFCOMM: validate skb length in rfcomm_recv_frame [RHEL-225646]
+  {CVE-2026-53254}
+- wifi: cfg80211: validate PMSR FTM preamble range [RHEL-237652]
+  {CVE-2026-68406}
+- wifi: cfg80211: validate PMSR measurement type data [RHEL-237652]
+  {CVE-2026-68406}
+- wifi: cfg80211: reject unsupported PMSR FTM location requests [RHEL-237652]
+  {CVE-2026-68406}
+- wifi: cfg80211: reject empty PMSR peer lists [RHEL-237652] {CVE-2026-68406}
+- ALSA: timer: Clear SNDRV_TIMER_IFLG_DEAD once the close completes
+  [RHEL-227087] {CVE-2026-53193}
+- net: wwan: t7xx: fix potential skb->frags overflow in RX path [RHEL-245512]
+  {CVE-2026-23172}
+- Bluetooth: mgmt: hold reference for hci_conn in mgmt_pending_cmds
+  [RHEL-236850] {CVE-2026-68391}
+- Bluetooth: RFCOMM: Fix session UAF in set_termios [RHEL-237311]
+  {CVE-2026-68188}
+- libceph: refresh auth->authorizer_buf{,_len} after authorizer update
+  [RHEL-237486] {CVE-2026-68156}
+- net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
+  [RHEL-242927] {CVE-2026-72072}
+- rxrpc: Fix potential UAF after skb_unshare() failure [RHEL-179563]
+  {CVE-2026-45998}
+- rxrpc: Fix rxrpc_input_call_event() to only unshare DATA packets [RHEL-179563]
+- netfilter: flowtable: publish GC-visible tuple last [RHEL-250570]
+  {CVE-2026-74746}
+- Bluetooth: fix UAF in bt_accept_dequeue() [RHEL-229777] {CVE-2026-53357}
+- tunnels: load network headers after skb_cow() in
+  iptunnel_pmtud_build_icmp[v6]() [RHEL-259588] {CVE-2026-63994}
+- Bluetooth: hci_uart: clear HCI_UART_SENDING when write_work is canceled
+  [RHEL-232611] {CVE-2026-46275}
+- KVM: SEV: Require in-GHCB scratch area if GHCB v2+ is in use [RHEL-192284]
+  {CVE-2026-53360}
+- KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free [RHEL-192284]
+  {CVE-2026-53360}
+- KVM: x86: Dedup kvm_sev_es_mmio_{read,write}() [RHEL-192284] {CVE-2026-53360}
+- KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API
+  [RHEL-192284] {CVE-2026-53360}
+- KVM: SEV: Ignore MMIO requests of length '0' [RHEL-192284] {CVE-2026-53360}
+- KVM: SVM: Convert plain error code numbers to defines [RHEL-192284]
+  {CVE-2026-53360}
+- KVM: SVM: Provide helpers to set the error code [RHEL-192284] {CVE-2026-53360}
+- KVM: SEV: Reject MMIO requests larger than 8 bytes with GHCB v2+ [RHEL-192284]
+  {CVE-2026-53360}
+- KVM: SEV: Ignore Port I/O requests of length '0' [RHEL-192284]
+  {CVE-2026-53360}
+- KVM: SEV: Use the size of the PSC header as the minimum size for PSC requests
+  [RHEL-192284] {CVE-2026-53360}
+- KVM: SEV: Compute the correct max length of the in-GHCB scratch area
+  [RHEL-192284] {CVE-2026-53360}
+- KVM: SEV: WARN if KVM attempts to setup scratch area with min_len==0
+  [RHEL-192284] {CVE-2026-53360}
+- KVM: SEV: Don't explicitly pass PSC buffer to snp_begin_psc() [RHEL-192284]
+  {CVE-2026-53360}
+- KVM: SEV: Check PSC request indices against the actual size of the buffer
+  [RHEL-192284] {CVE-2026-53360}
+- KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer
+  [RHEL-192284] {CVE-2026-53360}
+- ipvlan: inherit needed_headroom and needed_tailroom from phy_dev [RHEL-254246]
+  {CVE-2026-74744}
+- macvlan: inherit needed_headroom and needed_tailroom from lowerdev
+  [RHEL-254246]
+- vlan: fix skb_under_panic and races when toggling HW VLAN offload
+  [RHEL-254246]
+- Bluetooth: hci_core: Fix queuing tx_work after workqueue is drained
+  [RHEL-244764] {CVE-2026-63974}
+- inet: frags: strip GSO state from fragments before reassembly [RHEL-254224]
+  {CVE-2026-80590}
+- smb: client: fix in-place encryption corruption in SMB2_write() [RHEL-257205]
+  {CVE-2026-43362}
+- cifs: add fscache_resize_cookie() to cifs_setsize() [RHEL-257205]
+- cifs: use cifs_invalidate_cache() in cifs_do_truncate() for O_TRUNC
+  [RHEL-257205] {CVE-2026-89639}
+- cifs: add cifs_resize_file_locked() to guard fscache_resize_cookie() under
+  i_rwsem [RHEL-257205]
+- cifs: remove redundant size-update block in cifs_remap_file_range()
+  [RHEL-257205]
+- cifs: remove dead size-update blocks in cifs_setattr_unix/nounix [RHEL-257205]
+- smb/client: fix nlink of an overwritten open file [RHEL-257205]
+- smb/client: mark missing nlink values as unknown [RHEL-257205]
+- smb/client: preserve open info type across compound queries [RHEL-257205]
+- smb/client: decode reparse metadata using its payload type [RHEL-257205]
+- cifs: clear tcon after cifsFileInfo_put() in cifs_file_set_size()
+  [RHEL-257205] {CVE-2026-89641}
+- cifs: call pagecache_isize_extended() in cifs_setsize() when extending
+  [RHEL-257205] {CVE-2026-89642}
+- cifs: fix loff_t underflow in cifs_remap_file_range() when len == 0
+  [RHEL-257205] {CVE-2026-89640}
+- cifs: add revalidation on FSCTL failure in smb2_duplicate_extents()
+  [RHEL-257205]
+- smb/client: validate new EOF for insert range [RHEL-257205] {CVE-2026-98127}
+- smb/client: validate new EOF for zero range [RHEL-257205] {CVE-2026-98126}
+- smb/client: mark file sparse before emulating insert range [RHEL-257205]
+- smb: client: fix data corruption in emulated insert range [RHEL-257205]
+- smb: client: fix integer truncation in collapse range [RHEL-257205]
+- smb: client: fix stale page cache in insert/collapse range [RHEL-257205]
+  {CVE-2026-98125}
+- smb: client: invalidate fscache for fallocate range operations [RHEL-257205]
+  {CVE-2026-98124}
+- cifs: don't update i_size in cifs_do_truncate without a cached handle
+  [RHEL-257205]
+- smb: client: fix data corruption with concurrent writes and O_TRUNC
+  [RHEL-257205]
+- smb: client: avoid leaking refcount in cifs_queue_oplock_break() [RHEL-257205]
+  {CVE-2026-97557}
+- smb: client: avoid leaking refcount when cifs_sb_tlink() fails [RHEL-257205]
+  {CVE-2026-97556}
+- smb: client: fix cifsFileInfo reference leak in deferred close [RHEL-257205]
+  {CVE-2026-97558}
+- smb/client: send lease break ACKs thru correct session for multiuser mounts
+  [RHEL-257205]
+- smb: client: cancel reconnect work in clean_demultiplex_info() [RHEL-257205]
+  {CVE-2026-98175}
+- smb: client: fix rlist race and missing initialization [RHEL-257205]
+  {CVE-2026-98174}
+- smb: client: split cifsFileInfo bitfields to avoid shared-byte RMW races
+  [RHEL-257205]
+- smb: client: guard against tailsz underflow in wdata_send_pages()
+  [RHEL-257205]
+- s390/boot: Add sized_strscpy() to enable strscpy() usage [RHEL-292349]
+  {CVE-2026-98403}
+- s390/boot: Avoid IPL parameter append past command line [RHEL-292349]
+  {CVE-2026-98403}
+- net/smc: fix UAF in smc_cdc_rx_handler() by pinning the socket [RHEL-298271]
+  {CVE-2026-64541}
 - net: lock the socket in sock_gettstamp() {CVE-2026-98276}
 - proc: fix a dentry lock race between release_task and lookup
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -4323,11 +4881,153 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Wed Nov 11 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-741.20.1
+* Thu Nov 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-741.24.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Mon Nov 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.24.1.el9_9]
+- arm64: syscall: Pass 'orig_x0' as first argument to native system call (Iker Pedrosa) [RHEL-293135] {CVE-2026-90347}
+- arm64: ptrace: Keep 'orig_x0' in-sync with x0 on syscall entry (Iker Pedrosa) [RHEL-293135] {CVE-2026-90347}
+- perf/core: Fix group leader use-after-free after sibling detach (Trevor Allison) [RHEL-295244] {CVE-2026-74637}
+- perf: Fix cgroup state vs ERROR (Trevor Allison) [RHEL-295244] {CVE-2026-74637}
+- scsi: qla2xxx: Unlink NVMe unsol ctx before freeing on LS reject error (CKI Backport Bot) [RHEL-298329] {CVE-2026-97528}
+- scsi: core: Validate MODE SENSE lengths in scsi_cdl_enable() (CKI Backport Bot) [RHEL-297231] {CVE-2026-98232}
+- scsi: lpfc: Update correct ndlp refcnt when rejecting an unsolicited PLOGI (Ewan D. Milne) [RHEL-286163]
+- scsi: lpfc: Refactor calls on fc_disctmo to lpfc_set_disctmo in RSCN handler (Ewan D. Milne) [RHEL-286163]
+- scsi: lpfc: Rework I/O flush ordering when unloading driver (Ewan D. Milne) [RHEL-286163]
+- scsi: lpfc: Check fc4_xpt_flags before decrementing ndlp kref on FDISC error (Ewan D. Milne) [RHEL-286163]
+- scsi: lpfc: Fix kernel oops when unmapping SCSI DMA buffers for an aborted cmd (Ewan D. Milne) [RHEL-286163]
+- scsi: lpfc: Early return out of lpfc_els_abort() when HBA_SETUP flag is not set (Ewan D. Milne) [RHEL-286163]
+- scsi: lpfc: Fix use-after-free in lpfc_cmpl_ct_cmd_vmid() (Ewan D. Milne) [RHEL-286163]
+- tracing: Fix filter string testing (CKI Backport Bot) [RHEL-291142]
+- tracing: Add ustring operation to filtering string pointers (CKI Backport Bot) [RHEL-291142]
+- tracing: Add test for user space strings when filtering on string pointers (CKI Backport Bot) [RHEL-291142]
+- Bluetooth: virtio_bt: avoid OOB read of build info string (CKI Backport Bot) [RHEL-284649] {CVE-2026-64549}
+- Bluetooth: bpa10x: avoid OOB read of revision string in bpa10x_setup() (CKI Backport Bot) [RHEL-284649] {CVE-2026-64549}
+- fscrypt: Add missing superblock check in find_or_insert_direct_key() (CKI Backport Bot) [RHEL-283295] {CVE-2026-68148}
+- gfs2: Fix slab-use-after-free in qd_put (CKI Backport Bot) [RHEL-227249] {CVE-2026-45861}
+- net: smc: fix splice entry lifetime imbalance in smc_rx_splice (CKI Backport Bot) [RHEL-253460] {CVE-2026-74631}
+- bonding: alb: fix UAF in rlb_arp_recv during bond up/down (CKI Backport Bot) [RHEL-225287] {CVE-2026-45970}
+
+* Wed Nov 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.23.1.el9_9]
+- s390/smp: Remove conditional emergency signal order code usage (Ramesh Chhetri) [RHEL-303481]
+- printk: Postpone kthread startup (CKI Backport Bot) [RHEL-290042]
+- net/smc: fix socket use-after-free during link group termination (CKI Backport Bot) [RHEL-300335] {CVE-2026-74493}
+- smb: client: clear setuid/setgid bit on write with cifsacl/modefromsid/posix extensions (CKI Backport Bot) [RHEL-271255] {CVE-2026-89638}
+- gfs2: add some missing log locking (CKI Backport Bot) [RHEL-230319] {CVE-2026-53049}
+- netfilter: ipset: do not update comments from kernel-side adds (Florian Westphal) [RHEL-252129]
+- netfilter: x_tables: remove pr_debug (Florian Westphal) [RHEL-252129]
+- netfilter: nf_tables: don't queue packet path object notifications (Florian Westphal) [RHEL-252129] {CVE-2026-80837}
+- netfilter: validate L4 headers after userspace packet writes (Florian Westphal) [RHEL-252129]
+- netfilter: nftables: restrict checkum update offset (Florian Westphal) [RHEL-252129]
+- netfilter: nftables: restrict linklayer and network header writes (Florian Westphal) [RHEL-252129]
+- netfilter: nfnetlink_queue: restrict writes to network header (Florian Westphal) [RHEL-252129]
+- netfilter: ipset: let destroy callbacks adjust ext mem size (Florian Westphal) [RHEL-252129]
+- netfilter: ipset: switch ext_size to atomic64_t (Florian Westphal) [RHEL-252129]
+- netfilter: ipset: fix list type element drift bug (Florian Westphal) [RHEL-252129]
+- netfilter: nf_tables_offload: suppress WARN_ON_ONCE for ENOMEM in abort path (Florian Westphal) [RHEL-252129] {CVE-2026-80744}
+- netfilter: nf_conntrack: defer invalid log until after unlock (Florian Westphal) [RHEL-252129] {CVE-2026-74624}
+- netfilter: bridge: release template ct on non-IP path (Florian Westphal) [RHEL-252129] {CVE-2026-74625}
+- netfilter: ipset: fix refcount race between list:set GC and swap (Florian Westphal) [RHEL-252129] {CVE-2026-74748}
+- netfilter: nf_flow_table: drop existing skb dst before skb_dst_set_noref() (Florian Westphal) [RHEL-252129] {CVE-2026-74695}
+- netfilter: ebt_nflog: pin the NFLOG backend (Florian Westphal) [RHEL-252129] {CVE-2026-74660}
+- netfilter: nft_payload: fix mask build for partial field offload (Florian Westphal) [RHEL-252129] {CVE-2026-74579}
+- netfilter: xt_hashlimit: validate hashtable supports XT_HASHLIMIT_RATE_MATCH (Florian Westphal) [RHEL-252129] {CVE-2026-74564}
+- netfilter: nf_tables: make nft_object rhltable per table (Florian Westphal) [RHEL-252129] {CVE-2026-74565}
+- netfilter: ipset: do not update comments from kernel-side hash adds (Florian Westphal) [RHEL-252129] {CVE-2026-74492}
+- ipvs: fix more places with wrong ipv6 transport offsets (Florian Westphal) [RHEL-252129] {CVE-2026-68477}
+- ipvs: reload ip header after head reallocation (Florian Westphal) [RHEL-252129] {CVE-2026-68476}
+- netfilter: nf_conncount: fix zone comparison in tuple dedup (Florian Westphal) [RHEL-252129] {CVE-2026-72247}
+- netfilter: bridge: fix stale prevhdr pointer in br_ip6_fragment() (Florian Westphal) [RHEL-252129] {CVE-2026-64554}
+- netfilter: xt_nat: reject unsupported target families (Florian Westphal) [RHEL-252129] {CVE-2026-80664}
+- netfilter: ipset: allocate the proper memory for the generic hash structure (Florian Westphal) [RHEL-252129]
+- netfilter: ipset: cleanup the add/del backlog when resize failed (Florian Westphal) [RHEL-252129]
+- netfilter: ipset: exclude gc when resize is in progress (Florian Westphal) [RHEL-252129]
+- netfilter: ipset: mark the rcu locked areas properly (Florian Westphal) [RHEL-252129]
+- netfilter: ebtables: module names must be null-terminated (Florian Westphal) [RHEL-252129] {CVE-2026-64412}
+- netfilter: ebtables: zero chainstack array (Florian Westphal) [RHEL-252129] {CVE-2026-64413}
+- netfilter: ebtables: terminate table name before find_table_lock() (Florian Westphal) [RHEL-252129] {CVE-2026-64411}
+- netfilter: nf_conntrack_reasm: guard mac_header adjustment after IPv6 defrag (Florian Westphal) [RHEL-252129] {CVE-2026-72250}
+- netfilter: xt_connmark: reject invalid shift parameters (Florian Westphal) [RHEL-252129] {CVE-2026-72347}
+- netfilter: xt_rateest: fix u64 truncation in xt_rateest_mt() (Florian Westphal) [RHEL-252129] {CVE-2026-72349}
+- netfilter: xt_u32: reject invalid shift counts (Florian Westphal) [RHEL-252129] {CVE-2026-72350}
+- netfilter: nf_nat: avoid invalid nat_net pointer use on failed nf_nat_init() (Florian Westphal) [RHEL-252129] {CVE-2026-72419}
+- netfilter: reject zero shift in nft_bitwise (Florian Westphal) [RHEL-252129] {CVE-2026-46101}
+- netfilter: arp_tables: fix IEEE1394 ARP payload parsing (Florian Westphal) [RHEL-252129] {CVE-2026-45844}
+- netfilter: nf_tables: release flowtable after rcu grace period on error (Florian Westphal) [RHEL-252129] {CVE-2026-23392}
+- ipvs: do not keep dest_dst if dev is going down (Florian Westphal) [RHEL-252129] {CVE-2026-45917}
+- ipvs: skip ipv6 extension headers for csum checks (Florian Westphal) [RHEL-252129] {CVE-2026-45850}
+- ipvs: fix ipv4 null-ptr-deref in route error path (Florian Westphal) [RHEL-252129] {CVE-2025-68813}
+- ipvs: Defer ip_vs_ftp unregister during netns cleanup (Florian Westphal) [RHEL-252129] {CVE-2025-40018}
+- netfilter: conntrack: Avoid nf_ct_helper_hash uses after free (Florian Westphal) [RHEL-252129] {CVE-2023-53619}
+- netfilter: x_tables: fix percpu counter block leak on error path when creating new netns (Florian Westphal) [RHEL-252129] {CVE-2023-53200}
+- net: bridge: stop fast-leave after deleting a port group (CKI Backport Bot) [RHEL-246932] {CVE-2026-74480}
+
+* Tue Nov 10 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.22.1.el9_9]
+- net/smc: protect clcsock lifetime in smc_getname (CKI Backport Bot) [RHEL-303993] {CVE-2026-99032}
+- s390/zcrypt: Validate length for CCA AES cipher key requests (Jan Polensky) [RHEL-297853] {CVE-2026-68452}
+- s390/zcrypt: Validate length for CCA ECC private key requests (Jan Polensky) [RHEL-297863] {CVE-2026-68451}
+- mptcp: options: reset DSS fields in case of unexpected size (Toke Høiland-Jørgensen) [RHEL-250613] {CVE-2026-80586}
+- s390/vfio-ap: Fix missing lock required to access list of ap_matrix_mdev objects (Ramesh Chhetri) [RHEL-293883] {CVE-2026-89956}
+- powerpc/pseries: papr-phy-attest - validate cmd.length, plug mem leak (Mamatha Inamdar) [RHEL-295112] {CVE-2026-80571}
+- sunrpc: wait for in-flight TLS handshake callback when cancel loses race (Olga Kornievskaia) [RHEL-283652] {CVE-2026-72221}
+- sunrpc: pin svc_xprt across the asynchronous TLS handshake callback (Olga Kornievskaia) [RHEL-283262] {CVE-2026-72222}
+- scsi: libiscsi: Validate the ITT reflected in a Reject PDU (CKI Backport Bot) [RHEL-298508] {CVE-2026-99153}
+- scsi: libiscsi: Validate the task named by a management response (CKI Backport Bot) [RHEL-298468] {CVE-2026-99152}
+- ipv6: fix use-after-free in ip6_finish_output2() (Antoine Tenart) [RHEL-258689] {CVE-2026-80792}
+- sctp: clear new_transport when removing a peer (Jamie Bainbridge) [RHEL-275364] {CVE-2026-74586}
+- sctp: stop processing a packet once its association is deleted (Jamie Bainbridge) [RHEL-263321] {CVE-2026-89479}
+- sctp: close UDP tunnel sockets during netns teardown (Jamie Bainbridge) [RHEL-258777]
+- sctp: avoid auth_enable sysctl UAF during netns teardown (Jamie Bainbridge) [RHEL-258777] {CVE-2026-68162}
+- sctp: keep chunk->transport in step with the list it is queued on (Jamie Bainbridge) [RHEL-254351] {CVE-2026-74588}
+- sctp: validate cookie AUTH state before use (Jamie Bainbridge) [RHEL-254293] {CVE-2026-74752}
+- fprobe: Fix to allocate entry_data_size buffer with rethook instances (Viktor Malik) [RHEL-275457]
+- objpool: fix to make percpu slot allocation more robust (Viktor Malik) [RHEL-275457]
+- objpool: fix choosing allocation for percpu slots (Viktor Malik) [RHEL-275457]
+- objpool: fix the overestimation of object pooling metadata size (Viktor Malik) [RHEL-275457]
+- objpool: cache nr_possible_cpus() and avoid caching nr_cpu_ids (Viktor Malik) [RHEL-275457]
+- objpool: enable inlining objpool_push() and objpool_pop() operations (Viktor Malik) [RHEL-275457]
+- lib: objpool: fix head overrun on RK3588 SBC (Viktor Malik) [RHEL-275457]
+- kprobes: freelist.h removed (Viktor Malik) [RHEL-275457]
+- kprobes: kretprobe scalability improvement (Viktor Malik) [RHEL-275457]
+- redhat/configs: Disable CONFIG_TEST_OBJPOOL (Viktor Malik) [RHEL-275457]
+- lib: objpool test module added (Viktor Malik) [RHEL-275457]
+- lib: objpool added: ring-array based lockless MPMC (Viktor Malik) [RHEL-275457]
+- ALSA: ua101: reject mismatched capture/playback packet sizes (CKI Backport Bot) [RHEL-290840] {CVE-2026-98741}
+- signal: complete_signal: use __for_each_thread() (Lucas Oakley) [RHEL-290031]
+- net/sched: act_ct: fix helper UAF due to extensions realloc (CKI Backport Bot) [RHEL-286694] {CVE-2026-98442}
+- net/sched: act_ct: remove 'add_helper' dead code (CKI Backport Bot) [RHEL-286694] {CVE-2026-98442}
+- net/sched: act_ct: fix sk_buff leak when the header checks reject a packet (CKI Backport Bot) [RHEL-286694] {CVE-2026-98442}
+- net/sched: act_ct: preserve tc_skb_cb across defragmentation (CKI Backport Bot) [RHEL-286694] {CVE-2026-98442}
+- net/sched: act_ct: avoid modifying shared unconfirmed ct entry (CKI Backport Bot) [RHEL-286694] {CVE-2026-98442}
+- net: openvswitch: conntrack: avoid modifying shared unconfirmed ct entry (CKI Backport Bot) [RHEL-286694] {CVE-2026-98442}
+- netfilter: conntrack: Remove unused function declarations (CKI Backport Bot) [RHEL-286694] {CVE-2026-98442}
+- net: always dissect GSO packets in __virtio_net_hdr_to_skb() (Davide Caratti) [RHEL-284989]
+- ipv4: validate checksum_start before completing checksum (CKI Backport Bot) [RHEL-284989] {CVE-2026-99999}
+- ALSA: seq: midi: Serialize input teardown with event_input (CKI Backport Bot) [RHEL-282922] {CVE-2026-90207}
+- ALSA: seq: midi: Optimize event_input locking with RCU (CKI Backport Bot) [RHEL-282922] {CVE-2026-90207}
+- af_unix: Fix peek then tail dereference UAF in unix_stream_data_wait() (Jamie Bainbridge) [RHEL-275410] {CVE-2026-64109}
+- smb: client: validate absolute native symlink targets before NT fixups (CKI Backport Bot) [RHEL-280054] {CVE-2026-98318}
+- nvmet-tcp: check return value of nvmet_tcp_set_queue_sock (CKI Backport Bot) [RHEL-277635] {CVE-2026-74385}
+- ALSA: pcm: Serialize PCM mmap with buffer reallocation to fix page UAF (CKI Backport Bot) [RHEL-276109] {CVE-2026-98116}
+- dmaengine: idxd: Fix refcount underflow on module unload (Jerry Snitselaar) [RHEL-274411]
+- s390/cpum_cf: Handle CPU hotplug via prepare/dead callbacks (Jan Polensky) [RHEL-270893]
+- smb: client: fix OOB read/write from unvalidated DataOffset in coalesce_t2() (CKI Backport Bot) [RHEL-271490] {CVE-2026-89633}
+- Revert "mm/memcg: refactor try_charge_memcg retry logic to use for loop" (Audra Mitchell) [RHEL-269061]
+- mm/readahead: reintroduce legacy madvise_willneed behavior to force_page_cache_readahead (John J. Coleman) [RHEL-259532]
+- net/iucv: fix use-after-free of a severed iucv_path (CKI Backport Bot) [RHEL-260524] {CVE-2026-68140}
+- sched/rt,dl: Skip migrate-disabled tasks when picking a push candidate (Herton R. Krzesinski) [RHEL-256280]
+- sched: Make class_schedulers avoid pushing current, and get rid of proxy_tag_curr() [partial] (Herton R. Krzesinski) [RHEL-256280]
+
+* Wed Nov 04 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.21.1.el9_9]
+- net/smc: fix use-after-free of the LLC qentry in smc_llc_srv_add_link() (Jan Polensky) [RHEL-294750] {CVE-2026-80981}
+- s390/qeth: validate user buffer length in SNMP and ARP query ioctls (Jan Polensky) [RHEL-295106] {CVE-2026-80584}
+- s390/vfio_ccw: Cancel existing workqueues (Jan Polensky) [RHEL-295168] {CVE-2026-80553}
+- watchdog: fix hrtimer start when pretimeout is zero (David Arcari) [RHEL-255218]
+- USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr() (Desnes Nunes) [RHEL-191040] {CVE-2026-53195}
+- USB: serial: io_ti: fix heap overflow in get_manuf_info() (Desnes Nunes) [RHEL-191040] {CVE-2026-53196}
 
 * Mon Nov 02 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.20.1.el9_9]
 - ipv4: free inet_opt and ireq_opt after an RCU grace period (CKI Backport Bot) [RHEL-295638] {CVE-2026-98432}
