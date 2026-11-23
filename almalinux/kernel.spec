@@ -179,13 +179,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 264.17.1
+%define pkgrelease 264.19.1
 %define kversion 6
 %define tarfile_release 6.12.0-264.9.1.el10_3
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 264.17.1%{?buildid}%{?dist}
+%define specrelease 264.19.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-264.9.1.el10_3
 
@@ -1024,6 +1024,8 @@ Source86: dracut-virt.conf
 
 Source87: flavors
 
+Source88: uki.cmdline
+
 Source151: uki_create_addons.py
 Source152: uki_addons.json
 
@@ -1465,6 +1467,71 @@ Patch1410: 1410-net-smc-protect-clcsock-lifetime-in-smc-getname.patch
 Patch1411: 1411-netfilter-conntrack-tcp-use-unack-timeout-for-non-closing-rst-packets.patch
 Patch1412: 1412-netfilter-conntrack-always-lower-timeout-for-non-closing-rst-packets.patch
 
+# Backports for 6.12.0-264.19.1.el10_3
+Patch1413: 1413-virtio-net-fix-received-length-check-in-big-packets.patch
+Patch1414: 1414-virtio-net-fix-incorrect-flags-recording-in-big-mode.patch
+Patch1415: 1415-virtio-net-fix-len-check-in-receive-big.patch
+Patch1416: 1416-mm-huge-memory-convert-tva-flags-to-enum-tva-type.patch
+Patch1417: 1417-mm-huge-memory-bypass-thp-tuneables-for-huge-pfnmap-mappings.patch
+Patch1418: 1418-drivers-hv-remove-deposited-pages-from-direct-map.patch
+Patch1419: 1419-bluetooth-hci-conn-fix-the-sco-setup-context-lifetime.patch
+Patch1420: 1420-i3c-master-fix-device-register-error-path.patch
+Patch1421: 1421-btrfs-fix-use-after-free-on-reloc-root-after-error-in-insert-dirty-subvol.patch
+Patch1422: 1422-btrfs-tree-checker-validate-names-in-root-ref-and-root-backref.patch
+Patch1423: 1423-btrfs-tree-checker-validate-inode-ref-s-namelen.patch
+Patch1424: 1424-fscrypt-add-missing-superblock-check-in-find-or-insert-direct-key.patch
+Patch1425: 1425-alsa-usx2y-us144mkii-fix-work-uaf-on-disconnect.patch
+Patch1426: 1426-bluetooth-bpa10x-avoid-oob-read-of-revision-string-in-bpa10x-setup.patch
+Patch1427: 1427-bluetooth-virtio-bt-avoid-oob-read-of-build-info-string.patch
+Patch1428: 1428-mm-damon-ops-common-handle-extreme-intervals-in-damon-hot-score.patch
+Patch1429: 1429-cipso-adjust-cached-option-offsets-when-removing-cipso.patch
+Patch1430: 1430-vxlan-mdb-fix-use-after-free-in-vxlan-mdb-flush.patch
+Patch1431: 1431-scsi-lpfc-fix-use-after-free-in-lpfc-cmpl-ct-cmd-vmid.patch
+Patch1432: 1432-scsi-lpfc-early-return-out-of-lpfc-els-abort-when-hba-setup-flag-is-not-set.patch
+Patch1433: 1433-scsi-lpfc-fix-kernel-oops-when-unmapping-scsi-dma-buffers-for-an-aborted-cmd.patch
+Patch1434: 1434-scsi-lpfc-check-fc4-xpt-flags-before-decrementing-ndlp-kref-on-fdisc-error.patch
+Patch1435: 1435-scsi-lpfc-rework-i-o-flush-ordering-when-unloading-driver.patch
+Patch1436: 1436-scsi-lpfc-refactor-calls-on-fc-disctmo-to-lpfc-set-disctmo-in-rscn-handler.patch
+Patch1437: 1437-scsi-lpfc-update-correct-ndlp-refcnt-when-rejecting-an-unsolicited-plogi.patch
+Patch1438: 1438-net-sched-fix-use-after-free-in-tcf-action-put.patch
+Patch1439: 1439-scsi-core-validate-mode-sense-lengths-in-scsi-cdl-enable.patch
+Patch1440: 1440-scsi-qla2xxx-unlink-nvme-unsol-ctx-before-freeing-on-ls-reject-error.patch
+Patch1441: 1441-selinux-avoid-sk-socket-dereference-in-selinux-sctp-bind-connect.patch
+Patch1442: 1442-crypto-ecc-fix-carry-overflow-in-vli-multiplication.patch
+Patch1443: 1443-io-uring-waitid-prevent-cancel-reference-wrap.patch
+Patch1444: 1444-rdma-bnxt-re-check-create-singlethread-workqueue-in-dcb-setup.patch
+Patch1445: 1445-rdma-bnxt-re-clear-vm-maywrite-on-dbr-toggle-page-mmap.patch
+Patch1446: 1446-rdma-bnxt-re-zero-shared-page-before-exposing-to-userspace.patch
+Patch1447: 1447-rdma-bnxt-re-proper-rollback-if-the-ioremap-fails.patch
+Patch1448: 1448-rdma-bnxt-re-add-a-max-slot-check-for-sq.patch
+Patch1449: 1449-rdma-bnxt-re-avoid-displaying-the-kernel-pointer.patch
+Patch1450: 1450-rdma-bnxt-re-free-cq-toggle-page-after-firmware-teardown.patch
+Patch1451: 1451-rdma-bnxt-re-free-srq-toggle-page-after-firmware-teardown.patch
+Patch1452: 1452-net-ipip-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+Patch1453: 1453-arm64-ptrace-keep-orig-x0-in-sync-with-x0-on-syscall-entry.patch
+Patch1454: 1454-arm64-syscall-pass-orig-x0-as-first-argument-to-native-system-call.patch
+Patch1455: 1455-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter-on-self-deadlock.patch
+Patch1456: 1456-futex-sanitize-and-document-task-struct-futex-state-transitions.patch
+Patch1457: 1457-futex-pi-plug-private-futex-exec-race.patch
+Patch1458: 1458-futex-provide-rt-mutex-schedule-equivalents-for-futex-scheduling.patch
+Patch1459: 1459-futex-also-allocate-private-hash-on-vfork.patch
+Patch1460: 1460-futex-fix-private-hash-use-after-free-on-resize.patch
+Patch1461: 1461-perf-core-fix-group-leader-use-after-free-after-sibling-detach.patch
+Patch1462: 1462-scsi-target-bound-pr-out-transportid-parsing-to-the-received-buffer.patch
+Patch1463: 1463-scsi-target-verify-the-iscsi-isid-is-null-terminated.patch
+Patch1464: 1464-drm-amdgpu-add-a-new-npa-address-space.patch
+Patch1465: 1465-sunrpc-harden-rq-procinfo-lifecycle-to-prevent-double-free.patch
+Patch1466: 1466-nfsd-handle-layout-stid-in-nfsd4-drop-revoked-stid.patch
+Patch1467: 1467-sunrpc-defer-rq-argp-and-rq-resp-free-until-after-rcu-grace-period.patch
+Patch1468: 1468-svcrdma-fix-unmatched-rn-unregister-on-failed-accept.patch
+Patch1469: 1469-nfsd-rcu-protect-cl-cb-session-to-fix-use-after-free-on-session-teardown.patch
+Patch1470: 1470-nfsd-convert-nfsd-net-boolean-flags-to-unsigned-long-flags-word.patch
+Patch1471: 1471-nfsd-check-truncate-permission-under-inode-lock.patch
+Patch1472: 1472-nfsd-validate-sockaddr-length-per-family-in-listener-set.patch
+Patch1473: 1473-nfsv4-pnfs-key-the-data-server-cache-on-the-nfs-version.patch
+Patch1474: 1474-tcp-prevent-collapsing-skbs-across-boundary-in-rtx-queue.patch
+Patch1475: 1475-inet-reject-unhashed-sockets-during-established-lookups.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1526,7 +1593,6 @@ Patch2064: 2064-kvm-nvmx-always-flush-vpid02-on-first-use.patch
 Patch2065: 2065-kvm-nvmx-decouple-invvpid-operand-checks-from-flushing-of-vpid02.patch
 Patch2066: 2066-kvm-nvm-ensure-invvpid-is-emulated-on-the-correct-physical-cpu.patch
 Patch2067: 2067-writeback-fix-race-between-cgroup-writeback-umount-and-inode-switch-wbs.patch
-Patch2068: 2068-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -2759,6 +2825,71 @@ ApplyPatch 1410-net-smc-protect-clcsock-lifetime-in-smc-getname.patch
 ApplyPatch 1411-netfilter-conntrack-tcp-use-unack-timeout-for-non-closing-rst-packets.patch
 ApplyPatch 1412-netfilter-conntrack-always-lower-timeout-for-non-closing-rst-packets.patch
 
+# Applying backports for 6.12.0-264.19.1.el10_3
+ApplyPatch 1413-virtio-net-fix-received-length-check-in-big-packets.patch
+ApplyPatch 1414-virtio-net-fix-incorrect-flags-recording-in-big-mode.patch
+ApplyPatch 1415-virtio-net-fix-len-check-in-receive-big.patch
+ApplyPatch 1416-mm-huge-memory-convert-tva-flags-to-enum-tva-type.patch
+ApplyPatch 1417-mm-huge-memory-bypass-thp-tuneables-for-huge-pfnmap-mappings.patch
+ApplyPatch 1418-drivers-hv-remove-deposited-pages-from-direct-map.patch
+ApplyPatch 1419-bluetooth-hci-conn-fix-the-sco-setup-context-lifetime.patch
+ApplyPatch 1420-i3c-master-fix-device-register-error-path.patch
+ApplyPatch 1421-btrfs-fix-use-after-free-on-reloc-root-after-error-in-insert-dirty-subvol.patch
+ApplyPatch 1422-btrfs-tree-checker-validate-names-in-root-ref-and-root-backref.patch
+ApplyPatch 1423-btrfs-tree-checker-validate-inode-ref-s-namelen.patch
+ApplyPatch 1424-fscrypt-add-missing-superblock-check-in-find-or-insert-direct-key.patch
+ApplyPatch 1425-alsa-usx2y-us144mkii-fix-work-uaf-on-disconnect.patch
+ApplyPatch 1426-bluetooth-bpa10x-avoid-oob-read-of-revision-string-in-bpa10x-setup.patch
+ApplyPatch 1427-bluetooth-virtio-bt-avoid-oob-read-of-build-info-string.patch
+ApplyPatch 1428-mm-damon-ops-common-handle-extreme-intervals-in-damon-hot-score.patch
+ApplyPatch 1429-cipso-adjust-cached-option-offsets-when-removing-cipso.patch
+ApplyPatch 1430-vxlan-mdb-fix-use-after-free-in-vxlan-mdb-flush.patch
+ApplyPatch 1431-scsi-lpfc-fix-use-after-free-in-lpfc-cmpl-ct-cmd-vmid.patch
+ApplyPatch 1432-scsi-lpfc-early-return-out-of-lpfc-els-abort-when-hba-setup-flag-is-not-set.patch
+ApplyPatch 1433-scsi-lpfc-fix-kernel-oops-when-unmapping-scsi-dma-buffers-for-an-aborted-cmd.patch
+ApplyPatch 1434-scsi-lpfc-check-fc4-xpt-flags-before-decrementing-ndlp-kref-on-fdisc-error.patch
+ApplyPatch 1435-scsi-lpfc-rework-i-o-flush-ordering-when-unloading-driver.patch
+ApplyPatch 1436-scsi-lpfc-refactor-calls-on-fc-disctmo-to-lpfc-set-disctmo-in-rscn-handler.patch
+ApplyPatch 1437-scsi-lpfc-update-correct-ndlp-refcnt-when-rejecting-an-unsolicited-plogi.patch
+ApplyPatch 1438-net-sched-fix-use-after-free-in-tcf-action-put.patch
+ApplyPatch 1439-scsi-core-validate-mode-sense-lengths-in-scsi-cdl-enable.patch
+ApplyPatch 1440-scsi-qla2xxx-unlink-nvme-unsol-ctx-before-freeing-on-ls-reject-error.patch
+ApplyPatch 1441-selinux-avoid-sk-socket-dereference-in-selinux-sctp-bind-connect.patch
+ApplyPatch 1442-crypto-ecc-fix-carry-overflow-in-vli-multiplication.patch
+ApplyPatch 1443-io-uring-waitid-prevent-cancel-reference-wrap.patch
+ApplyPatch 1444-rdma-bnxt-re-check-create-singlethread-workqueue-in-dcb-setup.patch
+ApplyPatch 1445-rdma-bnxt-re-clear-vm-maywrite-on-dbr-toggle-page-mmap.patch
+ApplyPatch 1446-rdma-bnxt-re-zero-shared-page-before-exposing-to-userspace.patch
+ApplyPatch 1447-rdma-bnxt-re-proper-rollback-if-the-ioremap-fails.patch
+ApplyPatch 1448-rdma-bnxt-re-add-a-max-slot-check-for-sq.patch
+ApplyPatch 1449-rdma-bnxt-re-avoid-displaying-the-kernel-pointer.patch
+ApplyPatch 1450-rdma-bnxt-re-free-cq-toggle-page-after-firmware-teardown.patch
+ApplyPatch 1451-rdma-bnxt-re-free-srq-toggle-page-after-firmware-teardown.patch
+ApplyPatch 1452-net-ipip-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+ApplyPatch 1453-arm64-ptrace-keep-orig-x0-in-sync-with-x0-on-syscall-entry.patch
+ApplyPatch 1454-arm64-syscall-pass-orig-x0-as-first-argument-to-native-system-call.patch
+ApplyPatch 1455-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter-on-self-deadlock.patch
+ApplyPatch 1456-futex-sanitize-and-document-task-struct-futex-state-transitions.patch
+ApplyPatch 1457-futex-pi-plug-private-futex-exec-race.patch
+ApplyPatch 1458-futex-provide-rt-mutex-schedule-equivalents-for-futex-scheduling.patch
+ApplyPatch 1459-futex-also-allocate-private-hash-on-vfork.patch
+ApplyPatch 1460-futex-fix-private-hash-use-after-free-on-resize.patch
+ApplyPatch 1461-perf-core-fix-group-leader-use-after-free-after-sibling-detach.patch
+ApplyPatch 1462-scsi-target-bound-pr-out-transportid-parsing-to-the-received-buffer.patch
+ApplyPatch 1463-scsi-target-verify-the-iscsi-isid-is-null-terminated.patch
+ApplyPatch 1464-drm-amdgpu-add-a-new-npa-address-space.patch
+ApplyPatch 1465-sunrpc-harden-rq-procinfo-lifecycle-to-prevent-double-free.patch
+ApplyPatch 1466-nfsd-handle-layout-stid-in-nfsd4-drop-revoked-stid.patch
+ApplyPatch 1467-sunrpc-defer-rq-argp-and-rq-resp-free-until-after-rcu-grace-period.patch
+ApplyPatch 1468-svcrdma-fix-unmatched-rn-unregister-on-failed-accept.patch
+ApplyPatch 1469-nfsd-rcu-protect-cl-cb-session-to-fix-use-after-free-on-session-teardown.patch
+ApplyPatch 1470-nfsd-convert-nfsd-net-boolean-flags-to-unsigned-long-flags-word.patch
+ApplyPatch 1471-nfsd-check-truncate-permission-under-inode-lock.patch
+ApplyPatch 1472-nfsd-validate-sockaddr-length-per-family-in-listener-set.patch
+ApplyPatch 1473-nfsv4-pnfs-key-the-data-server-cache-on-the-nfs-version.patch
+ApplyPatch 1474-tcp-prevent-collapsing-skbs-across-boundary-in-rtx-queue.patch
+ApplyPatch 1475-inet-reject-unhashed-sockets-during-established-lookups.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2820,7 +2951,6 @@ ApplyPatch 2064-kvm-nvmx-always-flush-vpid02-on-first-use.patch
 ApplyPatch 2065-kvm-nvmx-decouple-invvpid-operand-checks-from-flushing-of-vpid02.patch
 ApplyPatch 2066-kvm-nvm-ensure-invvpid-is-emulated-on-the-correct-physical-cpu.patch
 ApplyPatch 2067-writeback-fix-race-between-cgroup-writeback-umount-and-inode-switch-wbs.patch
-ApplyPatch 2068-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 %{log_msg "End of patch applications"}
 # END OF PATCH APPLICATIONS
@@ -3681,7 +3811,7 @@ BuildKernel() {
 
         ukify build --linux $KernelUnifiedVmlinuz --initrd $KernelUnifiedInitrd \
            --sbat @uki.sbat --os-release @/etc/os-release --uname $KernelVer \
-           --cmdline 'console=tty0 console=ttyS0' --output $KernelUnifiedImage
+           --cmdline @%{SOURCE88} --output $KernelUnifiedImage
 
         rm -f $KernelUnifiedInitrd
 
@@ -5441,15 +5571,14 @@ fi\
 #
 #
 %changelog
-* Thu Nov 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.17.1
+* Mon Nov 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.19.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Thu Nov 19 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.17.1
+* Mon Nov 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.19.1
 - Enable Btrfs support for all kernel variants
 
-* Thu Nov 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.17.1
-- inet: reject unhashed sockets during established lookups {CVE-2026-99288}
+* Mon Nov 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.19.1
 - can: j1939: j1939_session_new(): fix skb reference counting [RHEL-162260]
   {CVE-2024-56645}
 - wifi: mt76: mt7925: fix crash in reset link replay [RHEL-237527]
@@ -5546,6 +5675,77 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Fri Nov 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.19.1.el10_3]
+- inet: reject unhashed sockets during established lookups (Prasenjit Mukherjee) [RHEL-304720] {CVE-2026-99288}
+- tcp: prevent collapsing skbs across boundary in rtx queue (Prasenjit Mukherjee) [RHEL-301505] {CVE-2026-98549}
+- NFSv4/pnfs: key the data server cache on the NFS version (Olga Kornievskaia) [RHEL-282923] {CVE-2026-90102}
+- nfsd: validate sockaddr length per family in listener_set (Olga Kornievskaia) [RHEL-284313] {CVE-2026-89700}
+- NFSD: check truncate permission under inode lock (Olga Kornievskaia) [RHEL-298475] {CVE-2026-89713}
+- nfsd: convert nfsd_net boolean flags to unsigned long flags word (Olga Kornievskaia) [RHEL-292608] {CVE-2026-93221}
+- nfsd: RCU-protect cl_cb_session to fix use-after-free on session teardown (Olga Kornievskaia) [RHEL-298528] {CVE-2026-89708}
+- svcrdma: Fix unmatched rn_unregister on failed accept (Olga Kornievskaia) [RHEL-292584] {CVE-2026-93224}
+- sunrpc: defer rq_argp and rq_resp free until after RCU grace period (Olga Kornievskaia) [RHEL-298602] {CVE-2026-89545}
+- NFSD: Handle layout stid in nfsd4_drop_revoked_stid() (Olga Kornievskaia) [RHEL-277640] {CVE-2026-74316}
+- sunrpc: harden rq_procinfo lifecycle to prevent double-free (Olga Kornievskaia) [RHEL-277292] {CVE-2026-72220}
+
+* Thu Nov 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.18.1.el10_3]
+- drm/amdgpu: Add a new NPA Address space (Peter Colberg) [RHEL-307271]
+- redhat: Bump SBAT generation on the UKI (Vitaly Kuznetsov) [RHEL-302670] {CVE-2026-121876}
+- redhat: Tighten the default image policy in the UKI (Vitaly Kuznetsov) [RHEL-302670] {CVE-2026-121876}
+- redhat: Disable emergency console by default in the UKI (Vitaly Kuznetsov) [RHEL-302670] {CVE-2026-121876}
+- redhat: Move UKI cmdline to a separate file (Vitaly Kuznetsov) [RHEL-302670] {CVE-2026-121876}
+- scsi: target: Verify the iSCSI ISID is null-terminated (Maurizio Lombardi) [RHEL-272168] {CVE-2026-72084}
+- scsi: target: Bound PR-OUT TransportID parsing to the received buffer (Maurizio Lombardi) [RHEL-272168] {CVE-2026-72084}
+- perf/core: Fix group leader use-after-free after sibling detach (Trevor Allison) [RHEL-295247] {CVE-2026-74637}
+- futex: Fix private hash use-after-free on resize (Waiman Long) [RHEL-299375] {CVE-2026-98788}
+- futex: Also allocate private hash on vfork() (Waiman Long) [RHEL-299375] {CVE-2026-98281}
+- futex: Provide rt_mutex_.*_schedule() equivalents for futex scheduling (Waiman Long) [RHEL-299375]
+- futex/pi: Plug private futex exec() race (Waiman Long) [RHEL-299375] {CVE-2026-80777}
+- futex: Sanitize and document task_struct::futex::state transitions (Waiman Long) [RHEL-299375]
+- futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock (Waiman Long) [RHEL-299375]
+- arm64: syscall: Pass 'orig_x0' as first argument to native system call (Iker Pedrosa) [RHEL-293131] {CVE-2026-90347}
+- arm64: ptrace: Keep 'orig_x0' in-sync with x0 on syscall entry (Iker Pedrosa) [RHEL-293131] {CVE-2026-90347}
+- net: ipip: require CAP_NET_ADMIN in the device netns for changelink (CKI Backport Bot) [RHEL-297784] {CVE-2026-72053}
+- RDMA/bnxt_re: Free SRQ toggle page after firmware teardown (Kamal Heib) [RHEL-296430 RHEL-300139] {CVE-2026-72500}
+- RDMA/bnxt_re: Free CQ toggle page after firmware teardown (Kamal Heib) [RHEL-295860 RHEL-300139] {CVE-2026-72499}
+- RDMA/bnxt_re: Avoid displaying the kernel pointer (Kamal Heib) [RHEL-300139] {CVE-2026-72498}
+- RDMA/bnxt_re: Add a max slot check for SQ (Kamal Heib) [RHEL-300139] {CVE-2026-72497}
+- RDMA/bnxt_re: Proper rollback if the ioremap fails (Kamal Heib) [RHEL-300139] {CVE-2026-72496}
+- RDMA/bnxt_re: zero shared page before exposing to userspace (Kamal Heib) [RHEL-300139] {CVE-2026-74584}
+- RDMA/bnxt_re: Clear VM_MAYWRITE on DBR/toggle page mmap (Kamal Heib) [RHEL-293666 RHEL-300139] {CVE-2026-92495}
+- RDMA/bnxt_re: check create_singlethread_workqueue() in DCB setup (Kamal Heib) [RHEL-300139] {CVE-2026-98356}
+- io_uring/waitid: prevent cancel reference wrap (CKI Backport Bot) [RHEL-300591] {CVE-2026-99227}
+- crypto: ecc - Fix carry overflow in vli multiplication (CKI Backport Bot) [RHEL-296713] {CVE-2026-64313}
+- selinux: avoid sk_socket dereference in selinux_sctp_bind_connect() (CKI Backport Bot) [RHEL-297257] {CVE-2026-72242}
+- scsi: qla2xxx: Unlink NVMe unsol ctx before freeing on LS reject error (CKI Backport Bot) [RHEL-298330] {CVE-2026-97528}
+- scsi: core: Validate MODE SENSE lengths in scsi_cdl_enable() (CKI Backport Bot) [RHEL-297178] {CVE-2026-98232}
+- net/sched: fix use-after-free in __tcf_action_put() (CKI Backport Bot) [RHEL-294588] {CVE-2026-99167}
+- scsi: lpfc: Update correct ndlp refcnt when rejecting an unsolicited PLOGI (Ewan D. Milne) [RHEL-286168]
+- scsi: lpfc: Refactor calls on fc_disctmo to lpfc_set_disctmo in RSCN handler (Ewan D. Milne) [RHEL-286168]
+- scsi: lpfc: Rework I/O flush ordering when unloading driver (Ewan D. Milne) [RHEL-286168]
+- scsi: lpfc: Check fc4_xpt_flags before decrementing ndlp kref on FDISC error (Ewan D. Milne) [RHEL-286168]
+- scsi: lpfc: Fix kernel oops when unmapping SCSI DMA buffers for an aborted cmd (Ewan D. Milne) [RHEL-286168]
+- scsi: lpfc: Early return out of lpfc_els_abort() when HBA_SETUP flag is not set (Ewan D. Milne) [RHEL-286168]
+- scsi: lpfc: Fix use-after-free in lpfc_cmpl_ct_cmd_vmid() (Ewan D. Milne) [RHEL-286168]
+- vxlan: mdb: Fix use-after-free in vxlan_mdb_flush() (CKI Backport Bot) [RHEL-292574] {CVE-2026-93250}
+- cipso: adjust cached option offsets when removing CIPSO (CKI Backport Bot) [RHEL-292435] {CVE-2026-99064}
+- mm/damon/ops-common: handle extreme intervals in damon_hot_score() (CKI Backport Bot) [RHEL-284732] {CVE-2026-64458}
+- Bluetooth: virtio_bt: avoid OOB read of build info string (CKI Backport Bot) [RHEL-284672] {CVE-2026-64549}
+- Bluetooth: bpa10x: avoid OOB read of revision string in bpa10x_setup() (CKI Backport Bot) [RHEL-284672] {CVE-2026-64549}
+- ALSA: usx2y: us144mkii: fix work UAF on disconnect (CKI Backport Bot) [RHEL-284673] {CVE-2026-64491}
+- fscrypt: Add missing superblock check in find_or_insert_direct_key() (CKI Backport Bot) [RHEL-283282] {CVE-2026-68148}
+- btrfs: tree-checker: validate INODE_REF's namelen (CKI Backport Bot) [RHEL-278298] {CVE-2026-93813}
+- btrfs: tree-checker: validate names in ROOT_REF and ROOT_BACKREF (CKI Backport Bot) [RHEL-278286] {CVE-2026-97415}
+- btrfs: fix use-after-free on reloc root after error in insert_dirty_subvol() (CKI Backport Bot) [RHEL-278187] {CVE-2026-93800}
+- i3c: master: Fix device_register() error path (CKI Backport Bot) [RHEL-278123] {CVE-2026-93283}
+- Bluetooth: hci_conn: fix the SCO setup context lifetime (CKI Backport Bot) [RHEL-276325] {CVE-2026-90255}
+- drivers/hv: remove deposited pages from direct map (Paolo Bonzini) [RHEL-274964]
+- mm/huge_memory: bypass THP tuneables for huge pfnmap mappings (Cédric Le Goater) [RHEL-253945]
+- mm/huge_memory: convert "tva_flags" to "enum tva_type" (Cédric Le Goater) [RHEL-253945]
+- virtio-net: fix len check in receive_big() (Laurent Vivier) [RHEL-255941]
+- virtio-net: fix incorrect flags recording in big mode (Laurent Vivier) [RHEL-255941]
+- virtio-net: fix received length check in big packets (Laurent Vivier) [RHEL-255941]
 
 * Wed Nov 11 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.17.1.el10_3]
 - netfilter: conntrack: always lower timeout for non-closing RST packets (CKI Backport Bot) [RHEL-303850] {CVE-2026-99283}
