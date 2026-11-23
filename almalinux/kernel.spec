@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.187.1.el8_10
+%define pkgrelease 553.189.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.187.1%{?dist}
+%define specrelease 553.189.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -570,7 +570,6 @@ Patch2006: 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 Patch2007: 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 Patch2008: 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 Patch1104: 1104-net-lock-the-socket-in-sock_gettstamp.patch
-Patch1105: 1105-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH DEFINITIONS
 
@@ -1160,7 +1159,6 @@ ApplyPatch 0006-Bring-back-deprecated-pci-ids-to-lpfc-driver.patch
 ApplyPatch 0007-Bring-back-deprecated-pci-ids-to-qla4xxx-driver.patch
 ApplyPatch 0008-Bring-back-deprecated-pci-ids-to-be2iscsi-driver.patch
 ApplyPatch 1104-net-lock-the-socket-in-sock_gettstamp.patch
-ApplyPatch 1105-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -2809,8 +2807,7 @@ fi
 #
 #
 %changelog
-* Thu Nov 19 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.187.1
-- inet: reject unhashed sockets during established lookups {CVE-2026-99288}
+* Mon Nov 23 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.189.1
 - net: lock the socket in sock_gettstamp() {CVE-2026-98276}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2822,9 +2819,67 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Nov 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.187.1
+* Mon Nov 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.189.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Mon Nov 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.189.1.el8_10]
+- mm/swapfile: really fix integer overflow in swap_show() and swapon() (Oleksandr Natalenko) [RHEL-302561]
+- mm/gup: check for overflow when converting nr_pages to bytes in GUP-fast (CKI Backport Bot) [RHEL-312402] {CVE-2026-99661}
+- lockd: fix vfs_test_lock() calls (Olga Kornievskaia) [RHEL-304667]
+- uio: Fix stale info pointer in failed registration path (CKI Backport Bot) [RHEL-292797] {CVE-2026-93054}
+- ALSA: caiaq: fix out-of-bounds read in the Traktor Kontrol S4 input parser (CKI Backport Bot) [RHEL-284690] {CVE-2026-64487}
+
+* Fri Nov 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.188.1.el8_10]
+- scsi: target: Verify the iSCSI ISID is null-terminated (Maurizio Lombardi) [RHEL-272155] {CVE-2026-72084}
+- scsi: target: Bound PR-OUT TransportID parsing to the received buffer (Maurizio Lombardi) [RHEL-272155] {CVE-2026-72084}
+- scsi: target: core: Generate correct identifiers for PR OUT transport IDs (Maurizio Lombardi) [RHEL-272155]
+- tcp: prevent collapsing skbs across boundary in rtx queue (Prasenjit Mukherjee) [RHEL-301498] {CVE-2026-98549}
+- inet: reject unhashed sockets during established lookups (Prasenjit Mukherjee) [RHEL-304788] {CVE-2026-99288}
+- tracing: Save the event file instead of the compatible histogram (Jerome Marchand) [RHEL-299208] {CVE-2026-99235}
+- RDMA/mad: Fix receive buffer leak when PKey enforcement fails (Kamal Heib) [RHEL-296076] {CVE-2026-98354}
+- IB/mad: Drop unmatched RMPP responses before reassembly (Kamal Heib) [RHEL-296076] {CVE-2026-68425}
+- RDMA/cma: Fix kmemleak in rdma_core observed during blktests nvme/rdma use siw (Kamal Heib) [RHEL-296076] {CVE-2024-38539}
+- RDMA/restrack: Fix potential invalid address access (Kamal Heib) [RHEL-296076] {CVE-2024-42080}
+- IB/core: Implement a limit on UMAD receive List (Kamal Heib) [RHEL-296076] {CVE-2024-42145}
+- IB/core: Fix ib_cache_setup_one error flow cleanup (Kamal Heib) [RHEL-296076] {CVE-2024-47693}
+- RDMA/mad: Improve handling of timed out WRs of mad agent (Kamal Heib) [RHEL-296076] {CVE-2024-50095}
+- RDMA/uverbs: Prevent integer overflow issue (Kamal Heib) [RHEL-296076] {CVE-2024-57890}
+- RDMA/core: Don't expose hw_counters outside of init net namespace (Kamal Heib) [RHEL-296076] {CVE-2025-22089}
+- RDMA/cma: Fix hang when cma_netevent_callback fails to queue_work (Kamal Heib) [RHEL-296076]
+- RDMA/cma: Fix workqueue crash in cma_netevent_work_handler (Kamal Heib) [RHEL-296076] {CVE-2025-37772}
+- RDMA/core: Check for the presence of LS_NLA_TYPE_DGID correctly (Kamal Heib) [RHEL-296076] {CVE-2025-71096}
+- RDMA/cm: Fix leaking the multicast GID table reference (Kamal Heib) [RHEL-296076] {CVE-2025-71084}
+- RDMA/core: Prefer NLA_NUL_STRING (Kamal Heib) [RHEL-296076] {CVE-2026-63860}
+- RDMA/ucma: Lock the handler in ucma_set_ib_path() (Kamal Heib) [RHEL-296076] {CVE-2026-89508}
+- RDMA/core: Wait for RCU callbacks before unloading ib_core (Kamal Heib) [RHEL-296076] {CVE-2026-93110}
+- RDMA/nldev: validate dynamic counter attribute length (Kamal Heib) [RHEL-296076] {CVE-2026-92523}
+- RDMA/core: Fix use after free in ib_query_qp() (Kamal Heib) [RHEL-296076] {CVE-2026-92512}
+- RDMA/core: Fix potential use after free in ib_destroy_cq_user() (Kamal Heib) [RHEL-292811 RHEL-296076] {CVE-2026-92511}
+- RDMA/core: Fix potential use after free in ib_destroy_srq_user() (Kamal Heib) [RHEL-296076] {CVE-2026-92510}
+- RDMA/core: Fix potential use after free in ib_free_cq() (Kamal Heib) [RHEL-292846 RHEL-296076] {CVE-2026-92508}
+- RDMA/core: Add rdma_restrack_begin/abort/commit_del() operations (Kamal Heib) [RHEL-296076]
+- RDMA/nldev: Fix locking when accessing mr->pd (Kamal Heib) [RHEL-296076] {CVE-2026-74334}
+- RDMA/restrack: Fix typos in the comments (Kamal Heib) [RHEL-296076]
+- RDMA/core: Fix potential use after free in ib_dealloc_pd_user() (Kamal Heib) [RHEL-296076] {CVE-2026-92507}
+- RDMA/cma: Fix WARNING in res_to_rt (Kamal Heib) [RHEL-296076] {CVE-2026-90218}
+- RDMA/counter: Fix num_counters leak on bind_qp failure in alloc_and_bind() (Kamal Heib) [RHEL-296076] {CVE-2026-97477}
+- RDMA/core: Fix potential use after free in counter_release() (Kamal Heib) [RHEL-296076] {CVE-2026-98359}
+- RDMA/ucma: Serialize join and leave on copy_to_user failure (Kamal Heib) [RHEL-296076] {CVE-2026-98253}
+- RDMA/core: fix refcount bug in iwpm_get_nlmsg_request() (Kamal Heib) [RHEL-296076] {CVE-2026-98252}
+- IB/isert: post the full-feature receive buffers after session registration (Kamal Heib) [RHEL-289994] {CVE-2026-90293}
+- RDMA/srp: bound SRP_RSP sense copy by the received length (Kamal Heib) [RHEL-289994] {CVE-2026-53186}
+- RDMA/srpt: fix integer overflow in immediate data length check (Kamal Heib) [RHEL-283415 RHEL-289994] {CVE-2026-74394}
+- RDMA/ipoib: Drain RCU callbacks during module teardown (Kamal Heib) [RHEL-289994] {CVE-2026-93108}
+- RDMA/core: Wait for RCU callbacks before unloading ib_core (Kamal Heib) [RHEL-289994]
+- IB/isert: reject PDUs declaring more data than was received (Kamal Heib) [RHEL-285577 RHEL-289994] {CVE-2026-90414}
+- IB/isert: reject login PDUs declaring more data than was received (Kamal Heib) [RHEL-289994 RHEL-292916] {CVE-2026-90413}
+- RDMA/srp: fix heap information leak on a truncated SRP_CRED_REQ (Kamal Heib) [RHEL-289994] {CVE-2026-90307}
+- IB/isert: delay the final Login Response until the session is registered (Kamal Heib) [RHEL-282881 RHEL-289994] {CVE-2026-90294}
+- RDMA/srpt: Fix srpt_alloc_rw_ctxs() unwind counters (Kamal Heib) [RHEL-289994] {CVE-2026-100075}
+- IB/iser: reject a remote invalidation of an unregistered direction (Kamal Heib) [RHEL-289994] {CVE-2026-98358}
+- IB/isert: wait for deferred control PDU completions before releasing the connection (Kamal Heib) [RHEL-289994] {CVE-2026-98357}
+- IB/IPoIB: Avoid restoring OPER_UP after multicast flush (Kamal Heib) [RHEL-289994] {CVE-2026-98347}
 
 * Thu Nov 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.187.1.el8_10]
 - SUNRPC: Fix crasher in gss_unwrap_resp_integ() (Scott Mayhew) [RHEL-309171]
