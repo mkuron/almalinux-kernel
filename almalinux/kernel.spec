@@ -176,13 +176,13 @@ Summary: The Linux kernel
 # define buildid .local
 %define specversion 5.14.0
 %define patchversion 5.14
-%define pkgrelease 741.24.1
+%define pkgrelease 741.26.1
 %define kversion 5
 %define tarfile_release 5.14.0-741.14.1.el9_9
 # This is needed to do merge window version magic
 %define patchlevel 14
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 741.24.1%{?buildid}%{?dist}
+%define specrelease 741.26.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 5.14.0-741.14.1.el9_9
 
@@ -1287,6 +1287,68 @@ Patch1397: 1397-perf-core-fix-group-leader-use-after-free-after-sibling-detach.p
 Patch1398: 1398-arm64-ptrace-keep-orig-x0-in-sync-with-x0-on-syscall-entry.patch
 Patch1399: 1399-arm64-syscall-pass-orig-x0-as-first-argument-to-native-system-call.patch
 
+# Backports for 5.14.0-741.26.1.el9_9
+Patch1400: 1400-nvdimm-btt-reject-an-arena-whose-nfree-is-below-the-lane-count.patch
+Patch1401: 1401-vxlan-mdb-fix-use-after-free-in-vxlan-mdb-remote-src-del.patch
+Patch1402: 1402-tcp-fix-use-after-free-of-retransmit-skb-hint-in-tcp-send-synack.patch
+Patch1403: 1403-crypto-ecc-fix-carry-overflow-in-vli-multiplication.patch
+Patch1404: 1404-io-uring-waitid-prevent-cancel-reference-wrap.patch
+Patch1405: 1405-rdma-bnxt-re-check-create-singlethread-workqueue-in-dcb-setup.patch
+Patch1406: 1406-rdma-bnxt-re-clear-vm-maywrite-on-dbr-toggle-page-mmap.patch
+Patch1407: 1407-rdma-bnxt-re-zero-shared-page-before-exposing-to-userspace.patch
+Patch1408: 1408-rdma-bnxt-re-proper-rollback-if-the-ioremap-fails.patch
+Patch1409: 1409-rdma-bnxt-re-add-a-max-slot-check-for-sq.patch
+Patch1410: 1410-rdma-bnxt-re-avoid-displaying-the-kernel-pointer.patch
+Patch1411: 1411-rdma-bnxt-re-free-cq-toggle-page-after-firmware-teardown.patch
+Patch1412: 1412-rdma-bnxt-re-free-srq-toggle-page-after-firmware-teardown.patch
+Patch1413: 1413-net-ipip-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+Patch1414: 1414-slip-reject-vj-receive-packets-on-instances-with-no-rstate-array.patch
+Patch1415: 1415-slip-bound-decode-reads-against-the-compressed-packet-length.patch
+Patch1416: 1416-slip-fix-use-after-free-in-sl-sync.patch
+Patch1417: 1417-slip-remove-slip-hangup-to-fix-use-after-free-in-slip-receive-buf.patch
+Patch1418: 1418-udp-fix-wildcard-bind-conflict-check-when-using-hash2.patch
+Patch1419: 1419-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter-on-self-deadlock.patch
+Patch1420: 1420-futex-sanitize-and-document-task-struct-futex-state-transitions.patch
+Patch1421: 1421-futex-pi-plug-private-futex-exec-race.patch
+Patch1422: 1422-futex-provide-rt-mutex-schedule-equivalents-for-futex-scheduling.patch
+Patch1423: 1423-futex-also-allocate-private-hash-on-vfork.patch
+Patch1424: 1424-futex-fix-private-hash-use-after-free-on-resize.patch
+Patch1425: 1425-scsi-target-bound-pr-out-transportid-parsing-to-the-received-buffer.patch
+Patch1426: 1426-scsi-target-verify-the-iscsi-isid-is-null-terminated.patch
+Patch1427: 1427-hwmon-core-use-device-name-as-a-fallback-in-devm-hwmon-device-register-with-info.patch
+Patch1428: 1428-vhost-move-smp-rmb-into-vhost-get-avail-idx.patch
+Patch1429: 1429-vhost-fix-vhost-get-avail-idx-for-a-non-empty-ring.patch
+Patch1430: 1430-tpm-tis-use-responseretry-to-recover-from-data-transfer-errors.patch
+Patch1431: 1431-tpm-tis-resend-command-to-recover-from-data-transfer-errors.patch
+Patch1432: 1432-tpm-tpm-tis-workaround-failed-command-reception-on-infineon-devices.patch
+Patch1433: 1433-tpm-tpm-tis-add-error-logging-for-data-transfer.patch
+Patch1434: 1434-tpm-tpm-tis-stop-transmit-if-retries-are-exhausted.patch
+Patch1435: 1435-ib-ipoib-avoid-restoring-oper-up-after-multicast-flush.patch
+Patch1436: 1436-ib-isert-wait-for-deferred-control-pdu-completions-before-releasing-the-connecti.patch
+Patch1437: 1437-ib-iser-reject-a-remote-invalidation-of-an-unregistered-direction.patch
+Patch1438: 1438-rdma-srpt-fix-srpt-alloc-rw-ctxs-unwind-counters.patch
+Patch1439: 1439-ib-isert-delay-the-final-login-response-until-the-session-is-registered.patch
+Patch1440: 1440-rdma-srp-fix-heap-information-leak-on-a-truncated-srp-cred-req.patch
+Patch1441: 1441-ib-isert-reject-login-pdus-declaring-more-data-than-was-received.patch
+Patch1442: 1442-ib-isert-reject-pdus-declaring-more-data-than-was-received.patch
+Patch1443: 1443-rdma-mlx5-drain-rcu-callbacks-during-module-teardown.patch
+Patch1444: 1444-rdma-ipoib-drain-rcu-callbacks-during-module-teardown.patch
+Patch1445: 1445-rdma-srpt-fix-integer-overflow-in-immediate-data-length-check.patch
+Patch1446: 1446-rdma-srp-bound-srp-rsp-sense-copy-by-the-received-length.patch
+Patch1447: 1447-ib-isert-post-the-full-feature-receive-buffers-after-session-registration.patch
+Patch1448: 1448-drm-amdkfd-fix-oob-memory-exposure-in-get-wave-state.patch
+Patch1449: 1449-drm-amdkfd-hold-event-mutex-while-checkpointing-criu-events.patch
+Patch1450: 1450-drm-amdkfd-fix-smi-event-cross-process-information-leak.patch
+Patch1451: 1451-drm-amd-pm-bound-pp-dpm-set-pp-table-memcpy.patch
+Patch1452: 1452-drm-amdkfd-check-bounds-on-allocate-doorbell.patch
+Patch1453: 1453-drm-amdkfd-check-bounds-for-allocate-sdma-queue-restore-sdma-id.patch
+Patch1454: 1454-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
+Patch1455: 1455-drm-amdgpu-validate-and-share-psp-fw-pri-buf-copies-via-psp-copy-fw.patch
+Patch1456: 1456-drm-amdgpu-fix-buffer-overflow-during-vbios-update.patch
+Patch1457: 1457-inet-reject-unhashed-sockets-during-established-lookups.patch
+Patch1458: 1458-tcp-prevent-collapsing-skbs-across-boundary-in-rtx-queue.patch
+Patch1459: 1459-mptcp-avoid-unneeded-actions-on-subflow-reset.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1376,7 +1438,6 @@ Patch2190: 2190-smb-client-guard-against-tailsz-underflow-in-wdata-send-pages.pa
 Patch2197: 2197-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
 Patch2198: 2198-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
 Patch2202: 2202-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
-Patch2207: 2207-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 Patch11111: ppc64le-kvm-support.patch
 
@@ -2470,6 +2531,68 @@ ApplyPatch 1397-perf-core-fix-group-leader-use-after-free-after-sibling-detach.p
 ApplyPatch 1398-arm64-ptrace-keep-orig-x0-in-sync-with-x0-on-syscall-entry.patch
 ApplyPatch 1399-arm64-syscall-pass-orig-x0-as-first-argument-to-native-system-call.patch
 
+# Applying backports for 5.14.0-741.26.1.el9_9
+ApplyPatch 1400-nvdimm-btt-reject-an-arena-whose-nfree-is-below-the-lane-count.patch
+ApplyPatch 1401-vxlan-mdb-fix-use-after-free-in-vxlan-mdb-remote-src-del.patch
+ApplyPatch 1402-tcp-fix-use-after-free-of-retransmit-skb-hint-in-tcp-send-synack.patch
+ApplyPatch 1403-crypto-ecc-fix-carry-overflow-in-vli-multiplication.patch
+ApplyPatch 1404-io-uring-waitid-prevent-cancel-reference-wrap.patch
+ApplyPatch 1405-rdma-bnxt-re-check-create-singlethread-workqueue-in-dcb-setup.patch
+ApplyPatch 1406-rdma-bnxt-re-clear-vm-maywrite-on-dbr-toggle-page-mmap.patch
+ApplyPatch 1407-rdma-bnxt-re-zero-shared-page-before-exposing-to-userspace.patch
+ApplyPatch 1408-rdma-bnxt-re-proper-rollback-if-the-ioremap-fails.patch
+ApplyPatch 1409-rdma-bnxt-re-add-a-max-slot-check-for-sq.patch
+ApplyPatch 1410-rdma-bnxt-re-avoid-displaying-the-kernel-pointer.patch
+ApplyPatch 1411-rdma-bnxt-re-free-cq-toggle-page-after-firmware-teardown.patch
+ApplyPatch 1412-rdma-bnxt-re-free-srq-toggle-page-after-firmware-teardown.patch
+ApplyPatch 1413-net-ipip-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+ApplyPatch 1414-slip-reject-vj-receive-packets-on-instances-with-no-rstate-array.patch
+ApplyPatch 1415-slip-bound-decode-reads-against-the-compressed-packet-length.patch
+ApplyPatch 1416-slip-fix-use-after-free-in-sl-sync.patch
+ApplyPatch 1417-slip-remove-slip-hangup-to-fix-use-after-free-in-slip-receive-buf.patch
+ApplyPatch 1418-udp-fix-wildcard-bind-conflict-check-when-using-hash2.patch
+ApplyPatch 1419-futex-requeue-prevent-null-pointer-dereference-in-remove-waiter-on-self-deadlock.patch
+ApplyPatch 1420-futex-sanitize-and-document-task-struct-futex-state-transitions.patch
+ApplyPatch 1421-futex-pi-plug-private-futex-exec-race.patch
+ApplyPatch 1422-futex-provide-rt-mutex-schedule-equivalents-for-futex-scheduling.patch
+ApplyPatch 1423-futex-also-allocate-private-hash-on-vfork.patch
+ApplyPatch 1424-futex-fix-private-hash-use-after-free-on-resize.patch
+ApplyPatch 1425-scsi-target-bound-pr-out-transportid-parsing-to-the-received-buffer.patch
+ApplyPatch 1426-scsi-target-verify-the-iscsi-isid-is-null-terminated.patch
+ApplyPatch 1427-hwmon-core-use-device-name-as-a-fallback-in-devm-hwmon-device-register-with-info.patch
+ApplyPatch 1428-vhost-move-smp-rmb-into-vhost-get-avail-idx.patch
+ApplyPatch 1429-vhost-fix-vhost-get-avail-idx-for-a-non-empty-ring.patch
+ApplyPatch 1430-tpm-tis-use-responseretry-to-recover-from-data-transfer-errors.patch
+ApplyPatch 1431-tpm-tis-resend-command-to-recover-from-data-transfer-errors.patch
+ApplyPatch 1432-tpm-tpm-tis-workaround-failed-command-reception-on-infineon-devices.patch
+ApplyPatch 1433-tpm-tpm-tis-add-error-logging-for-data-transfer.patch
+ApplyPatch 1434-tpm-tpm-tis-stop-transmit-if-retries-are-exhausted.patch
+ApplyPatch 1435-ib-ipoib-avoid-restoring-oper-up-after-multicast-flush.patch
+ApplyPatch 1436-ib-isert-wait-for-deferred-control-pdu-completions-before-releasing-the-connecti.patch
+ApplyPatch 1437-ib-iser-reject-a-remote-invalidation-of-an-unregistered-direction.patch
+ApplyPatch 1438-rdma-srpt-fix-srpt-alloc-rw-ctxs-unwind-counters.patch
+ApplyPatch 1439-ib-isert-delay-the-final-login-response-until-the-session-is-registered.patch
+ApplyPatch 1440-rdma-srp-fix-heap-information-leak-on-a-truncated-srp-cred-req.patch
+ApplyPatch 1441-ib-isert-reject-login-pdus-declaring-more-data-than-was-received.patch
+ApplyPatch 1442-ib-isert-reject-pdus-declaring-more-data-than-was-received.patch
+ApplyPatch 1443-rdma-mlx5-drain-rcu-callbacks-during-module-teardown.patch
+ApplyPatch 1444-rdma-ipoib-drain-rcu-callbacks-during-module-teardown.patch
+ApplyPatch 1445-rdma-srpt-fix-integer-overflow-in-immediate-data-length-check.patch
+ApplyPatch 1446-rdma-srp-bound-srp-rsp-sense-copy-by-the-received-length.patch
+ApplyPatch 1447-ib-isert-post-the-full-feature-receive-buffers-after-session-registration.patch
+ApplyPatch 1448-drm-amdkfd-fix-oob-memory-exposure-in-get-wave-state.patch
+ApplyPatch 1449-drm-amdkfd-hold-event-mutex-while-checkpointing-criu-events.patch
+ApplyPatch 1450-drm-amdkfd-fix-smi-event-cross-process-information-leak.patch
+ApplyPatch 1451-drm-amd-pm-bound-pp-dpm-set-pp-table-memcpy.patch
+ApplyPatch 1452-drm-amdkfd-check-bounds-on-allocate-doorbell.patch
+ApplyPatch 1453-drm-amdkfd-check-bounds-for-allocate-sdma-queue-restore-sdma-id.patch
+ApplyPatch 1454-drm-amdgpu-bound-gpio-i2c-table-entry-count-from-vbios.patch
+ApplyPatch 1455-drm-amdgpu-validate-and-share-psp-fw-pri-buf-copies-via-psp-copy-fw.patch
+ApplyPatch 1456-drm-amdgpu-fix-buffer-overflow-during-vbios-update.patch
+ApplyPatch 1457-inet-reject-unhashed-sockets-during-established-lookups.patch
+ApplyPatch 1458-tcp-prevent-collapsing-skbs-across-boundary-in-rtx-queue.patch
+ApplyPatch 1459-mptcp-avoid-unneeded-actions-on-subflow-reset.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2559,7 +2682,6 @@ ApplyPatch 2190-smb-client-guard-against-tailsz-underflow-in-wdata-send-pages.pa
 ApplyPatch 2197-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
 ApplyPatch 2198-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
 ApplyPatch 2202-net-smc-fix-uaf-in-smc-cdc-rx-handler-by-pinning-the-socket.patch
-ApplyPatch 2207-inet-reject-unhashed-sockets-during-established-lookups.patch
 
 # END OF PATCH APPLICATIONS
 
@@ -4734,8 +4856,7 @@ fi
 #
 #
 %changelog
-* Thu Nov 19 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-741.24.1
-- inet: reject unhashed sockets during established lookups {CVE-2026-99288}
+* Mon Nov 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 5.14.0-741.26.1
 - Restore the el9_8 (kernel-5.14.0-687.66.x) security fixes missing from RHEL
   9.9 kernel-5.14.0-741.24.1 (74 patches, 37 CVEs)
 - net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared
@@ -4881,11 +5002,75 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Thu Nov 19 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-741.24.1
+* Mon Nov 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 5.14.0-741.26.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
 - Add KVM support for ppc64le
 - KVM: PPC: Book3S HV: Make PMU save/restore symbols global for module builds
+
+* Fri Nov 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.26.1.el9_9]
+- mptcp: avoid unneeded actions on subflow reset (Sona Vanarasu) [RHEL-292559] {CVE-2026-97524}
+- tcp: prevent collapsing skbs across boundary in rtx queue (Prasenjit Mukherjee) [RHEL-301502] {CVE-2026-98549}
+- inet: reject unhashed sockets during established lookups (Prasenjit Mukherjee) [RHEL-304740] {CVE-2026-99288}
+- drm/amdgpu: fix buffer overflow during vBIOS update (CKI Backport Bot) [RHEL-278293] {CVE-2026-97425}
+- drm/amdgpu: validate and share PSP fw_pri_buf copies via psp_copy_fw (CKI Backport Bot) [RHEL-278250] {CVE-2026-97494}
+- drm/amdgpu: Bound GPIO I2C table entry count from VBIOS (CKI Backport Bot) [RHEL-278245] {CVE-2026-97493}
+- drm/amdkfd: Check bounds for allocate_sdma_queue restore_sdma_id (CKI Backport Bot) [RHEL-278232] {CVE-2026-97497}
+- drm/amdkfd: Check bounds on allocate_doorbell (CKI Backport Bot) [RHEL-278237] {CVE-2026-97495}
+- drm/amd/pm: bound pp_dpm_set_pp_table() memcpy (CKI Backport Bot) [RHEL-278195] {CVE-2026-97427}
+- drm/amdkfd: fix SMI event cross-process information leak (CKI Backport Bot) [RHEL-278154] {CVE-2026-97422}
+- drm/amdkfd: hold event_mutex while checkpointing CRIU events (CKI Backport Bot) [RHEL-273858] {CVE-2026-74446}
+- drm/amdkfd: Fix OOB memory exposure in get_wave_state() (CKI Backport Bot) [RHEL-273403] {CVE-2026-97496}
+- IB/isert: post the full-feature receive buffers after session registration (Kamal Heib) [RHEL-287039] {CVE-2026-90293}
+- RDMA/srp: bound SRP_RSP sense copy by the received length (Kamal Heib) [RHEL-287039] {CVE-2026-53186}
+- RDMA/srpt: fix integer overflow in immediate data length check (Kamal Heib) [RHEL-283442 RHEL-287039] {CVE-2026-74394}
+- RDMA/ipoib: Drain RCU callbacks during module teardown (Kamal Heib) [RHEL-287039] {CVE-2026-93108}
+- RDMA/mlx5: Drain RCU callbacks during module teardown (Kamal Heib) [RHEL-287039]
+- IB/isert: reject PDUs declaring more data than was received (Kamal Heib) [RHEL-285571 RHEL-287039] {CVE-2026-90414}
+- IB/isert: reject login PDUs declaring more data than was received (Kamal Heib) [RHEL-287039 RHEL-293765] {CVE-2026-90413}
+- RDMA/srp: fix heap information leak on a truncated SRP_CRED_REQ (Kamal Heib) [RHEL-287039] {CVE-2026-90307}
+- IB/isert: delay the final Login Response until the session is registered (Kamal Heib) [RHEL-282916 RHEL-287039] {CVE-2026-90294}
+- RDMA/srpt: Fix srpt_alloc_rw_ctxs() unwind counters (Kamal Heib) [RHEL-287039] {CVE-2026-100075}
+- IB/iser: reject a remote invalidation of an unregistered direction (Kamal Heib) [RHEL-287039] {CVE-2026-98358}
+- IB/isert: wait for deferred control PDU completions before releasing the connection (Kamal Heib) [RHEL-287039] {CVE-2026-98357}
+- IB/IPoIB: Avoid restoring OPER_UP after multicast flush (Kamal Heib) [RHEL-287039] {CVE-2026-98347}
+- tpm: tpm_tis: stop transmit if retries are exhausted (Štěpán Horáček) [RHEL-260392]
+- tpm: tpm_tis: add error logging for data transfer (Štěpán Horáček) [RHEL-260392]
+- tpm, tpm_tis: Workaround failed command reception on Infineon devices (Štěpán Horáček) [RHEL-260392]
+- tpm_tis: Resend command to recover from data transfer errors (Štěpán Horáček) [RHEL-260392]
+- tpm_tis: Use responseRetry to recover from data transfer errors (Štěpán Horáček) [RHEL-260392]
+- vhost: fix vhost_get_avail_idx for a non empty ring (Laurent Vivier) [RHEL-270723]
+- vhost: move smp_rmb() into vhost_get_avail_idx() (Laurent Vivier) [RHEL-270723]
+- hwmon: (core) Use device name as a fallback in devm_hwmon_device_register_with_info (CKI Backport Bot) [RHEL-262030]
+
+* Thu Nov 19 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.25.1.el9_9]
+- scsi: target: Verify the iSCSI ISID is null-terminated (Maurizio Lombardi) [RHEL-272166] {CVE-2026-72084}
+- scsi: target: Bound PR-OUT TransportID parsing to the received buffer (Maurizio Lombardi) [RHEL-272166] {CVE-2026-72084}
+- futex: Fix private hash use-after-free on resize (Waiman Long) [RHEL-299373] {CVE-2026-98788}
+- futex: Also allocate private hash on vfork() (Waiman Long) [RHEL-299373] {CVE-2026-98281}
+- futex: Provide rt_mutex_.*_schedule() equivalents for futex scheduling (Waiman Long) [RHEL-299373]
+- futex/pi: Plug private futex exec() race (Waiman Long) [RHEL-299373] {CVE-2026-80777}
+- futex: Sanitize and document task_struct::futex::state transitions (Waiman Long) [RHEL-299373]
+- futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock (Waiman Long) [RHEL-299373]
+- udp: Fix wildcard bind conflict check when using hash2 (Paolo Abeni) [RHEL-257706] {CVE-2026-31503}
+- slip: remove slip_hangup() to fix use-after-free in slip_receive_buf() (Michal Schmidt) [RHEL-282012] {CVE-2026-90057}
+- slip: fix use-after-free in sl_sync() (Michal Schmidt) [RHEL-282012] {CVE-2026-81001}
+- slip: bound decode() reads against the compressed packet length (Michal Schmidt) [RHEL-282012] {CVE-2026-45843}
+- slip: reject VJ receive packets on instances with no rstate array (Michal Schmidt) [RHEL-282012] {CVE-2026-45842}
+- net: ipip: require CAP_NET_ADMIN in the device netns for changelink (CKI Backport Bot) [RHEL-297781] {CVE-2026-72053}
+- RDMA/bnxt_re: Free SRQ toggle page after firmware teardown (Kamal Heib) [RHEL-296171 RHEL-301173] {CVE-2026-72500}
+- RDMA/bnxt_re: Free CQ toggle page after firmware teardown (Kamal Heib) [RHEL-295838 RHEL-301173] {CVE-2026-72499}
+- RDMA/bnxt_re: Avoid displaying the kernel pointer (Kamal Heib) [RHEL-301173] {CVE-2026-72498}
+- RDMA/bnxt_re: Add a max slot check for SQ (Kamal Heib) [RHEL-301173] {CVE-2026-72497}
+- RDMA/bnxt_re: Proper rollback if the ioremap fails (Kamal Heib) [RHEL-301173] {CVE-2026-72496}
+- RDMA/bnxt_re: zero shared page before exposing to userspace (Kamal Heib) [RHEL-301173] {CVE-2026-74584}
+- RDMA/bnxt_re: Clear VM_MAYWRITE on DBR/toggle page mmap (Kamal Heib) [RHEL-292877 RHEL-301173] {CVE-2026-92495}
+- RDMA/bnxt_re: check create_singlethread_workqueue() in DCB setup (Kamal Heib) [RHEL-301173] {CVE-2026-98356}
+- io_uring/waitid: prevent cancel reference wrap (CKI Backport Bot) [RHEL-300601] {CVE-2026-99227}
+- crypto: ecc - Fix carry overflow in vli multiplication (CKI Backport Bot) [RHEL-296735] {CVE-2026-64313}
+- tcp: fix use-after-free of retransmit_skb_hint in tcp_send_synack() (CKI Backport Bot) [RHEL-292220] {CVE-2026-98374}
+- vxlan: mdb: Fix use-after-free in vxlan_mdb_remote_src_del() (CKI Backport Bot) [RHEL-292444] {CVE-2026-98122}
+- nvdimm/btt: reject an arena whose nfree is below the lane count (CKI Backport Bot) [RHEL-285604] {CVE-2026-89965}
 
 * Mon Nov 16 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [5.14.0-741.24.1.el9_9]
 - arm64: syscall: Pass 'orig_x0' as first argument to native system call (Iker Pedrosa) [RHEL-293135] {CVE-2026-90347}
