@@ -179,13 +179,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 264.19.1
+%define pkgrelease 264.20.1
 %define kversion 6
 %define tarfile_release 6.12.0-264.9.1.el10_3
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 264.19.1%{?buildid}%{?dist}
+%define specrelease 264.20.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-264.9.1.el10_3
 
@@ -1532,6 +1532,45 @@ Patch1473: 1473-nfsv4-pnfs-key-the-data-server-cache-on-the-nfs-version.patch
 Patch1474: 1474-tcp-prevent-collapsing-skbs-across-boundary-in-rtx-queue.patch
 Patch1475: 1475-inet-reject-unhashed-sockets-during-established-lookups.patch
 
+# Backports for 6.12.0-264.20.1.el10_3
+Patch1476: 1476-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+Patch1477: 1477-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+Patch1478: 1478-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+Patch1479: 1479-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+Patch1480: 1480-kvm-sev-ignore-mmio-requests-of-length-0.patch
+Patch1481: 1481-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+Patch1482: 1482-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+Patch1483: 1483-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-requests.patch
+Patch1484: 1484-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+Patch1485: 1485-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+Patch1486: 1486-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+Patch1487: 1487-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
+Patch1488: 1488-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+Patch1489: 1489-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
+Patch1490: 1490-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
+Patch1491: 1491-libceph-reset-sparse-read-state-in-osd-fault.patch
+Patch1492: 1492-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
+Patch1493: 1493-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+Patch1494: 1494-selftests-bridge-vlan-mcast-test-toggling-of-multicast-snooping.patch
+Patch1495: 1495-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
+Patch1496: 1496-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
+Patch1497: 1497-net-openvswitch-conntrack-remove-add-helper-dead-code.patch
+Patch1498: 1498-net-openvswitch-conntrack-fix-helper-uaf-due-to-extensions-realloc.patch
+Patch1499: 1499-iomap-guard-io-size-eof-trim-against-concurrent-truncate-underflow.patch
+Patch1500: 1500-bnxt-en-fix-dma-mapping-length-for-padded-small-packets.patch
+Patch1501: 1501-mm-hugetlb-preserve-mremap-address-delta-when-skipping-page-tables.patch
+Patch1502: 1502-media-cec-disable-delayed-work-before-freeing-an-interrupted-transmit.patch
+Patch1503: 1503-platform-x86-amd-pmc-fix-lps0-and-debugfs-leaks-when-stb-init-fails.patch
+Patch1504: 1504-io-uring-fix-task-work-add-use-after-free-with-sqpoll.patch
+Patch1505: 1505-uio-fix-stale-info-pointer-in-failed-registration-path.patch
+Patch1506: 1506-fs-proc-task-mmu-pin-mm-users-in-do-pagemap-scan.patch
+Patch1507: 1507-mm-add-folio-test-lazyfree-helper.patch
+Patch1508: 1508-mm-rmap-don-t-discard-lazyfree-thps-at-pmd-level.patch
+Patch1509: 1509-x86-mm-fix-global-asid-handed-out-to-two-processes.patch
+Patch1510: 1510-mm-gup-check-for-overflow-when-converting-nr-pages-to-bytes-in-gup-fast.patch
+Patch1511: 1511-mm-vma-call-may-split-before-a-partial-merge.patch
+Patch1512: 1512-mm-userfaultfd-only-allocate-anon-vma-in-cow-mappings.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -1545,7 +1584,6 @@ Patch2010: 0001-Keep-fs-btrfs-files-in-modules-package.patch
 Patch2014: 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 Patch2015: 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 Patch2016: 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
-Patch2017: 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 Patch2018: 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 Patch2019: 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 Patch2020: 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
@@ -1556,30 +1594,12 @@ Patch2024: 2024-wifi-mt76-mt7925-drop-txrx-notify-on-non-mmio-buses.patch
 Patch2026: 2026-drm-xe-issue-ggtt-invalidation-under-lock-in-ggtt-node-remove.patch
 Patch2027: 2027-alsa-timer-clear-sndrv-timer-iflg-dead-once-the-close-completes.patch
 Patch2028: 2028-net-wwan-t7xx-fix-potential-skb-frags-overflow-in-rx-path.patch
-Patch2029: 2029-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
-Patch2030: 2030-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
-Patch2031: 2031-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
-Patch2032: 2032-libceph-reset-sparse-read-state-in-osd-fault.patch
 Patch2033: 2033-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
 Patch2034: 2034-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icmp.patch
 Patch2036: 2036-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
-Patch2037: 2037-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
-Patch2038: 2038-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
-Patch2039: 2039-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
-Patch2040: 2040-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
-Patch2041: 2041-kvm-sev-ignore-mmio-requests-of-length-0.patch
-Patch2042: 2042-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
-Patch2043: 2043-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
-Patch2044: 2044-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-reque.patch
-Patch2045: 2045-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
-Patch2046: 2046-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
-Patch2047: 2047-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
-Patch2048: 2048-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
-Patch2049: 2049-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
 Patch2050: 2050-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
 Patch2051: 2051-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
 Patch2052: 2052-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
-Patch2053: 2053-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
 Patch2054: 2054-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
 Patch2055: 2055-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
 Patch2056: 2056-net-smc-reject-chid-0-accept-that-matches-an-empty-ism-dev-slot.patch
@@ -2890,6 +2910,45 @@ ApplyPatch 1473-nfsv4-pnfs-key-the-data-server-cache-on-the-nfs-version.patch
 ApplyPatch 1474-tcp-prevent-collapsing-skbs-across-boundary-in-rtx-queue.patch
 ApplyPatch 1475-inet-reject-unhashed-sockets-during-established-lookups.patch
 
+# Applying backports for 6.12.0-264.20.1.el10_3
+ApplyPatch 1476-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
+ApplyPatch 1477-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
+ApplyPatch 1478-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
+ApplyPatch 1479-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
+ApplyPatch 1480-kvm-sev-ignore-mmio-requests-of-length-0.patch
+ApplyPatch 1481-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
+ApplyPatch 1482-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
+ApplyPatch 1483-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-requests.patch
+ApplyPatch 1484-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
+ApplyPatch 1485-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
+ApplyPatch 1486-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
+ApplyPatch 1487-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
+ApplyPatch 1488-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
+ApplyPatch 1489-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
+ApplyPatch 1490-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
+ApplyPatch 1491-libceph-reset-sparse-read-state-in-osd-fault.patch
+ApplyPatch 1492-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
+ApplyPatch 1493-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
+ApplyPatch 1494-selftests-bridge-vlan-mcast-test-toggling-of-multicast-snooping.patch
+ApplyPatch 1495-s390-boot-add-sized-strscpy-to-enable-strscpy-usage.patch
+ApplyPatch 1496-s390-boot-avoid-ipl-parameter-append-past-command-line.patch
+ApplyPatch 1497-net-openvswitch-conntrack-remove-add-helper-dead-code.patch
+ApplyPatch 1498-net-openvswitch-conntrack-fix-helper-uaf-due-to-extensions-realloc.patch
+ApplyPatch 1499-iomap-guard-io-size-eof-trim-against-concurrent-truncate-underflow.patch
+ApplyPatch 1500-bnxt-en-fix-dma-mapping-length-for-padded-small-packets.patch
+ApplyPatch 1501-mm-hugetlb-preserve-mremap-address-delta-when-skipping-page-tables.patch
+ApplyPatch 1502-media-cec-disable-delayed-work-before-freeing-an-interrupted-transmit.patch
+ApplyPatch 1503-platform-x86-amd-pmc-fix-lps0-and-debugfs-leaks-when-stb-init-fails.patch
+ApplyPatch 1504-io-uring-fix-task-work-add-use-after-free-with-sqpoll.patch
+ApplyPatch 1505-uio-fix-stale-info-pointer-in-failed-registration-path.patch
+ApplyPatch 1506-fs-proc-task-mmu-pin-mm-users-in-do-pagemap-scan.patch
+ApplyPatch 1507-mm-add-folio-test-lazyfree-helper.patch
+ApplyPatch 1508-mm-rmap-don-t-discard-lazyfree-thps-at-pmd-level.patch
+ApplyPatch 1509-x86-mm-fix-global-asid-handed-out-to-two-processes.patch
+ApplyPatch 1510-mm-gup-check-for-overflow-when-converting-nr-pages-to-bytes-in-gup-fast.patch
+ApplyPatch 1511-mm-vma-call-may-split-before-a-partial-merge.patch
+ApplyPatch 1512-mm-userfaultfd-only-allocate-anon-vma-in-cow-mappings.patch
+
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 ApplyPatch 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2903,7 +2962,6 @@ ApplyPatch 0001-Keep-fs-btrfs-files-in-modules-package.patch
 ApplyPatch 2014-CVE-2024-53685-ceph-give-up-on-paths-longer-than-PATH_M.patch
 ApplyPatch 2015-CVE-2026-43419-ceph-fix-memory-leaks-in-ceph_mdsc_build.patch
 ApplyPatch 2016-CVE-2026-43408-ceph-add-a-bunch-of-missing-ceph_path_in.patch
-ApplyPatch 2017-bnxt_en-fix-DMA-mapping-length-for-padded-small-pack.patch
 ApplyPatch 2018-ceph-pass-cred-pointer-to-ceph_mds_auth_match.patch
 ApplyPatch 2019-CVE-2024-56563-ceph-fix-cred-leak-in-ceph_mds_check_acc.patch
 ApplyPatch 2020-CVE-2025-21737-ceph-fix-memory-leak-in-ceph_mds_auth_mat.patch
@@ -2914,30 +2972,12 @@ ApplyPatch 2024-wifi-mt76-mt7925-drop-txrx-notify-on-non-mmio-buses.patch
 ApplyPatch 2026-drm-xe-issue-ggtt-invalidation-under-lock-in-ggtt-node-remove.patch
 ApplyPatch 2027-alsa-timer-clear-sndrv-timer-iflg-dead-once-the-close-completes.patch
 ApplyPatch 2028-net-wwan-t7xx-fix-potential-skb-frags-overflow-in-rx-path.patch
-ApplyPatch 2029-libceph-make-decode-pool-more-resilient-against-corrupted-osdmaps.patch
-ApplyPatch 2030-libceph-prevent-potential-out-of-bounds-reads-in-handle-auth-done.patch
-ApplyPatch 2031-libceph-replace-overzealous-bug-on-in-osdmap-apply-incremental.patch
-ApplyPatch 2032-libceph-reset-sparse-read-state-in-osd-fault.patch
 ApplyPatch 2033-bluetooth-fix-uaf-in-bt-accept-dequeue.patch
 ApplyPatch 2034-tunnels-load-network-headers-after-skb-cow-in-iptunnel-pmtud-build-icmp.patch
 ApplyPatch 2036-bluetooth-hci-uart-clear-hci-uart-sending-when-write-work-is-canceled.patch
-ApplyPatch 2037-kvm-sev-require-in-ghcb-scratch-area-if-ghcb-v2-is-in-use.patch
-ApplyPatch 2038-kvm-x86-harden-sev-es-mmio-against-on-stack-use-after-free.patch
-ApplyPatch 2039-kvm-x86-dedup-kvm-sev-es-mmio-read-write.patch
-ApplyPatch 2040-kvm-x86-consolidate-sev-es-mmio-emulation-into-a-single-public-api.patch
-ApplyPatch 2041-kvm-sev-ignore-mmio-requests-of-length-0.patch
-ApplyPatch 2042-kvm-sev-reject-mmio-requests-larger-than-8-bytes-with-ghcb-v2.patch
-ApplyPatch 2043-kvm-sev-ignore-port-i-o-requests-of-length-0.patch
-ApplyPatch 2044-kvm-sev-use-the-size-of-the-psc-header-as-the-minimum-size-for-psc-reque.patch
-ApplyPatch 2045-kvm-sev-compute-the-correct-max-length-of-the-in-ghcb-scratch-area.patch
-ApplyPatch 2046-kvm-sev-warn-if-kvm-attempts-to-setup-scratch-area-with-min-len-0.patch
-ApplyPatch 2047-kvm-sev-don-t-explicitly-pass-psc-buffer-to-snp-begin-psc.patch
-ApplyPatch 2048-kvm-sev-check-psc-request-indices-against-the-actual-size-of-the-buffer.patch
-ApplyPatch 2049-kvm-sev-use-read-once-when-reading-entries-indices-from-psc-buffer.patch
 ApplyPatch 2050-ipvlan-inherit-needed-headroom-and-needed-tailroom-from-phy-dev.patch
 ApplyPatch 2051-macvlan-inherit-needed-headroom-and-needed-tailroom-from-lowerdev.patch
 ApplyPatch 2052-vlan-fix-skb-under-panic-and-races-when-toggling-hw-vlan-offload.patch
-ApplyPatch 2053-bridge-mcast-fix-a-possible-use-after-free-when-removing-a-bridge-port.patch
 ApplyPatch 2054-bluetooth-hci-core-fix-queuing-tx-work-after-workqueue-is-drained.patch
 ApplyPatch 2055-net-iucv-fix-use-after-free-of-a-severed-iucv-path.patch
 ApplyPatch 2056-net-smc-reject-chid-0-accept-that-matches-an-empty-ism-dev-slot.patch
@@ -5571,14 +5611,14 @@ fi\
 #
 #
 %changelog
-* Mon Nov 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.19.1
+* Mon Nov 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.20.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Mon Nov 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.19.1
+* Mon Nov 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.20.1
 - Enable Btrfs support for all kernel variants
 
-* Mon Nov 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.19.1
+* Mon Nov 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.20.1
 - can: j1939: j1939_session_new(): fix skb reference counting [RHEL-162260]
   {CVE-2024-56645}
 - wifi: mt76: mt7925: fix crash in reset link replay [RHEL-237527]
@@ -5591,50 +5631,17 @@ fi\
   [RHEL-227086] {CVE-2026-53193}
 - net: wwan: t7xx: fix potential skb->frags overflow in RX path [RHEL-245528]
   {CVE-2026-23172}
-- libceph: make decode_pool() more resilient against corrupted osdmaps
-  [RHEL-169064] {CVE-2025-71116}
-- libceph: prevent potential out-of-bounds reads in handle_auth_done()
-  [RHEL-169068] {CVE-2026-22984}
-- libceph: replace overzealous BUG_ON in osdmap_apply_incremental()
-  [RHEL-169072] {CVE-2026-22990}
-- libceph: reset sparse-read state in osd_fault() [RHEL-169079] {CVE-2026-23136}
 - Bluetooth: fix UAF in bt_accept_dequeue() [RHEL-229761] {CVE-2026-53357}
 - tunnels: load network headers after skb_cow() in
   iptunnel_pmtud_build_icmp[v6]() [RHEL-259564] {CVE-2026-63994}
 - Bluetooth: hci_uart: clear HCI_UART_SENDING when write_work is canceled
   [RHEL-232645] {CVE-2026-46275}
-- KVM: SEV: Require in-GHCB scratch area if GHCB v2+ is in use [RHEL-192289]
-  {CVE-2026-53360}
-- KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free [RHEL-192289]
-  {CVE-2026-53360}
-- KVM: x86: Dedup kvm_sev_es_mmio_{read,write}() [RHEL-192289] {CVE-2026-53360}
-- KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API
-  [RHEL-192289] {CVE-2026-53360}
-- KVM: SEV: Ignore MMIO requests of length '0' [RHEL-192289] {CVE-2026-53360}
-- KVM: SEV: Reject MMIO requests larger than 8 bytes with GHCB v2+ [RHEL-192289]
-  {CVE-2026-53360}
-- KVM: SEV: Ignore Port I/O requests of length '0' [RHEL-192289]
-  {CVE-2026-53360}
-- KVM: SEV: Use the size of the PSC header as the minimum size for PSC requests
-  [RHEL-192289] {CVE-2026-53360}
-- KVM: SEV: Compute the correct max length of the in-GHCB scratch area
-  [RHEL-192289] {CVE-2026-53360}
-- KVM: SEV: WARN if KVM attempts to setup scratch area with min_len==0
-  [RHEL-192289] {CVE-2026-53360}
-- KVM: SEV: Don't explicitly pass PSC buffer to snp_begin_psc() [RHEL-192289]
-  {CVE-2026-53360}
-- KVM: SEV: Check PSC request indices against the actual size of the buffer
-  [RHEL-192289] {CVE-2026-53360}
-- KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer
-  [RHEL-192289] {CVE-2026-53360}
 - ipvlan: inherit needed_headroom and needed_tailroom from phy_dev [RHEL-254268]
   {CVE-2026-74744}
 - macvlan: inherit needed_headroom and needed_tailroom from lowerdev
   [RHEL-254268]
 - vlan: fix skb_under_panic and races when toggling HW VLAN offload
   [RHEL-254268]
-- bridge: mcast: Fix a possible use-after-free when removing a bridge port
-  [RHEL-232531] {CVE-2026-64032}
 - Bluetooth: hci_core: Fix queuing tx_work after workqueue is drained
   [RHEL-244763] {CVE-2026-63974}
 - net/iucv: fix use-after-free of a severed iucv_path [RHEL-260529]
@@ -5663,7 +5670,6 @@ fi\
 - ceph: pass cred pointer to ceph_mds_auth_match()
 - ceph: fix cred leak in ceph_mds_check_access() {CVE-2024-56563}
 - ceph: fix memory leak in ceph_mds_auth_match() {CVE-2025-21737}
-- bnxt_en: fix DMA mapping length for padded small packets
 - ceph: give up on paths longer than PATH_MAX {CVE-2024-53685}
 - ceph: fix memory leaks in ceph_mdsc_build_path() {CVE-2026-43419}
 - ceph: add a bunch of missing ceph_path_info initializers {CVE-2026-43408}
@@ -5675,6 +5681,45 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Mon Nov 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.20.1.el10_3]
+- mm/userfaultfd: only allocate anon_vma in CoW mappings (Rafael Aquini) [RHEL-312504] {CVE-2026-99580}
+- mm/vma: call ->may_split() before a partial merge (CKI Backport Bot) [RHEL-312520] {CVE-2026-99648}
+- mm/gup: check for overflow when converting nr_pages to bytes in GUP-fast (CKI Backport Bot) [RHEL-312399] {CVE-2026-99661}
+- x86/mm: Fix global ASID handed out to two processes (CKI Backport Bot) [RHEL-312363] {CVE-2026-99592}
+- mm/rmap: don't discard lazyfree THPs at PMD level (CKI Backport Bot) [RHEL-311438] {CVE-2026-99463}
+- mm: add folio_test_lazyfree helper (CKI Backport Bot) [RHEL-311438] {CVE-2026-99463}
+- fs/proc/task_mmu: pin mm_users in do_pagemap_scan() (CKI Backport Bot) [RHEL-311353] {CVE-2026-99477}
+- uio: Fix stale info pointer in failed registration path (CKI Backport Bot) [RHEL-293657] {CVE-2026-93054}
+- io_uring: fix task_work add use-after-free with SQPOLL (Jeff Moyer) [RHEL-292307] {CVE-2026-98858}
+- platform/x86/amd/pmc: Fix LPS0 and debugfs leaks when STB init fails (Krzysztof Pawlinski) [RHEL-294708] {CVE-2026-81015}
+- media: cec: disable delayed work before freeing an interrupted transmit (Kate Hsuan) [RHEL-293934] {CVE-2026-89899}
+- mm/hugetlb: preserve mremap address delta when skipping page tables (CKI Backport Bot) [RHEL-299363] {CVE-2026-98373}
+- bnxt_en: fix DMA mapping length for padded small packets (CKI Backport Bot) [RHEL-300818]
+- iomap: guard io_size EOF trim against concurrent truncate underflow (CKI Backport Bot) [RHEL-297598] {CVE-2026-72367}
+- net: openvswitch: conntrack: fix helper UAF due to extensions realloc (Timothy Redaelli) [RHEL-287323] {CVE-2026-98490}
+- net: openvswitch: conntrack: remove 'add_helper' dead code (Timothy Redaelli) [RHEL-287323] {CVE-2026-98490}
+- s390/boot: Avoid IPL parameter append past command line (CKI Backport Bot) [RHEL-292348] {CVE-2026-98403}
+- s390/boot: Add sized_strscpy() to enable strscpy() usage (CKI Backport Bot) [RHEL-292348]
+- selftests: bridge_vlan_mcast: Test toggling of multicast snooping (Mohammad Heib) [RHEL-232530]
+- bridge: mcast: Fix a possible use-after-free when removing a bridge port (Mohammad Heib) [RHEL-232530] {CVE-2026-64032}
+- libceph: prevent potential out-of-bounds reads in handle_auth_done() (CKI Backport Bot) [RHEL-143902] {CVE-2026-22984}
+- libceph: reset sparse-read state in osd_fault() (CKI Backport Bot) [RHEL-150468] {CVE-2026-23136}
+- libceph: replace overzealous BUG_ON in osdmap_apply_incremental() (CKI Backport Bot) [RHEL-143884] {CVE-2026-22990}
+- libceph: make decode_pool() more resilient against corrupted osdmaps (CKI Backport Bot) [RHEL-142103] {CVE-2025-71116}
+- KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Check PSC request indices against the actual size of the buffer (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Don't explicitly pass PSC buffer to snp_begin_psc() (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: WARN if KVM attempts to setup scratch area with min_len==0 (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Compute the correct max length of the in-GHCB scratch area (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Use the size of the PSC header as the minimum size for PSC requests (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Ignore Port I/O requests of length '0' (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Reject MMIO requests larger than 8 bytes with GHCB v2+ (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Ignore MMIO requests of length '0' (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: x86: Dedup kvm_sev_es_mmio_{read,write}() (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
+- KVM: SEV: Require in-GHCB scratch area if GHCB v2+ is in use (Rahul Kumar) [RHEL-192285] {CVE-2026-53360}
 
 * Fri Nov 20 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.19.1.el10_3]
 - inet: reject unhashed sockets during established lookups (Prasenjit Mukherjee) [RHEL-304720] {CVE-2026-99288}
