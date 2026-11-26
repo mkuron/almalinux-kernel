@@ -179,13 +179,13 @@ Summary: The Linux kernel
 %define specrpmversion 6.12.0
 %define specversion 6.12.0
 %define patchversion 6.12
-%define pkgrelease 264.20.1
+%define pkgrelease 264.21.1
 %define kversion 6
 %define tarfile_release 6.12.0-264.9.1.el10_3
 # This is needed to do merge window version magic
 %define patchlevel 12
 # This allows pkg_release to have configurable %%{?dist} tag
-%define specrelease 264.20.1%{?buildid}%{?dist}
+%define specrelease 264.21.1%{?buildid}%{?dist}
 # This defines the kabi tarball version
 %define kabiversion 6.12.0-264.9.1.el10_3
 
@@ -1571,6 +1571,38 @@ Patch1510: 1510-mm-gup-check-for-overflow-when-converting-nr-pages-to-bytes-in-g
 Patch1511: 1511-mm-vma-call-may-split-before-a-partial-merge.patch
 Patch1512: 1512-mm-userfaultfd-only-allocate-anon-vma-in-cow-mappings.patch
 
+# Backports for 6.12.0-264.21.1.el10_3
+Patch1513: 1513-vdpa-sim-blk-reject-out-of-range-sector-starts.patch
+Patch1514: 1514-nvmet-tcp-check-return-value-of-nvmet-tcp-set-queue-sock.patch
+Patch1515: 1515-iommu-arm-smmu-v3-manage-teardown-with-devm.patch
+Patch1516: 1516-iommu-tegra241-cmdqv-fix-cmd-sync-use-after-free-on-teardown.patch
+Patch1517: 1517-iommu-tegra241-cmdqv-publish-an-lvcmdq-only-after-it-is-fully-initialized.patch
+Patch1518: 1518-iommu-tegra241-cmdqv-synchronize-the-error-isr-against-vintf-de-init.patch
+Patch1519: 1519-iommu-tegra241-cmdqv-harden-error-map-index-handling-in-the-error-isr.patch
+Patch1520: 1520-iommu-tegra241-cmdqv-don-t-run-the-error-isr-before-probe-sets-up-vintfs.patch
+Patch1521: 1521-iommu-tegra241-cmdqv-don-t-fall-back-to-a-freed-smmu-after-devm-krealloc.patch
+Patch1522: 1522-iommu-tegra241-cmdqv-free-the-error-irq-before-tearing-down-vintfs.patch
+Patch1523: 1523-iommu-tegra241-cmdqv-reject-a-vsid-wider-than-the-sid-match-field.patch
+Patch1524: 1524-iommu-tegra241-cmdqv-require-exactly-one-stream-id-for-a-vsid.patch
+Patch1525: 1525-iommu-tegra241-cmdqv-fix-vintf0-leak-on-the-init-failure-path.patch
+Patch1526: 1526-iommu-tegra241-cmdqv-rate-limit-the-error-isr-s-log-message.patch
+Patch1527: 1527-iommu-arm-smmu-v3-disable-the-impl-before-disabling-the-smmu-on-shutdown.patch
+Patch1528: 1528-net-sit-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+Patch1529: 1529-kvm-arm64-vgic-handle-race-between-interrupt-affinity-change-and-lpi-disabling.patch
+Patch1530: 1530-kvm-move-kvm-io-bus-get-dev-locking-responsibilities-to-callers.patch
+Patch1531: 1531-kvm-arm64-vgic-avoid-double-deactivate-of-irqs-in-the-nested-context.patch
+Patch1532: 1532-kvm-arm64-vgic-fix-race-between-lpi-release-and-re-registration.patch
+Patch1533: 1533-kvm-arm64-vgic-its-don-t-dereference-a-null-collection-on-itt-save.patch
+Patch1534: 1534-kvm-arm64-vgic-v3-take-an-lpi-reference-in-vgic-v3-save-pending-tables.patch
+Patch1535: 1535-kvm-arm64-sign-extend-va-for-range-based-tlbi-invalidation.patch
+Patch1536: 1536-kvm-arm64-gicv2-don-t-warn-on-out-of-range-gicv-dir-intid.patch
+Patch1537: 1537-kvm-arm64-fix-spurious-warning-for-benign-stage-2-teardown-race.patch
+Patch1538: 1538-kvm-arm64-fix-aarch32-dbgbxvr-n-handling.patch
+Patch1539: 1539-arm64-boot-disable-trapping-of-pmzr-el0-writes-to-el2.patch
+Patch1540: 1540-kvm-arm64-vgic-allow-last-lr-irq-to-be-null-when-lrs-are-not-overflowing.patch
+Patch1541: 1541-kvm-arm64-vgic-take-a-refcount-on-irqs-referenced-by-last-lr-irq.patch
+Patch1542: 1542-mm-truncate-look-up-the-end-edge-straddler-by-index.patch
+
 # AlmaLinux Patch
 Patch2001: 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
 Patch2002: 0002-Bring-back-deprecated-pci-ids-to-mptsas-mptspi-drive.patch
@@ -2948,6 +2980,38 @@ ApplyPatch 1509-x86-mm-fix-global-asid-handed-out-to-two-processes.patch
 ApplyPatch 1510-mm-gup-check-for-overflow-when-converting-nr-pages-to-bytes-in-gup-fast.patch
 ApplyPatch 1511-mm-vma-call-may-split-before-a-partial-merge.patch
 ApplyPatch 1512-mm-userfaultfd-only-allocate-anon-vma-in-cow-mappings.patch
+
+# Applying backports for 6.12.0-264.21.1.el10_3
+ApplyPatch 1513-vdpa-sim-blk-reject-out-of-range-sector-starts.patch
+ApplyPatch 1514-nvmet-tcp-check-return-value-of-nvmet-tcp-set-queue-sock.patch
+ApplyPatch 1515-iommu-arm-smmu-v3-manage-teardown-with-devm.patch
+ApplyPatch 1516-iommu-tegra241-cmdqv-fix-cmd-sync-use-after-free-on-teardown.patch
+ApplyPatch 1517-iommu-tegra241-cmdqv-publish-an-lvcmdq-only-after-it-is-fully-initialized.patch
+ApplyPatch 1518-iommu-tegra241-cmdqv-synchronize-the-error-isr-against-vintf-de-init.patch
+ApplyPatch 1519-iommu-tegra241-cmdqv-harden-error-map-index-handling-in-the-error-isr.patch
+ApplyPatch 1520-iommu-tegra241-cmdqv-don-t-run-the-error-isr-before-probe-sets-up-vintfs.patch
+ApplyPatch 1521-iommu-tegra241-cmdqv-don-t-fall-back-to-a-freed-smmu-after-devm-krealloc.patch
+ApplyPatch 1522-iommu-tegra241-cmdqv-free-the-error-irq-before-tearing-down-vintfs.patch
+ApplyPatch 1523-iommu-tegra241-cmdqv-reject-a-vsid-wider-than-the-sid-match-field.patch
+ApplyPatch 1524-iommu-tegra241-cmdqv-require-exactly-one-stream-id-for-a-vsid.patch
+ApplyPatch 1525-iommu-tegra241-cmdqv-fix-vintf0-leak-on-the-init-failure-path.patch
+ApplyPatch 1526-iommu-tegra241-cmdqv-rate-limit-the-error-isr-s-log-message.patch
+ApplyPatch 1527-iommu-arm-smmu-v3-disable-the-impl-before-disabling-the-smmu-on-shutdown.patch
+ApplyPatch 1528-net-sit-require-cap-net-admin-in-the-device-netns-for-changelink.patch
+ApplyPatch 1529-kvm-arm64-vgic-handle-race-between-interrupt-affinity-change-and-lpi-disabling.patch
+ApplyPatch 1530-kvm-move-kvm-io-bus-get-dev-locking-responsibilities-to-callers.patch
+ApplyPatch 1531-kvm-arm64-vgic-avoid-double-deactivate-of-irqs-in-the-nested-context.patch
+ApplyPatch 1532-kvm-arm64-vgic-fix-race-between-lpi-release-and-re-registration.patch
+ApplyPatch 1533-kvm-arm64-vgic-its-don-t-dereference-a-null-collection-on-itt-save.patch
+ApplyPatch 1534-kvm-arm64-vgic-v3-take-an-lpi-reference-in-vgic-v3-save-pending-tables.patch
+ApplyPatch 1535-kvm-arm64-sign-extend-va-for-range-based-tlbi-invalidation.patch
+ApplyPatch 1536-kvm-arm64-gicv2-don-t-warn-on-out-of-range-gicv-dir-intid.patch
+ApplyPatch 1537-kvm-arm64-fix-spurious-warning-for-benign-stage-2-teardown-race.patch
+ApplyPatch 1538-kvm-arm64-fix-aarch32-dbgbxvr-n-handling.patch
+ApplyPatch 1539-arm64-boot-disable-trapping-of-pmzr-el0-writes-to-el2.patch
+ApplyPatch 1540-kvm-arm64-vgic-allow-last-lr-irq-to-be-null-when-lrs-are-not-overflowing.patch
+ApplyPatch 1541-kvm-arm64-vgic-take-a-refcount-on-irqs-referenced-by-last-lr-irq.patch
+ApplyPatch 1542-mm-truncate-look-up-the-end-edge-straddler-by-index.patch
 
 # Applying AlmaLinux Patch
 ApplyPatch 0001-Enable-all-disabled-pci-devices-by-moving-to-unmaint.patch
@@ -5611,14 +5675,14 @@ fi\
 #
 #
 %changelog
-* Mon Nov 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.20.1
+* Thu Nov 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 6.12.0-264.21.1
 - Debrand for AlmaLinux OS
 - Use AlmaLinux OS secure boot cert
 
-* Mon Nov 23 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.20.1
+* Thu Nov 26 2026 Neal Gompa <ngompa@almalinux.org> - 6.12.0-264.21.1
 - Enable Btrfs support for all kernel variants
 
-* Mon Nov 23 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.20.1
+* Thu Nov 26 2026 Andrew Lukoshko <alukoshko@almalinux.org> - 6.12.0-264.21.1
 - can: j1939: j1939_session_new(): fix skb reference counting [RHEL-162260]
   {CVE-2024-56645}
 - wifi: mt76: mt7925: fix crash in reset link replay [RHEL-237527]
@@ -5681,6 +5745,39 @@ fi\
 - be2iscsi: bring back deprecated PCI ids
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
+
+* Wed Nov 25 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.21.1.el10_3]
+- gitlab-ci: use rhel10.3 builder image (Tales da Aparecida)
+- mm/truncate: look up the end-edge straddler by index (CKI Backport Bot) [RHEL-311347] {CVE-2026-99462}
+- KVM: arm64: vgic: Take a refcount on IRQs referenced by last_lr_irq (Alexander Lougovski) [RHEL-305162] {CVE-2026-98712}
+- KVM: arm64: vgic: Allow last_lr_irq to be NULL when LRs are not overflowing (Alexander Lougovski) [RHEL-305162]
+- arm64/boot: Disable trapping of PMZR_EL0 writes to EL2 (Alexander Lougovski) [RHEL-305162] {CVE-2026-98546}
+- KVM: arm64: Fix AArch32 DBGBXVR<n> handling (Alexander Lougovski) [RHEL-305162] {CVE-2026-98469}
+- KVM: arm64: Fix spurious warning for benign stage 2 teardown race (Alexander Lougovski) [RHEL-305162] {CVE-2026-98468}
+- KVM: arm64: GICv2: Don't WARN on out-of-range GICV_DIR INTID (Alexander Lougovski) [RHEL-305162] {CVE-2026-89727}
+- KVM: arm64: Sign-extend VA for range-based TLBI invalidation (Alexander Lougovski) [RHEL-305162] {CVE-2026-89914}
+- KVM: arm64: vgic-v3: take an LPI reference in vgic_v3_save_pending_tables (Alexander Lougovski) [RHEL-305162] {CVE-2026-89913}
+- KVM: arm64: vgic-its: Don't dereference a NULL collection on ITT save (Alexander Lougovski) [RHEL-305162] {CVE-2026-89912}
+- KVM: arm64: vgic: Fix race between LPI release and re-registration (Alexander Lougovski) [RHEL-305162] {CVE-2026-74568}
+- KVM: arm64: vgic: Avoid double-deactivate of IRQs in the nested context (Alexander Lougovski) [RHEL-305162] {CVE-2026-80699}
+- KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers (Alexander Lougovski) [RHEL-297625 RHEL-305162] {CVE-2026-72282}
+- KVM: arm64: vgic: Handle race between interrupt affinity change and LPI disabling (Alexander Lougovski) [RHEL-305162] {CVE-2026-72288}
+- net: sit: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-289929] {CVE-2026-72061}
+- iommu/arm-smmu-v3: Disable the impl before disabling the SMMU on shutdown (Eder Zulian) [RHEL-271376]
+- iommu/tegra241-cmdqv: Rate-limit the error ISR's log message (Eder Zulian) [RHEL-271376]
+- iommu/tegra241-cmdqv: Fix VINTF0 leak on the init-failure path (Eder Zulian) [RHEL-271376] {CVE-2026-90424}
+- iommu/tegra241-cmdqv: Require exactly one Stream ID for a vSID (Eder Zulian) [RHEL-271376] {CVE-2026-90425}
+- iommu/tegra241-cmdqv: Reject a vSID wider than the SID_MATCH field (Eder Zulian) [RHEL-271376] {CVE-2026-89450}
+- iommu/tegra241-cmdqv: Free the error IRQ before tearing down VINTFs (Eder Zulian) [RHEL-271376] {CVE-2026-90426}
+- iommu/tegra241-cmdqv: Don't fall back to a freed smmu after devm_krealloc() (Eder Zulian) [RHEL-271376] {CVE-2026-90427}
+- iommu/tegra241-cmdqv: Don't run the error ISR before probe sets up vintfs (Eder Zulian) [RHEL-271376] {CVE-2026-90428}
+- iommu/tegra241-cmdqv: Harden error-map index handling in the error ISR (Eder Zulian) [RHEL-271376]
+- iommu/tegra241-cmdqv: Synchronize the error ISR against VINTF (de)init (Eder Zulian) [RHEL-292905] {CVE-2026-90429}
+- iommu/tegra241-cmdqv: Publish an LVCMDQ only after it is fully initialized (Eder Zulian) [RHEL-271376] {CVE-2026-90430}
+- iommu/tegra241-cmdqv: Fix CMD_SYNC use-after-free on teardown (Eder Zulian) [RHEL-271376] {CVE-2026-80818}
+- iommu/arm-smmu-v3: Manage teardown with devm (Eder Zulian) [RHEL-271376] {CVE-2026-93205}
+- nvmet-tcp: check return value of nvmet_tcp_set_queue_sock (CKI Backport Bot) [RHEL-277644] {CVE-2026-74385}
+- vdpa_sim_blk: reject out-of-range sector starts (CKI Backport Bot) [RHEL-276317] {CVE-2026-97991}
 
 * Mon Nov 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.20.1.el10_3]
 - mm/userfaultfd: only allocate anon_vma in CoW mappings (Rafael Aquini) [RHEL-312504] {CVE-2026-99580}

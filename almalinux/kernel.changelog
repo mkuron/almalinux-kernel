@@ -1,3 +1,37 @@
+* Wed Nov 25 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.21.1.el10_3]
+- gitlab-ci: use rhel10.3 builder image (Tales da Aparecida)
+- mm/truncate: look up the end-edge straddler by index (CKI Backport Bot) [RHEL-311347] {CVE-2026-99462}
+- KVM: arm64: vgic: Take a refcount on IRQs referenced by last_lr_irq (Alexander Lougovski) [RHEL-305162] {CVE-2026-98712}
+- KVM: arm64: vgic: Allow last_lr_irq to be NULL when LRs are not overflowing (Alexander Lougovski) [RHEL-305162]
+- arm64/boot: Disable trapping of PMZR_EL0 writes to EL2 (Alexander Lougovski) [RHEL-305162] {CVE-2026-98546}
+- KVM: arm64: Fix AArch32 DBGBXVR<n> handling (Alexander Lougovski) [RHEL-305162] {CVE-2026-98469}
+- KVM: arm64: Fix spurious warning for benign stage 2 teardown race (Alexander Lougovski) [RHEL-305162] {CVE-2026-98468}
+- KVM: arm64: GICv2: Don't WARN on out-of-range GICV_DIR INTID (Alexander Lougovski) [RHEL-305162] {CVE-2026-89727}
+- KVM: arm64: Sign-extend VA for range-based TLBI invalidation (Alexander Lougovski) [RHEL-305162] {CVE-2026-89914}
+- KVM: arm64: vgic-v3: take an LPI reference in vgic_v3_save_pending_tables (Alexander Lougovski) [RHEL-305162] {CVE-2026-89913}
+- KVM: arm64: vgic-its: Don't dereference a NULL collection on ITT save (Alexander Lougovski) [RHEL-305162] {CVE-2026-89912}
+- KVM: arm64: vgic: Fix race between LPI release and re-registration (Alexander Lougovski) [RHEL-305162] {CVE-2026-74568}
+- KVM: arm64: vgic: Avoid double-deactivate of IRQs in the nested context (Alexander Lougovski) [RHEL-305162] {CVE-2026-80699}
+- KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers (Alexander Lougovski) [RHEL-297625 RHEL-305162] {CVE-2026-72282}
+- KVM: arm64: vgic: Handle race between interrupt affinity change and LPI disabling (Alexander Lougovski) [RHEL-305162] {CVE-2026-72288}
+- net: sit: require CAP_NET_ADMIN in the device netns for changelink (Abhishek Rawal) [RHEL-289929] {CVE-2026-72061}
+- iommu/arm-smmu-v3: Disable the impl before disabling the SMMU on shutdown (Eder Zulian) [RHEL-271376]
+- iommu/tegra241-cmdqv: Rate-limit the error ISR's log message (Eder Zulian) [RHEL-271376]
+- iommu/tegra241-cmdqv: Fix VINTF0 leak on the init-failure path (Eder Zulian) [RHEL-271376] {CVE-2026-90424}
+- iommu/tegra241-cmdqv: Require exactly one Stream ID for a vSID (Eder Zulian) [RHEL-271376] {CVE-2026-90425}
+- iommu/tegra241-cmdqv: Reject a vSID wider than the SID_MATCH field (Eder Zulian) [RHEL-271376] {CVE-2026-89450}
+- iommu/tegra241-cmdqv: Free the error IRQ before tearing down VINTFs (Eder Zulian) [RHEL-271376] {CVE-2026-90426}
+- iommu/tegra241-cmdqv: Don't fall back to a freed smmu after devm_krealloc() (Eder Zulian) [RHEL-271376] {CVE-2026-90427}
+- iommu/tegra241-cmdqv: Don't run the error ISR before probe sets up vintfs (Eder Zulian) [RHEL-271376] {CVE-2026-90428}
+- iommu/tegra241-cmdqv: Harden error-map index handling in the error ISR (Eder Zulian) [RHEL-271376]
+- iommu/tegra241-cmdqv: Synchronize the error ISR against VINTF (de)init (Eder Zulian) [RHEL-292905] {CVE-2026-90429}
+- iommu/tegra241-cmdqv: Publish an LVCMDQ only after it is fully initialized (Eder Zulian) [RHEL-271376] {CVE-2026-90430}
+- iommu/tegra241-cmdqv: Fix CMD_SYNC use-after-free on teardown (Eder Zulian) [RHEL-271376] {CVE-2026-80818}
+- iommu/arm-smmu-v3: Manage teardown with devm (Eder Zulian) [RHEL-271376] {CVE-2026-93205}
+- nvmet-tcp: check return value of nvmet_tcp_set_queue_sock (CKI Backport Bot) [RHEL-277644] {CVE-2026-74385}
+- vdpa_sim_blk: reject out-of-range sector starts (CKI Backport Bot) [RHEL-276317] {CVE-2026-97991}
+Resolves: RHEL-271376, RHEL-276317, RHEL-277644, RHEL-289929, RHEL-292905, RHEL-297625, RHEL-305162, RHEL-311347
+
 * Mon Nov 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [6.12.0-264.20.1.el10_3]
 - mm/userfaultfd: only allocate anon_vma in CoW mappings (Rafael Aquini) [RHEL-312504] {CVE-2026-99580}
 - mm/vma: call ->may_split() before a partial merge (CKI Backport Bot) [RHEL-312520] {CVE-2026-99648}
