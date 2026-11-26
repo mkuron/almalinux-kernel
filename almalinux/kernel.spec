@@ -49,10 +49,10 @@
 # define buildid .local
 
 %define specversion 4.18.0
-%define pkgrelease 553.189.1.el8_10
+%define pkgrelease 553.190.1.el8_10
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 553.189.1%{?dist}
+%define specrelease 553.190.1%{?dist}
 
 %define pkg_release %{specrelease}%{?buildid}
 
@@ -2807,7 +2807,7 @@ fi
 #
 #
 %changelog
-* Mon Nov 23 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.189.1
+* Thu Nov 26 2026 Andrei Lukoshko <alukoshko@almalinux.org> - 4.18.0-553.190.1
 - net: lock the socket in sock_gettstamp() {CVE-2026-98276}
 - hpsa: bring back deprecated PCI ids #CFHack #CFHack2024
 - mptsas: bring back deprecated PCI ids #CFHack #CFHack2024
@@ -2819,9 +2819,18 @@ fi
 - kernel/rh_messages.h: enable all disabled pci devices by moving to
   unmaintained
 
-* Mon Nov 23 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.189.1
+* Thu Nov 26 2026 Eduard Abdullin <eabdullin@almalinux.org> - 4.18.0-553.190.1
 - Use AlmaLinux OS secure boot cert
 - Debrand for AlmaLinux OS
+
+* Wed Nov 25 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.190.1.el8_10]
+- nfsd: preflight SEQUENCE replies before accepting a slot (CKI Backport Bot) [RHEL-311258] {CVE-2026-99362}
+- scsi: core: Restrict legal sdev_state transitions via sysfs (Laurence Oberman) [RHEL-307720]
+- net: skb_vlan_untag(): don't reset transport offset if set by GRO layer (Thomas Walsh) [RHEL-307055]
+- mm: list_lru: fix the return value of list_lru_count_one() (Luiz Capitulino) [RHEL-300411]
+- tracing: Reject incomplete event filter expressions (CKI Backport Bot) [RHEL-301041] {CVE-2026-99236}
+- ALSA: ua101: reject mismatched capture/playback packet sizes (CKI Backport Bot) [RHEL-290823] {CVE-2026-98741}
+- HID: wacom: Fix OOB write in wacom_hid_set_device_mode() (CKI Backport Bot) [RHEL-232281] {CVE-2026-63916}
 
 * Mon Nov 23 2026 CKI KWF Bot <cki-ci-bot+kwf-gitlab-com@redhat.com> [4.18.0-553.189.1.el8_10]
 - mm/swapfile: really fix integer overflow in swap_show() and swapon() (Oleksandr Natalenko) [RHEL-302561]
